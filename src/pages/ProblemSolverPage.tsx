@@ -1321,7 +1321,7 @@ export const ProblemSolverPage: React.FC = () => {
           <div className={`flex-1 overflow-y-auto problem-scrollbar ${
             activeTab === 'notes'
               ? 'p-2.5 sm:p-3.5 md:p-4 pb-2.5 sm:pb-3 md:pb-3 flex flex-col'
-              : 'p-3 sm:p-5 md:p-6 pb-24 sm:pb-20 md:pb-8'
+              : 'p-3 sm:p-4 md:p-5 pb-6 sm:pb-5 md:pb-4'
           }`}>
             {activeTab === 'description' && (
               <div className="space-y-4 sm:space-y-6">
@@ -1714,7 +1714,7 @@ export const ProblemSolverPage: React.FC = () => {
         >
           
           {/* Bottom Tabs */}
-          <div className="flex items-center gap-4 px-4 h-10 border-b border-border/80 bg-secondary/20 flex-shrink-0 text-xs">
+          <div className="flex items-center gap-4 px-3 sm:px-4 h-9 border-b border-border/80 bg-secondary/20 flex-shrink-0 text-xs">
             <button
               onClick={() => setBottomTab('testcase')}
               className={`flex items-center gap-1.5 h-full border-b-2 font-medium transition-colors ${
@@ -1755,7 +1755,7 @@ export const ProblemSolverPage: React.FC = () => {
 
           {/* Bottom Panel Content */}
           <div className={`flex-1 overflow-y-auto problem-scrollbar font-mono text-xs ${
-            bottomTab === 'repl' ? 'p-2 sm:p-2.5 pb-2' : 'p-3 sm:p-4 pb-24 md:pb-4'
+            bottomTab === 'repl' ? 'p-1.5 sm:p-2 pb-1.5' : 'p-2.5 sm:p-3 pb-3 md:pb-3'
           }`}>
             {bottomTab === 'testcase' && (() => {
               const currentCases = activeTestCases.length > 0 ? activeTestCases : defaultSampleCases;

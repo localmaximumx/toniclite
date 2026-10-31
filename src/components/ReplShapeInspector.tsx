@@ -227,9 +227,9 @@ export const ReplShapeInspector: React.FC<ReplShapeInspectorProps> = ({
   ];
 
   return (
-    <div className="flex flex-col h-full space-y-2">
+    <div className="flex flex-col h-full space-y-1 sm:space-y-1.5">
       {/* 1. Live Tensor Scope Bar */}
-      <div className="flex items-center justify-between gap-2 flex-wrap pb-1.5 border-b border-border/70">
+      <div className="flex items-center justify-between gap-1.5 flex-wrap pb-1 border-b border-border/70">
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1 pr-1 select-none">
             <Layers className="w-3.5 h-3.5 text-emerald-400" />
@@ -358,7 +358,7 @@ export const ReplShapeInspector: React.FC<ReplShapeInspectorProps> = ({
       {/* 2. REPL Output Console */}
       <div
         ref={consoleRef}
-        className="flex-1 overflow-y-auto custom-scrollbar p-3 rounded-xl bg-black/60 border border-white/10 font-mono text-xs space-y-2 min-h-[95px] max-h-[170px]"
+        className="flex-1 overflow-y-auto custom-scrollbar p-2 sm:p-2.5 rounded-lg bg-black/60 border border-white/10 font-mono text-xs space-y-1 min-h-[70px] max-h-[135px]"
       >
         {replHistory.length === 0 ? (
           <div className="text-muted-foreground/60 italic text-[11px] flex items-center gap-2">
@@ -392,7 +392,7 @@ export const ReplShapeInspector: React.FC<ReplShapeInspectorProps> = ({
       </div>
 
       {/* 3. ML Snippet Quick Shelf */}
-      <div className="flex items-center gap-1 overflow-x-auto pb-1 text-[11px] font-mono custom-scrollbar no-scrollbar">
+      <div className="flex items-center gap-1 overflow-x-auto py-0.5 text-[11px] font-mono custom-scrollbar no-scrollbar">
         <span className="text-[10px] text-muted-foreground uppercase tracking-wider shrink-0 flex items-center gap-1 font-sans">
           <Sparkles className="w-2.5 h-2.5 text-emerald-400" /> Snippets:
         </span>
@@ -436,14 +436,14 @@ export const ReplShapeInspector: React.FC<ReplShapeInspectorProps> = ({
               onChange={e => setSingleInput(e.target.value)}
               onKeyDown={handleKeyDownSingle}
               placeholder="e.g. X.shape, A @ b, np.linalg.norm(X), def f(): ... (↑/↓ for history)"
-              className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 font-mono text-xs text-foreground outline-none transition-all"
+              className="w-full pl-9 pr-2.5 py-1 rounded-lg bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 font-mono text-xs text-foreground outline-none transition-all"
               spellCheck={false}
             />
           </div>
           <button
             type="submit"
             disabled={isEvaluatingRepl || !singleInput.trim()}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-black font-sans text-xs font-bold transition-all disabled:opacity-40 shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-black font-sans text-xs font-bold transition-all disabled:opacity-40 shrink-0"
           >
             <span>Run</span>
             <CornerDownLeft className="w-3 h-3" />
@@ -454,7 +454,7 @@ export const ReplShapeInspector: React.FC<ReplShapeInspectorProps> = ({
           <div className="relative border border-border rounded-xl bg-[#0E0E16] overflow-hidden focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500 transition-all">
             <textarea
               ref={textareaRef}
-              rows={3}
+              rows={2}
               value={multilineInput}
               onChange={e => setMultilineInput(e.target.value)}
               onKeyDown={handleKeyDownMulti}
