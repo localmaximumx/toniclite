@@ -1041,23 +1041,24 @@ try:
                 # Format numpy arrays and tensors nicely
                 if hasattr(__val, 'shape'):
                     print(repr(__val))
-                    print(f"# Shape: {getattr(__val, 'shape', ())} | dtype: {getattr(__val, 'dtype', 'unknown')} | size: {getattr(__val, 'size', 'N/A')}")
+                    print("# Shape:", getattr(__val, 'shape', ()), "| dtype:", getattr(__val, 'dtype', 'unknown'), "| size:", getattr(__val, 'size', 'N/A'))
                 else:
                     print(repr(__val))
         except SyntaxError:
             # Multi-statement code or assignment (e.g. a = np.zeros((3, 3)))
             exec(__code_str, globals())
 except Exception as __e:
-    __err = f"{type(__e).__name__}: {__e}"
+    __err = str(type(__e).__name__) + ": " + str(__e)
 finally:
     sys.stdout = __old_stdout
 
-__repl_output = __buf.getvalue().strip()
+__buf_val = __buf.getvalue().strip()
+__out_parts = []
+if __buf_val:
+    __out_parts.append(__buf_val)
 if __err:
-    if __repl_output:
-        __repl_output = __repl_output + "\n" + __err
-    else:
-        __repl_output = __err
+    __out_parts.append(__err)
+__repl_output = chr(10).join(__out_parts)
 __repl_output
 `;
 
@@ -1151,7 +1152,7 @@ def _extract_meta(k, val):
             "hasNaN": has_nan,
             "hasInf": has_inf,
             "slice2D": slice_2d,
-            "fullShapeStr": f"({', '.join(str(d) for d in shape)})" if shape else "scalar"
+            "fullShapeStr": ("(" + ", ".join(str(d) for d in shape) + ")") if shape else "scalar"
         }
     except Exception:
         return None
