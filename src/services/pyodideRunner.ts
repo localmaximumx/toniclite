@@ -1204,8 +1204,8 @@ export interface ExecutionReport {
 
 export async function runPythonCode(
   userCode: string,
-  functionName: string,
-  testCases: Array<{ id: string; name: string; inputs: Record<string, any>; expectedOutput?: any }>
+  functionName: string = '',
+  testCases: Array<{ id: string; name: string; inputs: Record<string, any>; expectedOutput?: any }> = []
 ): Promise<ExecutionReport> {
   const pyodide = await getPyodide();
   const startTime = performance.now();

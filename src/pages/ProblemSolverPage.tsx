@@ -666,7 +666,7 @@ export const ProblemSolverPage: React.FC = () => {
     if (!activeCase?.rawInputs) return {};
     const res: Record<string, any> = {};
     for (const [k, v] of Object.entries(activeCase.rawInputs)) {
-      res[k] = safeParseJson(v);
+      res[k] = parseInputValue(v);
     }
     return res;
   }, [activeTestCases, activeCaseIdx, defaultSampleCases]);
@@ -1469,7 +1469,7 @@ export const ProblemSolverPage: React.FC = () => {
                 <SolutionViewer
                   solution={problem.solution}
                   onApplySolution={handleApplySolution}
-                  slug={problem.slug || slug || 'problem'}
+                  slug={(problem as any).slug || slug || 'problem'}
                   problemTitle={problem.title}
                 />
               ) : (

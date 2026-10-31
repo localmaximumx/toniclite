@@ -326,7 +326,7 @@ export const InterviewPage: React.FC = () => {
 
                 {/* Horizontal Scrollable Carousel */}
                 <div
-                  ref={(el) => (carouselRefs.current[cat.id] = el)}
+                  ref={(el) => { carouselRefs.current[cat.id] = el; }}
                   className="flex gap-4 overflow-x-auto custom-scrollbar pb-2 pt-1 scroll-smooth snap-x"
                   style={{ scrollbarWidth: 'none' }}
                 >
