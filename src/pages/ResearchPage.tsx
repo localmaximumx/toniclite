@@ -222,7 +222,7 @@ export const ResearchPage: React.FC = () => {
 
   if (loading || !activePaper) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-background">
+      <div className="flex items-center justify-center h-full w-full bg-background">
         <div className="w-8 h-8 border-2 border-[#93C572] border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -233,7 +233,7 @@ export const ResearchPage: React.FC = () => {
   const archImageUrl = paperArchitectureImages[activePaper.id] || paperArchitectureImages[normalizePaperId(activePaper.id)] || '/images/architectures/Transformer.png';
 
   return (
-    <div className="h-[calc(100vh-64px)] flex overflow-hidden bg-background text-foreground font-sans selection:bg-[#93C572]/20 selection:text-[#93C572]">
+    <div className="h-full w-full flex overflow-hidden bg-background text-foreground font-sans selection:bg-[#93C572]/20 selection:text-[#93C572]">
       
       {/* ======================================================== */}
       {/* COLUMN 1: LEFT SIDEBAR - RESEARCH PAPERS LIST            */}
@@ -291,7 +291,7 @@ export const ResearchPage: React.FC = () => {
       {/* ======================================================== */}
       {/* COLUMN 2: CENTER ROADMAP - ACTIVE PAPER CURRICULUM       */}
       {/* ======================================================== */}
-      <main className="flex-1 h-full overflow-y-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 custom-scrollbar bg-background">
+      <main className="flex-1 h-full overflow-y-auto px-4 sm:px-6 lg:px-10 pt-6 pb-28 sm:py-8 custom-scrollbar bg-background">
         <div className="max-w-2xl mx-auto">
           
           {/* Fancy Mobile Paper Dropdown (< md) */}

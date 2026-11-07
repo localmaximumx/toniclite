@@ -21,7 +21,7 @@ import {
   Database,
   Flame,
   Settings,
-  Zap
+  GraduationCap
 } from 'lucide-react';
 import { 
   getCurrentUser, 
@@ -36,7 +36,6 @@ import {
   UserAccount 
 } from '../services/authService';
 import { AuthModal } from './AuthModal';
-import { PaletteSwitcher } from './PaletteSwitcher';
 import { getUserEloRating, getUserRankTier } from '../services/authService';
 
 export const Navbar: React.FC = () => {
@@ -159,7 +158,7 @@ export const Navbar: React.FC = () => {
   const navLinks = [
 
     { label: 'Problems', path: '/problems', icon: Code2 },
-    { label: '3-Min Blitz ⚡', path: '/blitz', icon: Zap },
+    { label: 'ML Math', path: '/ml-math', icon: GraduationCap },
     { label: 'Research', path: '/research', icon: BookOpen },
     { label: 'Interview', path: '/interview', icon: Radio }
   ];
@@ -180,9 +179,8 @@ export const Navbar: React.FC = () => {
         onSuccess={() => refreshAuth()}
       />
 
-      <nav className="text-foreground sticky top-0 z-50 w-full pt-3 pb-1 flex-shrink-0">
-        <div className="container mx-auto px-4 max-w-7xl relative">
-          <div className="relative z-50 h-14 flex items-center justify-between pl-5 pr-3 rounded-full border backdrop-blur-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] border-border bg-card/95 dark:border-border/60 dark:bg-background/60">
+      <nav className="text-foreground sticky top-0 z-50 w-full border-b border-border bg-card/95 dark:border-border/60 dark:bg-background/95 backdrop-blur-2xl flex-shrink-0">
+        <div className="w-full h-14 flex items-center justify-between px-4 sm:px-6 relative">
             
             {/* Left: Brand logo & Nav links */}
             <div className="flex items-center gap-2 md:gap-8 flex-shrink-0">
@@ -209,8 +207,8 @@ export const Navbar: React.FC = () => {
                   const isProblems = link.path === '/problems' && (
                     location.pathname.startsWith('/problems') && !location.search.includes('assessment=')
                   );
-                  const isBlitz = link.path === '/blitz' && location.pathname.startsWith('/blitz');
-                  const isActive = isInterview || isResearch || isProblems || isBlitz;
+                  const isMLMath = link.path === '/ml-math' && location.pathname.startsWith('/ml-math');
+                  const isActive = isInterview || isResearch || isProblems || isMLMath;
 
                   return (
                     <Link
@@ -255,8 +253,7 @@ export const Navbar: React.FC = () => {
 
 
 
-              {/* Palette Switcher */}
-              <PaletteSwitcher />
+
 
               {/* Theme Toggle Button (Desktop visible, on mobile moved into hamburger menu) */}
               <button
@@ -280,18 +277,16 @@ export const Navbar: React.FC = () => {
                         setStreakData(getUserStreak(currentUser.id));
                       }
                     }}
-                    className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-secondary/60 hover:bg-secondary border border-border/70 transition-colors text-xs font-semibold text-foreground group"
+                    aria-label="User account menu"
+                    title={currentUser.displayName || currentUser.username}
+                    className="relative flex items-center justify-center rounded-full p-0.5 hover:ring-2 hover:ring-brand-accent/60 focus:outline-none transition-all shrink-0"
                   >
                     <div 
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-black text-black shadow-xs shrink-0"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black text-black shadow-xs shrink-0 select-none ring-1 ring-border/60"
                       style={{ backgroundColor: currentUser.avatarColor || '#93C572' }}
                     >
                       {getInitials(currentUser.displayName || currentUser.username)}
                     </div>
-                    <span className="max-w-[100px] truncate hidden md:inline">
-                      {currentUser.displayName || currentUser.username}
-                    </span>
-                    <ChevronDown className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-transform" />
                   </button>
 
                   {/* Dropdown Menu */}
@@ -361,29 +356,9 @@ export const Navbar: React.FC = () => {
                           className="w-full text-left px-4 py-2 hover:bg-secondary dark:hover:bg-[#1a241f] text-foreground/80 dark:text-gray-300 hover:text-foreground dark:hover:text-white flex items-center gap-2.5 transition-colors"
                         >
                           <Settings className="w-3.5 h-3.5 text-sky-400" />
-                          <span>Account Settings & Storage</span>
+                          <span>Account Settings & Appearance</span>
                         </Link>
-                        <button
-                          onClick={handleExportBackup}
-                          className="w-full text-left px-4 py-2 hover:bg-secondary dark:hover:bg-[#1a241f] text-foreground/80 dark:text-gray-300 hover:text-foreground dark:hover:text-white flex items-center gap-2.5 transition-colors"
-                        >
-                          <Download className="w-3.5 h-3.5 text-purple-400" />
-                          <span>Export Account Backup (JSON)</span>
-                        </button>
-                        <button
-                          onClick={() => { setIsUserMenuOpen(false); setIsAuthModalOpen(true); }}
-                          className="w-full text-left px-4 py-2 hover:bg-secondary dark:hover:bg-[#1a241f] text-foreground/80 dark:text-gray-300 hover:text-foreground dark:hover:text-white flex items-center gap-2.5 transition-colors"
-                        >
-                          <Users className="w-3.5 h-3.5 text-amber-400" />
-                          <span>Switch Account / New User</span>
-                        </button>
-                        <button
-                          onClick={() => { logoutUser(); setIsUserMenuOpen(false); }}
-                          className="w-full text-left px-4 py-2 hover:bg-rose-500/10 dark:hover:bg-rose-950/20 text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 flex items-center gap-2.5 transition-colors"
-                        >
-                          <LogOut className="w-3.5 h-3.5" />
-                          <span>Sign Out</span>
-                        </button>
+
                       </div>
 
                     </div>
@@ -401,128 +376,234 @@ export const Navbar: React.FC = () => {
 
               {/* Mobile Hamburger Button */}
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle navigation menu"
-                className="lg:hidden inline-flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors ml-1"
+                type="button"
+                onClick={() => {
+                  setIsUserMenuOpen(false);
+                  setIsMobileMenuOpen((prev) => !prev);
+                }}
+                aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={isMobileMenuOpen}
+                className="lg:hidden inline-flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all ml-1 shrink-0"
               >
-                {isMobileMenuOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5" />}
+                {isMobileMenuOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
               </button>
 
             </div>
 
           </div>
+      </nav>
 
-          {/* Backdrop overlay when mobile menu is open (dims content below, tap to dismiss) */}
-          {isMobileMenuOpen && (
-            <div
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
+      {/* Mobile Navigation Drawer Overlay (Outside <nav> to prevent backdrop-blur / sticky clipping) */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex flex-col pointer-events-auto">
+          {/* Top backdrop behind the navbar height */}
+          <div className="h-14 w-full bg-card/95 dark:bg-background/95 border-b border-border/60 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 shadow-sm">
+            <Link
+              to="/"
               onClick={() => setIsMobileMenuOpen(false)}
-              aria-hidden="true"
-            />
-          )}
+              className="flex items-center gap-2 shrink-0 hover:opacity-85 transition-opacity"
+            >
+              <img
+                alt="TonicLite"
+                width={28}
+                height={28}
+                className="h-7 w-auto flex-shrink-0"
+                src="/images/logos/toniclite.svg"
+              />
+              <span className="text-foreground font-black text-base sm:text-lg tracking-tight font-sans inline">
+                Tonic<span className="text-[#93C572]">Lite</span>
+              </span>
+            </Link>
 
-          {/* Mobile Navigation Dropdown - floating overlay over page text and problems list */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden absolute top-[calc(100%+0.5rem)] left-4 right-4 z-50 p-3 bg-card/98 dark:bg-[#121212]/98 backdrop-blur-2xl border border-border/80 dark:border-border/60 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-1.5 animate-in fade-in slide-in-from-top-2 duration-150 max-h-[calc(100dvh-5.5rem)] overflow-y-auto custom-scrollbar">
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isInterview = link.path === '/interview' && (
-                  location.pathname.startsWith('/interview') ||
-                  location.search.includes('assessment=')
-                );
-                const isResearch = link.path === '/research' && location.pathname.startsWith('/research');
-                const isProblems = link.path === '/problems' && (
-                  location.pathname.startsWith('/problems') && !location.search.includes('assessment=')
-                );
-                const isBlitz = link.path === '/blitz' && location.pathname.startsWith('/blitz');
-                const isActive = isInterview || isResearch || isProblems || isBlitz;
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close navigation menu"
+              className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all"
+            >
+              <X className="w-5 h-5 text-foreground" />
+            </button>
+          </div>
 
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                      isActive
-                        ? 'bg-[#93C572]/15 text-[#93C572] border border-[#93C572]/30'
-                        : 'text-foreground/80 hover:text-foreground hover:bg-secondary/60'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{link.label}</span>
-                    {isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#93C572]" />}
-                  </Link>
-                );
-              })}
+          {/* Dimmed backdrop area (tap outside to close) */}
+          <div
+            className="flex-1 bg-black/60 backdrop-blur-sm flex flex-col justify-start overflow-hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {/* Scrollable Menu Content Card */}
+            <div
+              className="bg-card dark:bg-[#0c120e] border-b border-border/80 dark:border-border/60 shadow-2xl p-4 space-y-3 max-h-[calc(100dvh-4.5rem)] overflow-y-auto custom-scrollbar animate-in slide-in-from-top-2 duration-150"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Primary Links */}
+              <div className="space-y-1">
+                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider px-3 mb-1">
+                  Navigation
+                </div>
+                {navLinks.map((link) => {
+                  const Icon = link.icon;
+                  const isActive =
+                    (link.path === '/interview' && (location.pathname.startsWith('/interview') || location.search.includes('assessment='))) ||
+                    (link.path === '/research' && location.pathname.startsWith('/research')) ||
+                    (link.path === '/problems' && location.pathname.startsWith('/problems') && !location.search.includes('assessment=')) ||
+                    (link.path === '/ml-math' && location.pathname.startsWith('/ml-math'));
 
-              {/* Profile & Streak Link in Mobile Menu */}
-              <Link
-                to="/profile"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                  location.pathname === '/profile'
-                    ? 'bg-[#93C572]/15 text-[#93C572] border border-[#93C572]/30'
-                    : 'text-foreground/80 hover:text-foreground hover:bg-secondary/60'
-                }`}
-              >
-                <User className="w-4 h-4 text-[#93C572]" />
-                <span>Profile & Streak</span>
-                <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-500 text-xs font-mono font-bold">
-                  <Flame className="w-3.5 h-3.5 fill-amber-500" />
-                  <span>{streakData.currentStreak}d</span>
-                </span>
-              </Link>
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                        isActive
+                          ? 'bg-[#93C572]/15 text-[#93C572] border border-[#93C572]/30 shadow-xs'
+                          : 'text-foreground/80 hover:text-foreground hover:bg-secondary/60'
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span>{link.label}</span>
+                      {isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#93C572]" />}
+                    </Link>
+                  );
+                })}
+              </div>
 
-
-
-              {/* Theme Toggle Button Inside Mobile Menu */}
-              <div className="pt-2 mt-2 border-t border-border/60">
-                <button
-                  onClick={toggleTheme}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-foreground/90 hover:text-foreground hover:bg-secondary/60 transition-colors"
+              {/* Extra Sections */}
+              <div className="pt-2 border-t border-border/60 space-y-1">
+                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider px-3 mb-1">
+                  Explore
+                </div>
+                <Link
+                  to="/study-plans"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
+                    location.pathname.startsWith('/study-plans')
+                      ? 'bg-[#93C572]/15 text-[#93C572]'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
+                  }`}
                 >
-                  <span className="flex items-center gap-3">
-                    {isDark ? (
-                      <Moon className="w-4 h-4 text-[#93C572]" />
-                    ) : (
-                      <Sun className="w-4 h-4 text-amber-400" />
-                    )}
-                    <span>Theme</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-secondary border border-border/60">
-                    {isDark ? (
-                      <>
-                        <Sun className="w-3 h-3 text-amber-400" />
-                        <span>Dark (Tap to switch)</span>
-                      </>
-                    ) : (
-                      <>
-                        <Moon className="w-3 h-3 text-[#93C572]" />
-                        <span>Light (Tap to switch)</span>
-                      </>
-                    )}
-                  </span>
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <span>Study Plans</span>
+                </Link>
+                <Link
+                  to="/projects"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
+                    location.pathname.startsWith('/projects')
+                      ? 'bg-[#93C572]/15 text-[#93C572]'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
+                  }`}
+                >
+                  <Database className="w-4 h-4 text-sky-400" />
+                  <span>Projects</span>
+                </Link>
+              </div>
+
+              {/* User Account / Profile */}
+              <div className="pt-2 border-t border-border/60">
+                {currentUser ? (
+                  <div className="space-y-2">
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-between p-3 rounded-xl bg-secondary/30 dark:bg-card/60 border border-border/60 hover:border-border transition-colors"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-black shrink-0 ring-2 ring-white/10"
+                          style={{ backgroundColor: currentUser.avatarColor || '#93C572' }}
+                        >
+                          {getInitials(currentUser.displayName || currentUser.username)}
+                        </div>
+                        <div className="truncate">
+                          <div className="font-bold text-foreground text-xs truncate">
+                            {currentUser.displayName || currentUser.username}
+                          </div>
+                          <div className="text-[10px] text-muted-foreground font-mono truncate">
+                            @{currentUser.username}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-bold font-mono">
+                          <Flame className="w-3 h-3 fill-amber-500" />
+                          <span>{streakData.currentStreak}d</span>
+                        </span>
+                        <ChevronDown className="w-4 h-4 text-muted-foreground -rotate-90" />
+                      </div>
+                    </Link>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold bg-secondary/50 hover:bg-secondary text-foreground transition-colors border border-border/60"
+                      >
+                        <User className="w-3.5 h-3.5 text-[#93C572]" />
+                        <span>Profile</span>
+                      </Link>
+                      <Link
+                        to="/profile?tab=settings"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold bg-secondary/50 hover:bg-secondary text-foreground transition-colors border border-border/60"
+                      >
+                        <Settings className="w-3.5 h-3.5 text-sky-400" />
+                        <span>Settings</span>
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsAuthModalOpen(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#93C572] hover:bg-[#A4D287] text-black text-xs font-bold transition-colors shadow-sm"
+                  >
+                    <LogIn className="w-3.5 h-3.5" />
+                    <span>Sign In to TonicLite</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Theme Toggle */}
+              <div className="pt-2 border-t border-border/60 flex items-center justify-between px-2">
+                <span className="text-xs text-muted-foreground font-medium flex items-center gap-2">
+                  {isDark ? <Moon className="w-3.5 h-3.5 text-[#93C572]" /> : <Sun className="w-3.5 h-3.5 text-amber-400" />}
+                  <span>Appearance</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-secondary hover:bg-secondary/80 border border-border/60 transition-colors"
+                >
+                  {isDark ? (
+                    <>
+                      <Sun className="w-3 h-3 text-amber-400" />
+                      <span>Switch to Light</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-3 h-3 text-[#93C572]" />
+                      <span>Switch to Dark</span>
+                    </>
+                  )}
                 </button>
               </div>
 
-              {/* Mobile Palette Switcher */}
-              <div className="pt-2 border-t border-border/60 flex items-center justify-between px-4 py-2">
-                <span className="text-sm font-semibold text-foreground/90">Color Palette</span>
-                <PaletteSwitcher />
-              </div>
-
-              {/* Mobile Solved Counter */}
-              <div className="pt-2 border-t border-border/60 flex items-center justify-between px-3 py-1.5 text-xs text-muted-foreground">
+              {/* Solved Progress Counter */}
+              <div className="pt-2 border-t border-border/60 flex items-center justify-between px-2 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#93C572]" />
-                  <span>Your Solved Problems</span>
+                  <span>Solved Problems</span>
                 </span>
                 <span className="font-mono font-bold text-foreground">{solvedCount} / 790</span>
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </nav>
+      )}
     </>
   );
 };

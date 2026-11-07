@@ -19,6 +19,7 @@ import {
   FileText,
   UserPlus,
   Flame,
+  GraduationCap,
   Search,
   Check
 } from 'lucide-react';
@@ -122,11 +123,11 @@ export const HomePage: React.FC = () => {
             </Link>
 
             <Link
-              to="/blitz"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-sm font-bold transition-all hover:scale-[1.02]"
+              to="/ml-math"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-sm font-bold transition-all hover:scale-[1.02]"
             >
-              <Flame className="w-4 h-4 fill-current" />
-              <span>3-Min Blitz ⚡</span>
+              <GraduationCap className="w-4 h-4" />
+              <span>ML Math (67 Lessons)</span>
             </Link>
 
             <Link

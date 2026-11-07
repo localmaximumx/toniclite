@@ -14,7 +14,8 @@ import {
   Download, 
   Upload, 
   LogOut, 
-  Sparkles, 
+  Sparkles,
+  Palette, 
   Code2, 
   ChevronRight, 
   Activity, 
@@ -53,6 +54,7 @@ import {
 import { getProblemCatalog } from '../services/dataService';
 import { ProblemSummary } from '../types';
 import { AuthModal } from '../components/AuthModal';
+import { PALETTES, PaletteId, getSavedPalette, applyPalette } from '../services/paletteService';
 
 const AVATAR_COLORS = [
   { name: 'Tonic Green', hex: '#93C572' },
@@ -88,6 +90,37 @@ export const ProfilePage: React.FC = () => {
   const [avatarColorInput, setAvatarColorInput] = useState('#93C572');
   const [profileSaveMsg, setProfileSaveMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
+
+  // Appearance & Display states (Color Palette & Zoom Scale)
+  const [currentPalette, setCurrentPalette] = useState<PaletteId>(() => getSavedPalette());
+  const [zoomLevel, setZoomLevel] = useState<number>(() => {
+    try {
+      const s = localStorage.getItem('toniclite_zoom');
+      if (s) return parseFloat(s);
+    } catch {}
+    return 0.9;
+  });
+
+  const handleSetZoom = (scale: number) => {
+    setZoomLevel(scale);
+    try {
+      localStorage.setItem('toniclite_zoom', scale.toString());
+      document.documentElement.style.zoom = scale.toString();
+    } catch {}
+  };
+
+  const handleSetPalette = (palId: PaletteId) => {
+    applyPalette(palId);
+    setCurrentPalette(palId);
+  };
+
+  useEffect(() => {
+    const handlePal = (e: any) => {
+      setCurrentPalette(e.detail || getSavedPalette());
+    };
+    window.addEventListener('toniclite_palette_change', handlePal);
+    return () => window.removeEventListener('toniclite_palette_change', handlePal);
+  }, []);
 
   // Password change states
   const [currentPassword, setCurrentPassword] = useState('');
@@ -341,7 +374,7 @@ export const ProfilePage: React.FC = () => {
         onSuccess={() => refreshUserData()}
       />
 
-      <div className="h-full overflow-y-auto custom-scrollbar bg-[#f8faf8] dark:bg-[#070e0a] text-foreground transition-colors py-6 px-3 sm:px-6 lg:px-8">
+      <div className="h-full overflow-y-auto custom-scrollbar bg-[#f8faf8] dark:bg-[#070e0a] text-foreground transition-colors pt-6 pb-28 sm:py-6 px-3 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto space-y-6">
 
           {/* ======================================================== */}
@@ -941,6 +974,120 @@ export const ProfilePage: React.FC = () => {
           {/* ======================================================== */}
           {activeTab === 'settings' && (
             <div className="space-y-6">
+
+              {/* APPEARANCE & DISPLAY SETTINGS (Color Palette & Zoom Scale) */}
+              <div className="p-5 sm:p-7 rounded-3xl border border-border/80 dark:border-[#1d3326] bg-card dark:bg-[#0a1611] shadow-lg">
+                <div className="flex items-center gap-2.5 mb-5 pb-4 border-b border-border/60 dark:border-[#1d3326]">
+                  <div className="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center font-bold">
+                    <Palette className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h2 className="text-base sm:text-lg font-extrabold text-foreground dark:text-white">
+                      Appearance & Display
+                    </h2>
+                    <p className="text-xs text-muted-foreground">
+                      Customize your active color palette theme and interface display zoom density
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Color Palette Theme */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-foreground dark:text-white uppercase tracking-wider font-mono">
+                        Color Palette Theme
+                      </label>
+                      <span className="text-xs font-semibold text-[#93C572] flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>{PALETTES.find(p => p.id === currentPalette)?.name || 'Original Emerald'}</span>
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {PALETTES.map((pal) => {
+                        const isSelected = pal.id === currentPalette;
+                        return (
+                          <button
+                            key={pal.id}
+                            type="button"
+                            onClick={() => handleSetPalette(pal.id)}
+                            className={`p-3.5 rounded-2xl border text-left transition-all flex items-center justify-between gap-3 ${
+                              isSelected
+                                ? 'border-[#93C572] bg-[#93C572]/10 shadow-md ring-1 ring-[#93C572]'
+                                : 'border-border/70 hover:border-border bg-secondary/40 hover:bg-secondary/70'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div
+                                className="w-6 h-6 rounded-full shadow-inner flex items-center justify-center shrink-0 border border-white/20"
+                                style={{ backgroundColor: pal.primaryHex }}
+                              >
+                                {isSelected && <Check className="w-3.5 h-3.5 text-black font-bold" />}
+                              </div>
+                              <div className="truncate">
+                                <div className="text-xs font-bold text-foreground dark:text-white truncate flex items-center gap-1.5">
+                                  <span>{pal.name}</span>
+                                  {pal.isOriginal && (
+                                    <span className="text-[9px] font-mono uppercase px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-400">
+                                      Orig
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-[10px] text-muted-foreground truncate">
+                                  {pal.tagline}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Display Zoom & Density */}
+                  <div className="space-y-3 pt-4 border-t border-border/60 dark:border-[#1d3326]">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-foreground dark:text-white uppercase tracking-wider font-mono">
+                        Interface Display Zoom & Density
+                      </label>
+                      <span className="text-xs font-mono font-bold text-muted-foreground">
+                        Current: {Math.round(zoomLevel * 100)}%
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Adjust the scale of interface elements across all pages.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {[
+                        { scale: 0.9, label: '90% (Recommended)', desc: 'Authentic compact TensorTonic density' },
+                        { scale: 0.85, label: '85% (Ultra Compact)', desc: 'Maximized information density' },
+                        { scale: 1.0, label: '100% (Standard Scale)', desc: 'Default browser zoom scale' },
+                      ].map((opt) => {
+                        const isSelected = Math.abs(zoomLevel - opt.scale) < 0.01;
+                        return (
+                          <button
+                            key={opt.scale}
+                            type="button"
+                            onClick={() => handleSetZoom(opt.scale)}
+                            className={`p-3.5 rounded-2xl border text-left transition-all ${
+                              isSelected
+                                ? 'border-[#93C572] bg-[#93C572]/10 shadow-md ring-1 ring-[#93C572] font-bold'
+                                : 'border-border/70 hover:border-border bg-secondary/40 hover:bg-secondary/70'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs font-bold text-foreground dark:text-white">{opt.label}</span>
+                              {isSelected && <Check className="w-3.5 h-3.5 text-[#93C572]" />}
+                            </div>
+                            <p className="text-[11px] text-muted-foreground leading-snug">{opt.desc}</p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* 1. EDIT PROFILE FORM */}
               <div className="p-5 sm:p-7 rounded-3xl border border-border/80 dark:border-[#1d3326] bg-card dark:bg-[#0a1611] shadow-lg">

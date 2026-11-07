@@ -180,7 +180,7 @@ export const StudyPlansPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-[#0b0d11]">
+      <div className="flex items-center justify-center h-full w-full bg-[#0b0d11]">
         <div className="w-8 h-8 border-2 border-[#93C572] border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -259,7 +259,7 @@ export const StudyPlansPage: React.FC = () => {
 
   return (
     <div className="h-full overflow-y-auto bg-[#0b0e14] text-foreground font-sans custom-scrollbar selection:bg-[#93C572]/20 selection:text-[#93C572]">
-      <div className="container mx-auto px-4 md:px-8 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 md:px-8 pt-6 pb-28 sm:py-8 max-w-7xl">
         
         {/* ======================================================== */}
         {/* PAGE HEADER (Matching study_plans.png)                   */}

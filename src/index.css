@@ -213,6 +213,27 @@
   --tw-shadow-color: var(--palette-glow) !important;
 }
 
+html,
+body,
+#root {
+  height: 100% !important;
+  min-height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+html {
+  zoom: 0.9;
+}
+
+@supports not (zoom: 0.9) {
+  html {
+    font-size: 14.4px;
+  }
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -270,4 +291,51 @@ body {
 
 .katex-display > .katex {
   min-width: max-content;
+}
+
+/* ========================================================================= */
+/* ML MATH HUB DESKTOP LAYOUT (Preserves exact authentic side-by-side view)  */
+/* ========================================================================= */
+@media (min-width: 768px) {
+  .md\:flex-row {
+    flex-direction: row !important;
+  }
+  .md\:w-64 {
+    width: 16rem !important;
+    min-width: 16rem !important;
+  }
+  .md\:flex {
+    display: flex !important;
+  }
+  .md\:hidden {
+    display: none !important;
+  }
+  .safe-area-inset-bottom,
+  [class*="safe-area-inset-bottom"] {
+    display: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .safe-area-inset-bottom,
+  [class*="safe-area-inset-bottom"] {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:w-72 {
+    width: 18rem !important;
+    min-width: 18rem !important;
+  }
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+
+@media (max-width: 639px) {
+  .chapter-content {
+    padding-bottom: 6rem !important;
+  }
 }

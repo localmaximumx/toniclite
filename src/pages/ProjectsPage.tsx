@@ -25,7 +25,7 @@ export const ProjectsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-background">
+      <div className="flex items-center justify-center h-full w-full bg-background">
         <div className="w-8 h-8 border-2 border-[#93C572] border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -33,7 +33,7 @@ export const ProjectsPage: React.FC = () => {
 
   return (
     <div className="h-full overflow-y-auto bg-background text-foreground custom-scrollbar">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 pt-6 pb-28 sm:py-8 max-w-7xl">
         
         {/* Header */}
         <div className="mb-8">

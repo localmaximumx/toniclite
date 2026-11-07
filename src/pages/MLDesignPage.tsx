@@ -305,7 +305,7 @@ export const MLDesignPage: React.FC = () => {
 
   return (
     <div className="h-full overflow-y-auto bg-background text-foreground custom-scrollbar">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 pt-6 pb-28 sm:py-8 max-w-7xl">
         
         {/* Header */}
         <div className="mb-8">
