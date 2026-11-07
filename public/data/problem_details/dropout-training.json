@@ -13,12 +13,12 @@
     "Generate one random value per input element and retain positions below 1 - p.",
     "Build the pattern with 1 / (1 - p) at retained positions and zero elsewhere."
   ],
-  "constraints": "* <span style=\"font-size: 14px;\">Fully vectorized (no Python loops)</span>\n* <span style=\"font-size: 14px;\">Input array up to shape (1000, 1000)</span>\n* <span style=\"font-size: 14px;\">0.0 ≤ p \\< 1.0</span>\n* <span style=\"font-size: 14px;\">Use NumPy only</span>\n* <span style=\"font-size: 14px;\">Time limit: 200 ms</span>",
+  "constraints": "* <span style=\"font-size: 14px;\">Fully vectorized (no Python loops)</span>\n* <span style=\"font-size: 14px;\">Input array up to shape (1000, 1000)</span>\n* <span style=\"font-size: 14px;\">0.0 \u2264 p \\< 1.0</span>\n* <span style=\"font-size: 14px;\">Use NumPy only</span>\n* <span style=\"font-size: 14px;\">Time limit: 200 ms</span>",
   "difficulty": "Medium",
   "starterCode": "import numpy as np\n\ndef dropout(\n    x: list,\n    p: float = 0.5,\n    rng: np.random.Generator = None,\n) -> tuple[np.ndarray, np.ndarray]:\n    \"\"\"\n    Returns (output, dropout_pattern) as NumPy arrays matching the shape of x.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-10-21T18:37:16.578Z",
   "updatedAt": "2026-03-18T19:15:59.071Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef dropout(x: list, p: float = 0.5, rng: np.random.Generator = None, seed: int = None) -> tuple[np.ndarray, np.ndarray]:\n    arr = np.array(x, dtype=float)\n    if p == 0:\n        return (arr, np.ones_like(arr))\n    if rng is None:\n        rng = np.random.default_rng(seed if seed is not None else 0)\n    scale = 1.0 / (1.0 - p) if p < 1.0 else 1.0\n    mask = (rng.random(arr.shape) < (1.0 - p)).astype(float) * scale\n    out = arr * mask\n    return (out, mask)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef dropout(x: list, p: float = 0.5, rng: np.random.Generator = None, seed: int = None) -> tuple[np.ndarray, np.ndarray]:\n    arr = np.array(x, dtype=float)\n    if p == 0:\n        return (arr, np.ones_like(arr))\n    if rng is None:\n        rng = np.random.default_rng(seed if seed is not None else 0)\n    scale = 1.0 / (1.0 - p) if p < 1.0 else 1.0\n    mask = (rng.random(arr.shape) < (1.0 - p)).astype(float) * scale\n    out = arr * mask\n    return (out, mask)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "DropoutTrainingViz",
   "testCases": [
     {
@@ -189,7 +189,7 @@
       "id": "dropout-training-tc-5",
       "name": "Case 5",
       "inputs": {
-        "p": 1.5,
+        "p": 0.5,
         "x": [
           [
             3,
@@ -206,21 +206,21 @@
         [
           [
             0.0,
-            0.0
+            12.0
           ],
           [
-            0.0,
-            0.0
+            18.0,
+            24.0
           ]
         ],
         [
           [
             0.0,
-            0.0
+            2.0
           ],
           [
-            0.0,
-            0.0
+            2.0,
+            2.0
           ]
         ]
       ],
@@ -271,7 +271,7 @@
       "id": "dropout-training-tc-7",
       "name": "Case 7",
       "inputs": {
-        "p": 5.0,
+        "p": 0.5,
         "x": [
           [
             10,
@@ -287,22 +287,22 @@
       "expectedOutput": [
         [
           [
-            0.0,
+            20.0,
             0.0
           ],
           [
             0.0,
-            0.0
+            80.0
           ]
         ],
         [
           [
-            0.0,
+            2.0,
             0.0
           ],
           [
             0.0,
-            0.0
+            2.0
           ]
         ]
       ],

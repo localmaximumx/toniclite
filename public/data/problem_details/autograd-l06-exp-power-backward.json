@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "import math\n\ndef autograd_l06_exp_power_backward(x: float, p: float, upstream_grad: float = 1.0) -> dict:\n    \"\"\"\n    Evaluate scalar exponential e^x and power x^p functions and propagate an upstream gradient through both operations.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nEvaluate scalar exponential e^x and power x^p functions and propagate an upstream gradient through both operations.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef autograd_l06_exp_power_backward(x: float, p: float, upstream_grad: float = 1.0) -> dict:\n    v_exp, v_pow = math.exp(x), x ** p if x > 0 else 0.0\n    return {\n        'val_exp': round(v_exp, 6),\n        'val_pow': round(v_pow, 6),\n        'd_exp': round(upstream_grad * v_exp, 6),\n        'd_pow': round(upstream_grad * p * (x ** (p - 1)) if x > 0 else 0.0, 6)\n    }\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nEvaluate scalar exponential e^x and power x^p functions and propagate an upstream gradient through both operations.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef autograd_l06_exp_power_backward(x: float, p: float, upstream_grad: float = 1.0) -> dict:\n    v_exp, v_pow = math.exp(x), x ** p if x > 0 else 0.0\n    return {\n        'val_exp': round(v_exp, 6),\n        'val_pow': round(v_pow, 6),\n        'd_exp': round(upstream_grad * v_exp, 6),\n        'd_pow': round(upstream_grad * p * (x ** (p - 1)) if x > 0 else 0.0, 6)\n    }\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "autograd-l06-exp-power-backward-tc-1",
@@ -67,14 +67,14 @@
       "name": "Case 3",
       "inputs": {
         "x": 4.0,
-        "p": 6.0,
+        "p": 3.0,
         "upstream_grad": 2.0
       },
       "expectedOutput": {
         "val_exp": 54.59815,
-        "val_pow": 4096.0,
+        "val_pow": 64.0,
         "d_exp": 109.1963,
-        "d_pow": 12288.0
+        "d_pow": 96.0
       },
       "isPublic": false
     },
@@ -83,14 +83,14 @@
       "name": "Case 4",
       "inputs": {
         "x": 1.0,
-        "p": 1.5,
+        "p": 3.0,
         "upstream_grad": 0.5
       },
       "expectedOutput": {
         "val_exp": 2.718282,
         "val_pow": 1.0,
         "d_exp": 1.359141,
-        "d_pow": 0.75
+        "d_pow": 1.5
       },
       "isPublic": false
     },
@@ -99,7 +99,7 @@
       "name": "Case 5",
       "inputs": {
         "x": -2.0,
-        "p": -3.0,
+        "p": 3.0,
         "upstream_grad": -1.0
       },
       "expectedOutput": {
@@ -115,14 +115,14 @@
       "name": "Case 6",
       "inputs": {
         "x": 6.0,
-        "p": 9.0,
+        "p": 3.0,
         "upstream_grad": 3.0
       },
       "expectedOutput": {
         "val_exp": 403.428793,
-        "val_pow": 10077696.0,
+        "val_pow": 216.0,
         "d_exp": 1210.28638,
-        "d_pow": 45349632.0
+        "d_pow": 324.0
       },
       "isPublic": false
     },
@@ -131,14 +131,14 @@
       "name": "Case 7",
       "inputs": {
         "x": 3.0,
-        "p": 4.0,
+        "p": 3.0,
         "upstream_grad": 2.0
       },
       "expectedOutput": {
         "val_exp": 20.085537,
-        "val_pow": 81.0,
+        "val_pow": 27.0,
         "d_exp": 40.171074,
-        "d_pow": 216.0
+        "d_pow": 54.0
       },
       "isPublic": false
     }

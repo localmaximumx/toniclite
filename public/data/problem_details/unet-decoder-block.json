@@ -845,5 +845,6 @@
     "prev": "unet-encoder-block",
     "next": "unet-skip-connection"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "unet-decoder-block"
 }

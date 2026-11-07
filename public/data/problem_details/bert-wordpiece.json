@@ -23,7 +23,7 @@
   "topicId": "bert-wordpiece",
   "paperSnippet": "\"We use WordPiece embeddings with a 30,000 token vocabulary. The first token of every sequence is always a special classification token ([CLS]).\"",
   "visualizationComponent": "WordPieceViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **WordPiece Tokenization** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef wordpiece_tokenize(text: str, vocab: dict,\n                       unk_token: str = \"[UNK]\", max_word_length: int = 100) -> list:\n    tokens = []\n    for word in text.strip().lower().split():\n        if len(word) > int(max_word_length):\n            tokens.append(unk_token)\n            continue\n        is_bad = False\n        start = 0\n        sub_tokens = []\n        while start < len(word):\n            end = len(word)\n            cur_substr = None\n            while start < end:\n                substr = word[start:end]\n                if start > 0:\n                    substr = \"##\" + substr\n                if substr in vocab:\n                    cur_substr = substr\n                    break\n                end -= 1\n            if cur_substr is None:\n                is_bad = True\n                break\n            sub_tokens.append(cur_substr)\n            start = end\n        if is_bad:\n            tokens.append(unk_token)\n        else:\n            tokens.extend(sub_tokens)\n    return tokens\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **WordPiece Tokenization** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef wordpiece_tokenize(text: str, vocab: dict,\n                       unk_token: str = \"[UNK]\", max_word_length: int = 100) -> list:\n    tokens = []\n    for word in text.strip().lower().split():\n        if len(word) > int(max_word_length):\n            tokens.append(unk_token)\n            continue\n        is_bad = False\n        start = 0\n        sub_tokens = []\n        while start < len(word):\n            end = len(word)\n            cur_substr = None\n            while start < end:\n                substr = word[start:end]\n                if start > 0:\n                    substr = \"##\" + substr\n                if substr in vocab:\n                    cur_substr = substr\n                    break\n                end -= 1\n            if cur_substr is None:\n                is_bad = True\n                break\n            sub_tokens.append(cur_substr)\n            start = end\n        if is_bad:\n            tokens.append(unk_token)\n        else:\n            tokens.extend(sub_tokens)\n    return tokens\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "bert-wordpiece-tc-1",
@@ -140,22 +140,22 @@
       "id": "bert-wordpiece-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": "Playing cats",
+        "text": "cats Playing",
         "vocab": {
-          "##s": 4,
-          "cat": 3,
-          "play": 1,
-          "##ing": 2,
-          "[UNK]": 0
+          "##s": 11,
+          "cat": 10,
+          "play": 8,
+          "##ing": 9,
+          "[UNK]": 7
         },
-        "unk_token": "[UNK]",
-        "max_word_length": 20
+        "unk_token": "[UNK]ment",
+        "max_word_length": 27
       },
       "expectedOutput": [
-        "play",
-        "##ing",
         "cat",
-        "##s"
+        "##s",
+        "play",
+        "##ing"
       ],
       "isPublic": false
     },
@@ -241,5 +241,6 @@
     "prev": null,
     "next": "bert-segment-embedding"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "bert-wordpiece"
 }

@@ -23,7 +23,7 @@
   "topicId": "vit-encoder-block",
   "paperSnippet": "\"The Transformer encoder consists of alternating layers of multiheaded self-attention and MLP blocks. Layernorm is applied before every block, and residual connections after every block.\"",
   "visualizationComponent": "ViTEncoderViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **ViT Encoder Block** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef _gelu_tanh(x):\n    return 0.5 * x * (1.0 + np.tanh(np.sqrt(2.0 / np.pi) * (x + 0.044715 * (x ** 3))))\n\ndef _layer_norm(x, eps=1e-6):\n    mean = np.mean(x, axis=-1, keepdims=True)\n    var = np.var(x, axis=-1, keepdims=True)\n    return (x - mean) / np.sqrt(var + eps)\n\ndef vit_encoder_block(x: np.ndarray, num_heads: int,\n                      Wq: np.ndarray, Wk: np.ndarray, Wv: np.ndarray,\n                      Wo: np.ndarray, W1: np.ndarray, W2: np.ndarray) -> np.ndarray:\n    cur = np.asarray(x, dtype=float)\n    B, N, D = cur.shape\n    H = int(num_heads)\n    d_h = D // H\n    \n    wq = np.asarray(Wq, dtype=float)\n    wk = np.asarray(Wk, dtype=float)\n    wv = np.asarray(Wv, dtype=float)\n    wo = np.asarray(Wo, dtype=float)\n    w1 = np.asarray(W1, dtype=float)\n    w2 = np.asarray(W2, dtype=float)\n    \n    # Pre-LN Self-Attention\n    norm1 = _layer_norm(cur)\n    Q = np.matmul(norm1, wq).reshape(B, N, H, d_h).swapaxes(1, 2)\n    K = np.matmul(norm1, wk).reshape(B, N, H, d_h).swapaxes(1, 2)\n    V = np.matmul(norm1, wv).reshape(B, N, H, d_h).swapaxes(1, 2)\n    \n    scores = np.matmul(Q, np.swapaxes(K, -1, -2)) / np.sqrt(d_h)\n    exp_s = np.exp(scores - np.max(scores, axis=-1, keepdims=True))\n    weights = exp_s / np.sum(exp_s, axis=-1, keepdims=True)\n    attn = np.matmul(weights, V)\n    concat = attn.swapaxes(1, 2).reshape(B, N, D)\n    attn_out = np.matmul(concat, wo)\n    y = cur + attn_out\n    \n    # Pre-LN MLP\n    norm2 = _layer_norm(y)\n    hidden = _gelu_tanh(np.matmul(norm2, w1))\n    mlp_out = np.matmul(hidden, w2)\n    z = y + mlp_out\n    return np.round(z, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **ViT Encoder Block** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef _gelu_tanh(x):\n    return 0.5 * x * (1.0 + np.tanh(np.sqrt(2.0 / np.pi) * (x + 0.044715 * (x ** 3))))\n\ndef _layer_norm(x, eps=1e-6):\n    mean = np.mean(x, axis=-1, keepdims=True)\n    var = np.var(x, axis=-1, keepdims=True)\n    return (x - mean) / np.sqrt(var + eps)\n\ndef vit_encoder_block(x: np.ndarray, num_heads: int,\n                      Wq: np.ndarray, Wk: np.ndarray, Wv: np.ndarray,\n                      Wo: np.ndarray, W1: np.ndarray, W2: np.ndarray) -> np.ndarray:\n    cur = np.asarray(x, dtype=float)\n    B, N, D = cur.shape\n    H = int(num_heads)\n    d_h = D // H\n    \n    wq = np.asarray(Wq, dtype=float)\n    wk = np.asarray(Wk, dtype=float)\n    wv = np.asarray(Wv, dtype=float)\n    wo = np.asarray(Wo, dtype=float)\n    w1 = np.asarray(W1, dtype=float)\n    w2 = np.asarray(W2, dtype=float)\n    \n    # Pre-LN Self-Attention\n    norm1 = _layer_norm(cur)\n    Q = np.matmul(norm1, wq).reshape(B, N, H, d_h).swapaxes(1, 2)\n    K = np.matmul(norm1, wk).reshape(B, N, H, d_h).swapaxes(1, 2)\n    V = np.matmul(norm1, wv).reshape(B, N, H, d_h).swapaxes(1, 2)\n    \n    scores = np.matmul(Q, np.swapaxes(K, -1, -2)) / np.sqrt(d_h)\n    exp_s = np.exp(scores - np.max(scores, axis=-1, keepdims=True))\n    weights = exp_s / np.sum(exp_s, axis=-1, keepdims=True)\n    attn = np.matmul(weights, V)\n    concat = attn.swapaxes(1, 2).reshape(B, N, D)\n    attn_out = np.matmul(concat, wo)\n    y = cur + attn_out\n    \n    # Pre-LN MLP\n    norm2 = _layer_norm(y)\n    hidden = _gelu_tanh(np.matmul(norm2, w1))\n    mlp_out = np.matmul(hidden, w2)\n    z = y + mlp_out\n    return np.round(z, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "vit-encoder-block-tc-1",
@@ -428,73 +428,73 @@
         "x": [
           [
             [
-              1,
+              0,
               0
             ],
             [
               0,
-              1
+              0
             ]
           ]
         ],
         "W1": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W2": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "Wk": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "Wo": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "Wq": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "Wv": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "num_heads": 1
@@ -503,12 +503,12 @@
       "expectedOutput": [
         [
           [
-            2.729574,
-            -1.047191
+            0.0,
+            0.0
           ],
           [
-            -1.047191,
-            2.729574
+            0.0,
+            0.0
           ]
         ]
       ]
@@ -521,94 +521,86 @@
           [
             [
               1,
-              0
+              1
             ],
             [
               0,
-              1
-            ],
-            [
-              1,
-              1
+              0
             ]
           ]
         ],
         "W1": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W2": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "Wk": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "Wo": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "Wq": [
           [
-            0,
+            1,
             1
           ],
           [
-            1,
+            0,
             0
           ]
         ],
         "Wv": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
-        "num_heads": 2
+        "num_heads": 1
       },
       "isPublic": false,
       "expectedOutput": [
         [
           [
-            0.265977,
-            1.416304
-          ],
-          [
-            1.416304,
-            0.265977
-          ],
-          [
             1.0,
             1.0
+          ],
+          [
+            0.0,
+            0.0
           ]
         ]
       ]
@@ -621,20 +613,10 @@
           [
             [
               1,
-              -1
+              1
             ],
             [
-              0,
-              2
-            ]
-          ],
-          [
-            [
-              2,
-              0
-            ],
-            [
-              -1,
+              1,
               1
             ]
           ]
@@ -642,60 +624,60 @@
         "W1": [
           [
             1,
-            -0.5
+            1
           ],
           [
-            0.5,
+            1,
             1
           ]
         ],
         "W2": [
           [
-            0.5,
-            0
+            1,
+            1
           ],
           [
-            0,
+            1,
             1
           ]
         ],
         "Wk": [
           [
-            0.5,
-            0
+            1,
+            1
           ],
           [
-            0,
+            1,
             1
           ]
         ],
         "Wo": [
           [
             1,
-            0
+            1
           ],
           [
-            0.5,
+            1,
             1
           ]
         ],
         "Wq": [
           [
             1,
-            0
+            1
           ],
           [
-            0,
-            0.5
+            1,
+            1
           ]
         ],
         "Wv": [
           [
             1,
-            0.25
+            1
           ],
           [
-            -0.5,
+            1,
             1
           ]
         ],
@@ -705,22 +687,12 @@
       "expectedOutput": [
         [
           [
-            1.857823,
-            -1.557072
+            1.0,
+            1.0
           ],
           [
-            -0.762109,
-            3.856215
-          ]
-        ],
-        [
-          [
-            2.857823,
-            -0.557072
-          ],
-          [
-            -1.762109,
-            2.856215
+            1.0,
+            1.0
           ]
         ]
       ]
@@ -867,5 +839,6 @@
     "prev": "vit-class-token",
     "next": "vit-mlp-head"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vit-encoder-block"
 }

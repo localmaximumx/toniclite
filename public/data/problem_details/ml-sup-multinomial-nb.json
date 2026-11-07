@@ -60,7 +60,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "import math\ndef solve(train_docs,train_y,test_doc,alpha=1.0):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport math\ndef solve(train_docs,train_y,test_doc,alpha=1.0):\n    classes=sorted(set(train_y)); vocab=set(t for d in train_docs for t in d)|set(test_doc); V=len(vocab)\n    scores={}\n    for c in classes:\n      docs=[d for d,y in zip(train_docs,train_y) if y==c]\n      counts={t:sum(d.count(t) for d in docs) for t in vocab}; total=sum(counts.values())\n      scores[c]=math.log(len(docs)/len(train_y))+sum(test_doc.count(t)*math.log((counts[t]+alpha)/(total+alpha*V)) for t in vocab)\n    return max(classes,key=lambda c:(scores[c],str(c)))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nimport math\ndef solve(train_docs,train_y,test_doc,alpha=1.0):\n    classes=sorted(set(train_y)); vocab=set(t for d in train_docs for t in d)|set(test_doc); V=len(vocab)\n    scores={}\n    for c in classes:\n      docs=[d for d,y in zip(train_docs,train_y) if y==c]\n      counts={t:sum(d.count(t) for d in docs) for t in vocab}; total=sum(counts.values())\n      scores[c]=math.log(len(docs)/len(train_y))+sum(test_doc.count(t)*math.log((counts[t]+alpha)/(total+alpha*V)) for t in vocab)\n    return max(classes,key=lambda c:(scores[c],str(c)))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-sup-multinomial-nb-tc-1",
@@ -128,28 +128,29 @@
       "inputs": {
         "train_docs": [
           [
-            "sun",
-            "hot"
+            "suning",
+            "hoting"
           ],
           [
-            "rain",
-            "cold"
+            "rainer",
+            "colder",
+            "natural language processing"
           ],
           [
-            "sun",
-            "warm"
+            "suning",
+            "warming"
           ]
         ],
         "train_y": [
-          "A",
-          "B",
-          "A"
+          "Aing",
+          "Bing",
+          "Aing"
         ],
         "test_doc": [
-          "sun"
+          "suning"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Aing",
       "isPublic": false
     },
     {
@@ -158,28 +159,29 @@
       "inputs": {
         "train_docs": [
           [
-            "hot",
-            "sun"
+            "hots",
+            "suns"
           ],
           [
+            "rain",
             "cold",
-            "rain"
+            "computer vision system"
           ],
           [
-            "warm",
-            "sun"
+            "warms",
+            "suns"
           ]
         ],
         "train_y": [
-          "A",
-          "B",
-          "A"
+          "As",
+          "Bs",
+          "As"
         ],
         "test_doc": [
-          "sun"
+          "sunment"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "As",
       "isPublic": false
     },
     {
@@ -188,28 +190,28 @@
       "inputs": {
         "train_docs": [
           [
-            "sun",
-            "hot"
+            "suntion",
+            "hotment"
           ],
           [
-            "rain",
-            "cold"
+            "colds",
+            "rains"
           ],
           [
-            "sun",
-            "warm"
+            "suntion",
+            "warmment"
           ]
         ],
         "train_y": [
-          "A",
-          "B",
-          "A"
+          "Ation",
+          "Bment",
+          "Aness"
         ],
         "test_doc": [
-          "sun"
+          "suntion"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Ation",
       "isPublic": false
     },
     {
@@ -218,28 +220,28 @@
       "inputs": {
         "train_docs": [
           [
-            "hot",
-            "sun"
+            "suned",
+            "hoted"
           ],
           [
-            "cold",
-            "rain"
+            "raining",
+            "colding"
           ],
           [
-            "warm",
-            "sun"
+            "suned",
+            "warmed"
           ]
         ],
         "train_y": [
-          "A",
-          "B",
-          "A"
+          "Aed",
+          "Bed",
+          "Aed"
         ],
         "test_doc": [
-          "sun"
+          "suned"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Aed",
       "isPublic": false
     },
     {
@@ -248,28 +250,29 @@
       "inputs": {
         "train_docs": [
           [
-            "sun",
-            "hot"
+            "suning",
+            "hoting"
           ],
           [
-            "rain",
-            "cold"
+            "rainer",
+            "colder",
+            "self attention mechanism"
           ],
           [
-            "sun",
-            "warm"
+            "suning",
+            "warming"
           ]
         ],
         "train_y": [
-          "A",
-          "B",
-          "A"
+          "Aing",
+          "Bing",
+          "Aing"
         ],
         "test_doc": [
-          "sun"
+          "suning"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Aing",
       "isPublic": false
     }
   ],

@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "def cs336_l08_pipeline_bubble_utilization(num_stages: int, num_microbatches: int) -> dict:\n    \"\"\"\n    Construct GPipe execution schedules and calculate useful compute cells, idle bubble cells, total time steps, and hardware pipeline utilization.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nConstruct GPipe execution schedules and calculate useful compute cells, idle bubble cells, total time steps, and hardware pipeline utilization.\n\n### ⚡ Python Reference Implementation\n```python\ndef cs336_l08_pipeline_bubble_utilization(num_stages: int, num_microbatches: int) -> dict:\n    t_steps = num_microbatches + num_stages - 1\n    tot = num_stages * t_steps\n    use = num_stages * num_microbatches\n    bub = tot - use\n    return {'useful_cells': use, 'bubble_cells': bub, 'total_cells': tot, 'utilization': round(use / tot, 6), 'bubble_fraction': round(bub / tot, 6)}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nConstruct GPipe execution schedules and calculate useful compute cells, idle bubble cells, total time steps, and hardware pipeline utilization.\n\n### \u26a1 Python Reference Implementation\n```python\ndef cs336_l08_pipeline_bubble_utilization(num_stages: int, num_microbatches: int) -> dict:\n    t_steps = num_microbatches + num_stages - 1\n    tot = num_stages * t_steps\n    use = num_stages * num_microbatches\n    bub = tot - use\n    return {'useful_cells': use, 'bubble_cells': bub, 'total_cells': tot, 'utilization': round(use / tot, 6), 'bubble_fraction': round(bub / tot, 6)}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l08-pipeline-bubble-utilization-tc-1",
@@ -98,15 +98,15 @@
       "id": "cs336-l08-pipeline-bubble-utilization-tc-5",
       "name": "Case 5",
       "inputs": {
-        "num_stages": 4,
-        "num_microbatches": 16
+        "num_stages": 10,
+        "num_microbatches": 22
       },
       "expectedOutput": {
-        "useful_cells": 64,
-        "bubble_cells": 12,
-        "total_cells": 76,
-        "utilization": 0.842105,
-        "bubble_fraction": 0.157895
+        "useful_cells": 220,
+        "bubble_cells": 90,
+        "total_cells": 310,
+        "utilization": 0.709677,
+        "bubble_fraction": 0.290323
       },
       "isPublic": false
     },

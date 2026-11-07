@@ -49,7 +49,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(board,word):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(board,word):\n    if not word:return True\n    R=len(board); C=len(board[0]) if R else 0\n    def dfs(i,j,k):\n      if k==len(word):return True\n      if not(0<=i<R and 0<=j<C) or board[i][j]!=word[k]:return False\n      ch=board[i][j]; board[i][j]=None\n      ok=any(dfs(i+di,j+dj,k+1) for di,dj in ((1,0),(-1,0),(0,1),(0,-1)))\n      board[i][j]=ch; return ok\n    return any(dfs(i,j,0) for i in range(R) for j in range(C))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(board,word):\n    if not word:return True\n    R=len(board); C=len(board[0]) if R else 0\n    def dfs(i,j,k):\n      if k==len(word):return True\n      if not(0<=i<R and 0<=j<C) or board[i][j]!=word[k]:return False\n      ch=board[i][j]; board[i][j]=None\n      ok=any(dfs(i+di,j+dj,k+1) for di,dj in ((1,0),(-1,0),(0,1),(0,-1)))\n      board[i][j]=ch; return ok\n    return any(dfs(i,j,0) for i in range(R) for j in range(C))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-word-search-tc-1",
@@ -95,17 +95,18 @@
       "inputs": {
         "board": [
           [
-            "A",
-            "B"
+            "Aing",
+            "Bing"
           ],
           [
-            "C",
-            "D"
+            "Cer",
+            "Der",
+            "natural language processing"
           ]
         ],
-        "word": "ABD"
+        "word": "ABDer"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
@@ -114,17 +115,18 @@
       "inputs": {
         "board": [
           [
-            "B",
-            "A"
+            "Bs",
+            "As"
           ],
           [
+            "C",
             "D",
-            "C"
+            "computer vision system"
           ]
         ],
-        "word": "DBA"
+        "word": "ABDment"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
@@ -133,17 +135,17 @@
       "inputs": {
         "board": [
           [
-            "A",
-            "B"
+            "Ation",
+            "Bment"
           ],
           [
-            "C",
-            "D"
+            "Ds",
+            "Cs"
           ]
         ],
-        "word": "ABD"
+        "word": "ABDtion"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
@@ -152,17 +154,17 @@
       "inputs": {
         "board": [
           [
-            "B",
-            "A"
+            "Aed",
+            "Bed"
           ],
           [
-            "D",
-            "C"
+            "Cing",
+            "Ding"
           ]
         ],
-        "word": "DBA"
+        "word": "ABDable"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
@@ -171,17 +173,18 @@
       "inputs": {
         "board": [
           [
-            "A",
-            "B"
+            "Aing",
+            "Bing"
           ],
           [
-            "C",
-            "D"
+            "Cer",
+            "Der",
+            "self attention mechanism"
           ]
         ],
         "word": "ABD"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     }
   ],

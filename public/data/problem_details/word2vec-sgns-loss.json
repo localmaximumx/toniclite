@@ -48,7 +48,7 @@
         ]
       },
       "isPublic": true,
-      "expectedOutput": "tensor(2.1395, dtype=torch.float64)"
+      "expectedOutput": 2.1394920349121094
     },
     {
       "id": "word2vec-sgns-loss-tc-2",
@@ -73,7 +73,7 @@
         ]
       },
       "isPublic": true,
-      "expectedOutput": "tensor(1.4015, dtype=torch.float64)"
+      "expectedOutput": 1.401507019996643
     },
     {
       "id": "word2vec-sgns-loss-tc-3",
@@ -113,7 +113,7 @@
         ]
       },
       "isPublic": false,
-      "expectedOutput": "tensor(2.7358, dtype=torch.float64)"
+      "expectedOutput": 2.7357869148254395
     },
     {
       "id": "word2vec-sgns-loss-tc-4",
@@ -138,7 +138,7 @@
           -0.3
         ]
       },
-      "expectedOutput": "tensor(2.2423, dtype=torch.float64)",
+      "expectedOutput": 2.242337942123413,
       "isPublic": false
     },
     {
@@ -164,7 +164,7 @@
           -0.1
         ]
       },
-      "expectedOutput": "tensor(2.0926, dtype=torch.float64)",
+      "expectedOutput": 2.0925710201263428,
       "isPublic": false
     },
     {
@@ -172,25 +172,29 @@
       "name": "Case 6",
       "inputs": {
         "pos_vec": [
-          -0.3,
-          -0.4
+          0.2,
+          -0.3
         ],
         "neg_vecs": [
           [
-            0.1,
-            -0.2
+            -0.2,
+            0.1
           ],
           [
-            -0.4,
-            0.3
+            0.3,
+            0.5
+          ],
+          [
+            -0.1,
+            -0.4
           ]
         ],
         "center_vec": [
-          -0.5,
-          0.2
+          0.4,
+          -0.5
         ]
       },
-      "expectedOutput": "tensor(2.1395, dtype=torch.float64)",
+      "expectedOutput": 2.6216061115264893,
       "isPublic": false
     },
     {
@@ -216,7 +220,7 @@
           -0.6
         ]
       },
-      "expectedOutput": "tensor(3.2269, dtype=torch.float64)",
+      "expectedOutput": 3.2269370555877686,
       "isPublic": false
     }
   ],
@@ -281,5 +285,6 @@
     "prev": "word2vec-noise-dist",
     "next": "word2vec-cbow-forward"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "word2vec-sgns-loss"
 }

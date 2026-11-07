@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def pytorch_optimizer_scheduler(epochs: int, base_lr: float, step_size: int, gamma: float = 0.5) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Optimizer Scheduler** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef pytorch_optimizer_scheduler(epochs: int, base_lr: float, step_size: int, gamma: float = 0.5) -> list:\n    return [round(float(base_lr) * (float(gamma) ** (ep // int(step_size))), 6) for ep in range(int(epochs))]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Optimizer Scheduler** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef pytorch_optimizer_scheduler(epochs: int, base_lr: float, step_size: int, gamma: float = 0.5) -> list:\n    return [round(float(base_lr) * (float(gamma) ** (ep // int(step_size))), 6) for ep in range(int(epochs))]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pytorch-optimizer-scheduler-tc-1",
@@ -120,17 +120,17 @@
       "name": "Case 5",
       "inputs": {
         "epochs": 6,
-        "base_lr": 0.1,
-        "step_size": 2,
-        "gamma": -0.5
+        "base_lr": 0.2,
+        "step_size": 8,
+        "gamma": 0.6
       },
       "expectedOutput": [
-        0.1,
-        0.1,
-        -0.05,
-        -0.05,
-        0.025,
-        0.025
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2
       ],
       "isPublic": false
     },

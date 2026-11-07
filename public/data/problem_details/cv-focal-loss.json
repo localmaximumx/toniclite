@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef cv_focal_loss(logits: list, targets: list, alpha: float = 0.25, gamma: float = 2.0) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Sigmoid Focal Loss** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_focal_loss(logits: list, targets: list, alpha: float = 0.25, gamma: float = 2.0) -> float:\n    z, y = np.array(logits, dtype=np.float64), np.array(targets, dtype=np.float64)\n    p = 1.0 / (1.0 + np.exp(-np.clip(z, -20.0, 20.0)))\n    p_t = y * p + (1.0 - y) * (1.0 - p)\n    at = y * float(alpha) + (1.0 - y) * (1.0 - float(alpha))\n    return round(float(np.mean(-at * ((1.0 - p_t)**float(gamma)) * np.log(np.clip(p_t, 1e-12, 1.0)))), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Sigmoid Focal Loss** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_focal_loss(logits: list, targets: list, alpha: float = 0.25, gamma: float = 2.0) -> float:\n    z, y = np.array(logits, dtype=np.float64), np.array(targets, dtype=np.float64)\n    p = 1.0 / (1.0 + np.exp(-np.clip(z, -20.0, 20.0)))\n    p_t = y * p + (1.0 - y) * (1.0 - p)\n    at = y * float(alpha) + (1.0 - y) * (1.0 - float(alpha))\n    return round(float(np.mean(-at * ((1.0 - p_t)**float(gamma)) * np.log(np.clip(p_t, 1e-12, 1.0)))), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-focal-loss-tc-1",
@@ -108,9 +108,9 @@
           -1.0
         ],
         "alpha": 0.25,
-        "gamma": -2.0
+        "gamma": 2.0
       },
-      "expectedOutput": 3.984874,
+      "expectedOutput": 0.17651,
       "isPublic": false
     },
     {
@@ -168,9 +168,9 @@
           -1.0
         ],
         "alpha": 1.75,
-        "gamma": 0.0
+        "gamma": 2.0
       },
-      "expectedOutput": -0.750909,
+      "expectedOutput": -0.187727,
       "isPublic": false
     }
   ],

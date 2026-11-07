@@ -835,5 +835,6 @@
     "next": "resnet-full-network"
   },
   "isLocked": false,
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "resnet-batch-norm"
 }

@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL NULL Handling\nSELECT customer_id, customer_name, COALESCE(phone_number, 'N/A') AS phone, 'Verified' AS status\nFROM customers\nWHERE phone_number IS NOT NULL\nORDER BY customer_id ASC;",
+  "starterCode": "def sql_null_handling(customers: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL NULL Handling\n    SELECT customer_id, customer_name, COALESCE(phone_number, 'N/A') AS phone, 'Verified' AS status\n    FROM customers\n    WHERE phone_number IS NOT NULL\n    ORDER BY customer_id ASC;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **NULL Handling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_null_handling(customers: list) -> list:\n    res = [{'customer_id': c['customer_id'], 'customer_name': c['customer_name'], 'phone': str(c['phone_number']), 'status': 'Verified'} for c in customers if c.get('phone_number') is not None]\n    res.sort(key=lambda x: x['customer_id'])\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

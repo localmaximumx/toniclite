@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import torch, math\n\ndef pytorch_multi_head_attention(x: list, num_heads: int = 2) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Multi-Head Attention** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch, math\n\ndef pytorch_multi_head_attention(x: list, num_heads: int = 2) -> list:\n    t = torch.tensor(x, dtype=torch.float32)\n    N, D = t.shape\n    dk = D // num_heads\n    q = t.view(N, num_heads, dk).transpose(0, 1)\n    attn = torch.softmax(torch.matmul(q, q.transpose(-2, -1)) / math.sqrt(dk), dim=-1)\n    return torch.round(torch.matmul(attn, q).transpose(0, 1).contiguous().view(N, D), decimals=4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Multi-Head Attention** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch, math\n\ndef pytorch_multi_head_attention(x: list, num_heads: int = 2) -> list:\n    t = torch.tensor(x, dtype=torch.float32)\n    N, D = t.shape\n    dk = D // num_heads\n    q = t.view(N, num_heads, dk).transpose(0, 1)\n    attn = torch.softmax(torch.matmul(q, q.transpose(-2, -1)) / math.sqrt(dk), dim=-1)\n    return torch.round(torch.matmul(attn, q).transpose(0, 1).contiguous().view(N, D), decimals=4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pytorch-multi-head-attention-tc-1",
@@ -254,15 +254,15 @@
       "inputs": {
         "x": [
           [
-            1.0,
-            0.0,
-            1.0,
-            0.0
+            2.5,
+            1.8,
+            2.5,
+            1.8
           ],
           [
-            0.0,
+            1.8,
             1.0,
-            0.0,
+            1.8,
             1.0
           ]
         ],
@@ -270,16 +270,16 @@
       },
       "expectedOutput": [
         [
-          0.6698,
-          0.3302,
-          0.6698,
-          0.3302
+          2.4335999488830566,
+          1.7240999937057495,
+          2.4335999488830566,
+          1.7240999937057495
         ],
         [
-          0.3302,
-          0.6698,
-          0.3302,
-          0.6698
+          2.3677000999450684,
+          1.648800015449524,
+          2.3677000999450684,
+          1.648800015449524
         ]
       ],
       "isPublic": false

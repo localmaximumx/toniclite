@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import re\n\ndef nlp_bag_of_words(corpus: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Bag of Words** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport re\n\ndef nlp_bag_of_words(corpus: list) -> dict:\n    tokens_per_doc = [re.findall(r'\\b[a-zA-Z0-9]+\\b', d.lower()) for d in corpus]\n    vocab = sorted(list({t for doc in tokens_per_doc for t in doc}))\n    w2i = {w: i for i, w in enumerate(vocab)}\n    vecs = []\n    for doc in tokens_per_doc:\n        v = [0] * len(vocab)\n        for t in doc: v[w2i[t]] += 1\n        vecs.append(v)\n    return {'vocabulary': vocab, 'vectors': vecs}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Bag of Words** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_bag_of_words(corpus: list) -> dict:\n    tokens_per_doc = [re.findall(r'\\b[a-zA-Z0-9]+\\b', d.lower()) for d in corpus]\n    vocab = sorted(list({t for doc in tokens_per_doc for t in doc}))\n    w2i = {w: i for i, w in enumerate(vocab)}\n    vecs = []\n    for doc in tokens_per_doc:\n        v = [0] * len(vocab)\n        for t in doc: v[w2i[t]] += 1\n        vecs.append(v)\n    return {'vocabulary': vocab, 'vectors': vecs}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-bag-of-words-tc-1",
@@ -80,14 +80,15 @@
       "name": "Case 2",
       "inputs": {
         "corpus": [
-          "The cat sat on the mat",
-          "The dog sat on the log"
+          "The cat sat on the mat gamma",
+          "The dog sat on the log gamma"
         ]
       },
       "expectedOutput": {
         "vocabulary": [
           "cat",
           "dog",
+          "gamma",
           "log",
           "mat",
           "on",
@@ -98,6 +99,7 @@
           [
             1,
             0,
+            1,
             0,
             1,
             1,
@@ -106,6 +108,7 @@
           ],
           [
             0,
+            1,
             1,
             1,
             0,
@@ -122,13 +125,14 @@
       "name": "Case 3",
       "inputs": {
         "corpus": [
-          "The cat sat on the mat",
-          "The dog sat on the log"
+          "delta The cat sat on the mat",
+          "delta The dog sat on the log"
         ]
       },
       "expectedOutput": {
         "vocabulary": [
           "cat",
+          "delta",
           "dog",
           "log",
           "mat",
@@ -139,6 +143,7 @@
         "vectors": [
           [
             1,
+            1,
             0,
             0,
             1,
@@ -148,6 +153,7 @@
           ],
           [
             0,
+            1,
             1,
             1,
             0,
@@ -164,17 +170,21 @@
       "name": "Case 4",
       "inputs": {
         "corpus": [
-          "The cat sat on the mat",
-          "The dog sat on the log"
+          "The cat sat on the mat The",
+          "The dog sat on the log The",
+          "natural language processing"
         ]
       },
       "expectedOutput": {
         "vocabulary": [
           "cat",
           "dog",
+          "language",
           "log",
           "mat",
+          "natural",
           "on",
+          "processing",
           "sat",
           "the"
         ],
@@ -183,19 +193,37 @@
             1,
             0,
             0,
+            0,
             1,
+            0,
             1,
+            0,
             1,
-            2
+            3
           ],
           [
             0,
             1,
+            0,
+            1,
+            0,
+            0,
             1,
             0,
             1,
+            3
+          ],
+          [
+            0,
+            0,
             1,
-            2
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0
           ]
         ]
       },
@@ -206,8 +234,8 @@
       "name": "Case 5",
       "inputs": {
         "corpus": [
-          "The cat sat on the mat",
-          "The dog sat on the log"
+          "neural mat the on sat cat The vector",
+          "log the on sat dog The"
         ]
       },
       "expectedOutput": {
@@ -216,9 +244,11 @@
           "dog",
           "log",
           "mat",
+          "neural",
           "on",
           "sat",
-          "the"
+          "the",
+          "vector"
         ],
         "vectors": [
           [
@@ -228,16 +258,20 @@
             1,
             1,
             1,
-            2
+            1,
+            2,
+            1
           ],
           [
             0,
             1,
             1,
             0,
+            0,
             1,
             1,
-            2
+            2,
+            0
           ]
         ]
       },
@@ -248,8 +282,8 @@
       "name": "Case 6",
       "inputs": {
         "corpus": [
-          "The cat sat on the mat",
-          "The dog sat on the log"
+          "log the on sat dog The",
+          "mat the on sat cat The"
         ]
       },
       "expectedOutput": {
@@ -264,19 +298,19 @@
         ],
         "vectors": [
           [
-            1,
-            0,
             0,
             1,
+            1,
+            0,
             1,
             1,
             2
           ],
           [
-            0,
-            1,
             1,
             0,
+            0,
+            1,
             1,
             1,
             2
@@ -291,37 +325,59 @@
       "inputs": {
         "corpus": [
           "The cat sat on the mat",
-          "The dog sat on the log"
+          "The dog sat on the log",
+          "computer vision system"
         ]
       },
       "expectedOutput": {
         "vocabulary": [
           "cat",
+          "computer",
           "dog",
           "log",
           "mat",
           "on",
           "sat",
-          "the"
+          "system",
+          "the",
+          "vision"
         ],
         "vectors": [
           [
             1,
             0,
             0,
+            0,
             1,
             1,
             1,
-            2
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0,
+            2,
+            0
           ],
           [
             0,
             1,
-            1,
+            0,
+            0,
+            0,
+            0,
             0,
             1,
-            1,
-            2
+            0,
+            1
           ]
         ]
       },

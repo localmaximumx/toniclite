@@ -13,7 +13,7 @@
   "description": "Implement **One-Hot Encoding** for categorical input sequences.\n\nGiven a list of categories and a known vocabulary list, return a binary 2D array where each row contains a single $1$ corresponding to that category index. Handle unseen/out-of-vocabulary categories by assigning all zeros.",
   "theory": "# Understanding One-Hot Encode with Unseen Categories\n\n## 1. What Is It?\n\nThe **One-Hot Encode with Unseen Categories** is a fundamental computational technique in Machine Learning. In machine learning workflows, it involves performing **One-Hot Encoding** for categorical input sequences.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **One-Hot Encode with Unseen Categories**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ml_one_hot_encode`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ml_one_hot_encode` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for One-Hot Encode with Unseen Categories.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ml_one_hot_encode` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ml_one_hot_encode`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ml_one_hot_encode`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ml_one_hot_encode`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**One-Hot Encode with Unseen Categories** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ml_one_hot_encode` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for One-Hot Encode with Unseen Categories."
+    "Input: categories = [\"red\", \"blue\", \"yellow\", \"green\"], vocab = [\"red\", \"green\", \"blue\"]\n\nOutput: [[1, 0, 0], [0, 0, 1], [0, 0, 0], [0, 1, 0]]\n\nExplanation: Evaluated ml_one_hot_encode under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ml_one_hot_encode`.",
@@ -28,125 +28,244 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ml_one_hot_encode(x):\n    \"\"\"\n    One-Hot Encode with Unseen Categories\n    \"\"\"\n    # Implement One-Hot Encode with Unseen Categories here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ml_one_hot_encode(x):\n    \"\"\"\n    One-Hot Encode with Unseen Categories\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def ml_one_hot_encode(categories: list, vocab: list) -> list:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **One-Hot Encode with Unseen Categories** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef ml_one_hot_encode(categories: list, vocab: list) -> list:\n    idx_map = {v: i for i, v in enumerate(vocab)}\n    res = []\n    for c in categories:\n        row = [0] * len(vocab)\n        if c in idx_map:\n            row[idx_map[c]] = 1\n        res.append(row)\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-one-hot-encode-tc-1",
-      "name": "Standard Input",
+      "name": "With unseen category",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "categories": [
+          "red",
+          "blue",
+          "yellow",
+          "green"
+        ],
+        "vocab": [
+          "red",
+          "green",
+          "blue"
         ]
       },
       "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
       ],
       "isPublic": true
     },
     {
       "id": "ml-one-hot-encode-tc-2",
-      "name": "Case 2",
+      "name": "All known categories",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "categories": [
+          "cat",
+          "dog",
+          "cat"
+        ],
+        "vocab": [
+          "cat",
+          "dog"
         ]
       },
       "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
       ],
       "isPublic": true
     },
     {
       "id": "ml-one-hot-encode-tc-3",
-      "name": "Case 3",
+      "name": "All unseen categories",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "categories": [
+          "x",
+          "y"
+        ],
+        "vocab": [
+          "a",
+          "b",
+          "c"
         ]
       },
       "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
       ],
       "isPublic": false
     },
     {
       "id": "ml-one-hot-encode-tc-4",
-      "name": "Case 4",
+      "name": "Single category",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "categories": [
+          "yes"
+        ],
+        "vocab": [
+          "no",
+          "yes"
         ]
       },
       "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
+        [
+          0,
+          1
+        ]
       ],
       "isPublic": false
     },
     {
       "id": "ml-one-hot-encode-tc-5",
-      "name": "Case 5",
+      "name": "Integer categories",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "categories": [
+          1,
+          3,
+          2,
+          99
+        ],
+        "vocab": [
+          1,
+          2,
+          3
         ]
       },
       "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
       ],
       "isPublic": false
     },
     {
       "id": "ml-one-hot-encode-tc-6",
-      "name": "Case 6",
+      "name": "Repeated categories",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "categories": [
+          "A",
+          "A",
+          "B",
+          "C"
+        ],
+        "vocab": [
+          "A",
+          "B"
         ]
       },
       "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
       ],
       "isPublic": false
     },
     {
       "id": "ml-one-hot-encode-tc-7",
-      "name": "Case 7",
+      "name": "Four-item vocab",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "categories": [
+          "north",
+          "south",
+          "west",
+          "unknown"
+        ],
+        "vocab": [
+          "north",
+          "south",
+          "east",
+          "west"
         ]
       },
       "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
       ],
       "isPublic": false
     }
@@ -159,6 +278,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

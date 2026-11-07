@@ -271,5 +271,6 @@
     "prev": "ddpm-schedule",
     "next": "ddpm-sampling"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "ddpm-loss"
 }

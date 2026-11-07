@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_beam_search_decoding(transition_probs: list, beam_width: int = 2) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Beam Search Decoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_beam_search_decoding(transition_probs: list, beam_width: int = 2) -> dict:\n    beam = [(0.0, [])]\n    for probs in transition_probs:\n        cand = [(sc + float(p), s + [tok]) for sc, s in beam for tok, p in enumerate(probs)]\n        beam = sorted(cand, key=lambda x: -x[0])[:int(beam_width)]\n    return {'best_sequence': beam[0][1], 'best_score': round(float(beam[0][0]), 4), 'beam_candidates': [{'sequence': s, 'score': round(float(sc), 4)} for sc, s in beam]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Beam Search Decoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_beam_search_decoding(transition_probs: list, beam_width: int = 2) -> dict:\n    beam = [(0.0, [])]\n    for probs in transition_probs:\n        cand = [(sc + float(p), s + [tok]) for sc, s in beam for tok, p in enumerate(probs)]\n        beam = sorted(cand, key=lambda x: -x[0])[:int(beam_width)]\n    return {'best_sequence': beam[0][1], 'best_score': round(float(beam[0][0]), 4), 'beam_candidates': [{'sequence': s, 'score': round(float(sc), 4)} for sc, s in beam]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-beam-search-decoding-tc-1",
@@ -236,7 +236,7 @@
             1.5
           ]
         ],
-        "beam_width": -2
+        "beam_width": 2
       },
       "expectedOutput": {
         "best_sequence": [
@@ -251,6 +251,13 @@
               2
             ],
             "score": 3.5
+          },
+          {
+            "sequence": [
+              2,
+              1
+            ],
+            "score": 2.8
           }
         ]
       },

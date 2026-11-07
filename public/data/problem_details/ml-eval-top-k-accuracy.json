@@ -53,7 +53,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(y_true, scores, k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(y_true, scores, k):\n    return sum(y in sorted(range(len(row)),key=lambda i:(-row[i],i))[:k] for y,row in zip(y_true,scores))/len(y_true) if y_true else 0.0\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(y_true, scores, k):\n    return sum(y in sorted(range(len(row)),key=lambda i:(-row[i],i))[:k] for y,row in zip(y_true,scores))/len(y_true) if y_true else 0.0\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-eval-top-k-accuracy-tc-1",
@@ -119,9 +119,9 @@
             0.05
           ]
         ],
-        "k": 0
+        "k": 1
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.5,
       "isPublic": false
     },
     {
@@ -142,7 +142,7 @@
             -0.1
           ]
         ],
-        "k": -1
+        "k": 1
       },
       "expectedOutput": 0.0,
       "isPublic": false

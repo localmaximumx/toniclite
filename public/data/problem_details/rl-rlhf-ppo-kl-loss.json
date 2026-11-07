@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import math\n\ndef rl_rlhf_ppo_kl_loss(log_prob: float, ref_log_prob: float, advantage: float, clip_eps: float = 0.2, beta_kl: float = 0.05) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **PPO with Reference-Policy KL** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef rl_rlhf_ppo_kl_loss(log_prob: float, ref_log_prob: float, advantage: float, clip_eps: float = 0.2, beta_kl: float = 0.05) -> dict:\n    r = math.exp(log_prob - ref_log_prob)\n    pl = -min(r * advantage, max(1.0 - clip_eps, min(1.0 + clip_eps, r)) * advantage)\n    kl = log_prob - ref_log_prob\n    return {'total_loss': round(float(pl + beta_kl * kl), 4), 'policy_loss': round(float(pl), 4), 'kl_div': round(float(kl), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **PPO with Reference-Policy KL** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef rl_rlhf_ppo_kl_loss(log_prob: float, ref_log_prob: float, advantage: float, clip_eps: float = 0.2, beta_kl: float = 0.05) -> dict:\n    r = math.exp(log_prob - ref_log_prob)\n    pl = -min(r * advantage, max(1.0 - clip_eps, min(1.0 + clip_eps, r)) * advantage)\n    kl = log_prob - ref_log_prob\n    return {'total_loss': round(float(pl + beta_kl * kl), 4), 'policy_loss': round(float(pl), 4), 'kl_div': round(float(kl), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-rlhf-ppo-kl-loss-tc-1",
@@ -109,12 +109,12 @@
         "log_prob": 0.8,
         "ref_log_prob": 1.0,
         "advantage": -1.5,
-        "clip_eps": -0.2,
+        "clip_eps": 0.2,
         "beta_kl": -0.1
       },
       "expectedOutput": {
-        "total_loss": 1.82,
-        "policy_loss": 1.8,
+        "total_loss": 1.2481,
+        "policy_loss": 1.2281,
         "kl_div": -0.2
       },
       "isPublic": false

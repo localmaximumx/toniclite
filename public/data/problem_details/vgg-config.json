@@ -22,7 +22,7 @@
   "topicId": "vgg-config",
   "paperSnippet": "\"The configurations improve from A to E by increasing the depth: from 11 weight layers (A) to 19 weight layers (E). The width of conv. layers (the number of channels) is rather small, starting from 64 and doubling after each max-pooling layer until reaching 512.\"",
   "visualizationComponent": "VGGConfigViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **VGG Configuration** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef make_vgg_config(variant: str) -> list:\n    v = variant.lower().replace(\"-\", \"\")\n    configs = {\n        'vgg11': [64, \"M\", 128, \"M\", 256, 256, \"M\", 512, 512, \"M\", 512, 512, \"M\"],\n        'vgg13': [64, 64, \"M\", 128, 128, \"M\", 256, 256, \"M\", 512, 512, \"M\", 512, 512, \"M\"],\n        'vgg16': [64, 64, \"M\", 128, 128, \"M\", 256, 256, 256, \"M\", 512, 512, 512, \"M\", 512, 512, 512, \"M\"],\n        'vgg19': [64, 64, \"M\", 128, 128, \"M\", 256, 256, 256, 256, \"M\", 512, 512, 512, 512, \"M\", 512, 512, 512, 512, \"M\"]\n    }\n    return configs.get(v, configs['vgg11'])\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **VGG Configuration** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef make_vgg_config(variant: str) -> list:\n    v = variant.lower().replace(\"-\", \"\")\n    configs = {\n        'vgg11': [64, \"M\", 128, \"M\", 256, 256, \"M\", 512, 512, \"M\", 512, 512, \"M\"],\n        'vgg13': [64, 64, \"M\", 128, 128, \"M\", 256, 256, \"M\", 512, 512, \"M\", 512, 512, \"M\"],\n        'vgg16': [64, 64, \"M\", 128, 128, \"M\", 256, 256, 256, \"M\", 512, 512, 512, \"M\", 512, 512, 512, \"M\"],\n        'vgg19': [64, 64, \"M\", 128, 128, \"M\", 256, 256, 256, 256, \"M\", 512, 512, 512, 512, \"M\", 512, 512, 512, 512, \"M\"]\n    }\n    return configs.get(v, configs['vgg11'])\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "vgg-config-tc-1",
@@ -110,7 +110,7 @@
       "id": "vgg-config-tc-4",
       "name": "Case 4",
       "inputs": {
-        "variant": "vgg11"
+        "variant": "vgg11ly"
       },
       "isPublic": false,
       "expectedOutput": [
@@ -133,25 +133,20 @@
       "id": "vgg-config-tc-5",
       "name": "Case 5",
       "inputs": {
-        "variant": "VGG16"
+        "variant": "vgg11tion"
       },
       "isPublic": false,
       "expectedOutput": [
         64,
-        64,
         "M",
         128,
-        128,
         "M",
-        256,
         256,
         256,
         "M",
         512,
         512,
-        512,
         "M",
-        512,
         512,
         512,
         "M"
@@ -161,28 +156,20 @@
       "id": "vgg-config-tc-6",
       "name": "Case 6",
       "inputs": {
-        "variant": "vgg19"
+        "variant": "vgg11ment"
       },
       "isPublic": false,
       "expectedOutput": [
         64,
-        64,
         "M",
         128,
-        128,
         "M",
-        256,
-        256,
         256,
         256,
         "M",
         512,
         512,
-        512,
-        512,
         "M",
-        512,
-        512,
         512,
         512,
         "M"
@@ -192,7 +179,7 @@
       "id": "vgg-config-tc-7",
       "name": "Case 7",
       "inputs": {
-        "variant": "vgg11"
+        "variant": "vgg11ness"
       },
       "isPublic": false,
       "expectedOutput": [
@@ -246,5 +233,6 @@
     "prev": "vgg-classifier",
     "next": "vgg-feature-extractor"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vgg-config"
 }

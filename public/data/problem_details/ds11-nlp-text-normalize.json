@@ -39,7 +39,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "import re\ndef solve(text):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport re\ndef solve(text):\n    text=text.lower()\n    text=re.sub(r\"[^a-z0-9\\s]\", \" \", text)\n    return \" \".join(text.split())\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nimport re\ndef solve(text):\n    text=text.lower()\n    text=re.sub(r\"[^a-z0-9\\s]\", \" \", text)\n    return \" \".join(text.split())\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds11-nlp-text-normalize-tc-1",
@@ -63,45 +63,45 @@
       "id": "ds11-nlp-text-normalize-tc-3",
       "name": "Case 3",
       "inputs": {
-        "text": "Hello, WORLD!  NLP."
+        "text": "Hello, WORLD! NLP. Hello,"
       },
-      "expectedOutput": "hello world nlp",
+      "expectedOutput": "hello world nlp hello",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-text-normalize-tc-4",
       "name": "Case 4",
       "inputs": {
-        "text": ".PLN  !DLROW ,olleH"
+        "text": "Hello, WORLD! model"
       },
-      "expectedOutput": "pln dlrow olleh",
+      "expectedOutput": "hello world model",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-text-normalize-tc-5",
       "name": "Case 5",
       "inputs": {
-        "text": "Hello, WORLD!  NLP."
+        "text": "neural NLP. WORLD! Hello, vector"
       },
-      "expectedOutput": "hello world nlp",
+      "expectedOutput": "neural nlp world hello vector",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-text-normalize-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": ".PLN  !DLROW ,olleH"
+        "text": "NLP. WORLD! Hello,"
       },
-      "expectedOutput": "pln dlrow olleh",
+      "expectedOutput": "nlp world hello",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-text-normalize-tc-7",
       "name": "Case 7",
       "inputs": {
-        "text": "Hello, WORLD!  NLP."
+        "text": "Hello, WORLD!  NLP. matrix"
       },
-      "expectedOutput": "hello world nlp",
+      "expectedOutput": "hello world nlp matrix",
       "isPublic": false
     }
   ],

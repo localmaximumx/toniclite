@@ -371,5 +371,6 @@
     "prev": null,
     "next": "gru-update-gate"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gru-reset-gate"
 }

@@ -18,7 +18,7 @@
   "starterCode": "def polynomial_features(values: list, degree: int) -> list:\n    \"\"\"\n    Returns powers from zero through degree for every value.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T21:27:14.424Z",
   "updatedAt": "2026-08-23T21:17:32.787Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\ndef polynomial_features(values: list, degree: int) -> list:\n    out = []\n    for v in values:\n        row = [1.0] + [float(v ** d) for d in range(1, degree + 1)]\n        out.append(row)\n    return out\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\ndef polynomial_features(values: list, degree: int) -> list:\n    out = []\n    for v in values:\n        row = [1.0] + [float(v ** d) for d in range(1, degree + 1)]\n        out.append(row)\n    return out\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "PolynomialFeaturesViz",
   "testCases": [
     {
@@ -144,7 +144,7 @@
       "id": "polynomial-features-tc-6",
       "name": "Case 6",
       "inputs": {
-        "degree": -2,
+        "degree": 2,
         "values": [
           -2,
           -3
@@ -152,10 +152,14 @@
       },
       "expectedOutput": [
         [
-          1.0
+          1.0,
+          -2.0,
+          4.0
         ],
         [
-          1.0
+          1.0,
+          -3.0,
+          9.0
         ]
       ],
       "isPublic": false

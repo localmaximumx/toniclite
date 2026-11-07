@@ -30,7 +30,7 @@
   ],
   "constraints": "* Category: PYTORCH\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTORCH\n",
   "starterCode": "def cs336_l15_kl_regularized_policy_objective(reward: float, policy_logprob: float, ref_logprob: float, beta: float = 0.05) -> float:\n    \"\"\"\n    Compute the KL-penalized reinforcement learning from human feedback (RLHF) objective trading off reward maximization against reference model drift.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nCompute the KL-penalized reinforcement learning from human feedback (RLHF) objective trading off reward maximization against reference model drift.\n\n### ⚡ Python Reference Implementation\n```python\ndef cs336_l15_kl_regularized_policy_objective(reward: float, policy_logprob: float, ref_logprob: float, beta: float = 0.05) -> float:\n    return round(float(reward - beta * (policy_logprob - ref_logprob)), 6)\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nCompute the KL-penalized reinforcement learning from human feedback (RLHF) objective trading off reward maximization against reference model drift.\n\n### \u26a1 Python Reference Implementation\n```python\ndef cs336_l15_kl_regularized_policy_objective(reward: float, policy_logprob: float, ref_logprob: float, beta: float = 0.05) -> float:\n    return round(float(reward - beta * (policy_logprob - ref_logprob)), 6)\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l15-kl-regularized-policy-objective-tc-1",
@@ -86,9 +86,9 @@
         "reward": -1.5,
         "policy_logprob": 3.0,
         "ref_logprob": 2.0,
-        "beta": -0.1
+        "beta": 0.1
       },
-      "expectedOutput": -1.4,
+      "expectedOutput": -1.6,
       "isPublic": false
     },
     {

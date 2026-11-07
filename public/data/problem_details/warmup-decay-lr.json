@@ -18,7 +18,7 @@
   "starterCode": "def warmup_decay_schedule(base_lr: float, warmup_steps: int, total_steps: int, current_step: int) -> float:\n    \"\"\"\n    Returns the learning rate for the requested training step.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T15:34:00.922Z",
   "updatedAt": "2026-10-12T07:47:37.586Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\ndef warmup_decay_schedule(base_lr: float, warmup_steps: int, total_steps: int, current_step: int) -> float:\n    if current_step < warmup_steps:\n        return float(round(base_lr * (current_step / warmup_steps), 6))\n    decay_steps = total_steps - warmup_steps\n    rate = max(0.0, 1.0 - (current_step - warmup_steps) / decay_steps)\n    return float(round(base_lr * rate, 6))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\ndef warmup_decay_schedule(base_lr: float, warmup_steps: int, total_steps: int, current_step: int) -> float:\n    if current_step < warmup_steps:\n        return float(round(base_lr * (current_step / warmup_steps), 6))\n    decay_steps = total_steps - warmup_steps\n    rate = max(0.0, 1.0 - (current_step - warmup_steps) / decay_steps)\n    return float(round(base_lr * rate, 6))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "WarmupDecayLrViz",
   "testCases": [
     {
@@ -85,12 +85,12 @@
       "id": "warmup-decay-lr-tc-6",
       "name": "Case 6",
       "inputs": {
-        "base_lr": 0.1,
-        "total_steps": 100,
-        "current_step": 5,
-        "warmup_steps": 10
+        "base_lr": -0.05,
+        "total_steps": 107,
+        "current_step": 12,
+        "warmup_steps": 17
       },
-      "expectedOutput": 0.05,
+      "expectedOutput": -0.035294,
       "isPublic": false
     },
     {

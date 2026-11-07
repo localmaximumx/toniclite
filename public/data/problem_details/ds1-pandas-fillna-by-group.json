@@ -13,7 +13,7 @@
   "description": "Given IoT sensor time-series data with intermittent connection drops, write a function to perform **Group-wise Forward Fill**.\n\nFor each device group, fill `NaN` sensor readings with the most recent valid observation for that device. If a device begins with `NaN` values before any valid reading, backfill or fill with the group median.",
   "theory": "# Understanding Group-Wise Forward Fill Sensor Readings\n\n## 1. What Is It?\n\nThe **Group-Wise Forward Fill Sensor Readings** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given IoT sensor time-series data with intermittent connection drops, write a function to perform **Group-wise Forward Fill**.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Group-Wise Forward Fill Sensor Readings**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ds1_pandas_fillna_by_group`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ds1_pandas_fillna_by_group` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Group-Wise Forward Fill Sensor Readings.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ds1_pandas_fillna_by_group` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ds1_pandas_fillna_by_group`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ds1_pandas_fillna_by_group`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ds1_pandas_fillna_by_group`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Group-Wise Forward Fill Sensor Readings** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ds1_pandas_fillna_by_group` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Group-Wise Forward Fill Sensor Readings."
+    "Input: records = [{\"device_id\": \"A\", \"reading\": 10.0}, {\"device_id\": \"A\", \"reading\": null}, {\"device_id\": \"B\", \"reading\": 20.0}, {\"device_id\": \"B\", \"reading\": null}]\n\nOutput: [{\"device_id\": \"A\", \"reading\": 10.0}, {\"device_id\": \"A\", \"reading\": 10.0}, {\"device_id\": \"B\", \"reading\": 20.0}, {\"device_id\": \"B\", \"reading\": 20.0}]\n\nExplanation: Evaluated ds1_pandas_fillna_by_group under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ds1_pandas_fillna_by_group`.",
@@ -28,125 +28,291 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ds1_pandas_fillna_by_group(x):\n    \"\"\"\n    Group-Wise Forward Fill Sensor Readings\n    \"\"\"\n    # Implement Group-Wise Forward Fill Sensor Readings here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ds1_pandas_fillna_by_group(x):\n    \"\"\"\n    Group-Wise Forward Fill Sensor Readings\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "import pandas as pd\n\ndef ds1_pandas_fillna_by_group(records: list) -> list:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Group-Wise Forward Fill Sensor Readings** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\nimport pandas as pd\n\ndef ds1_pandas_fillna_by_group(records: list) -> list:\n    df = pd.DataFrame(records)\n    df[\"reading\"] = df.groupby(\"device_id\")[\"reading\"].transform(lambda s: s.ffill().bfill())\n    return df.round(4).to_dict(orient=\"records\")\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ds1-pandas-fillna-by-group-tc-1",
-      "name": "Standard Input",
+      "name": "Forward fill per device",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "records": [
+          {
+            "device_id": "A",
+            "reading": 10.0
+          },
+          {
+            "device_id": "A",
+            "reading": null
+          },
+          {
+            "device_id": "B",
+            "reading": 20.0
+          },
+          {
+            "device_id": "B",
+            "reading": null
+          }
         ]
       },
       "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
+        {
+          "device_id": "A",
+          "reading": 10.0
+        },
+        {
+          "device_id": "A",
+          "reading": 10.0
+        },
+        {
+          "device_id": "B",
+          "reading": 20.0
+        },
+        {
+          "device_id": "B",
+          "reading": 20.0
+        }
       ],
       "isPublic": true
     },
     {
       "id": "ds1-pandas-fillna-by-group-tc-2",
-      "name": "Case 2",
+      "name": "Leading missing value backfilled",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "records": [
+          {
+            "device_id": "A",
+            "reading": null
+          },
+          {
+            "device_id": "A",
+            "reading": 15.5
+          },
+          {
+            "device_id": "A",
+            "reading": null
+          }
         ]
       },
       "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
+        {
+          "device_id": "A",
+          "reading": 15.5
+        },
+        {
+          "device_id": "A",
+          "reading": 15.5
+        },
+        {
+          "device_id": "A",
+          "reading": 15.5
+        }
       ],
       "isPublic": true
     },
     {
       "id": "ds1-pandas-fillna-by-group-tc-3",
-      "name": "Case 3",
+      "name": "Interleaved devices",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "records": [
+          {
+            "device_id": "D1",
+            "reading": 1.0
+          },
+          {
+            "device_id": "D2",
+            "reading": 5.0
+          },
+          {
+            "device_id": "D1",
+            "reading": null
+          },
+          {
+            "device_id": "D2",
+            "reading": null
+          }
         ]
       },
       "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
+        {
+          "device_id": "D1",
+          "reading": 1.0
+        },
+        {
+          "device_id": "D2",
+          "reading": 5.0
+        },
+        {
+          "device_id": "D1",
+          "reading": 1.0
+        },
+        {
+          "device_id": "D2",
+          "reading": 5.0
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-fillna-by-group-tc-4",
-      "name": "Case 4",
+      "name": "Consecutive nulls",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "records": [
+          {
+            "device_id": "S1",
+            "reading": 42.0
+          },
+          {
+            "device_id": "S1",
+            "reading": null
+          },
+          {
+            "device_id": "S1",
+            "reading": null
+          },
+          {
+            "device_id": "S1",
+            "reading": 45.0
+          }
         ]
       },
       "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
+        {
+          "device_id": "S1",
+          "reading": 42.0
+        },
+        {
+          "device_id": "S1",
+          "reading": 42.0
+        },
+        {
+          "device_id": "S1",
+          "reading": 42.0
+        },
+        {
+          "device_id": "S1",
+          "reading": 45.0
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-fillna-by-group-tc-5",
-      "name": "Case 5",
+      "name": "No missing values",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "records": [
+          {
+            "device_id": "X",
+            "reading": 3.0
+          },
+          {
+            "device_id": "X",
+            "reading": 4.0
+          }
         ]
       },
       "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
+        {
+          "device_id": "X",
+          "reading": 3.0
+        },
+        {
+          "device_id": "X",
+          "reading": 4.0
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-fillna-by-group-tc-6",
-      "name": "Case 6",
+      "name": "Negative sensor readings",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "records": [
+          {
+            "device_id": "T1",
+            "reading": -5.5
+          },
+          {
+            "device_id": "T1",
+            "reading": null
+          },
+          {
+            "device_id": "T1",
+            "reading": -2.0
+          }
         ]
       },
       "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
+        {
+          "device_id": "T1",
+          "reading": -5.5
+        },
+        {
+          "device_id": "T1",
+          "reading": -5.5
+        },
+        {
+          "device_id": "T1",
+          "reading": -2.0
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-fillna-by-group-tc-7",
-      "name": "Case 7",
+      "name": "Three devices",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "records": [
+          {
+            "device_id": "A",
+            "reading": 1.0
+          },
+          {
+            "device_id": "B",
+            "reading": 2.0
+          },
+          {
+            "device_id": "C",
+            "reading": 3.0
+          },
+          {
+            "device_id": "A",
+            "reading": null
+          },
+          {
+            "device_id": "B",
+            "reading": null
+          },
+          {
+            "device_id": "C",
+            "reading": null
+          }
         ]
       },
       "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
+        {
+          "device_id": "A",
+          "reading": 1.0
+        },
+        {
+          "device_id": "B",
+          "reading": 2.0
+        },
+        {
+          "device_id": "C",
+          "reading": 3.0
+        },
+        {
+          "device_id": "A",
+          "reading": 1.0
+        },
+        {
+          "device_id": "B",
+          "reading": 2.0
+        },
+        {
+          "device_id": "C",
+          "reading": 3.0
+        }
       ],
       "isPublic": false
     }
@@ -159,6 +325,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

@@ -1465,5 +1465,6 @@
     "prev": "densenet-transition",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "densenet-forward"
 }

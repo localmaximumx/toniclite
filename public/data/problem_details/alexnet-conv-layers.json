@@ -21,9 +21,9 @@
   "createdAt": "2026-01-23T18:46:10.136Z",
   "updatedAt": "2026-04-04T12:04:49.443Z",
   "topicId": "alexnet-conv-layers",
-  "paperSnippet": "\"The first convolutional layer filters the 224Ã224Ã3 input image with 96 kernels of size 11Ã11Ã3 with a stride of 4 pixels.\"",
+  "paperSnippet": "\"The first convolutional layer filters the 224\u00c3\u0097224\u00c3\u00973 input image with 96 kernels of size 11\u00c3\u009711\u00c3\u00973 with a stride of 4 pixels.\"",
   "visualizationComponent": "AlexNetConvViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **AlexNet Convolution Layer** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alexnet_conv1(image: np.ndarray, kernel: np.ndarray, bias: np.ndarray,\n                   stride: int = 1, padding: int = 0) -> np.ndarray:\n    img = np.asarray(image, dtype=float)\n    k = np.asarray(kernel, dtype=float)\n    b = np.asarray(bias, dtype=float)\n    stride = int(stride)\n    padding = int(padding)\n    \n    N, H, W, C_in = img.shape\n    K_h, K_w, _, C_out = k.shape\n    \n    if padding > 0:\n        padded = np.pad(img, ((0, 0), (padding, padding), (padding, padding), (0, 0)), mode='constant')\n    else:\n        padded = img\n        \n    out_h = (padded.shape[1] - K_h) // stride + 1\n    out_w = (padded.shape[2] - K_w) // stride + 1\n    \n    out = np.zeros((N, out_h, out_w, C_out), dtype=float)\n    for n in range(N):\n        for oh in range(out_h):\n            for ow in range(out_w):\n                ih = oh * stride\n                iw = ow * stride\n                patch = padded[n, ih:ih+K_h, iw:iw+K_w, :]\n                for oc in range(C_out):\n                    out[n, oh, ow, oc] = np.sum(patch * k[:, :, :, oc]) + b[oc]\n    return np.round(out, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **AlexNet Convolution Layer** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alexnet_conv1(image: np.ndarray, kernel: np.ndarray, bias: np.ndarray,\n                   stride: int = 1, padding: int = 0) -> np.ndarray:\n    img = np.asarray(image, dtype=float)\n    k = np.asarray(kernel, dtype=float)\n    b = np.asarray(bias, dtype=float)\n    stride = int(stride)\n    padding = int(padding)\n    \n    N, H, W, C_in = img.shape\n    K_h, K_w, _, C_out = k.shape\n    \n    if padding > 0:\n        padded = np.pad(img, ((0, 0), (padding, padding), (padding, padding), (0, 0)), mode='constant')\n    else:\n        padded = img\n        \n    out_h = (padded.shape[1] - K_h) // stride + 1\n    out_w = (padded.shape[2] - K_w) // stride + 1\n    \n    out = np.zeros((N, out_h, out_w, C_out), dtype=float)\n    for n in range(N):\n        for oh in range(out_h):\n            for ow in range(out_w):\n                ih = oh * stride\n                iw = ow * stride\n                patch = padded[n, ih:ih+K_h, iw:iw+K_w, :]\n                for oc in range(C_out):\n                    out[n, oh, ow, oc] = np.sum(patch * k[:, :, :, oc]) + b[oc]\n    return np.round(out, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "alexnet-conv-layers-tc-1",
@@ -420,11 +420,28 @@
             ]
           ]
         ],
-        "stride": -1,
+        "stride": 1,
         "padding": 0
       },
       "expectedOutput": [
-        []
+        [
+          [
+            [
+              -4.0
+            ],
+            [
+              -4.0
+            ]
+          ],
+          [
+            [
+              -4.0
+            ],
+            [
+              -4.0
+            ]
+          ]
+        ]
       ],
       "isPublic": false
     },
@@ -582,7 +599,7 @@
             ]
           ]
         ],
-        "stride": 2.0,
+        "stride": 1,
         "padding": 1.0
       },
       "expectedOutput": [
@@ -592,7 +609,27 @@
               1.0
             ],
             [
+              3.0
+            ],
+            [
               4.0
+            ],
+            [
+              5.0
+            ]
+          ],
+          [
+            [
+              3.0
+            ],
+            [
+              13.0
+            ],
+            [
+              17.0
+            ],
+            [
+              16.0
             ]
           ],
           [
@@ -600,7 +637,27 @@
               6.0
             ],
             [
+              25.0
+            ],
+            [
               29.0
+            ],
+            [
+              25.0
+            ]
+          ],
+          [
+            [
+              9.0
+            ],
+            [
+              26.0
+            ],
+            [
+              29.0
+            ],
+            [
+              21.0
             ]
           ]
         ]
@@ -648,7 +705,7 @@
   "topic": {
     "id": "alexnet-conv-layers",
     "name": "Convolutional Layers",
-    "description": "Large 11Ã11 and 5Ã5 kernels in early layers",
+    "description": "Large 11\u00c3\u009711 and 5\u00c3\u00975 kernels in early layers",
     "color": "#3b82f6"
   },
   "paper": {
@@ -665,5 +722,6 @@
     "prev": null,
     "next": "alexnet-relu"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "alexnet-conv-layers"
 }

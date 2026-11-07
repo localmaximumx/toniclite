@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "def autograd_l01_gradient_check_product_chain(u_val: float, u_prime: float, v_val: float, v_prime: float, f_plus: float, f_center: float, h: float = 1e-5) -> dict:\n    \"\"\"\n    Verify the product rule of calculus by comparing the analytical derivative of a product chain with its finite difference numerical approximation.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVerify the product rule of calculus by comparing the analytical derivative of a product chain with its finite difference numerical approximation.\n\n### ⚡ Python Reference Implementation\n```python\ndef autograd_l01_gradient_check_product_chain(u_val: float, u_prime: float, v_val: float, v_prime: float, f_plus: float, f_center: float, h: float = 1e-5) -> dict:\n    analytic = u_prime * v_val + u_val * v_prime\n    numeric = (f_plus - f_center) / h\n    rel_error = abs(analytic - numeric) / (max(abs(analytic), abs(numeric)) + 1e-12)\n    return {'analytic': round(float(analytic), 6), 'numeric': round(float(numeric), 6), 'rel_error': round(float(rel_error), 6)}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVerify the product rule of calculus by comparing the analytical derivative of a product chain with its finite difference numerical approximation.\n\n### \u26a1 Python Reference Implementation\n```python\ndef autograd_l01_gradient_check_product_chain(u_val: float, u_prime: float, v_val: float, v_prime: float, f_plus: float, f_center: float, h: float = 1e-5) -> dict:\n    analytic = u_prime * v_val + u_val * v_prime\n    numeric = (f_plus - f_center) / h\n    rel_error = abs(analytic - numeric) / (max(abs(analytic), abs(numeric)) + 1e-12)\n    return {'analytic': round(float(analytic), 6), 'numeric': round(float(numeric), 6), 'rel_error': round(float(rel_error), 6)}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "autograd-l01-gradient-check-product-chain-tc-1",
@@ -97,12 +97,12 @@
         "v_prime": 3.0,
         "f_plus": 6.0002200000000006,
         "f_center": 6.0,
-        "h": -1.99999
+        "h": 1e-05
       },
       "expectedOutput": {
         "analytic": 2.0,
-        "numeric": -0.00011,
-        "rel_error": 1.000055
+        "numeric": 22.0,
+        "rel_error": 0.909091
       },
       "isPublic": false
     },
@@ -116,12 +116,12 @@
         "v_prime": -5.0,
         "f_plus": -8.00022,
         "f_center": -8.0,
-        "h": -1e-05
+        "h": 1e-05
       },
       "expectedOutput": {
         "analytic": 22.0,
-        "numeric": 22.0,
-        "rel_error": 0.0
+        "numeric": -22.0,
+        "rel_error": 2.0
       },
       "isPublic": false
     },

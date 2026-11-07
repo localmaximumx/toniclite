@@ -57,7 +57,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(rankings,relevant,k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(rankings,relevant,k):\n    return sum(bool(set(r[:k])&set(rel)) for r,rel in zip(rankings,relevant))/len(rankings) if rankings else 0.0\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(rankings,relevant,k):\n    return sum(bool(set(r[:k])&set(rel)) for r,rel in zip(rankings,relevant))/len(rankings) if rankings else 0.0\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-eval-hit-rate-at-k-tc-1",
@@ -119,25 +119,27 @@
       "inputs": {
         "rankings": [
           [
-            "a",
-            "b"
+            "aing",
+            "bing"
           ],
           [
-            "c",
-            "d"
+            "cer",
+            "der",
+            "natural language processing"
           ]
         ],
         "relevant": [
           [
-            "b"
+            "bing"
           ],
           [
-            "x"
+            "xer",
+            "natural language processing"
           ]
         ],
-        "k": 0
+        "k": 2
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.5,
       "isPublic": false
     },
     {
@@ -146,25 +148,27 @@
       "inputs": {
         "rankings": [
           [
-            "a",
-            "b"
+            "aer",
+            "ber",
+            "natural language processing"
           ],
           [
-            "c",
-            "d"
+            "ction",
+            "dment"
           ]
         ],
         "relevant": [
           [
-            "b"
+            "ber",
+            "natural language processing"
           ],
           [
-            "x"
+            "xtion"
           ]
         ],
-        "k": -1
+        "k": 3
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.5,
       "isPublic": false
     },
     {

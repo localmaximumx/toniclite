@@ -50,7 +50,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(y_true,y_pred,beta=1.0,positive=1):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(y_true,y_pred,beta=1.0,positive=1):\n    tp=sum(a==positive and b==positive for a,b in zip(y_true,y_pred))\n    fp=sum(a!=positive and b==positive for a,b in zip(y_true,y_pred))\n    fn=sum(a==positive and b!=positive for a,b in zip(y_true,y_pred))\n    p=tp/(tp+fp) if tp+fp else 0.0; r=tp/(tp+fn) if tp+fn else 0.0\n    b2=beta*beta\n    return (1+b2)*p*r/(b2*p+r) if b2*p+r else 0.0\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(y_true,y_pred,beta=1.0,positive=1):\n    tp=sum(a==positive and b==positive for a,b in zip(y_true,y_pred))\n    fp=sum(a!=positive and b==positive for a,b in zip(y_true,y_pred))\n    fn=sum(a==positive and b!=positive for a,b in zip(y_true,y_pred))\n    p=tp/(tp+fp) if tp+fp else 0.0; r=tp/(tp+fn) if tp+fn else 0.0\n    b2=beta*beta\n    return (1+b2)*p*r/(b2*p+r) if b2*p+r else 0.0\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-eval-fbeta-tc-1",
@@ -126,10 +126,10 @@
           -1,
           0
         ],
-        "beta": -1.0,
+        "beta": 1.0,
         "positive": -1
       },
-      "expectedOutput": 0.666667,
+      "expectedOutput": 0.6666666666666666,
       "isPublic": false
     },
     {
@@ -186,10 +186,10 @@
           -1.0,
           -2.0
         ],
-        "beta": -1.0,
+        "beta": 1.0,
         "positive": -1.0
       },
-      "expectedOutput": 0.666667,
+      "expectedOutput": 0.6666666666666666,
       "isPublic": false
     }
   ],

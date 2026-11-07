@@ -294,5 +294,6 @@
     "prev": "lstm-input-gate",
     "next": "lstm-output-gate"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "lstm-cell-state"
 }

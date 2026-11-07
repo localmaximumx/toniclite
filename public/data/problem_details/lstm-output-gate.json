@@ -441,5 +441,6 @@
     "prev": "lstm-cell-state",
     "next": "lstm-cell"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "lstm-output-gate"
 }

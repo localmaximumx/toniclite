@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "import numpy as np\n\ndef alphago_l01_resolve_move(board: list, action: list, player: int, consecutive_passes: int = 0) -> dict:\n    \"\"\"\n    Apply a legal stone placement or pass action to a Go board, resolve any resulting stone captures, and update player turns and terminal game states.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nApply a legal stone placement or pass action to a Go board, resolve any resulting stone captures, and update player turns and terminal game states.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l01_resolve_move(board: list, action: list, player: int, consecutive_passes: int = 0) -> dict:\n    b = np.array(board, dtype=int).copy()\n    H, W = b.shape\n    opponent = 3 - player\n    if action is None or len(action) == 0:\n        new_passes = consecutive_passes + 1\n        return {'board': b.tolist(), 'next_player': opponent, 'consecutive_passes': new_passes, 'captures': 0, 'is_terminal': new_passes >= 2}\n    r, c = action[0], action[1]\n    b[r, c] = player\n    captures = 0\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        nr, nc = r + dr, c + dc\n        if 0 <= nr < H and 0 <= nc < W and b[nr, nc] == opponent:\n            v, q, grp, has_lib = set([(nr, nc)]), [(nr, nc)], [], False\n            while q:\n                curr_r, curr_c = q.pop(0)\n                grp.append((curr_r, curr_c))\n                for d1, d2 in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n                    ar, ac = curr_r + d1, curr_c + d2\n                    if 0 <= ar < H and 0 <= ac < W:\n                        if b[ar, ac] == 0:\n                            has_lib = True\n                        elif b[ar, ac] == opponent and (ar, ac) not in v:\n                            v.add((ar, ac))\n                            q.append((ar, ac))\n            if not has_lib:\n                for gr, gc in grp:\n                    if b[gr, gc] == opponent:\n                        b[gr, gc] = 0\n                        captures += 1\n    return {'board': b.tolist(), 'next_player': opponent, 'consecutive_passes': 0, 'captures': captures, 'is_terminal': False}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nApply a legal stone placement or pass action to a Go board, resolve any resulting stone captures, and update player turns and terminal game states.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l01_resolve_move(board: list, action: list, player: int, consecutive_passes: int = 0) -> dict:\n    b = np.array(board, dtype=int).copy()\n    H, W = b.shape\n    opponent = 3 - player\n    if action is None or len(action) == 0:\n        new_passes = consecutive_passes + 1\n        return {'board': b.tolist(), 'next_player': opponent, 'consecutive_passes': new_passes, 'captures': 0, 'is_terminal': new_passes >= 2}\n    r, c = action[0], action[1]\n    b[r, c] = player\n    captures = 0\n    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n        nr, nc = r + dr, c + dc\n        if 0 <= nr < H and 0 <= nc < W and b[nr, nc] == opponent:\n            v, q, grp, has_lib = set([(nr, nc)]), [(nr, nc)], [], False\n            while q:\n                curr_r, curr_c = q.pop(0)\n                grp.append((curr_r, curr_c))\n                for d1, d2 in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n                    ar, ac = curr_r + d1, curr_c + d2\n                    if 0 <= ar < H and 0 <= ac < W:\n                        if b[ar, ac] == 0:\n                            has_lib = True\n                        elif b[ar, ac] == opponent and (ar, ac) not in v:\n                            v.add((ar, ac))\n                            q.append((ar, ac))\n            if not has_lib:\n                for gr, gc in grp:\n                    if b[gr, gc] == opponent:\n                        b[gr, gc] = 0\n                        captures += 1\n    return {'board': b.tolist(), 'next_player': opponent, 'consecutive_passes': 0, 'captures': captures, 'is_terminal': False}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "alphago-l01-resolve-move-tc-1",
@@ -198,13 +198,13 @@
           0,
           0
         ],
-        "player": 0,
+        "player": 1,
         "consecutive_passes": 0
       },
       "expectedOutput": {
         "board": [
           [
-            0,
+            1,
             1,
             0
           ],
@@ -219,7 +219,7 @@
             0
           ]
         ],
-        "next_player": 3,
+        "next_player": 2,
         "consecutive_passes": 0,
         "captures": 0,
         "is_terminal": false
@@ -251,7 +251,7 @@
           -1,
           -1
         ],
-        "player": -1,
+        "player": 1,
         "consecutive_passes": 0
       },
       "expectedOutput": {
@@ -269,10 +269,10 @@
           [
             0,
             -2,
-            -1
+            1
           ]
         ],
-        "next_player": 4,
+        "next_player": 2,
         "consecutive_passes": 0,
         "captures": 0,
         "is_terminal": false
@@ -304,13 +304,13 @@
           0,
           0
         ],
-        "player": 0,
+        "player": 1,
         "consecutive_passes": 0
       },
       "expectedOutput": {
         "board": [
           [
-            0,
+            1,
             0,
             0
           ],
@@ -325,7 +325,7 @@
             0
           ]
         ],
-        "next_player": 3,
+        "next_player": 2,
         "consecutive_passes": 0,
         "captures": 0,
         "is_terminal": false

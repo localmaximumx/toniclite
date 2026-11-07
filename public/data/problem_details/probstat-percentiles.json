@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef probstat_percentiles(data: list, q: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Percentiles / Quantiles** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef probstat_percentiles(data: list, q: list) -> list:\n    return np.round(np.percentile(np.array(data, dtype=float), q), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Percentiles / Quantiles** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef probstat_percentiles(data: list, q: list) -> list:\n    return np.round(np.percentile(np.array(data, dtype=float), q), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "probstat-percentiles-tc-1",
@@ -181,22 +181,22 @@
       "name": "Case 7",
       "inputs": {
         "data": [
-          15,
-          20,
-          35,
-          40,
-          50
+          23,
+          29,
+          43,
+          49,
+          58
         ],
         "q": [
-          25,
-          50,
-          75
+          33,
+          59,
+          83
         ]
       },
       "expectedOutput": [
-        20.0,
-        35.0,
-        40.0
+        33.48,
+        45.16,
+        51.88
       ],
       "isPublic": false
     }

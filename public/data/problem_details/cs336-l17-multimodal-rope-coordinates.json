@@ -30,7 +30,7 @@
   ],
   "constraints": "* Category: PYTORCH\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTORCH\n",
   "starterCode": "def cs336_l17_multimodal_rope_coordinates(tokens: list, image_grid: list = None) -> list:\n    \"\"\"\n    Assign 3D temporal, vertical, and horizontal spatial coordinates (t, h, w) to interleaved text and image tokens in a multimodal transformer sequence.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nAssign 3D temporal, vertical, and horizontal spatial coordinates (t, h, w) to interleaved text and image tokens in a multimodal transformer sequence.\n\n### ⚡ Python Reference Implementation\n```python\ndef cs336_l17_multimodal_rope_coordinates(tokens: list, image_grid: list = None) -> list:\n    coords, pos = [], 0\n    for i in range(len(tokens)):\n        if image_grid and i < len(image_grid):\n            coords.append(image_grid[i])\n        else:\n            coords.append([pos, 0, 0])\n            pos += 1\n    return coords\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nAssign 3D temporal, vertical, and horizontal spatial coordinates (t, h, w) to interleaved text and image tokens in a multimodal transformer sequence.\n\n### \u26a1 Python Reference Implementation\n```python\ndef cs336_l17_multimodal_rope_coordinates(tokens: list, image_grid: list = None) -> list:\n    coords, pos = [], 0\n    for i in range(len(tokens)):\n        if image_grid and i < len(image_grid):\n            coords.append(image_grid[i])\n        else:\n            coords.append([pos, 0, 0])\n            pos += 1\n    return coords\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l17-multimodal-rope-coordinates-tc-1",
@@ -136,9 +136,44 @@
       "name": "Case 4",
       "inputs": {
         "tokens": [
-          "a",
-          "b",
-          "c"
+          "aer",
+          "ber",
+          "cer",
+          "natural language processing"
+        ]
+      },
+      "expectedOutput": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0
+        ]
+      ],
+      "isPublic": false
+    },
+    {
+      "id": "cs336-l17-multimodal-rope-coordinates-tc-5",
+      "name": "Case 5",
+      "inputs": {
+        "tokens": [
+          "ation",
+          "bment",
+          "cness"
         ]
       },
       "expectedOutput": [
@@ -161,54 +196,13 @@
       "isPublic": false
     },
     {
-      "id": "cs336-l17-multimodal-rope-coordinates-tc-5",
-      "name": "Case 5",
-      "inputs": {
-        "tokens": [
-          "img1",
-          "img2",
-          "text"
-        ],
-        "image_grid": [
-          [
-            0,
-            0,
-            0
-          ],
-          [
-            0,
-            0,
-            1
-          ]
-        ]
-      },
-      "expectedOutput": [
-        [
-          0,
-          0,
-          0
-        ],
-        [
-          0,
-          0,
-          1
-        ],
-        [
-          0,
-          0,
-          0
-        ]
-      ],
-      "isPublic": false
-    },
-    {
       "id": "cs336-l17-multimodal-rope-coordinates-tc-6",
       "name": "Case 6",
       "inputs": {
         "tokens": [
-          "c",
-          "b",
-          "a"
+          "cs",
+          "bs",
+          "as"
         ]
       },
       "expectedOutput": [
@@ -237,7 +231,8 @@
         "tokens": [
           "a",
           "b",
-          "c"
+          "c",
+          "computer vision system"
         ]
       },
       "expectedOutput": [
@@ -253,6 +248,11 @@
         ],
         [
           2,
+          0,
+          0
+        ],
+        [
+          3,
           0,
           0
         ]

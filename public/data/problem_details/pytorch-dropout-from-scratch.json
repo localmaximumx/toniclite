@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import torch\n\ndef pytorch_dropout_from_scratch(x: list, p: float = 0.5, training: bool = True) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Dropout from Scratch** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_dropout_from_scratch(x: list, p: float = 0.5, training: bool = True) -> dict:\n    t = torch.tensor(x, dtype=torch.float32)\n    if not training or p >= 1.0: return {'output': t.tolist(), 'scale': 1.0}\n    sc = 1.0 / (1.0 - p)\n    return {'output': torch.round(t * sc, decimals=4).tolist(), 'scale': round(float(sc), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Dropout from Scratch** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_dropout_from_scratch(x: list, p: float = 0.5, training: bool = True) -> dict:\n    t = torch.tensor(x, dtype=torch.float32)\n    if not training or p >= 1.0: return {'output': t.tolist(), 'scale': 1.0}\n    sc = 1.0 / (1.0 - p)\n    return {'output': torch.round(t * sc, decimals=4).tolist(), 'scale': round(float(sc), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pytorch-dropout-from-scratch-tc-1",
@@ -79,7 +79,7 @@
           ]
         ],
         "p": 0.75,
-        "training": 2
+        "training": true
       },
       "expectedOutput": {
         "output": [
@@ -111,20 +111,20 @@
           ]
         ],
         "p": 0.25,
-        "training": 0
+        "training": true
       },
       "expectedOutput": {
         "output": [
           [
-            0.5,
-            1.0
+            0.666700005531311,
+            1.333299994468689
           ],
           [
-            1.5,
-            2.0
+            2.0,
+            2.6666998863220215
           ]
         ],
-        "scale": 1.0
+        "scale": 1.3333
       },
       "isPublic": false
     },
@@ -143,7 +143,7 @@
           ]
         ],
         "p": 1.0,
-        "training": 2
+        "training": true
       },
       "expectedOutput": {
         "output": [
@@ -174,21 +174,21 @@
             -4.0
           ]
         ],
-        "p": -0.5,
-        "training": -1
+        "p": 0.5,
+        "training": true
       },
       "expectedOutput": {
         "output": [
           [
-            -0.6667,
-            -1.3333
+            -2.0,
+            -4.0
           ],
           [
-            -2.0,
-            -2.6667
+            -6.0,
+            -8.0
           ]
         ],
-        "scale": 0.6667
+        "scale": 2.0
       },
       "isPublic": false
     },
@@ -207,17 +207,17 @@
           ]
         ],
         "p": 0.4,
-        "training": 1
+        "training": true
       },
       "expectedOutput": {
         "output": [
           [
-            1.3333,
-            2.6667
+            1.333299994468689,
+            2.6666998863220215
           ],
           [
             4.0,
-            5.3333
+            5.3333001136779785
           ]
         ],
         "scale": 1.6667
@@ -238,21 +238,21 @@
             12.0
           ]
         ],
-        "p": 1.5,
-        "training": 3
+        "p": 0.5,
+        "training": true
       },
       "expectedOutput": {
         "output": [
           [
-            3.0,
-            6.0
+            6.0,
+            12.0
           ],
           [
-            9.0,
-            12.0
+            18.0,
+            24.0
           ]
         ],
-        "scale": 1.0
+        "scale": 2.0
       },
       "isPublic": false
     }

@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef dl_layer_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Layer Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_layer_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> list:\n    arr = np.array(x, dtype=np.float64)\n    m = np.mean(arr, axis=-1, keepdims=True); v = np.var(arr, axis=-1, keepdims=True)\n    return np.round(float(gamma) * ((arr - m) / np.sqrt(v + float(eps))) + float(beta), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Layer Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_layer_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> list:\n    arr = np.array(x, dtype=np.float64)\n    m = np.mean(arr, axis=-1, keepdims=True); v = np.var(arr, axis=-1, keepdims=True)\n    return np.round(float(gamma) * ((arr - m) / np.sqrt(v + float(eps))) + float(beta), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "dl-layer-normalization-tc-1",
@@ -151,20 +151,20 @@
             -6.0
           ]
         ],
-        "gamma": -1.0,
+        "gamma": 1.0,
         "beta": -0.0,
         "eps": 1e-05
       },
       "expectedOutput": [
         [
-          -1.2247,
-          -0.0,
-          1.2247
+          1.2247,
+          0.0,
+          -1.2247
         ],
         [
-          -1.2247,
-          -0.0,
-          1.2247
+          1.2247,
+          0.0,
+          -1.2247
         ]
       ],
       "isPublic": false
@@ -253,20 +253,20 @@
             4.0
           ]
         ],
-        "gamma": -1.0,
+        "gamma": 1.0,
         "beta": -2.0,
         "eps": 1e-05
       },
       "expectedOutput": [
         [
-          -0.7753,
+          -3.2247,
           -2.0,
-          -3.2247
+          -0.7753
         ],
         [
-          -0.7753,
+          -3.2247,
           -2.0,
-          -3.2247
+          -0.7753
         ]
       ],
       "isPublic": false

@@ -506,5 +506,6 @@
     "prev": "bert-segment-embedding",
     "next": "bert-nsp"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "bert-masked-lm"
 }

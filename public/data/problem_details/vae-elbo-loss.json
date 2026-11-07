@@ -23,7 +23,7 @@
   "topicId": "vae-elbo-loss",
   "paperSnippet": "\"We optimize the evidence lower bound (ELBO): L = E[log p(x|z)] - KL(q(z|x) || p(z)), which provides a tractable objective.\"",
   "visualizationComponent": "ELBOLossViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **ELBO Loss Function** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef vae_loss(x: np.ndarray, reconstruction: np.ndarray,\n             mu: np.ndarray, log_var: np.ndarray) -> dict:\n    x_arr = np.asarray(x, dtype=float)\n    rec = np.asarray(reconstruction, dtype=float)\n    m = np.asarray(mu, dtype=float)\n    lv = np.asarray(log_var, dtype=float)\n    \n    recon_loss_per_sample = np.sum((x_arr - rec) ** 2, axis=-1)\n    kl_per_sample = -0.5 * np.sum(1.0 + lv - m ** 2 - np.exp(lv), axis=-1)\n    \n    rec_mean = float(np.mean(recon_loss_per_sample))\n    kl_mean = float(np.mean(kl_per_sample))\n    total = rec_mean + kl_mean\n    return {\n        \"total_loss\": float(np.round(total, 6)),\n        \"reconstruction_loss\": float(np.round(rec_mean, 6)),\n        \"kl_loss\": float(np.round(kl_mean, 6))\n    }\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **ELBO Loss Function** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef vae_loss(x: np.ndarray, reconstruction: np.ndarray,\n             mu: np.ndarray, log_var: np.ndarray) -> dict:\n    x_arr = np.asarray(x, dtype=float)\n    rec = np.asarray(reconstruction, dtype=float)\n    m = np.asarray(mu, dtype=float)\n    lv = np.asarray(log_var, dtype=float)\n    \n    recon_loss_per_sample = np.sum((x_arr - rec) ** 2, axis=-1)\n    kl_per_sample = -0.5 * np.sum(1.0 + lv - m ** 2 - np.exp(lv), axis=-1)\n    \n    rec_mean = float(np.mean(recon_loss_per_sample))\n    kl_mean = float(np.mean(kl_per_sample))\n    total = rec_mean + kl_mean\n    return {\n        \"total_loss\": float(np.round(total, 6)),\n        \"reconstruction_loss\": float(np.round(rec_mean, 6)),\n        \"kl_loss\": float(np.round(kl_mean, 6))\n    }\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "vae-elbo-loss-tc-1",
@@ -156,33 +156,33 @@
         "x": [
           [
             0,
-            0
+            1
           ]
         ],
         "mu": [
           [
             0,
-            0
+            1
           ]
         ],
         "log_var": [
           [
             0,
-            0
+            1
           ]
         ],
         "reconstruction": [
           [
             0,
-            0
+            1
           ]
         ]
       },
       "isPublic": false,
       "expectedOutput": {
-        "total_loss": 0.0,
+        "total_loss": 0.859141,
         "reconstruction_loss": 0.0,
-        "kl_loss": 0.0
+        "kl_loss": 0.859141
       }
     },
     {
@@ -192,33 +192,33 @@
         "x": [
           [
             1,
-            1
+            0
           ]
         ],
         "mu": [
           [
-            0,
+            1,
             0
           ]
         ],
         "log_var": [
           [
-            0,
+            1,
             0
           ]
         ],
         "reconstruction": [
           [
-            0,
+            1,
             0
           ]
         ]
       },
       "isPublic": false,
       "expectedOutput": {
-        "total_loss": 2.0,
-        "reconstruction_loss": 2.0,
-        "kl_loss": 0.0
+        "total_loss": 0.859141,
+        "reconstruction_loss": 0.0,
+        "kl_loss": 0.859141
       }
     },
     {
@@ -382,5 +382,6 @@
     "prev": "vae-kl-divergence",
     "next": "vae-full-network"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vae-elbo-loss"
 }

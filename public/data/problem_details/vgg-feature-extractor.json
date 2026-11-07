@@ -517,5 +517,6 @@
     "prev": "vgg-config",
     "next": "vgg-full-network"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vgg-feature-extractor"
 }

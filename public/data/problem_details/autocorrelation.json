@@ -18,7 +18,7 @@
   "starterCode": "def autocorrelation(series: list, max_lag: int) -> list:\n    \"\"\"\n    Returns normalized autocorrelation from lag zero through max_lag.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T20:56:52.580Z",
   "updatedAt": "2026-10-12T07:46:35.024Z",
-  "solution": "### 💡 Intuition & Approach\nCalculates the sample covariance at lag $k$ normalized by sample variance.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef autocorrelation(series: list, max_lag: int) -> list:\n    s = np.array(series, dtype=float)\n    n = len(s)\n    mean = np.mean(s)\n    var = np.sum((s - mean) ** 2)\n    if var == 0:\n        return [1.0] + [0.0] * max_lag\n\n    autocorr = [1.0]\n    for k in range(1, max_lag + 1):\n        if k >= n:\n            autocorr.append(0.0)\n            continue\n        cov = np.sum((s[:n - k] - mean) * (s[k:] - mean))\n        autocorr.append(float(round(cov / var, 4)))\n    return autocorr\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nCalculates the sample covariance at lag $k$ normalized by sample variance.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef autocorrelation(series: list, max_lag: int) -> list:\n    s = np.array(series, dtype=float)\n    n = len(s)\n    mean = np.mean(s)\n    var = np.sum((s - mean) ** 2)\n    if var == 0:\n        return [1.0] + [0.0] * max_lag\n\n    autocorr = [1.0]\n    for k in range(1, max_lag + 1):\n        if k >= n:\n            autocorr.append(0.0)\n            continue\n        cov = np.sum((s[:n - k] - mean) * (s[k:] - mean))\n        autocorr.append(float(round(cov / var, 4)))\n    return autocorr\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "AutocorrelationViz",
   "testCases": [
     {
@@ -114,10 +114,12 @@
           -4,
           -5
         ],
-        "max_lag": -2
+        "max_lag": 2
       },
       "expectedOutput": [
-        1.0
+        1.0,
+        0.4,
+        -0.1
       ],
       "isPublic": false
     },

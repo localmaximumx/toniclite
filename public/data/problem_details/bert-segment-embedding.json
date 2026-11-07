@@ -726,5 +726,6 @@
     "prev": "bert-wordpiece",
     "next": "bert-masked-lm"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "bert-segment-embedding"
 }

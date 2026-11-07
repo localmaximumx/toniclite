@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef dl_batch_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Batch Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_batch_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> dict:\n    arr = np.array(x, dtype=np.float64); m, v = float(np.mean(arr)), float(np.var(arr))\n    return {'normalized': np.round(float(gamma) * ((arr - m) / math.sqrt(v + float(eps))) + float(beta), 4).tolist(), 'mean': round(m, 4), 'variance': round(v, 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Batch Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_batch_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> dict:\n    arr = np.array(x, dtype=np.float64); m, v = float(np.mean(arr)), float(np.var(arr))\n    return {'normalized': np.round(float(gamma) * ((arr - m) / math.sqrt(v + float(eps))) + float(beta), 4).tolist(), 'mean': round(m, 4), 'variance': round(v, 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "dl-batch-normalization-tc-1",
@@ -124,16 +124,16 @@
           -4.0,
           -5.0
         ],
-        "gamma": -1.0,
+        "gamma": 1.0,
         "beta": -0.0
       },
       "expectedOutput": {
         "normalized": [
-          -1.4142,
-          -0.7071,
-          -0.0,
+          1.4142,
           0.7071,
-          1.4142
+          0.0,
+          -0.7071,
+          -1.4142
         ],
         "mean": -3.0,
         "variance": 2.0
@@ -205,16 +205,16 @@
           2.0,
           3.0
         ],
-        "gamma": -1.0,
+        "gamma": 1.0,
         "beta": -2.0
       },
       "expectedOutput": {
         "normalized": [
-          -0.5858,
-          -1.2929,
-          -2.0,
+          -3.4142,
           -2.7071,
-          -3.4142
+          -2.0,
+          -1.2929,
+          -0.5858
         ],
         "mean": 1.0,
         "variance": 2.0

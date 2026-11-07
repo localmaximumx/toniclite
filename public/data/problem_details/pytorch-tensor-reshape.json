@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import torch\n\ndef pytorch_tensor_reshape(tensor_data: list, target_shape: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Tensor Shape Manipulation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_tensor_reshape(tensor_data: list, target_shape: list) -> dict:\n    t = torch.tensor(tensor_data, dtype=torch.float32)\n    return {'flattened': t.flatten().tolist(), 'squeezed': t.squeeze().tolist(), 'reshaped': t.view(*target_shape).tolist()}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Tensor Shape Manipulation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_tensor_reshape(tensor_data: list, target_shape: list) -> dict:\n    t = torch.tensor(tensor_data, dtype=torch.float32)\n    return {'flattened': t.flatten().tolist(), 'squeezed': t.squeeze().tolist(), 'reshaped': t.view(*target_shape).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pytorch-tensor-reshape-tc-1",
@@ -85,12 +85,12 @@
         "tensor_data": [
           [
             [
-              1.0,
-              2.0
+              1.5,
+              1.0
             ],
             [
-              3.0,
-              4.0
+              1.5,
+              7.0
             ]
           ]
         ],
@@ -100,26 +100,26 @@
       },
       "expectedOutput": {
         "flattened": [
+          1.5,
           1.0,
-          2.0,
-          3.0,
-          4.0
+          1.5,
+          7.0
         ],
         "squeezed": [
           [
-            1.0,
-            2.0
+            1.5,
+            1.0
           ],
           [
-            3.0,
-            4.0
+            1.5,
+            7.0
           ]
         ],
         "reshaped": [
+          1.5,
           1.0,
-          2.0,
-          3.0,
-          4.0
+          1.5,
+          7.0
         ]
       },
       "isPublic": true
@@ -131,12 +131,12 @@
         "tensor_data": [
           [
             [
-              1.0,
-              2.0
+              0.5,
+              3.5
             ],
             [
-              3.0,
-              4.0
+              5.25,
+              8.0
             ]
           ]
         ],
@@ -146,26 +146,26 @@
       },
       "expectedOutput": {
         "flattened": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          0.5,
+          3.5,
+          5.25,
+          8.0
         ],
         "squeezed": [
           [
-            1.0,
-            2.0
+            0.5,
+            3.5
           ],
           [
-            3.0,
-            4.0
+            5.25,
+            8.0
           ]
         ],
         "reshaped": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          0.5,
+          3.5,
+          5.25,
+          8.0
         ]
       },
       "isPublic": false
@@ -177,12 +177,12 @@
         "tensor_data": [
           [
             [
-              1.0,
-              2.0
+              1.75,
+              4.0
             ],
             [
-              3.0,
-              4.0
+              6.0,
+              -2.0
             ]
           ]
         ],
@@ -192,26 +192,26 @@
       },
       "expectedOutput": {
         "flattened": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          1.75,
+          4.0,
+          6.0,
+          -2.0
         ],
         "squeezed": [
           [
-            1.0,
-            2.0
+            1.75,
+            4.0
           ],
           [
-            3.0,
-            4.0
+            6.0,
+            -2.0
           ]
         ],
         "reshaped": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          1.75,
+          4.0,
+          6.0,
+          -2.0
         ]
       },
       "isPublic": false
@@ -223,12 +223,12 @@
         "tensor_data": [
           [
             [
-              1.0,
-              2.0
+              2.0,
+              -1.0
             ],
             [
-              3.0,
-              4.0
+              -1.5,
+              10.0
             ]
           ]
         ],
@@ -238,26 +238,26 @@
       },
       "expectedOutput": {
         "flattened": [
-          1.0,
           2.0,
-          3.0,
-          4.0
+          -1.0,
+          -1.5,
+          10.0
         ],
         "squeezed": [
           [
-            1.0,
-            2.0
+            2.0,
+            -1.0
           ],
           [
-            3.0,
-            4.0
+            -1.5,
+            10.0
           ]
         ],
         "reshaped": [
-          1.0,
           2.0,
-          3.0,
-          4.0
+          -1.0,
+          -1.5,
+          10.0
         ]
       },
       "isPublic": false
@@ -269,12 +269,12 @@
         "tensor_data": [
           [
             [
-              1.0,
-              2.0
+              -0.5,
+              5.0
             ],
             [
-              3.0,
-              4.0
+              7.5,
+              1.2
             ]
           ]
         ],
@@ -284,26 +284,26 @@
       },
       "expectedOutput": {
         "flattened": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          -0.5,
+          5.0,
+          7.5,
+          1.2000000476837158
         ],
         "squeezed": [
           [
-            1.0,
-            2.0
+            -0.5,
+            5.0
           ],
           [
-            3.0,
-            4.0
+            7.5,
+            1.2000000476837158
           ]
         ],
         "reshaped": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          -0.5,
+          5.0,
+          7.5,
+          1.2000000476837158
         ]
       },
       "isPublic": false
@@ -315,11 +315,11 @@
         "tensor_data": [
           [
             [
-              1.0,
-              2.0
+              2.5,
+              0.6
             ],
             [
-              3.0,
+              0.9,
               4.0
             ]
           ]
@@ -330,25 +330,25 @@
       },
       "expectedOutput": {
         "flattened": [
-          1.0,
-          2.0,
-          3.0,
+          2.5,
+          0.6000000238418579,
+          0.8999999761581421,
           4.0
         ],
         "squeezed": [
           [
-            1.0,
-            2.0
+            2.5,
+            0.6000000238418579
           ],
           [
-            3.0,
+            0.8999999761581421,
             4.0
           ]
         ],
         "reshaped": [
-          1.0,
-          2.0,
-          3.0,
+          2.5,
+          0.6000000238418579,
+          0.8999999761581421,
           4.0
         ]
       },

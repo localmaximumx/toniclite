@@ -500,5 +500,6 @@
     "prev": "k3-mxfp4-expert-linear",
     "next": "k3-multi-teacher-opd"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-per-head-muon"
 }

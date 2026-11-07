@@ -58,7 +58,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(rankings, relevant_items, k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(rankings, relevant_items, k):\n    vals=[]\n    for ranking,relevant in zip(rankings,relevant_items):\n      vals.append(len(set(ranking[:k])&set(relevant))/len(set(relevant)) if relevant else 0.0)\n    return sum(vals)/len(vals) if vals else 0.0\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(rankings, relevant_items, k):\n    vals=[]\n    for ranking,relevant in zip(rankings,relevant_items):\n      vals.append(len(set(ranking[:k])&set(relevant))/len(set(relevant)) if relevant else 0.0)\n    return sum(vals)/len(vals) if vals else 0.0\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds7-rank-recall-at-k-tc-1",
@@ -122,26 +122,28 @@
       "inputs": {
         "rankings": [
           [
-            "a",
-            "b"
+            "aing",
+            "bing"
           ],
           [
-            "c",
-            "d"
+            "cer",
+            "der",
+            "natural language processing"
           ]
         ],
         "relevant_items": [
           [
-            "b",
-            "c"
+            "bing",
+            "cing"
           ],
           [
-            "c"
+            "cer",
+            "natural language processing"
           ]
         ],
-        "k": 0
+        "k": 2
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.5,
       "isPublic": false
     },
     {
@@ -150,26 +152,28 @@
       "inputs": {
         "rankings": [
           [
-            "a",
-            "b"
+            "aer",
+            "ber",
+            "natural language processing"
           ],
           [
-            "c",
-            "d"
+            "ction",
+            "dment"
           ]
         ],
         "relevant_items": [
           [
-            "b",
-            "c"
+            "ber",
+            "cer",
+            "natural language processing"
           ],
           [
-            "c"
+            "ction"
           ]
         ],
-        "k": -1
+        "k": 3
       },
-      "expectedOutput": 0.5,
+      "expectedOutput": 0.8333333333333333,
       "isPublic": false
     },
     {

@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL ORDER BY\nSELECT student_name, score\nFROM exam_results\nORDER BY score DESC, student_name ASC;",
+  "starterCode": "def sql_order_by(records: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL ORDER BY\n    SELECT student_name, score\n    FROM exam_results\n    ORDER BY score DESC, student_name ASC;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **ORDER BY** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_order_by(records: list) -> list:\n    return sorted(records, key=lambda x: (-float(x['score']), x['student_name']))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

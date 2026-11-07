@@ -17,7 +17,7 @@
   ],
   "constraints": "- betas is a nonempty list of float values strictly between 0 and 1.\n- t is an integer from 1 through the length of betas.\n- x_0 and epsilon are equally shaped, nonempty nested lists of real numbers.\n- Numerical calculations use NumPy float64.",
   "difficulty": "Medium",
-  "starterCode": "import numpy as np\n\ndef get_alpha_bar(betas: list[float]) -> list[float]:\n    \"\"\"\n    Returns the cumulative alpha-bar values rounded to six decimals.\n    \"\"\"\n    pass\n\ndef forward_diffusion(x_0: list, t: int, betas: list[float], epsilon: list) -> list:\n    \"\"\"\n    Returns x_t with the same nested shape as x_0.\n    \"\"\"\n    pass",
+  "starterCode": "import numpy as np\n\ndef get_alpha_bar(betas: list[float]) -> list[float]:\n    \"\"\"\n    Returns the cumulative alpha-bar values rounded to six decimals.\n    \"\"\"\n    pass\n\ndef forward_diffusion(x_0: list, t: int, betas: list[float], epsilon: list) -> list:\n    \"\"\"\n    Returns x_t with the same nested shape as x_0.\n    \"\"\"\n    pass\n\ndef ddpm_forward(method: str = \"forward\", betas: list = None, x_0: list = None, t: int = 1, epsilon: list = None, **kwargs):\n    if method == \"alpha_bar\":\n        return get_alpha_bar(betas)\n    return forward_diffusion(x_0, t, betas, epsilon)\n",
   "createdAt": "2026-01-23T18:46:10.904Z",
   "updatedAt": "2026-09-02T19:18:37.735Z",
   "topicId": "ddpm-forward",
@@ -235,23 +235,23 @@
       "id": "ddpm-forward-tc-6",
       "name": "Case 6",
       "inputs": {
-        "t": 1,
+        "t": 2,
         "x_0": [
           [
-            -1,
-            -2
+            -1.0,
+            2.0
           ],
           [
-            -3,
-            -4
+            0.5,
+            -1.5
           ]
         ],
         "betas": [
-          -0.0001,
-          -0.0051,
-          -0.01,
-          -0.015,
-          -0.02
+          0.001,
+          0.005,
+          0.01,
+          0.015,
+          0.02
         ],
         "method": "forward",
         "epsilon": [
@@ -267,12 +267,12 @@
       },
       "expectedOutput": [
         [
-          0.0,
-          0.0
+          -1.0357,
+          2.0172
         ],
         [
-          0.0,
-          0.0
+          0.4908,
+          -1.4336
         ]
       ],
       "isPublic": false
@@ -392,5 +392,6 @@
     "prev": null,
     "next": "ddpm-reverse"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "ddpm-forward"
 }

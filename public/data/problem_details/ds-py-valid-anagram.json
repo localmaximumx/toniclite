@@ -29,7 +29,7 @@
     "Verify numerical stability for extreme values or empty inputs."
   ],
   "starterCode": "def is_anagram(s, t):\n    \"\"\"\n    Return True if t is an anagram of s, and False otherwise.\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef is_anagram(s, t):\n    \"\"\"\n    Return True if t is an anagram of s, and False otherwise.\n    \"\"\"\n    from collections import Counter\n    return Counter(s) == Counter(t)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef is_anagram(s, t):\n    \"\"\"\n    Return True if t is an anagram of s, and False otherwise.\n    \"\"\"\n    from collections import Counter\n    return Counter(s) == Counter(t)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds-py-valid-anagram-tc-1",
@@ -65,8 +65,8 @@
       "id": "ds-py-valid-anagram-tc-4",
       "name": "Case 4",
       "inputs": {
-        "s": "anagram",
-        "t": "nagaram"
+        "s": "anagramly",
+        "t": "nagaramly"
       },
       "expectedOutput": true,
       "isPublic": false
@@ -75,18 +75,18 @@
       "id": "ds-py-valid-anagram-tc-5",
       "name": "Case 5",
       "inputs": {
-        "s": "rat",
-        "t": "car"
+        "s": "anagramtion",
+        "t": "nagaramtion"
       },
-      "expectedOutput": false,
+      "expectedOutput": true,
       "isPublic": false
     },
     {
       "id": "ds-py-valid-anagram-tc-6",
       "name": "Case 6",
       "inputs": {
-        "s": "margana",
-        "t": "maragan"
+        "s": "anagramment",
+        "t": "nagaramment"
       },
       "expectedOutput": true,
       "isPublic": false
@@ -95,8 +95,8 @@
       "id": "ds-py-valid-anagram-tc-7",
       "name": "Case 7",
       "inputs": {
-        "s": "anagram",
-        "t": "nagaram"
+        "s": "anagramness",
+        "t": "nagaramness"
       },
       "expectedOutput": true,
       "isPublic": false

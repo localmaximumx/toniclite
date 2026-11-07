@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "import numpy as np\n\ndef alphago_l05_neural_guided_mcts(num_actions: int = 4, prior_probs: list = None, values: list = None, num_simulations: int = 10, c_puct: float = 1.0) -> list:\n    \"\"\"\n    Execute a deterministic Monte Carlo Tree Search loop over candidate actions using neural policy priors and leaf evaluation values with PUCT action selection.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nExecute a deterministic Monte Carlo Tree Search loop over candidate actions using neural policy priors and leaf evaluation values with PUCT action selection.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l05_neural_guided_mcts(num_actions: int = 4, prior_probs: list = None, values: list = None, num_simulations: int = 10, c_puct: float = 1.0) -> list:\n    priors = np.ones(num_actions) / num_actions if prior_probs is None else np.array(prior_probs, dtype=float)\n    val_map = values if values is not None else [0.0] * num_actions\n    N = np.zeros(num_actions, dtype=float)\n    W = np.zeros(num_actions, dtype=float)\n    Q = np.zeros(num_actions, dtype=float)\n    for _ in range(num_simulations):\n        u = c_puct * priors * (np.sqrt(np.sum(N)) / (1.0 + N))\n        a = int(np.argmax(Q + u))\n        N[a] += 1\n        W[a] += val_map[a % len(val_map)]\n        Q[a] = W[a] / N[a]\n    return N.astype(int).tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nExecute a deterministic Monte Carlo Tree Search loop over candidate actions using neural policy priors and leaf evaluation values with PUCT action selection.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l05_neural_guided_mcts(num_actions: int = 4, prior_probs: list = None, values: list = None, num_simulations: int = 10, c_puct: float = 1.0) -> list:\n    priors = np.ones(num_actions) / num_actions if prior_probs is None else np.array(prior_probs, dtype=float)\n    val_map = values if values is not None else [0.0] * num_actions\n    N = np.zeros(num_actions, dtype=float)\n    W = np.zeros(num_actions, dtype=float)\n    Q = np.zeros(num_actions, dtype=float)\n    for _ in range(num_simulations):\n        u = c_puct * priors * (np.sqrt(np.sum(N)) / (1.0 + N))\n        a = int(np.argmax(Q + u))\n        N[a] += 1\n        W[a] += val_map[a % len(val_map)]\n        Q[a] = W[a] / N[a]\n    return N.astype(int).tolist()\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "alphago-l05-neural-guided-mcts-tc-1",
@@ -154,22 +154,22 @@
       "inputs": {
         "num_actions": 3,
         "prior_probs": [
-          0.6,
-          0.3,
-          0.1
+          0.5161,
+          0.3065,
+          0.1774
         ],
         "values": [
-          0.5,
+          0.15,
           0.2,
-          -0.1
+          -0.03
         ],
-        "num_simulations": 6,
-        "c_puct": 1.0
+        "num_simulations": 15,
+        "c_puct": 1.5
       },
       "expectedOutput": [
+        8,
         6,
-        0,
-        0
+        1
       ],
       "isPublic": false
     },
@@ -177,21 +177,24 @@
       "id": "alphago-l05-neural-guided-mcts-tc-7",
       "name": "Case 7",
       "inputs": {
-        "num_actions": 2,
+        "num_actions": 3,
         "prior_probs": [
-          0.5,
-          0.5
+          0.5357,
+          0.3036,
+          0.1607
         ],
         "values": [
-          0.0,
-          0.0
+          0.375,
+          0.3,
+          -0.075
         ],
-        "num_simulations": 4,
-        "c_puct": 1.5
+        "num_simulations": 18,
+        "c_puct": 0.8
       },
       "expectedOutput": [
-        2,
-        2
+        13,
+        4,
+        1
       ],
       "isPublic": false
     }

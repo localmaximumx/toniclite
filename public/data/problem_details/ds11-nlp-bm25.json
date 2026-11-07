@@ -53,7 +53,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "import math\nfrom collections import Counter\ndef solve(query, documents, k1=1.5, b=0.75):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport math\nfrom collections import Counter\ndef solve(query, documents, k1=1.5, b=0.75):\n    N=len(documents); avg=sum(len(d) for d in documents)/N if N else 0\n    df=Counter(t for d in documents for t in set(d))\n    scores=[]\n    for d in documents:\n      tf=Counter(d); score=0.0\n      for term in query:\n        if tf[term]:\n          idf=math.log(1+(N-df[term]+0.5)/(df[term]+0.5))\n          denom=tf[term]+k1*(1-b+b*len(d)/(avg or 1))\n          score+=idf*tf[term]*(k1+1)/denom\n      scores.append(score)\n    return scores\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nimport math\nfrom collections import Counter\ndef solve(query, documents, k1=1.5, b=0.75):\n    N=len(documents); avg=sum(len(d) for d in documents)/N if N else 0\n    df=Counter(t for d in documents for t in set(d))\n    scores=[]\n    for d in documents:\n      tf=Counter(d); score=0.0\n      for term in query:\n        if tf[term]:\n          idf=math.log(1+(N-df[term]+0.5)/(df[term]+0.5))\n          denom=tf[term]+k1*(1-b+b*len(d)/(avg or 1))\n          score+=idf*tf[term]*(k1+1)/denom\n      scores.append(score)\n    return scores\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds11-nlp-bm25-tc-1",
@@ -106,20 +106,21 @@
       "name": "Case 3",
       "inputs": {
         "query": [
-          "cat"
+          "cating"
         ],
         "documents": [
           [
-            "cat",
-            "sat"
+            "cating",
+            "sating"
           ],
           [
-            "dog"
+            "doger",
+            "natural language processing"
           ]
         ]
       },
       "expectedOutput": [
-        0.602737,
+        0.6931471805599453,
         0.0
       ],
       "isPublic": false
@@ -129,20 +130,22 @@
       "name": "Case 4",
       "inputs": {
         "query": [
-          "cat"
+          "cater",
+          "natural language processing"
         ],
         "documents": [
           [
-            "sat",
-            "cat"
+            "cater",
+            "sater",
+            "natural language processing"
           ],
           [
-            "dog"
+            "dogtion"
           ]
         ]
       },
       "expectedOutput": [
-        0.602737,
+        1.131668866220319,
         0.0
       ],
       "isPublic": false
@@ -152,20 +155,20 @@
       "name": "Case 5",
       "inputs": {
         "query": [
-          "cat"
+          "cattion"
         ],
         "documents": [
           [
-            "cat",
-            "sat"
+            "cattion",
+            "satment"
           ],
           [
-            "dog"
+            "dogment"
           ]
         ]
       },
       "expectedOutput": [
-        0.602737,
+        0.6027366787477785,
         0.0
       ],
       "isPublic": false
@@ -175,20 +178,21 @@
       "name": "Case 6",
       "inputs": {
         "query": [
-          "cat"
+          "catment"
         ],
         "documents": [
           [
-            "sat",
-            "cat"
+            "sats",
+            "cats"
           ],
           [
-            "dog"
+            "dog",
+            "computer vision system"
           ]
         ]
       },
       "expectedOutput": [
-        0.602737,
+        0.0,
         0.0
       ],
       "isPublic": false
@@ -198,20 +202,22 @@
       "name": "Case 7",
       "inputs": {
         "query": [
-          "cat"
+          "cat",
+          "computer vision system"
         ],
         "documents": [
           [
             "cat",
-            "sat"
+            "sat",
+            "computer vision system"
           ],
           [
-            "dog"
+            "doged"
           ]
         ]
       },
       "expectedOutput": [
-        0.602737,
+        1.131668866220319,
         0.0
       ],
       "isPublic": false

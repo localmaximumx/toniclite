@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_bpe_algorithm(corpus: list, num_merges: int = 2) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Byte Pair Encoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_bpe_algorithm(corpus: list, num_merges: int = 2) -> dict:\n    vocab = {}\n    for w in corpus:\n        t = tuple(list(w) + ['</w>'])\n        vocab[t] = vocab.get(t, 0) + 1\n    merges = []\n    for _ in range(int(num_merges)):\n        pairs = {}\n        for toks, freq in vocab.items():\n            for i in range(len(toks)-1):\n                p = (toks[i], toks[i+1])\n                pairs[p] = pairs.get(p, 0) + freq\n        if not pairs: break\n        best = max(pairs, key=pairs.get)\n        merges.append(list(best))\n        new_v = {}\n        for toks, freq in vocab.items():\n            nt, i = [], 0\n            while i < len(toks):\n                if i < len(toks)-1 and (toks[i], toks[i+1]) == best:\n                    nt.append(''.join(best)); i += 2\n                else:\n                    nt.append(toks[i]); i += 1\n            new_v[tuple(nt)] = freq\n        vocab = new_v\n    return {'merges': merges, 'vocabulary_size': len(vocab)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Byte Pair Encoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_bpe_algorithm(corpus: list, num_merges: int = 2) -> dict:\n    vocab = {}\n    for w in corpus:\n        t = tuple(list(w) + ['</w>'])\n        vocab[t] = vocab.get(t, 0) + 1\n    merges = []\n    for _ in range(int(num_merges)):\n        pairs = {}\n        for toks, freq in vocab.items():\n            for i in range(len(toks)-1):\n                p = (toks[i], toks[i+1])\n                pairs[p] = pairs.get(p, 0) + freq\n        if not pairs: break\n        best = max(pairs, key=pairs.get)\n        merges.append(list(best))\n        new_v = {}\n        for toks, freq in vocab.items():\n            nt, i = [], 0\n            while i < len(toks):\n                if i < len(toks)-1 and (toks[i], toks[i+1]) == best:\n                    nt.append(''.join(best)); i += 2\n                else:\n                    nt.append(toks[i]); i += 1\n            new_v[tuple(nt)] = freq\n        vocab = new_v\n    return {'merges': merges, 'vocabulary_size': len(vocab)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-bpe-algorithm-tc-1",
@@ -153,12 +153,12 @@
       "name": "Case 5",
       "inputs": {
         "corpus": [
-          "low",
-          "lower",
-          "lowest",
-          "new"
+          "lowtion",
+          "lowerment",
+          "lowestness",
+          "newable"
         ],
-        "num_merges": 2
+        "num_merges": 8
       },
       "expectedOutput": {
         "merges": [
@@ -169,6 +169,30 @@
           [
             "lo",
             "w"
+          ],
+          [
+            "low",
+            "e"
+          ],
+          [
+            "n",
+            "e"
+          ],
+          [
+            "low",
+            "t"
+          ],
+          [
+            "lowt",
+            "i"
+          ],
+          [
+            "lowti",
+            "o"
+          ],
+          [
+            "lowtio",
+            "n"
           ]
         ],
         "vocabulary_size": 4

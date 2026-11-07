@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import torch\n\ndef inference_per_channel_quantization(weight: list, num_bits: int = 8) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Implement Per-Channel Weight Quantization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch\n\ndef inference_per_channel_quantization(weight: list, num_bits: int = 8) -> dict:\n    w = torch.tensor(weight, dtype=torch.float32)\n    q_max = 2 ** (num_bits - 1) - 1\n    q_min = -(2 ** (num_bits - 1))\n    max_vals = torch.amax(torch.abs(w), dim=1)\n    scales = torch.where(max_vals > 0, max_vals / q_max, torch.ones_like(max_vals))\n    q = torch.clamp(torch.round(w / scales.unsqueeze(1)), q_min, q_max).to(torch.int32)\n    return {'quantized': q.tolist(), 'scales': [round(float(s), 6) for s in scales]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Implement Per-Channel Weight Quantization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef inference_per_channel_quantization(weight: list, num_bits: int = 8) -> dict:\n    w = torch.tensor(weight, dtype=torch.float32)\n    q_max = 2 ** (num_bits - 1) - 1\n    q_min = -(2 ** (num_bits - 1))\n    max_vals = torch.amax(torch.abs(w), dim=1)\n    scales = torch.where(max_vals > 0, max_vals / q_max, torch.ones_like(max_vals))\n    q = torch.clamp(torch.round(w / scales.unsqueeze(1)), q_min, q_max).to(torch.int32)\n    return {'quantized': q.tolist(), 'scales': [round(float(s), 6) for s in scales]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "inference-per-channel-quantization-tc-1",
@@ -116,14 +116,14 @@
       "inputs": {
         "weight": [
           [
-            0.6,
-            -1.2,
-            0.3
+            0.7,
+            -1.4,
+            0.35
           ],
           [
-            -0.25,
+            -0.28,
             0.0,
-            0.25
+            0.28
           ]
         ],
         "num_bits": 4
@@ -142,8 +142,8 @@
           ]
         ],
         "scales": [
-          0.171429,
-          0.035714
+          0.2,
+          0.04
         ]
       },
       "isPublic": false
@@ -240,24 +240,24 @@
             1.5
           ]
         ],
-        "num_bits": 24
+        "num_bits": 10
       },
       "expectedOutput": {
         "quantized": [
           [
-            4194304,
-            -8388607,
-            2097152
+            256,
+            -511,
+            128
           ],
           [
-            -8388606,
+            -511,
             0,
-            8388606
+            511
           ]
         ],
         "scales": [
-          1e-06,
-          0.0
+          0.01409,
+          0.002935
         ]
       },
       "isPublic": false

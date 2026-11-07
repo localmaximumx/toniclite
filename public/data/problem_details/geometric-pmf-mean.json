@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef geometric_pmf_mean(k: list, p: float) -> dict:\n    \"\"\"\n    Returns a dictionary with pmf and mean.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-08T13:01:04.504Z",
   "updatedAt": "2026-03-05T19:46:42.229Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\ndef geometric_pmf_mean(k: list, p: float) -> dict:\n    pmf = [round(float((1.0 - p) ** (ki - 1) * p), 6) for ki in k]\n    mean = round(float(1.0 / p), 6)\n    return {'pmf': pmf, 'mean': mean}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\ndef geometric_pmf_mean(k: list, p: float) -> dict:\n    pmf = [round(float((1.0 - p) ** (ki - 1) * p), 6) for ki in k]\n    mean = round(float(1.0 / p), 6)\n    return {'pmf': pmf, 'mean': mean}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "GeometricPMFViz",
   "testCases": [
     {
@@ -110,15 +110,15 @@
           -2,
           -3
         ],
-        "p": -0.2
+        "p": 0.2
       },
       "expectedOutput": {
         "pmf": [
-          -0.138889,
-          -0.115741,
-          -0.096451
+          0.3125,
+          0.390625,
+          0.488281
         ],
-        "mean": -5.0
+        "mean": 5.0
       },
       "isPublic": false
     },
@@ -152,15 +152,15 @@
           3.0,
           4.0
         ],
-        "p": 1.2
+        "p": 0.2
       },
       "expectedOutput": {
         "pmf": [
-          -0.24,
-          0.048,
-          -0.0096
+          0.16,
+          0.128,
+          0.1024
         ],
-        "mean": 0.833333
+        "mean": 5.0
       },
       "isPublic": false
     }

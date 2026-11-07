@@ -19,7 +19,7 @@
   "starterCode": "import numpy as np\n\ndef bernoulli_pmf_and_moments(x: list, p: float) -> dict:\n    \"\"\"\n    Returns a dictionary with pmf, mean, and variance.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-08T13:01:04.104Z",
   "updatedAt": "2026-03-05T16:57:47.977Z",
-  "solution": "### 💡 Intuition & Approach\nEvaluates the PMF $p^x (1-p)^{1-x}$ for binary outcomes with expected value $p$ and variance $p(1-p)$.\n\n### ⚡ Python Reference Implementation\n```python\ndef bernoulli_pmf_and_moments(x: list, p: float) -> dict:\n    pmf = [float(p if val == 1 else (1.0 - p if val == 0 else 0.0)) for val in x]\n    return {\n        \"pmf\": pmf,\n        \"mean\": float(p),\n        \"variance\": float(round(p * (1.0 - p), 6))\n    }\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nEvaluates the PMF $p^x (1-p)^{1-x}$ for binary outcomes with expected value $p$ and variance $p(1-p)$.\n\n### \u26a1 Python Reference Implementation\n```python\ndef bernoulli_pmf_and_moments(x: list, p: float) -> dict:\n    pmf = [float(p if val == 1 else (1.0 - p if val == 0 else 0.0)) for val in x]\n    return {\n        \"pmf\": pmf,\n        \"mean\": float(p),\n        \"variance\": float(round(p * (1.0 - p), 6))\n    }\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "BernoulliViz",
   "testCases": [
     {
@@ -134,7 +134,7 @@
       "id": "bernoulli-pmf-tc-6",
       "name": "Case 6",
       "inputs": {
-        "p": -0.3,
+        "p": 0.3,
         "x": [
           0,
           -1,
@@ -143,12 +143,12 @@
       },
       "expectedOutput": {
         "pmf": [
-          1.3,
+          0.7,
           0.0,
           0.0
         ],
-        "mean": -0.3,
-        "variance": -0.39
+        "mean": 0.3,
+        "variance": 0.21
       },
       "isPublic": false
     },
@@ -188,7 +188,7 @@
         "name": "p",
         "type": "number",
         "example": "0.3",
-        "description": "Success probability (0 ≤ p ≤ 1)"
+        "description": "Success probability (0 \u2264 p \u2264 1)"
       }
     ]
   },

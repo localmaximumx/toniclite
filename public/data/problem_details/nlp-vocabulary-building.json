@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_vocabulary_building(corpus: list, max_vocab_size: int = 5, unk_token: str = '<UNK>') -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Vocabulary Building** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_vocabulary_building(corpus: list, max_vocab_size: int = 5, unk_token: str = '<UNK>') -> dict:\n    wc = {}\n    for t in corpus:\n        for w in t.lower().split(): wc[w] = wc.get(w, 0) + 1\n    vocab = [unk_token] + sorted(wc.keys(), key=lambda w: (-wc[w], w))[:int(max_vocab_size) - 1]\n    w2i = {w: i for i, w in enumerate(vocab)}\n    return {'vocabulary': vocab, 'encoded_corpus': [[w2i.get(w, w2i[unk_token]) for w in t.lower().split()] for t in corpus]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Vocabulary Building** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_vocabulary_building(corpus: list, max_vocab_size: int = 5, unk_token: str = '<UNK>') -> dict:\n    wc = {}\n    for t in corpus:\n        for w in t.lower().split(): wc[w] = wc.get(w, 0) + 1\n    vocab = [unk_token] + sorted(wc.keys(), key=lambda w: (-wc[w], w))[:int(max_vocab_size) - 1]\n    w2i = {w: i for i, w in enumerate(vocab)}\n    return {'vocabulary': vocab, 'encoded_corpus': [[w2i.get(w, w2i[unk_token]) for w in t.lower().split()] for t in corpus]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-vocabulary-building-tc-1",
@@ -198,35 +198,43 @@
       "name": "Case 5",
       "inputs": {
         "corpus": [
-          "the cat sat on the mat",
-          "the dog sat on the rug"
+          "neural mat the on sat cat the vector",
+          "rug the on sat dog the"
         ],
-        "max_vocab_size": 4,
-        "unk_token": "<UNK>"
+        "max_vocab_size": 10,
+        "unk_token": "<UNK>tion"
       },
       "expectedOutput": {
         "vocabulary": [
-          "<UNK>",
+          "<UNK>tion",
           "the",
           "on",
-          "sat"
+          "sat",
+          "cat",
+          "dog",
+          "mat",
+          "neural",
+          "rug",
+          "vector"
         ],
         "encoded_corpus": [
           [
+            7,
+            6,
             1,
-            0,
-            3,
             2,
+            3,
+            4,
             1,
-            0
+            9
           ],
           [
+            8,
             1,
-            0,
-            3,
             2,
-            1,
-            0
+            3,
+            5,
+            1
           ]
         ]
       },

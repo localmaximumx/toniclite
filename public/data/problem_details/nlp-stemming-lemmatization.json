@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_stemming_lemmatization(word: str, lemma_dict: dict = None) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Stemming vs Lemmatization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_stemming_lemmatization(word: str, lemma_dict: dict = None) -> dict:\n    w = word.strip().lower()\n    lemmas = lemma_dict or {'running': 'run', 'better': 'good', 'cats': 'cat', 'studies': 'study'}\n    stem = w\n    for s in ['ing', 'ies', 'es', 's', 'ed']:\n        if stem.endswith(s) and len(stem) > len(s) + 2:\n            stem = stem[:-len(s)] + ('y' if s == 'ies' else ''); break\n    return {'word': word, 'stem': stem, 'lemma': lemmas.get(w, stem)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Stemming vs Lemmatization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_stemming_lemmatization(word: str, lemma_dict: dict = None) -> dict:\n    w = word.strip().lower()\n    lemmas = lemma_dict or {'running': 'run', 'better': 'good', 'cats': 'cat', 'studies': 'study'}\n    stem = w\n    for s in ['ing', 'ies', 'es', 's', 'ed']:\n        if stem.endswith(s) and len(stem) > len(s) + 2:\n            stem = stem[:-len(s)] + ('y' if s == 'ies' else ''); break\n    return {'word': word, 'stem': stem, 'lemma': lemmas.get(w, stem)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-stemming-lemmatization-tc-1",
@@ -50,12 +50,12 @@
       "id": "nlp-stemming-lemmatization-tc-2",
       "name": "Case 2",
       "inputs": {
-        "word": "running"
+        "word": "runninging"
       },
       "expectedOutput": {
-        "word": "running",
-        "stem": "runn",
-        "lemma": "run"
+        "word": "runninging",
+        "stem": "running",
+        "lemma": "running"
       },
       "isPublic": true
     },
@@ -63,12 +63,12 @@
       "id": "nlp-stemming-lemmatization-tc-3",
       "name": "Case 3",
       "inputs": {
-        "word": "running"
+        "word": "runninger"
       },
       "expectedOutput": {
-        "word": "running",
-        "stem": "runn",
-        "lemma": "run"
+        "word": "runninger",
+        "stem": "runninger",
+        "lemma": "runninger"
       },
       "isPublic": false
     },
@@ -76,12 +76,12 @@
       "id": "nlp-stemming-lemmatization-tc-4",
       "name": "Case 4",
       "inputs": {
-        "word": "running"
+        "word": "runningly"
       },
       "expectedOutput": {
-        "word": "running",
-        "stem": "runn",
-        "lemma": "run"
+        "word": "runningly",
+        "stem": "runningly",
+        "lemma": "runningly"
       },
       "isPublic": false
     },
@@ -89,12 +89,12 @@
       "id": "nlp-stemming-lemmatization-tc-5",
       "name": "Case 5",
       "inputs": {
-        "word": "running"
+        "word": "runningtion"
       },
       "expectedOutput": {
-        "word": "running",
-        "stem": "runn",
-        "lemma": "run"
+        "word": "runningtion",
+        "stem": "runningtion",
+        "lemma": "runningtion"
       },
       "isPublic": false
     },
@@ -102,12 +102,12 @@
       "id": "nlp-stemming-lemmatization-tc-6",
       "name": "Case 6",
       "inputs": {
-        "word": "running"
+        "word": "runningment"
       },
       "expectedOutput": {
-        "word": "running",
-        "stem": "runn",
-        "lemma": "run"
+        "word": "runningment",
+        "stem": "runningment",
+        "lemma": "runningment"
       },
       "isPublic": false
     },
@@ -115,12 +115,12 @@
       "id": "nlp-stemming-lemmatization-tc-7",
       "name": "Case 7",
       "inputs": {
-        "word": "running"
+        "word": "runningness"
       },
       "expectedOutput": {
-        "word": "running",
-        "stem": "runn",
-        "lemma": "run"
+        "word": "runningness",
+        "stem": "runningnes",
+        "lemma": "runningnes"
       },
       "isPublic": false
     }

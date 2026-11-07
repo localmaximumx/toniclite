@@ -20,7 +20,7 @@
   "starterCode": "import numpy as np\n\ndef focal_loss(p: list, y: list, gamma: float = 2.0) -> float:\n    \"\"\"\n    Returns the loss as a float.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-05T19:02:27.732Z",
   "updatedAt": "2026-03-05T19:39:25.776Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef focal_loss(p: list, y: list, gamma: float = 2.0) -> float:\n    arr_p = np.array(p, dtype=float)\n    arr_y = np.array(y, dtype=float)\n    eps = 1e-15\n    arr_p = np.clip(arr_p, eps, 1.0 - eps)\n    p_t = np.where(arr_y == 1, arr_p, 1.0 - arr_p)\n    loss = -((1.0 - p_t) ** gamma) * np.log(p_t)\n    return float(round(np.mean(loss), 6))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef focal_loss(p: list, y: list, gamma: float = 2.0) -> float:\n    arr_p = np.array(p, dtype=float)\n    arr_y = np.array(y, dtype=float)\n    eps = 1e-15\n    arr_p = np.clip(arr_p, eps, 1.0 - eps)\n    p_t = np.where(arr_y == 1, arr_p, 1.0 - arr_p)\n    loss = -((1.0 - p_t) ** gamma) * np.log(p_t)\n    return float(round(np.mean(loss), 6))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "FocalLossViz",
   "testCases": [
     {
@@ -70,21 +70,21 @@
       "name": "Case 3",
       "inputs": {
         "p": [
-          0.9,
-          0.2,
-          0.7,
-          0.1
+          0.4,
+          0.5,
+          0.4,
+          0.5
         ],
         "y": [
           1,
           0,
-          1,
+          0,
           0
         ],
-        "gamma": 0
+        "gamma": 6
       },
       "isPublic": false,
-      "expectedOutput": 0.197635
+      "expectedOutput": 0.016626
     },
     {
       "id": "focal-loss-tc-4",
@@ -144,9 +144,9 @@
           -1,
           0
         ],
-        "gamma": -2
+        "gamma": 2
       },
-      "expectedOutput": 1000799917193444.1,
+      "expectedOutput": 0.0,
       "isPublic": false
     },
     {

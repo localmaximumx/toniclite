@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef rl_bellman_expectation_equation(state: int, policy_probs: list, transitions: list, rewards: list, v_values: list, gamma: float = 0.9) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Bellman Expectation Equation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_bellman_expectation_equation(state: int, policy_probs: list, transitions: list, rewards: list, v_values: list, gamma: float = 0.9) -> float:\n    q = np.array(rewards, dtype=np.float64) + float(gamma) * np.sum(np.array(transitions, dtype=np.float64) * np.array(v_values, dtype=np.float64), axis=1)\n    return round(float(np.sum(np.array(policy_probs, dtype=np.float64) * q)), 4)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Bellman Expectation Equation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_bellman_expectation_equation(state: int, policy_probs: list, transitions: list, rewards: list, v_values: list, gamma: float = 0.9) -> float:\n    q = np.array(rewards, dtype=np.float64) + float(gamma) * np.sum(np.array(transitions, dtype=np.float64) * np.array(v_values, dtype=np.float64), axis=1)\n    return round(float(np.sum(np.array(policy_probs, dtype=np.float64) * q)), 4)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-bellman-expectation-equation-tc-1",
@@ -187,9 +187,9 @@
           -3.0,
           -5.0
         ],
-        "gamma": -0.9
+        "gamma": 0.9
       },
-      "expectedOutput": 5.19,
+      "expectedOutput": -2.19,
       "isPublic": false
     },
     {

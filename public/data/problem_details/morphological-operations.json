@@ -18,7 +18,7 @@
   "starterCode": "def morphological_op(image: list, kernel: list, operation: str) -> list:\n    \"\"\"\n    Returns the eroded or dilated binary image.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T15:48:30.816Z",
   "updatedAt": "2026-08-23T19:34:01.145Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef morphological_op(image: list, kernel: list, operation: str) -> list:\n    img = np.array(image, dtype=int)\n    k = np.array(kernel, dtype=int)\n    kh, kw = k.shape\n    pad_h, pad_w = kh // 2, kw // 2\n    padded = np.pad(img, ((pad_h, pad_h), (pad_w, pad_w)), mode='constant', constant_values=0)\n    out = np.zeros_like(img)\n    H, W = img.shape\n    for i in range(H):\n        for j in range(W):\n            patch = padded[i:i+kh, j:j+kw]\n            if operation in ['dilate', 'dilation']:\n                out[i, j] = 1 if np.any((patch == 1) & (k == 1)) else 0\n            elif operation in ['erode', 'erosion']:\n                out[i, j] = 1 if np.all(patch[k == 1] == 1) else 0\n    return out.tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef morphological_op(image: list, kernel: list, operation: str) -> list:\n    img = np.array(image, dtype=int)\n    k = np.array(kernel, dtype=int)\n    kh, kw = k.shape\n    pad_h, pad_w = kh // 2, kw // 2\n    padded = np.pad(img, ((pad_h, pad_h), (pad_w, pad_w)), mode='constant', constant_values=0)\n    out = np.zeros_like(img)\n    H, W = img.shape\n    for i in range(H):\n        for j in range(W):\n            patch = padded[i:i+kh, j:j+kw]\n            if operation in ['dilate', 'dilation']:\n                out[i, j] = 1 if np.any((patch == 1) & (k == 1)) else 0\n            elif operation in ['erode', 'erosion']:\n                out[i, j] = 1 if np.all(patch[k == 1] == 1) else 0\n    return out.tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "MorphologicalOperationsViz",
   "testCases": [
     {
@@ -400,55 +400,55 @@
         "image": [
           [
             0,
-            0,
+            1,
             0
           ],
           [
-            0,
+            1,
             1,
             0
           ],
           [
             0,
-            0,
+            1,
             0
           ]
         ],
         "kernel": [
           [
             1,
+            0,
+            1
+          ],
+          [
+            0,
             1,
             1
           ],
           [
             1,
-            1,
-            1
-          ],
-          [
-            1,
-            1,
+            0,
             1
           ]
         ],
-        "operation": "dilate"
+        "operation": "dilateness"
       },
       "isPublic": false,
       "expectedOutput": [
         [
-          1,
-          1,
-          1
+          0,
+          0,
+          0
         ],
         [
-          1,
-          1,
-          1
+          0,
+          0,
+          0
         ],
         [
-          1,
-          1,
-          1
+          0,
+          0,
+          0
         ]
       ]
     }

@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def rl_discounted_returns(rewards: list, gamma: float = 0.9, terminal_bootstrap: float = 0.0) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Discounted Returns** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_discounted_returns(rewards: list, gamma: float = 0.9, terminal_bootstrap: float = 0.0) -> list:\n    G = float(terminal_bootstrap); ret = []\n    for rew in reversed(rewards):\n        G = float(rew) + float(gamma) * G; ret.append(G)\n    return np.round(ret[::-1], 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Discounted Returns** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_discounted_returns(rewards: list, gamma: float = 0.9, terminal_bootstrap: float = 0.0) -> list:\n    G = float(terminal_bootstrap); ret = []\n    for rew in reversed(rewards):\n        G = float(rew) + float(gamma) * G; ret.append(G)\n    return np.round(ret[::-1], 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-discounted-returns-tc-1",
@@ -117,12 +117,12 @@
           -2.0,
           -3.0
         ],
-        "gamma": -0.9,
+        "gamma": 0.9,
         "terminal_bootstrap": -0.0
       },
       "expectedOutput": [
-        -1.63,
-        0.7,
+        -5.23,
+        -4.7,
         -3.0
       ],
       "isPublic": false

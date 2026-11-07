@@ -386,5 +386,6 @@
     "prev": "word2vec-sgns-loss",
     "next": "word2vec-sgns-step"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "word2vec-cbow-forward"
 }

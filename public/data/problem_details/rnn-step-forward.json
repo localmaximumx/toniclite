@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef rnn_step_forward(x_t: list, h_prev: list, Wx: list, Wh: list, b: list) -> np.ndarray:\n    \"\"\"\n    Returns a NumPy array with shape (H,).\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-15T16:17:00.421Z",
   "updatedAt": "2026-08-23T10:06:15.807Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef rnn_step_forward(x_t: list, h_prev: list, Wx: list, Wh: list, b: list) -> np.ndarray:\n    x = np.array(x_t, dtype=float)\n    h = np.array(h_prev, dtype=float)\n    W_x = np.array(Wx, dtype=float)\n    W_h = np.array(Wh, dtype=float)\n    bias = np.array(b, dtype=float)\n    return np.round(np.tanh(x @ W_x + h @ W_h + bias), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef rnn_step_forward(x_t: list, h_prev: list, Wx: list, Wh: list, b: list) -> np.ndarray:\n    x = np.array(x_t, dtype=float)\n    h = np.array(h_prev, dtype=float)\n    W_x = np.array(Wx, dtype=float)\n    W_h = np.array(Wh, dtype=float)\n    bias = np.array(b, dtype=float)\n    return np.round(np.tanh(x @ W_x + h @ W_h + bias), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "RnnStepForwardViz",
   "testCases": [
     {
@@ -285,41 +285,41 @@
       "inputs": {
         "b": [
           0,
-          0
+          1
         ],
         "Wh": [
           [
             0,
-            0
+            1
           ],
           [
-            0,
+            1,
             0
           ]
         ],
         "Wx": [
           [
             1,
-            0
+            1
           ],
           [
-            0,
+            1,
             1
           ]
         ],
         "x_t": [
           1,
-          0
+          1
         ],
         "h_prev": [
           0,
-          0
+          1
         ]
       },
       "isPublic": false,
       "expectedOutput": [
-        0.761594,
-        0.0
+        0.995055,
+        0.995055
       ]
     }
   ],

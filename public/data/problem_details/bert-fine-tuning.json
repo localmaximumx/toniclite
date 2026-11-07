@@ -597,5 +597,6 @@
     "prev": "bert-pooler",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "bert-fine-tuning"
 }

@@ -1163,5 +1163,6 @@
     "prev": "k3-per-head-muon",
     "next": "k3-kda-context-parallel"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-multi-teacher-opd"
 }

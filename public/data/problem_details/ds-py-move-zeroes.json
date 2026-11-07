@@ -13,7 +13,7 @@
   "description": "Given an integer array `nums`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.\n\nNote that you must do this **in-place** without making a copy of the array.\n\n### Invariant\nUse a two-pointer approach where one pointer records the insertion index for the next non-zero element, and a second pointer scans forward.",
   "theory": "# Understanding Move Zeroes\n\n## 1. What Is It?\n\nThe **Move Zeroes** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given an integer array `nums`, move all `0`'s to the end of it while maintaining the relative order of the non-zero elements.\n\n### Key Terminology\n- **Move Zeroes**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `move_zeroes`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `move_zeroes` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nnums = [0, 1, 0, 3, 12]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n\n\n**Resulting Output:**\n```python\n[1, 3, 12, 0, 0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `move_zeroes` must return:\n- **Primary Output:** `[1, 3, 12, 0, 0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `move_zeroes`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `move_zeroes`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `move_zeroes`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Move Zeroes** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `move_zeroes` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: nums = [0, 1, 0, 3, 12]\nOutput: [1, 3, 12, 0, 0]"
+    "Input: nums = [0, 1, 0, 3, 12]\n\nOutput: [1, 3, 12, 0, 0]\n\nExplanation: Evaluated move_zeroes under standard test conditions."
   ],
   "requirements": [
     "Implement the function `move_zeroes`.",
@@ -28,19 +28,19 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "def move_zeroes(nums):\n    \"\"\"\n    Move all 0s to the end while maintaining the relative order of non-zero elements.\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef move_zeroes(nums):\n    \"\"\"\n    Two-pointer in-place shift\n    \"\"\"\n    pos = 0\n    for n in nums:\n        if n != 0:\n            nums[pos] = n\n            pos += 1\n    for i in range(pos, len(nums)):\n        nums[i] = 0\n    return nums\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def move_zeroes(nums: list) -> list:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Move Zeroes** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef move_zeroes(nums: list) -> list:\n    insert_pos = 0\n    for i in range(len(nums)):\n        if nums[i] != 0:\n            nums[insert_pos], nums[i] = nums[i], nums[insert_pos]\n            insert_pos += 1\n    return nums\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ds-py-move-zeroes-tc-1",
       "name": "Mixed numbers",
       "inputs": {
         "nums": [
-          1,
-          3,
-          12,
           0,
-          0
+          1,
+          0,
+          3,
+          12
         ]
       },
       "expectedOutput": [
@@ -54,62 +54,48 @@
     },
     {
       "id": "ds-py-move-zeroes-tc-2",
-      "name": "Case 2",
+      "name": "Single zero",
       "inputs": {
         "nums": [
-          2,
-          6,
-          24,
-          0,
           0
         ]
       },
       "expectedOutput": [
-        2,
-        6,
-        24,
-        0,
         0
       ],
       "isPublic": true
     },
     {
       "id": "ds-py-move-zeroes-tc-3",
-      "name": "Case 3",
+      "name": "No zeros",
       "inputs": {
         "nums": [
+          1,
           2,
-          6,
-          0,
-          0,
-          0
+          3
         ]
       },
       "expectedOutput": [
+        1,
         2,
-        6,
-        0,
-        0,
-        0
+        3
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-move-zeroes-tc-4",
-      "name": "Case 4",
+      "name": "Zeros at end already",
       "inputs": {
         "nums": [
-          -1,
-          -3,
-          -12,
+          4,
+          5,
           0,
           0
         ]
       },
       "expectedOutput": [
-        -1,
-        -3,
-        -12,
+        4,
+        5,
         0,
         0
       ],
@@ -117,20 +103,16 @@
     },
     {
       "id": "ds-py-move-zeroes-tc-5",
-      "name": "Case 5",
+      "name": "All zeros",
       "inputs": {
         "nums": [
-          3,
-          9,
-          36,
+          0,
           0,
           0
         ]
       },
       "expectedOutput": [
-        3,
-        9,
-        36,
+        0,
         0,
         0
       ],
@@ -138,43 +120,45 @@
     },
     {
       "id": "ds-py-move-zeroes-tc-6",
-      "name": "Case 6",
+      "name": "Negative numbers with zeros",
       "inputs": {
         "nums": [
-          1.0,
-          2.0,
-          1.0,
-          4.0,
-          13.0
+          0,
+          -1,
+          0,
+          -2,
+          3
         ]
       },
       "expectedOutput": [
-        1.0,
-        2.0,
-        1.0,
-        4.0,
-        13.0
+        -1,
+        -2,
+        3,
+        0,
+        0
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-move-zeroes-tc-7",
-      "name": "Case 7",
+      "name": "Alternating zeros",
       "inputs": {
         "nums": [
-          -2.0,
-          -1.0,
-          -2.0,
-          1.0,
-          10.0
+          1,
+          0,
+          2,
+          0,
+          3,
+          0
         ]
       },
       "expectedOutput": [
-        -2.0,
-        -1.0,
-        -2.0,
-        1.0,
-        10.0
+        1,
+        2,
+        3,
+        0,
+        0,
+        0
       ],
       "isPublic": false
     }
@@ -187,6 +171,7 @@
         "type": "list",
         "description": "Integer array"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

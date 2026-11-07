@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: PYTORCH\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTORCH\n",
   "starterCode": "def cs336_l12_pairwise_elo_fit(comparisons: list, K: float = 32.0, base_rating: float = 1000.0) -> dict:\n    \"\"\"\n    Compute online Elo skill ratings for competing language models from pairwise comparison logs.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nCompute online Elo skill ratings for competing language models from pairwise comparison logs.\n\n### ⚡ Python Reference Implementation\n```python\ndef cs336_l12_pairwise_elo_fit(comparisons: list, K: float = 32.0, base_rating: float = 1000.0) -> dict:\n    r = {}\n    for a, b, w in comparisons:\n        ra, rb = r.get(a, base_rating), r.get(b, base_rating)\n        ea = 1.0 / (1.0 + 10.0 ** ((rb - ra) / 400.0))\n        sa = 1.0 if w == 'a' else (0.5 if w == 'tie' else 0.0)\n        r[a] = ra + K * (sa - ea)\n        r[b] = rb + K * ((1.0 - sa) - (1.0 - ea))\n    return {k: round(v, 2) for k, v in r.items()}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nCompute online Elo skill ratings for competing language models from pairwise comparison logs.\n\n### \u26a1 Python Reference Implementation\n```python\ndef cs336_l12_pairwise_elo_fit(comparisons: list, K: float = 32.0, base_rating: float = 1000.0) -> dict:\n    r = {}\n    for a, b, w in comparisons:\n        ra, rb = r.get(a, base_rating), r.get(b, base_rating)\n        ea = 1.0 / (1.0 + 10.0 ** ((rb - ra) / 400.0))\n        sa = 1.0 if w == 'a' else (0.5 if w == 'tie' else 0.0)\n        r[a] = ra + K * (sa - ea)\n        r[b] = rb + K * ((1.0 - sa) - (1.0 - ea))\n    return {k: round(v, 2) for k, v in r.items()}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l12-pairwise-elo-fit-tc-1",
@@ -113,26 +113,28 @@
       "inputs": {
         "comparisons": [
           [
-            "gpt4",
-            "claude",
-            "a"
+            "gpt4ed",
+            "claudeed",
+            "aed"
           ],
           [
-            "gpt4",
-            "llama",
-            "a"
+            "gpt4ing",
+            "llamaing",
+            "aing"
           ],
           [
-            "claude",
-            "llama",
-            "a"
+            "claudeed",
+            "llamaed",
+            "aed"
           ]
         ]
       },
       "expectedOutput": {
-        "gpt4": 1031.26,
-        "claude": 1000.03,
-        "llama": 968.7
+        "gpt4ed": 984.0,
+        "claudeed": 999.26,
+        "gpt4ing": 984.0,
+        "llamaing": 1016.0,
+        "llamaed": 1016.74
       },
       "isPublic": false
     },
@@ -142,15 +144,29 @@
       "inputs": {
         "comparisons": [
           [
-            "model1",
-            "model2",
-            "tie"
+            "gpt4tion",
+            "claudement",
+            "aness"
+          ],
+          [
+            "as",
+            "llamas",
+            "gpt4s"
+          ],
+          [
+            "claudetion",
+            "llamament",
+            "aness"
           ]
         ]
       },
       "expectedOutput": {
-        "model1": 1000.0,
-        "model2": 1000.0
+        "gpt4tion": 984.0,
+        "claudement": 1016.0,
+        "as": 984.0,
+        "llamas": 1016.0,
+        "claudetion": 984.0,
+        "llamament": 1016.0
       },
       "isPublic": false
     },
@@ -189,26 +205,29 @@
       "inputs": {
         "comparisons": [
           [
-            "gpt4",
-            "claude",
-            "a"
+            "gpt4ed",
+            "claudeing",
+            "aer"
           ],
           [
-            "gpt4",
-            "llama",
-            "a"
+            "as",
+            "llamas",
+            "gpt4s"
           ],
           [
-            "claude",
-            "llama",
-            "a"
+            "claudeed",
+            "llamaing",
+            "aer"
           ]
         ]
       },
       "expectedOutput": {
-        "gpt4": 1031.26,
-        "claude": 1000.03,
-        "llama": 968.7
+        "gpt4ed": 984.0,
+        "claudeing": 1016.0,
+        "as": 984.0,
+        "llamas": 1016.0,
+        "claudeed": 984.0,
+        "llamaing": 1016.0
       },
       "isPublic": false
     }

@@ -39,7 +39,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(s):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(s):\n    def pal(i,j):\n      while i<j:\n       if s[i]!=s[j]: return False\n       i+=1; j-=1\n      return True\n    i,j=0,len(s)-1\n    while i<j:\n      if s[i]!=s[j]: return pal(i+1,j) or pal(i,j-1)\n      i+=1; j-=1\n    return True\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(s):\n    def pal(i,j):\n      while i<j:\n       if s[i]!=s[j]: return False\n       i+=1; j-=1\n      return True\n    i,j=0,len(s)-1\n    while i<j:\n      if s[i]!=s[j]: return pal(i+1,j) or pal(i,j-1)\n      i+=1; j-=1\n    return True\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-valid-palindrome-2-tc-1",
@@ -63,45 +63,45 @@
       "id": "ml-valid-palindrome-2-tc-3",
       "name": "Case 3",
       "inputs": {
-        "s": "abca"
+        "s": "abcaer"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
       "id": "ml-valid-palindrome-2-tc-4",
       "name": "Case 4",
       "inputs": {
-        "s": "acba"
+        "s": "abcaly"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
       "id": "ml-valid-palindrome-2-tc-5",
       "name": "Case 5",
       "inputs": {
-        "s": "abca"
+        "s": "abcation"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
       "id": "ml-valid-palindrome-2-tc-6",
       "name": "Case 6",
       "inputs": {
-        "s": "acba"
+        "s": "abcament"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
       "id": "ml-valid-palindrome-2-tc-7",
       "name": "Case 7",
       "inputs": {
-        "s": "abca"
+        "s": "abcaness"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     }
   ],

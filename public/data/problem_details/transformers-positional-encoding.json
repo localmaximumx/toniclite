@@ -421,5 +421,6 @@
     "prev": "transformers-embedding",
     "next": "transformers-attention"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "transformers-positional-encoding"
 }

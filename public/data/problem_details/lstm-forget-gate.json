@@ -353,5 +353,6 @@
     "prev": null,
     "next": "lstm-input-gate"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "lstm-forget-gate"
 }

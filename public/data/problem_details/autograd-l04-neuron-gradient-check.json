@@ -88,11 +88,11 @@
           0.4
         ],
         "bias": 0.2,
-        "h": 0.0
+        "h": 1e-05
       },
       "expectedOutput": {
-        "max_rel_error": 0.0,
-        "is_correct": false
+        "max_rel_error": 1.8e-05,
+        "is_correct": true
       },
       "isPublic": false
     },
@@ -109,11 +109,11 @@
           0.1
         ],
         "bias": 0.05,
-        "h": 0.0
+        "h": 1e-05
       },
       "expectedOutput": {
-        "max_rel_error": 0.0,
-        "is_correct": false
+        "max_rel_error": 1e-06,
+        "is_correct": true
       },
       "isPublic": false
     },
@@ -130,11 +130,11 @@
           -0.2
         ],
         "bias": -0.1,
-        "h": -0.0
+        "h": 1e-05
       },
       "expectedOutput": {
-        "max_rel_error": 0.0,
-        "is_correct": false
+        "max_rel_error": 2e-06,
+        "is_correct": true
       },
       "isPublic": false
     },
@@ -151,11 +151,11 @@
           0.6
         ],
         "bias": 0.3,
-        "h": 0.0
+        "h": 1e-05
       },
       "expectedOutput": {
-        "max_rel_error": 0.0,
-        "is_correct": false
+        "max_rel_error": 3e-05,
+        "is_correct": true
       },
       "isPublic": false
     },

@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_pos_tagging(train_tokens: list, train_tags: list, test_tokens: list, fallback_tag: str = 'NOUN') -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **POS Tagging** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_pos_tagging(train_tokens: list, train_tags: list, test_tokens: list, fallback_tag: str = 'NOUN') -> list:\n    c = {}\n    for tok, tag in zip(train_tokens, train_tags):\n        w = tok.lower(); c.setdefault(w, {})[tag] = c.setdefault(w, {}).get(tag, 0) + 1\n    return [max(c[t.lower()], key=c[t.lower()].get) if t.lower() in c else fallback_tag for t in test_tokens]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **POS Tagging** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_pos_tagging(train_tokens: list, train_tags: list, test_tokens: list, fallback_tag: str = 'NOUN') -> list:\n    c = {}\n    for tok, tag in zip(train_tokens, train_tags):\n        w = tok.lower(); c.setdefault(w, {})[tag] = c.setdefault(w, {}).get(tag, 0) + 1\n    return [max(c[t.lower()], key=c[t.lower()].get) if t.lower() in c else fallback_tag for t in test_tokens]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-pos-tagging-tc-1",
@@ -68,28 +68,28 @@
       "name": "Case 2",
       "inputs": {
         "train_tokens": [
-          "The",
-          "dog",
-          "runs",
-          "fast"
+          "Theed",
+          "doged",
+          "runsed",
+          "fasted"
         ],
         "train_tags": [
-          "DET",
-          "NOUN",
-          "VERB",
-          "ADV"
+          "DETed",
+          "NOUNed",
+          "VERBed",
+          "ADVed"
         ],
         "test_tokens": [
-          "The",
-          "cat",
-          "runs"
+          "Theed",
+          "cated",
+          "runsed"
         ],
-        "fallback_tag": "NOUN"
+        "fallback_tag": "NOUNing"
       },
       "expectedOutput": [
-        "DET",
-        "NOUN",
-        "VERB"
+        "DETed",
+        "NOUNing",
+        "VERBed"
       ],
       "isPublic": true
     },
@@ -98,28 +98,28 @@
       "name": "Case 3",
       "inputs": {
         "train_tokens": [
-          "The",
-          "dog",
-          "runs",
-          "fast"
+          "Theing",
+          "doging",
+          "runsing",
+          "fasting"
         ],
         "train_tags": [
-          "DET",
-          "NOUN",
-          "VERB",
-          "ADV"
+          "DETing",
+          "NOUNing",
+          "VERBing",
+          "ADVing"
         ],
         "test_tokens": [
-          "The",
-          "cat",
-          "runs"
+          "Theing",
+          "cating",
+          "runsing"
         ],
-        "fallback_tag": "NOUN"
+        "fallback_tag": "NOUNer"
       },
       "expectedOutput": [
-        "DET",
-        "NOUN",
-        "VERB"
+        "DETing",
+        "NOUNer",
+        "VERBing"
       ],
       "isPublic": false
     },
@@ -128,28 +128,32 @@
       "name": "Case 4",
       "inputs": {
         "train_tokens": [
-          "The",
-          "dog",
-          "runs",
-          "fast"
+          "Theer",
+          "doger",
+          "runser",
+          "faster",
+          "natural language processing"
         ],
         "train_tags": [
-          "DET",
-          "NOUN",
-          "VERB",
-          "ADV"
+          "DETer",
+          "NOUNer",
+          "VERBer",
+          "ADVer",
+          "natural language processing"
         ],
         "test_tokens": [
-          "The",
-          "cat",
-          "runs"
+          "Theer",
+          "cater",
+          "runser",
+          "natural language processing"
         ],
-        "fallback_tag": "NOUN"
+        "fallback_tag": "NOUNly"
       },
       "expectedOutput": [
-        "DET",
-        "NOUN",
-        "VERB"
+        "DETer",
+        "NOUNly",
+        "VERBer",
+        "natural language processing"
       ],
       "isPublic": false
     },
@@ -158,28 +162,28 @@
       "name": "Case 5",
       "inputs": {
         "train_tokens": [
-          "The",
-          "dog",
-          "runs",
-          "fast"
+          "Thetion",
+          "dogment",
+          "runsness",
+          "fastable"
         ],
         "train_tags": [
-          "DET",
-          "NOUN",
-          "VERB",
-          "ADV"
+          "DETtion",
+          "NOUNment",
+          "VERBness",
+          "ADVable"
         ],
         "test_tokens": [
-          "The",
-          "cat",
-          "runs"
+          "Thetion",
+          "catment",
+          "runsness"
         ],
-        "fallback_tag": "NOUN"
+        "fallback_tag": "NOUNtion"
       },
       "expectedOutput": [
-        "DET",
-        "NOUN",
-        "VERB"
+        "DETtion",
+        "NOUNtion",
+        "VERBness"
       ],
       "isPublic": false
     },
@@ -188,28 +192,28 @@
       "name": "Case 6",
       "inputs": {
         "train_tokens": [
-          "The",
-          "dog",
-          "runs",
-          "fast"
+          "fasts",
+          "runss",
+          "dogs",
+          "Thes"
         ],
         "train_tags": [
-          "DET",
-          "NOUN",
-          "VERB",
-          "ADV"
+          "ADVs",
+          "VERBs",
+          "NOUNs",
+          "DETs"
         ],
         "test_tokens": [
-          "The",
-          "cat",
-          "runs"
+          "runss",
+          "cats",
+          "Thes"
         ],
-        "fallback_tag": "NOUN"
+        "fallback_tag": "NOUNment"
       },
       "expectedOutput": [
-        "DET",
-        "NOUN",
-        "VERB"
+        "VERBs",
+        "NOUNment",
+        "DETs"
       ],
       "isPublic": false
     },
@@ -221,25 +225,29 @@
           "The",
           "dog",
           "runs",
-          "fast"
+          "fast",
+          "computer vision system"
         ],
         "train_tags": [
           "DET",
           "NOUN",
           "VERB",
-          "ADV"
+          "ADV",
+          "computer vision system"
         ],
         "test_tokens": [
           "The",
           "cat",
-          "runs"
+          "runs",
+          "computer vision system"
         ],
-        "fallback_tag": "NOUN"
+        "fallback_tag": "NOUNness"
       },
       "expectedOutput": [
         "DET",
-        "NOUN",
-        "VERB"
+        "NOUNness",
+        "VERB",
+        "computer vision system"
       ],
       "isPublic": false
     }

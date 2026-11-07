@@ -722,5 +722,6 @@
     "prev": "rnn-forward-sequence",
     "next": "rnn-vanishing-gradients"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "rnn-bptt"
 }

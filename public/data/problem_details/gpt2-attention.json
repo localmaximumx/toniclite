@@ -14,8 +14,8 @@
   ],
   "isFree": true,
   "isLocked": false,
-  "description": "Calculate softmax(QKᵀ/√dₖ)V, optionally masking future positions.",
-  "theory": "## Scaled Dot-Product Attention\n\nCalculate softmax(QKᵀ/√dₖ)V, optionally masking future positions.\n\n**Context:** This component is associated with GPT-2 and helps illustrate a building block of transformer language models. The interface below is an educational reconstruction from the title and metadata, not a claim to reproduce every production-architecture detail.",
+  "description": "Calculate softmax(QK\u1d40/\u221ad\u2096)V, optionally masking future positions.",
+  "theory": "## Scaled Dot-Product Attention\n\nCalculate softmax(QK\u1d40/\u221ad\u2096)V, optionally masking future positions.\n\n**Context:** This component is associated with GPT-2 and helps illustrate a building block of transformer language models. The interface below is an educational reconstruction from the title and metadata, not a claim to reproduce every production-architecture detail.",
   "examples": [
     {
       "input": [
@@ -107,8 +107,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# Scaled Dot-Product Attention — reconstructed educational contract\nimport numpy as np\n\ndef solution(q, k, v, causal=False):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Scaled Dot-Product Attention** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(q, k, v, causal=False):\n    q=np.asarray(q,dtype=float); k=np.asarray(k,dtype=float); v=np.asarray(v,dtype=float)\n    scores=q@np.swapaxes(k,-1,-2)/np.sqrt(q.shape[-1])\n    if causal:\n        mask=np.triu(np.ones(scores.shape[-2:],dtype=bool),k=1)\n        scores=np.where(mask,-1e30,scores)\n    e=np.exp(scores-scores.max(axis=-1,keepdims=True)); p=e/e.sum(axis=-1,keepdims=True)\n    return (p@v).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# Scaled Dot-Product Attention \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(q, k, v, causal=False):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Scaled Dot-Product Attention** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(q, k, v, causal=False):\n    q=np.asarray(q,dtype=float); k=np.asarray(k,dtype=float); v=np.asarray(v,dtype=float)\n    scores=q@np.swapaxes(k,-1,-2)/np.sqrt(q.shape[-1])\n    if causal:\n        mask=np.triu(np.ones(scores.shape[-2:],dtype=bool),k=1)\n        scores=np.where(mask,-1e30,scores)\n    e=np.exp(scores-scores.max(axis=-1,keepdims=True)); p=e/e.sum(axis=-1,keepdims=True)\n    return (p@v).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gpt2-attention-tc-1",
@@ -224,16 +224,16 @@
             8.0
           ]
         ],
-        "causal": 0
+        "causal": false
       },
       "expectedOutput": [
         [
-          2.223229,
-          4.223229
+          2.223228876828679,
+          4.22322887682868
         ],
         [
-          5.776771,
-          7.776771
+          5.776771123171321,
+          7.776771123171321
         ]
       ],
       "isPublic": false
@@ -272,16 +272,16 @@
             2.0
           ]
         ],
-        "causal": 0
+        "causal": false
       },
       "expectedOutput": [
         [
-          0.955921,
-          1.455921
+          0.9559205566507739,
+          1.4559205566507738
         ],
         [
-          1.044079,
-          1.544079
+          1.044079443349226,
+          1.544079443349226
         ]
       ],
       "isPublic": false
@@ -320,16 +320,16 @@
             -4.0
           ]
         ],
-        "causal": 0
+        "causal": false
       },
       "expectedOutput": [
         [
-          -1.660477,
-          -2.660477
+          -1.6604769013466862,
+          -2.6604769013466862
         ],
         [
-          -2.339523,
-          -3.339523
+          -2.3395230986533138,
+          -3.3395230986533138
         ]
       ],
       "isPublic": false
@@ -368,16 +368,16 @@
             12.0
           ]
         ],
-        "causal": 0
+        "causal": false
       },
       "expectedOutput": [
         [
-          3.010317,
-          6.010317
+          3.010317409067675,
+          6.0103174090676745
         ],
         [
-          8.989683,
-          11.989683
+          8.989682590932325,
+          11.989682590932325
         ]
       ],
       "isPublic": false
@@ -416,16 +416,16 @@
             5.0
           ]
         ],
-        "causal": 1.0
+        "causal": false
       },
       "expectedOutput": [
         [
-          2.0,
-          3.0
+          2.6604769013466862,
+          3.6604769013466862
         ],
         [
-          3.339523,
-          4.339523
+          3.3395230986533138,
+          4.339523098653314
         ]
       ],
       "isPublic": false

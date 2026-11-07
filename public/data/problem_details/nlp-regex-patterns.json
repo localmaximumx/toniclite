@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import re\n\ndef nlp_regex_patterns(text: str, pattern_type: str = 'email') -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Regex Patterns for NLP** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport re\n\ndef nlp_regex_patterns(text: str, pattern_type: str = 'email') -> list:\n    p = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+' if pattern_type == 'email' else (r'\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b' if pattern_type == 'phone' else r'\\b\\d+\\b')\n    return re.findall(p, text)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Regex Patterns for NLP** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_regex_patterns(text: str, pattern_type: str = 'email') -> list:\n    p = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+' if pattern_type == 'email' else (r'\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b' if pattern_type == 'phone' else r'\\b\\d+\\b')\n    return re.findall(p, text)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-regex-patterns-tc-1",
@@ -50,78 +50,60 @@
       "id": "nlp-regex-patterns-tc-2",
       "name": "Case 2",
       "inputs": {
-        "text": "Contact us at support@example.com or sales@test.org for inquiries.",
-        "pattern_type": "email"
+        "text": "delta Contact us at support@example.com or sales@test.org for inquiries.",
+        "pattern_type": "emailing"
       },
-      "expectedOutput": [
-        "support@example.com",
-        "sales@test.org"
-      ],
+      "expectedOutput": [],
       "isPublic": true
     },
     {
       "id": "nlp-regex-patterns-tc-3",
       "name": "Case 3",
       "inputs": {
-        "text": "Contact us at support@example.com or sales@test.org for inquiries.",
-        "pattern_type": "email"
+        "text": "Contact us at support@example.com or sales@test.org for inquiries. Contact",
+        "pattern_type": "emailer"
       },
-      "expectedOutput": [
-        "support@example.com",
-        "sales@test.org"
-      ],
+      "expectedOutput": [],
       "isPublic": false
     },
     {
       "id": "nlp-regex-patterns-tc-4",
       "name": "Case 4",
       "inputs": {
-        "text": "Contact us at support@example.com or sales@test.org for inquiries.",
-        "pattern_type": "email"
+        "text": "Contact us at support@example.com or sales@test.org for model",
+        "pattern_type": "emailly"
       },
-      "expectedOutput": [
-        "support@example.com",
-        "sales@test.org"
-      ],
+      "expectedOutput": [],
       "isPublic": false
     },
     {
       "id": "nlp-regex-patterns-tc-5",
       "name": "Case 5",
       "inputs": {
-        "text": "Contact us at support@example.com or sales@test.org for inquiries.",
-        "pattern_type": "email"
+        "text": "neural inquiries. for sales@test.org or support@example.com at us Contact vector",
+        "pattern_type": "emailtion"
       },
-      "expectedOutput": [
-        "support@example.com",
-        "sales@test.org"
-      ],
+      "expectedOutput": [],
       "isPublic": false
     },
     {
       "id": "nlp-regex-patterns-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": "Contact us at support@example.com or sales@test.org for inquiries.",
-        "pattern_type": "email"
+        "text": "inquiries. for sales@test.org or support@example.com at us Contact",
+        "pattern_type": "emailment"
       },
-      "expectedOutput": [
-        "support@example.com",
-        "sales@test.org"
-      ],
+      "expectedOutput": [],
       "isPublic": false
     },
     {
       "id": "nlp-regex-patterns-tc-7",
       "name": "Case 7",
       "inputs": {
-        "text": "Contact us at support@example.com or sales@test.org for inquiries.",
-        "pattern_type": "email"
+        "text": "Contact us at support@example.com or sales@test.org for inquiries. matrix",
+        "pattern_type": "emailness"
       },
-      "expectedOutput": [
-        "support@example.com",
-        "sales@test.org"
-      ],
+      "expectedOutput": [],
       "isPublic": false
     }
   ],

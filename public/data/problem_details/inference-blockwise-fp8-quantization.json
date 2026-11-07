@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef inference_blockwise_fp8_quantization(tensor: list, block_size: int = 4, fp8_max: float = 448.0) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Implement Block-Wise FP8 Quantization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef inference_blockwise_fp8_quantization(tensor: list, block_size: int = 4, fp8_max: float = 448.0) -> dict:\n    arr = np.array(tensor, dtype=np.float64).flatten(); bs, fm = int(block_size), float(fp8_max)\n    scales, q_all = [], []\n    for b in range(math.ceil(len(arr) / bs)):\n        blk = arr[b*bs : (b+1)*bs]; sc = max(float(np.max(np.abs(blk))) / fm, 1e-12)\n        scales.append(round(sc, 6)); q_all.extend(np.clip(np.round(blk / sc), -fm, fm).tolist())\n    return {'quantized_tensor': np.round(q_all, 2).tolist(), 'block_scales': scales}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Implement Block-Wise FP8 Quantization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef inference_blockwise_fp8_quantization(tensor: list, block_size: int = 4, fp8_max: float = 448.0) -> dict:\n    arr = np.array(tensor, dtype=np.float64).flatten(); bs, fm = int(block_size), float(fp8_max)\n    scales, q_all = [], []\n    for b in range(math.ceil(len(arr) / bs)):\n        blk = arr[b*bs : (b+1)*bs]; sc = max(float(np.max(np.abs(blk))) / fm, 1e-12)\n        scales.append(round(sc, 6)); q_all.extend(np.clip(np.round(blk / sc), -fm, fm).tolist())\n    return {'quantized_tensor': np.round(q_all, 2).tolist(), 'block_scales': scales}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "inference-blockwise-fp8-quantization-tc-1",
@@ -223,7 +223,7 @@
           6.0,
           -39.0
         ],
-        "block_size": 5.0,
+        "block_size": 4,
         "fp8_max": 449.0
       },
       "expectedOutput": {
@@ -232,7 +232,7 @@
           -200.0,
           51.0,
           -449.0,
-          11.0,
+          127.0,
           -219.0,
           69.0,
           -449.0
@@ -258,24 +258,22 @@
           3.0,
           -42.0
         ],
-        "block_size": 2.0,
+        "block_size": 4,
         "fp8_max": 446.0
       },
       "expectedOutput": {
         "quantized_tensor": [
-          216.0,
-          -446.0,
+          97.0,
+          -200.0,
           48.0,
           -446.0,
-          162.0,
-          -446.0,
+          85.0,
+          -234.0,
           32.0,
           -446.0
         ],
         "block_scales": [
-          0.452915,
           1.008969,
-          0.049327,
           0.09417
         ]
       },

@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef kfold_split(N: int, k: int, shuffle: bool = True, seed: int = 0) -> list:\n    \"\"\"\n    Returns a list of dictionaries with train_idx and val_idx.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-15T16:17:00.576Z",
   "updatedAt": "2026-08-23T10:37:25.159Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef kfold_split(N: int, k: int, shuffle: bool = True, seed: int = 0) -> list:\n    indices = np.arange(N)\n    if shuffle:\n        rng = np.random.default_rng(seed)\n        rng.shuffle(indices)\n    folds = np.array_split(indices, k)\n    out = []\n    for i in range(k):\n        val = folds[i].tolist()\n        train = np.concatenate([folds[j] for j in range(k) if j != i]).tolist()\n        out.append({'train_idx': train, 'val_idx': val})\n    return out\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef kfold_split(N: int, k: int, shuffle: bool = True, seed: int = 0) -> list:\n    indices = np.arange(N)\n    if shuffle:\n        rng = np.random.default_rng(seed)\n        rng.shuffle(indices)\n    folds = np.array_split(indices, k)\n    out = []\n    for i in range(k):\n        val = folds[i].tolist()\n        train = np.concatenate([folds[j] for j in range(k) if j != i]).tolist()\n        out.append({'train_idx': train, 'val_idx': val})\n    return out\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "KFoldSplitViz",
   "testCases": [
     {
@@ -115,7 +115,7 @@
         "N": 10,
         "k": 4,
         "seed": 0,
-        "shuffle": 0
+        "shuffle": false
       },
       "expectedOutput": [
         {
@@ -192,29 +192,29 @@
         "N": 5,
         "k": 2,
         "seed": 1,
-        "shuffle": 1
+        "shuffle": false
       },
       "expectedOutput": [
         {
           "train_idx": [
-            2,
-            3
+            3,
+            4
           ],
           "val_idx": [
-            4,
             0,
-            1
+            1,
+            2
           ]
         },
         {
           "train_idx": [
-            4,
             0,
-            1
+            1,
+            2
           ],
           "val_idx": [
-            2,
-            3
+            3,
+            4
           ]
         }
       ],
@@ -227,7 +227,7 @@
         "N": 8,
         "k": 3,
         "seed": 0,
-        "shuffle": 0
+        "shuffle": false
       },
       "expectedOutput": [
         {
@@ -282,7 +282,7 @@
         "N": 15,
         "k": 6,
         "seed": 0,
-        "shuffle": 0
+        "shuffle": false
       },
       "expectedOutput": [
         {
@@ -421,71 +421,71 @@
         "N": 10,
         "k": 4,
         "seed": 2,
-        "shuffle": 2
+        "shuffle": false
       },
       "expectedOutput": [
         {
           "train_idx": [
-            6,
-            9,
-            5,
             3,
             4,
+            5,
+            6,
+            7,
             8,
-            1
+            9
           ],
           "val_idx": [
-            2,
             0,
-            7
+            1,
+            2
           ]
         },
         {
           "train_idx": [
-            2,
             0,
+            1,
+            2,
+            6,
             7,
-            3,
-            4,
             8,
-            1
+            9
           ],
           "val_idx": [
-            6,
-            9,
+            3,
+            4,
             5
           ]
         },
         {
           "train_idx": [
-            2,
             0,
-            7,
-            6,
-            9,
+            1,
+            2,
+            3,
+            4,
             5,
             8,
-            1
+            9
           ],
           "val_idx": [
-            3,
-            4
+            6,
+            7
           ]
         },
         {
           "train_idx": [
-            2,
             0,
-            7,
-            6,
-            9,
-            5,
+            1,
+            2,
             3,
-            4
+            4,
+            5,
+            6,
+            7
           ],
           "val_idx": [
             8,
-            1
+            9
           ]
         }
       ],

@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef cv_clip_cosine_retrieval(queries: list, corpus: list, top_k: int = 2) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **CLIP Cosine Retrieval** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_clip_cosine_retrieval(queries: list, corpus: list, top_k: int = 2) -> list:\n    Q = np.array(queries, dtype=np.float64)\n    C = np.array(corpus, dtype=np.float64)\n    nq = np.maximum(np.linalg.norm(Q, axis=1, keepdims=True), 1e-12)\n    nc = np.maximum(np.linalg.norm(C, axis=1, keepdims=True), 1e-12)\n    sims = np.dot(Q / nq, (C / nc).T)\n    return [np.argsort(-row)[:int(top_k)].tolist() for row in sims]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **CLIP Cosine Retrieval** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_clip_cosine_retrieval(queries: list, corpus: list, top_k: int = 2) -> list:\n    Q = np.array(queries, dtype=np.float64)\n    C = np.array(corpus, dtype=np.float64)\n    nq = np.maximum(np.linalg.norm(Q, axis=1, keepdims=True), 1e-12)\n    nc = np.maximum(np.linalg.norm(C, axis=1, keepdims=True), 1e-12)\n    sims = np.dot(Q / nq, (C / nc).T)\n    return [np.argsort(-row)[:int(top_k)].tolist() for row in sims]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-clip-cosine-retrieval-tc-1",
@@ -187,14 +187,16 @@
             -0.0
           ]
         ],
-        "top_k": -2
+        "top_k": 2
       },
       "expectedOutput": [
         [
-          0
+          0,
+          1
         ],
         [
-          1
+          1,
+          0
         ]
       ],
       "isPublic": false
@@ -271,18 +273,16 @@
             1.0
           ]
         ],
-        "top_k": 3.0
+        "top_k": 2
       },
       "expectedOutput": [
         [
           0,
-          1,
-          2
+          1
         ],
         [
           1,
-          2,
-          0
+          2
         ]
       ],
       "isPublic": false
@@ -315,11 +315,17 @@
             -2.0
           ]
         ],
-        "top_k": 0.0
+        "top_k": 2
       },
       "expectedOutput": [
-        [],
-        []
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ]
       ],
       "isPublic": false
     }

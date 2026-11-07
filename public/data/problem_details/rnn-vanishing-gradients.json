@@ -22,7 +22,7 @@
   "topicId": "rnn-vanishing-gradients",
   "paperSnippet": "\"The fundamental problem is that the influence of a given input on the hidden layer, and therefore on the network output, either decays or blows up exponentially as it cycles around the network's recurrent connections.\"",
   "visualizationComponent": "VanishingGradViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Vanishing Gradients** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef compute_gradient_norm_decay(T: int, W_hh: np.ndarray) -> np.ndarray:\n    w = np.asarray(W_hh, dtype=float)\n    rho = np.linalg.norm(w, ord=2)\n    bounds = [float(rho ** k) for k in range(int(T))]\n    return np.round(bounds, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Vanishing Gradients** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef compute_gradient_norm_decay(T: int, W_hh: np.ndarray) -> np.ndarray:\n    w = np.asarray(W_hh, dtype=float)\n    rho = np.linalg.norm(w, ord=2)\n    bounds = [float(rho ** k) for k in range(int(T))]\n    return np.round(bounds, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rnn-vanishing-gradients-tc-1",
@@ -180,7 +180,7 @@
       "id": "rnn-vanishing-gradients-tc-7",
       "name": "Case 7",
       "inputs": {
-        "T": -5,
+        "T": 5,
         "W_hh": [
           [
             -0.3,
@@ -192,7 +192,13 @@
           ]
         ]
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        1.0,
+        0.4,
+        0.16,
+        0.064,
+        0.0256
+      ],
       "isPublic": false
     }
   ],
@@ -235,5 +241,6 @@
     "prev": "rnn-bptt",
     "next": "rnn-full-network"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "rnn-vanishing-gradients"
 }

@@ -101,8 +101,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# KV Compression — reconstructed educational contract\nimport numpy as np\n\ndef solution(x, rank):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **KV Compression** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(x, rank):\n    x=np.asarray(x,dtype=float)\n    u,s,vt=np.linalg.svd(x,full_matrices=False); r=max(1,min(int(rank),len(s)))\n    return {\"u\":u[:,:r].tolist(),\"s\":s[:r].tolist(),\"vt\":vt[:r,:].tolist()}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# KV Compression \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(x, rank):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **KV Compression** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(x, rank):\n    x=np.asarray(x,dtype=float)\n    u,s,vt=np.linalg.svd(x,full_matrices=False); r=max(1,min(int(rank),len(s)))\n    return {\"u\":u[:,:r].tolist(),\"s\":s[:r].tolist(),\"vt\":vt[:r,:].tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ds3-kv-compress-tc-1",
@@ -236,24 +236,24 @@
             2.0
           ]
         ],
-        "rank": 0
+        "rank": 1
       },
       "expectedOutput": {
         "u": [
           [
-            -0.404554
+            -0.40455358483375703
           ],
           [
-            -0.914514
+            -0.9145142956773045
           ]
         ],
         "s": [
-          2.732493
+          2.7324928521095213
         ],
         "vt": [
           [
-            -0.576048,
-            -0.817416
+            -0.5760484367663209,
+            -0.8174155604703631
           ]
         ]
       },
@@ -354,31 +354,24 @@
             5.0
           ]
         ],
-        "rank": 2.0
+        "rank": 1
       },
       "expectedOutput": {
         "u": [
           [
-            -0.489925,
-            -0.871765
+            -0.48992502135748006
           ],
           [
-            -0.871765,
-            0.489925
+            -0.8717645745543188
           ]
         ],
         "s": [
-          7.34342,
-          0.272353
+          7.343420458864691
         ],
         "vt": [
           [
-            -0.608287,
-            -0.793717
-          ],
-          [
-            0.793717,
-            -0.608287
+            -0.6082871552778867,
+            -0.7937170381968225
           ]
         ]
       },

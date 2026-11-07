@@ -609,5 +609,6 @@
     "prev": null,
     "next": "vit-position-embedding"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vit-patch-embedding"
 }

@@ -43,7 +43,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "from collections import Counter\ndef solve(predictions):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nfrom collections import Counter\ndef solve(predictions):\n    if not predictions: return None\n    c=Counter(predictions)\n    return min(c, key=lambda x: (-c[x], str(x)))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nfrom collections import Counter\ndef solve(predictions):\n    if not predictions: return None\n    c=Counter(predictions)\n    return min(c, key=lambda x: (-c[x], str(x)))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-sup-random-forest-vote-tc-1",
@@ -63,12 +63,12 @@
       "name": "Case 2",
       "inputs": {
         "predictions": [
-          "A",
-          "B",
-          "A"
+          "Aed",
+          "Bed",
+          "Aed"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Aed",
       "isPublic": true
     },
     {
@@ -76,12 +76,12 @@
       "name": "Case 3",
       "inputs": {
         "predictions": [
-          "A",
-          "B",
-          "A"
+          "Aing",
+          "Bing",
+          "Aing"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Aing",
       "isPublic": false
     },
     {
@@ -89,12 +89,13 @@
       "name": "Case 4",
       "inputs": {
         "predictions": [
-          "A",
-          "B",
-          "A"
+          "Aer",
+          "Ber",
+          "Aer",
+          "natural language processing"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Aer",
       "isPublic": false
     },
     {
@@ -102,12 +103,12 @@
       "name": "Case 5",
       "inputs": {
         "predictions": [
-          "A",
-          "B",
-          "A"
+          "Ation",
+          "Bment",
+          "Aness"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "Aness",
       "isPublic": false
     },
     {
@@ -115,12 +116,12 @@
       "name": "Case 6",
       "inputs": {
         "predictions": [
-          "A",
-          "B",
-          "A"
+          "As",
+          "Bs",
+          "As"
         ]
       },
-      "expectedOutput": "A",
+      "expectedOutput": "As",
       "isPublic": false
     },
     {
@@ -130,7 +131,8 @@
         "predictions": [
           "A",
           "B",
-          "A"
+          "A",
+          "computer vision system"
         ]
       },
       "expectedOutput": "A",

@@ -167,60 +167,54 @@
         "employees": [
           {
             "employee_id": 1,
-            "employee_name": "A",
-            "department": "X",
-            "salary": 100
+            "employee_name": "Alice",
+            "department": "Eng",
+            "salary": 150
           },
           {
             "employee_id": 2,
-            "employee_name": "B",
-            "department": "X",
-            "salary": 90
+            "employee_name": "Bob",
+            "department": "Eng",
+            "salary": 140
           },
           {
             "employee_id": 3,
-            "employee_name": "C",
-            "department": "X",
-            "salary": 80
+            "employee_name": "Cara",
+            "department": "Sales",
+            "salary": 120
           },
           {
             "employee_id": 4,
-            "employee_name": "D",
-            "department": "X",
-            "salary": 80
-          },
-          {
-            "employee_id": 5,
-            "employee_name": "E",
-            "department": "X",
-            "salary": 70
+            "employee_name": "Dan",
+            "department": "Sales",
+            "salary": 110
           }
         ]
       },
       "expectedOutput": [
         [
           1,
-          "A",
-          "X",
-          100
+          "Alice",
+          "Eng",
+          150
         ],
         [
           2,
-          "B",
-          "X",
-          90
+          "Bob",
+          "Eng",
+          140
         ],
         [
           3,
-          "C",
-          "X",
-          80
+          "Cara",
+          "Sales",
+          120
         ],
         [
           4,
-          "D",
-          "X",
-          80
+          "Dan",
+          "Sales",
+          110
         ]
       ],
       "isPublic": true
@@ -232,60 +226,60 @@
         "employees": [
           {
             "employee_id": 1,
-            "employee_name": "A",
-            "department": "X",
-            "salary": 100
+            "employee_name": "E1",
+            "department": "AI",
+            "salary": 200
           },
           {
             "employee_id": 2,
-            "employee_name": "B",
-            "department": "X",
-            "salary": 90
+            "employee_name": "E2",
+            "department": "AI",
+            "salary": 200
           },
           {
             "employee_id": 3,
-            "employee_name": "C",
-            "department": "X",
-            "salary": 80
+            "employee_name": "E3",
+            "department": "AI",
+            "salary": 180
           },
           {
             "employee_id": 4,
-            "employee_name": "D",
-            "department": "X",
-            "salary": 80
+            "employee_name": "E4",
+            "department": "AI",
+            "salary": 160
           },
           {
             "employee_id": 5,
-            "employee_name": "E",
-            "department": "X",
-            "salary": 70
+            "employee_name": "E5",
+            "department": "AI",
+            "salary": 150
           }
         ]
       },
       "expectedOutput": [
         [
           1,
-          "A",
-          "X",
-          100
+          "E1",
+          "AI",
+          200
         ],
         [
           2,
-          "B",
-          "X",
-          90
+          "E2",
+          "AI",
+          200
         ],
         [
           3,
-          "C",
-          "X",
-          80
+          "E3",
+          "AI",
+          180
         ],
         [
           4,
-          "D",
-          "X",
-          80
+          "E4",
+          "AI",
+          160
         ]
       ],
       "isPublic": false
@@ -296,61 +290,19 @@
       "inputs": {
         "employees": [
           {
-            "employee_id": 1,
-            "employee_name": "A",
-            "department": "X",
-            "salary": 100
-          },
-          {
-            "employee_id": 2,
-            "employee_name": "B",
-            "department": "X",
-            "salary": 90
-          },
-          {
-            "employee_id": 3,
-            "employee_name": "C",
-            "department": "X",
-            "salary": 80
-          },
-          {
-            "employee_id": 4,
-            "employee_name": "D",
-            "department": "X",
-            "salary": 80
-          },
-          {
-            "employee_id": 5,
-            "employee_name": "E",
-            "department": "X",
-            "salary": 70
+            "employee_id": 10,
+            "employee_name": "P1",
+            "department": "Ops",
+            "salary": 95
           }
         ]
       },
       "expectedOutput": [
         [
-          1,
-          "A",
-          "X",
-          100
-        ],
-        [
-          2,
-          "B",
-          "X",
-          90
-        ],
-        [
-          3,
-          "C",
-          "X",
-          80
-        ],
-        [
-          4,
-          "D",
-          "X",
-          80
+          10,
+          "P1",
+          "Ops",
+          95
         ]
       ],
       "isPublic": false
@@ -363,32 +315,44 @@
           {
             "employee_id": 1,
             "employee_name": "A",
-            "department": "X",
+            "department": "D1",
             "salary": 100
           },
           {
             "employee_id": 2,
             "employee_name": "B",
-            "department": "X",
+            "department": "D1",
             "salary": 90
           },
           {
             "employee_id": 3,
             "employee_name": "C",
-            "department": "X",
+            "department": "D1",
             "salary": 80
           },
           {
             "employee_id": 4,
             "employee_name": "D",
-            "department": "X",
-            "salary": 80
+            "department": "D2",
+            "salary": 130
           },
           {
             "employee_id": 5,
             "employee_name": "E",
-            "department": "X",
-            "salary": 70
+            "department": "D2",
+            "salary": 120
+          },
+          {
+            "employee_id": 6,
+            "employee_name": "F",
+            "department": "D2",
+            "salary": 110
+          },
+          {
+            "employee_id": 7,
+            "employee_name": "G",
+            "department": "D2",
+            "salary": 100
           }
         ]
       },
@@ -396,26 +360,38 @@
         [
           1,
           "A",
-          "X",
+          "D1",
           100
         ],
         [
           2,
           "B",
-          "X",
+          "D1",
           90
         ],
         [
           3,
           "C",
-          "X",
+          "D1",
           80
         ],
         [
           4,
           "D",
-          "X",
-          80
+          "D2",
+          130
+        ],
+        [
+          5,
+          "E",
+          "D2",
+          120
+        ],
+        [
+          6,
+          "F",
+          "D2",
+          110
         ]
       ],
       "isPublic": false
@@ -428,32 +404,26 @@
           {
             "employee_id": 1,
             "employee_name": "A",
-            "department": "X",
+            "department": "Core",
             "salary": 100
           },
           {
             "employee_id": 2,
             "employee_name": "B",
-            "department": "X",
-            "salary": 90
+            "department": "Core",
+            "salary": 100
           },
           {
             "employee_id": 3,
             "employee_name": "C",
-            "department": "X",
-            "salary": 80
+            "department": "Core",
+            "salary": 100
           },
           {
             "employee_id": 4,
             "employee_name": "D",
-            "department": "X",
-            "salary": 80
-          },
-          {
-            "employee_id": 5,
-            "employee_name": "E",
-            "department": "X",
-            "salary": 70
+            "department": "Core",
+            "salary": 100
           }
         ]
       },
@@ -461,26 +431,26 @@
         [
           1,
           "A",
-          "X",
+          "Core",
           100
         ],
         [
           2,
           "B",
-          "X",
-          90
+          "Core",
+          100
         ],
         [
           3,
           "C",
-          "X",
-          80
+          "Core",
+          100
         ],
         [
           4,
           "D",
-          "X",
-          80
+          "Core",
+          100
         ]
       ],
       "isPublic": false
@@ -493,32 +463,32 @@
           {
             "employee_id": 1,
             "employee_name": "A",
-            "department": "X",
-            "salary": 100
+            "department": "ML",
+            "salary": 300
           },
           {
             "employee_id": 2,
             "employee_name": "B",
-            "department": "X",
-            "salary": 90
+            "department": "ML",
+            "salary": 250
           },
           {
             "employee_id": 3,
             "employee_name": "C",
-            "department": "X",
-            "salary": 80
+            "department": "ML",
+            "salary": 200
           },
           {
             "employee_id": 4,
             "employee_name": "D",
-            "department": "X",
-            "salary": 80
+            "department": "ML",
+            "salary": 190
           },
           {
             "employee_id": 5,
             "employee_name": "E",
-            "department": "X",
-            "salary": 70
+            "department": "ML",
+            "salary": 180
           }
         ]
       },
@@ -526,26 +496,20 @@
         [
           1,
           "A",
-          "X",
-          100
+          "ML",
+          300
         ],
         [
           2,
           "B",
-          "X",
-          90
+          "ML",
+          250
         ],
         [
           3,
           "C",
-          "X",
-          80
-        ],
-        [
-          4,
-          "D",
-          "X",
-          80
+          "ML",
+          200
         ]
       ],
       "isPublic": false

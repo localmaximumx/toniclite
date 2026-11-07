@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef cv_dilated_conv2d(image: list, kernel: list, dilation: int = 2) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Dilated 2D Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_dilated_conv2d(image: list, kernel: list, dilation: int = 2) -> list:\n    img, k = np.array(image, dtype=float), np.array(kernel, dtype=float)\n    H, W = img.shape; Kh, Kw = k.shape\n    ekh, ekw = Kh + (Kh - 1) * (dilation - 1), Kw + (Kw - 1) * (dilation - 1)\n    oh, ow = H - ekh + 1, W - ekw + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow):\n            out[i, j] = sum(img[i + u*dilation, j + v*dilation] * k[u, v] for u in range(Kh) for v in range(Kw))\n    return np.round(out, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Dilated 2D Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_dilated_conv2d(image: list, kernel: list, dilation: int = 2) -> list:\n    img, k = np.array(image, dtype=float), np.array(kernel, dtype=float)\n    H, W = img.shape; Kh, Kw = k.shape\n    ekh, ekw = Kh + (Kh - 1) * (dilation - 1), Kw + (Kw - 1) * (dilation - 1)\n    oh, ow = H - ekh + 1, W - ekw + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow):\n            out[i, j] = sum(img[i + u*dilation, j + v*dilation] * k[u, v] for u in range(Kh) for v in range(Kw))\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-dilated-conv2d-tc-1",
@@ -286,32 +286,16 @@
             0.1
           ]
         ],
-        "dilation": 0
+        "dilation": 2
       },
       "expectedOutput": [
         [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.2,
-          0.2,
-          0.2
+          0.1,
+          0.1
         ],
         [
           0.2,
-          0.2,
-          0.2,
-          0.2
-        ],
-        [
-          0.2,
-          0.2,
-          0.4,
-          0.4
+          0.3
         ]
       ],
       "isPublic": false
@@ -405,32 +389,16 @@
             0.25
           ]
         ],
-        "dilation": 0
+        "dilation": 2
       },
       "expectedOutput": [
         [
-          0.0,
-          0.0,
-          0.5,
-          0.5
+          0.75,
+          0.75
         ],
         [
-          0.5,
-          1.0,
-          1.0,
-          1.0
-        ],
-        [
-          1.0,
-          1.0,
-          1.5,
+          1.25,
           1.5
-        ],
-        [
-          1.5,
-          2.0,
-          2.0,
-          2.0
         ]
       ],
       "isPublic": false

@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef dl_nms(boxes: list, scores: list, iou_threshold: float = 0.5) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Non-Maximum Suppression** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_nms(boxes: list, scores: list, iou_threshold: float = 0.5) -> list:\n    if not boxes: return []\n    b, s = np.array(boxes, dtype=float), np.array(scores, dtype=float)\n    order = np.argsort(s)[::-1]\n    keep = []\n    while len(order) > 0:\n        idx = order[0]; keep.append(int(idx))\n        if len(order) == 1: break\n        cb, ob = b[idx], b[order[1:]]\n        iw = np.maximum(0.0, np.minimum(cb[2], ob[:, 2]) - np.maximum(cb[0], ob[:, 0]))\n        ih = np.maximum(0.0, np.minimum(cb[3], ob[:, 3]) - np.maximum(cb[1], ob[:, 1]))\n        ia = iw * ih; u = (cb[2]-cb[0])*(cb[3]-cb[1]) + (ob[:, 2]-ob[:, 0])*(ob[:, 3]-ob[:, 1]) - ia\n        order = order[np.where(np.where(u > 0, ia / u, 0.0) <= iou_threshold)[0] + 1]\n    return keep\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Non-Maximum Suppression** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_nms(boxes: list, scores: list, iou_threshold: float = 0.5) -> list:\n    if not boxes: return []\n    b, s = np.array(boxes, dtype=float), np.array(scores, dtype=float)\n    order = np.argsort(s)[::-1]\n    keep = []\n    while len(order) > 0:\n        idx = order[0]; keep.append(int(idx))\n        if len(order) == 1: break\n        cb, ob = b[idx], b[order[1:]]\n        iw = np.maximum(0.0, np.minimum(cb[2], ob[:, 2]) - np.maximum(cb[0], ob[:, 0]))\n        ih = np.maximum(0.0, np.minimum(cb[3], ob[:, 3]) - np.maximum(cb[1], ob[:, 1]))\n        ia = iw * ih; u = (cb[2]-cb[0])*(cb[3]-cb[1]) + (ob[:, 2]-ob[:, 0])*(ob[:, 3]-ob[:, 1]) - ia\n        order = order[np.where(np.where(u > 0, ia / u, 0.0) <= iou_threshold)[0] + 1]\n    return keep\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "dl-nms-tc-1",
@@ -175,10 +175,12 @@
           -0.75,
           -0.85
         ],
-        "iou_threshold": -0.5
+        "iou_threshold": 0.5
       },
       "expectedOutput": [
-        1
+        1,
+        2,
+        0
       ],
       "isPublic": false
     },
@@ -211,12 +213,11 @@
           2.25,
           2.55
         ],
-        "iou_threshold": 1.5
+        "iou_threshold": 0.5
       },
       "expectedOutput": [
         0,
-        2,
-        1
+        2
       ],
       "isPublic": false
     },
@@ -249,12 +250,11 @@
           1.75,
           1.85
         ],
-        "iou_threshold": 1.5
+        "iou_threshold": 0.5
       },
       "expectedOutput": [
         0,
-        2,
-        1
+        2
       ],
       "isPublic": false
     },
@@ -287,10 +287,11 @@
           -1.25,
           -1.15
         ],
-        "iou_threshold": -1.5
+        "iou_threshold": 0.5
       },
       "expectedOutput": [
-        0
+        0,
+        2
       ],
       "isPublic": false
     }

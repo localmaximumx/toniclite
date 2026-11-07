@@ -115,8 +115,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# Coarse-Grained MoE FFN — reconstructed educational contract\nimport numpy as np\n\ndef solution(x, expert_weights, router_logits, top_k=1):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Coarse-Grained MoE FFN** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(x, expert_weights, router_logits, top_k=1):\n    x=np.asarray(x,dtype=float); ew=np.asarray(expert_weights,dtype=float); logits=np.asarray(router_logits,dtype=float)\n    if ew.ndim!=3 or logits.shape[-1]!=ew.shape[0]: raise ValueError(\"expert_weights must be [experts,in,out]\")\n    idx=np.argsort(logits,axis=-1)[...,-top_k:][...,::-1]\n    vals=np.take_along_axis(logits,idx,axis=-1); probs=np.exp(vals-vals.max(axis=-1,keepdims=True)); probs/=probs.sum(axis=-1,keepdims=True)\n    out=np.zeros(x.shape[:-1]+(ew.shape[-1],),dtype=float)\n    for j in range(top_k):\n        ids=idx[...,j]; weights=probs[...,j]\n        # This simple reference expects one router row per token (x shape [tokens,features]).\n        for t in range(x.shape[0]): out[t]+=weights[t]*(x[t]@ew[ids[t]])\n    return out.tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# Coarse-Grained MoE FFN \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(x, expert_weights, router_logits, top_k=1):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Coarse-Grained MoE FFN** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(x, expert_weights, router_logits, top_k=1):\n    x=np.asarray(x,dtype=float); ew=np.asarray(expert_weights,dtype=float); logits=np.asarray(router_logits,dtype=float)\n    if ew.ndim!=3 or logits.shape[-1]!=ew.shape[0]: raise ValueError(\"expert_weights must be [experts,in,out]\")\n    idx=np.argsort(logits,axis=-1)[...,-top_k:][...,::-1]\n    vals=np.take_along_axis(logits,idx,axis=-1); probs=np.exp(vals-vals.max(axis=-1,keepdims=True)); probs/=probs.sum(axis=-1,keepdims=True)\n    out=np.zeros(x.shape[:-1]+(ew.shape[-1],),dtype=float)\n    for j in range(top_k):\n        ids=idx[...,j]; weights=probs[...,j]\n        # This simple reference expects one router row per token (x shape [tokens,features]).\n        for t in range(x.shape[0]): out[t]+=weights[t]*(x[t]@ew[ids[t]])\n    return out.tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "at-coarse-moe-tc-1",
@@ -301,11 +301,11 @@
             -0.0
           ]
         ],
-        "top_k": -2
+        "top_k": 2
       },
       "expectedOutput": [
         [
-          0.0
+          2.7310585786300052
         ]
       ],
       "isPublic": false
@@ -405,11 +405,11 @@
             0.0
           ]
         ],
-        "top_k": 0
+        "top_k": 2
       },
       "expectedOutput": [
         [
-          0.0
+          0.014750208125210603
         ]
       ],
       "isPublic": false

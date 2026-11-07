@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "import numpy as np\n\ndef alphago_l05_dihedral_symmetry(board: list, policy: list = None, symmetry_id: int = 0) -> dict:\n    \"\"\"\n    Transform Go board states and associated MCTS policy distributions using one of the eight symmetries of the square (D4 dihedral group), preserving invariant pass actions.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nTransform Go board states and associated MCTS policy distributions using one of the eight symmetries of the square (D4 dihedral group), preserving invariant pass actions.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l05_dihedral_symmetry(board: list, policy: list = None, symmetry_id: int = 0) -> dict:\n    b = np.array(board, dtype=float)\n    H, W = b.shape\n    rot = symmetry_id % 4\n    flip = (symmetry_id // 4) % 2\n    b_trans = np.rot90(b, rot)\n    if flip: b_trans = np.fliplr(b_trans)\n    trans_p = None\n    if policy is not None:\n        p = np.array(policy, dtype=float)\n        has_pass = len(p) == H * W + 1\n        pass_prob = p[-1] if has_pass else 0.0\n        bp = np.rot90(p[:H*W].reshape(H, W), rot)\n        if flip: bp = np.fliplr(bp)\n        trans_p = (np.append(bp.flatten(), pass_prob) if has_pass else bp.flatten()).tolist()\n    return {'board': np.round(b_trans, 6).tolist(), 'policy': [round(x, 6) for x in trans_p] if trans_p is not None else None}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nTransform Go board states and associated MCTS policy distributions using one of the eight symmetries of the square (D4 dihedral group), preserving invariant pass actions.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l05_dihedral_symmetry(board: list, policy: list = None, symmetry_id: int = 0) -> dict:\n    b = np.array(board, dtype=float)\n    H, W = b.shape\n    rot = symmetry_id % 4\n    flip = (symmetry_id // 4) % 2\n    b_trans = np.rot90(b, rot)\n    if flip: b_trans = np.fliplr(b_trans)\n    trans_p = None\n    if policy is not None:\n        p = np.array(policy, dtype=float)\n        has_pass = len(p) == H * W + 1\n        pass_prob = p[-1] if has_pass else 0.0\n        bp = np.rot90(p[:H*W].reshape(H, W), rot)\n        if flip: bp = np.fliplr(bp)\n        trans_p = (np.append(bp.flatten(), pass_prob) if has_pass else bp.flatten()).tolist()\n    return {'board': np.round(b_trans, 6).tolist(), 'policy': [round(x, 6) for x in trans_p] if trans_p is not None else None}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "alphago-l05-dihedral-symmetry-tc-1",
@@ -228,24 +228,24 @@
           -0.4,
           -0.0
         ],
-        "symmetry_id": -1
+        "symmetry_id": 1
       },
       "expectedOutput": {
         "board": [
           [
-            -1.0,
-            -3.0
-          ],
-          [
             -2.0,
             -4.0
+          ],
+          [
+            -1.0,
+            -3.0
           ]
         ],
         "policy": [
-          -0.1,
-          -0.3,
           -0.2,
           -0.4,
+          -0.1,
+          -0.3,
           -0.0
         ]
       },

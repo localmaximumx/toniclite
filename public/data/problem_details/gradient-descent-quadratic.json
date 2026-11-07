@@ -18,7 +18,7 @@
   "starterCode": "def gradient_descent_quadratic(a: float, b: float, c: float, x0: float, lr: float, steps: int) -> float:\n    \"\"\"\n    Returns the final scalar x after the requested iterations.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-10-21T18:37:13.453Z",
   "updatedAt": "2026-03-05T19:49:41.907Z",
-  "solution": "### 💡 Intuition & Approach\nFirst-order gradient descent iteratively stepping towards stationary minimum $x^* = -\\frac{b}{2a}$.\n\n### ⚡ Python Reference Implementation\n```python\ndef gd_quadratic(a: float, b: float, c: float, lr: float = 0.1, steps: int = 100, x0: float = 10.0) -> float:\n    # Minimize f(x) = a*x^2 + b*x + c, f'(x) = 2*a*x + b\n    x = x0\n    for _ in range(steps):\n        grad = 2.0 * a * x + b\n        x = x - lr * grad\n    return float(round(x, 4))\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### 💡 Intuition & Approach\nFirst-order gradient descent iteratively stepping towards stationary minimum $x^* = -\\frac{b}{2a}$.\n\n### ⚡ Python Reference Implementation\n```python\ndef gradient_descent_quadratic(a: float, b: float, c: float, lr: float = 0.1, steps: int = 100, x0: float = 10.0) -> float:\n    # Minimize f(x) = a*x^2 + b*x + c, f'(x) = 2*a*x + b\n    x = x0\n    for _ in range(steps):\n        grad = 2.0 * a * x + b\n        x = x - lr * grad\n    return float(round(x, 4))\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "GradientDescentQuadraticViz",
   "testCases": [
     {
@@ -109,14 +109,14 @@
       "id": "gradient-descent-quadratic-tc-7",
       "name": "Case 7",
       "inputs": {
-        "a": 10,
-        "b": -40,
-        "c": 30,
-        "lr": 1.0,
-        "x0": 0,
-        "steps": 500
+        "a": 2.0,
+        "b": -8.0,
+        "c": 5.0,
+        "lr": 0.1,
+        "x0": 0.0,
+        "steps": 50
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 2.0,
       "isPublic": false
     }
   ],

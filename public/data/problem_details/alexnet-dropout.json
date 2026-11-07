@@ -22,7 +22,7 @@
   "topicId": "alexnet-dropout",
   "paperSnippet": "\"We use dropout in the first two fully-connected layers. Without dropout, our network exhibits substantial overfitting. Dropout roughly doubles the number of iterations required to converge.\"",
   "visualizationComponent": "DropoutViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Dropout Regularization** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dropout(x: np.ndarray, p: float, training: bool, mask: np.ndarray) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    if not training or p == 0:\n        return x_arr\n    m = np.asarray(mask, dtype=float)\n    return (x_arr * m) / (1.0 - float(p))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Dropout Regularization** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dropout(x: np.ndarray, p: float, training: bool, mask: np.ndarray) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    if not training or p == 0:\n        return x_arr\n    m = np.asarray(mask, dtype=float)\n    return (x_arr * m) / (1.0 - float(p))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "alexnet-dropout-tc-1",
@@ -140,25 +140,25 @@
       "id": "alexnet-dropout-tc-4",
       "name": "Case 4",
       "inputs": {
-        "p": 1.0,
+        "p": 0.25,
         "x": [
-          2,
-          4,
-          6,
-          8
+          2.0,
+          4.0,
+          6.0,
+          8.0
         ],
         "mask": [
           0,
-          2,
-          2,
+          1,
+          1,
           0
         ],
-        "training": 2
+        "training": true
       },
       "expectedOutput": [
         0.0,
-        0.0,
-        0.0,
+        5.333333333333333,
+        8.0,
         0.0
       ],
       "isPublic": false
@@ -180,13 +180,13 @@
           0,
           0
         ],
-        "training": 0
+        "training": true
       },
       "expectedOutput": [
         0.0,
-        1.0,
-        2.0,
-        2.0
+        0.0,
+        0.0,
+        0.0
       ],
       "isPublic": false
     },
@@ -194,7 +194,7 @@
       "id": "alexnet-dropout-tc-6",
       "name": "Case 6",
       "inputs": {
-        "p": -0.5,
+        "p": 0.5,
         "x": [
           -1,
           -2,
@@ -207,12 +207,12 @@
           -1,
           0
         ],
-        "training": -1
+        "training": true
       },
       "expectedOutput": [
         -0.0,
-        1.333333,
-        2.0,
+        4.0,
+        6.0,
         -0.0
       ],
       "isPublic": false
@@ -221,7 +221,7 @@
       "id": "alexnet-dropout-tc-7",
       "name": "Case 7",
       "inputs": {
-        "p": 1.5,
+        "p": 0.5,
         "x": [
           3,
           6,
@@ -234,13 +234,13 @@
           3,
           0
         ],
-        "training": 3
+        "training": true
       },
       "expectedOutput": [
-        -0.0,
-        -36.0,
-        -54.0,
-        -0.0
+        0.0,
+        36.0,
+        54.0,
+        0.0
       ],
       "isPublic": false
     }
@@ -296,5 +296,6 @@
     "prev": "alexnet-relu",
     "next": "alexnet-lrn"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "alexnet-dropout"
 }

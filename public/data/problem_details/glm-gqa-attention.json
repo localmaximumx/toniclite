@@ -123,8 +123,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# GQA Attention — reconstructed educational contract\nimport numpy as np\n\ndef solution(q, k, v, causal=False):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **GQA Attention** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(q, k, v, causal=False):\n    q=np.asarray(q,dtype=float); k=np.asarray(k,dtype=float); v=np.asarray(v,dtype=float)\n    # Inputs are [heads, sequence, head_dim]; K/V heads are repeated to query-head count.\n    h=q.shape[0]\n    if h % k.shape[0]: raise ValueError(\"query heads must be divisible by KV heads\")\n    k=np.repeat(k,h//k.shape[0],axis=0); v=np.repeat(v,h//v.shape[0],axis=0)\n    scores=q@np.swapaxes(k,-1,-2)/np.sqrt(q.shape[-1])\n    if causal:\n        mask=np.triu(np.ones(scores.shape[-2:],dtype=bool),k=1)\n        scores=np.where(mask,-1e30,scores)\n    e=np.exp(scores-scores.max(axis=-1,keepdims=True)); p=e/e.sum(axis=-1,keepdims=True)\n    return (p@v).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# GQA Attention \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(q, k, v, causal=False):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **GQA Attention** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(q, k, v, causal=False):\n    q=np.asarray(q,dtype=float); k=np.asarray(k,dtype=float); v=np.asarray(v,dtype=float)\n    # Inputs are [heads, sequence, head_dim]; K/V heads are repeated to query-head count.\n    h=q.shape[0]\n    if h % k.shape[0]: raise ValueError(\"query heads must be divisible by KV heads\")\n    k=np.repeat(k,h//k.shape[0],axis=0); v=np.repeat(v,h//v.shape[0],axis=0)\n    scores=q@np.swapaxes(k,-1,-2)/np.sqrt(q.shape[-1])\n    if causal:\n        mask=np.triu(np.ones(scores.shape[-2:],dtype=bool),k=1)\n        scores=np.where(mask,-1e30,scores)\n    e=np.exp(scores-scores.max(axis=-1,keepdims=True)); p=e/e.sum(axis=-1,keepdims=True)\n    return (p@v).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "glm-gqa-attention-tc-1",
@@ -262,7 +262,7 @@
             ]
           ]
         ],
-        "causal": 2
+        "causal": true
       },
       "expectedOutput": [
         [
@@ -271,8 +271,8 @@
             4.0
           ],
           [
-            5.776771,
-            7.776771
+            5.776771123171321,
+            7.776771123171321
           ]
         ]
       ],
@@ -318,17 +318,17 @@
             ]
           ]
         ],
-        "causal": 0
+        "causal": true
       },
       "expectedOutput": [
         [
           [
-            0.955921,
-            1.455921
+            0.5,
+            1.0
           ],
           [
-            1.044079,
-            1.544079
+            1.044079443349226,
+            1.544079443349226
           ]
         ]
       ],
@@ -374,7 +374,7 @@
             ]
           ]
         ],
-        "causal": -1
+        "causal": true
       },
       "expectedOutput": [
         [
@@ -383,8 +383,8 @@
             -2.0
           ],
           [
-            -2.339523,
-            -3.339523
+            -2.3395230986533138,
+            -3.3395230986533138
           ]
         ]
       ],
@@ -430,7 +430,7 @@
             ]
           ]
         ],
-        "causal": 3
+        "causal": true
       },
       "expectedOutput": [
         [
@@ -439,8 +439,8 @@
             6.0
           ],
           [
-            8.989683,
-            11.989683
+            8.989682590932325,
+            11.989682590932325
           ]
         ]
       ],
@@ -486,7 +486,7 @@
             ]
           ]
         ],
-        "causal": 2.0
+        "causal": true
       },
       "expectedOutput": [
         [
@@ -495,8 +495,8 @@
             3.0
           ],
           [
-            3.339523,
-            4.339523
+            3.3395230986533138,
+            4.339523098653314
           ]
         ]
       ],

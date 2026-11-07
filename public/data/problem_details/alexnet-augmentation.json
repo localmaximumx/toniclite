@@ -17,7 +17,7 @@
   ],
   "constraints": "- image has shape $(H,W,C)$.\n- crop_size is positive and the requested crop lies inside the image.\n- p and flip_rand are between 0 and 1, inclusive.\n- Inputs and outputs use float64.",
   "difficulty": "Medium",
-  "starterCode": "import numpy as np\n\ndef random_crop(image: np.ndarray, crop_size: int,\n                crop_y: int, crop_x: int) -> np.ndarray:\n    \"\"\"\n    Returns the float64 crop at the supplied coordinates.\n    \"\"\"\n    pass\n\ndef random_horizontal_flip(image: np.ndarray, p: float,\n                           flip_rand: float) -> np.ndarray:\n    \"\"\"\n    Returns a new image, flipped when flip_rand is less than p.\n    \"\"\"\n    pass",
+  "starterCode": "import numpy as np\n\ndef random_crop(image: np.ndarray, crop_size: int,\n                crop_y: int, crop_x: int) -> np.ndarray:\n    \"\"\"\n    Returns the float64 crop at the supplied coordinates.\n    \"\"\"\n    pass\n\ndef random_horizontal_flip(image: np.ndarray, p: float,\n                           flip_rand: float) -> np.ndarray:\n    \"\"\"\n    Returns a new image, flipped when flip_rand is less than p.\n    \"\"\"\n    pass\n\ndef alexnet_augmentation(image: np.ndarray, method: str = \"random_crop\", crop_size: int = None, crop_y: int = 0, crop_x: int = 0, p: float = 0.5, flip_rand: float = 1.0, **kwargs):\n    if method == \"random_crop\":\n        return random_crop(image, crop_size, crop_y, crop_x)\n    return random_horizontal_flip(image, p, flip_rand)\n",
   "createdAt": "2026-01-23T18:46:10.501Z",
   "updatedAt": "2026-04-04T12:04:49.243Z",
   "topicId": "alexnet-augmentation",
@@ -91,18 +91,18 @@
       "expectedOutput": [
         [
           [
-            4
+            4.0
           ],
           [
-            5
+            5.0
           ]
         ],
         [
           [
-            7
+            7.0
           ],
           [
-            8
+            8.0
           ]
         ]
       ]
@@ -167,24 +167,24 @@
       "expectedOutput": [
         [
           [
-            3
+            3.0
           ],
           [
-            2
+            2.0
           ],
           [
-            1
+            1.0
           ]
         ],
         [
           [
-            6
+            6.0
           ],
           [
-            5
+            5.0
           ],
           [
-            4
+            4.0
           ]
         ]
       ]
@@ -245,22 +245,22 @@
       "expectedOutput": [
         [
           [
-            1,
-            10
+            1.0,
+            10.0
           ],
           [
-            2,
-            20
+            2.0,
+            20.0
           ]
         ],
         [
           [
-            3,
-            30
+            3.0,
+            30.0
           ],
           [
-            4,
-            40
+            4.0,
+            40.0
           ]
         ]
       ]
@@ -304,21 +304,26 @@
             ]
           ]
         ],
-        "crop_x": 0,
-        "crop_y": 2,
+        "crop_x": 1,
+        "crop_y": 0,
         "method": "random_crop",
-        "crop_size": 4
+        "crop_size": 2
       },
       "expectedOutput": [
         [
           [
-            14.0
+            4.0
           ],
           [
-            16.0
+            6.0
+          ]
+        ],
+        [
+          [
+            10.0
           ],
           [
-            18.0
+            12.0
           ]
         ]
       ],
@@ -384,91 +389,120 @@
         "image": [
           [
             [
-              -1
+              1,
+              2
             ],
             [
-              -2
+              3,
+              4
             ],
             [
-              -3
+              5,
+              6
             ]
           ],
           [
             [
-              -4
+              7,
+              8
             ],
             [
-              -5
+              9,
+              10
             ],
             [
-              -6
+              11,
+              12
             ]
           ],
           [
             [
-              -7
+              13,
+              14
             ],
             [
-              -8
+              15,
+              16
             ],
             [
-              -9
+              17,
+              18
             ]
           ]
         ],
-        "crop_x": 0,
-        "crop_y": -1,
+        "crop_x": 1,
+        "crop_y": 1,
         "method": "random_crop",
         "crop_size": 2
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        [
+          [
+            9.0,
+            10.0
+          ],
+          [
+            11.0,
+            12.0
+          ]
+        ],
+        [
+          [
+            15.0,
+            16.0
+          ],
+          [
+            17.0,
+            18.0
+          ]
+        ]
+      ],
       "isPublic": false
     },
     {
       "id": "alexnet-augmentation-tc-7",
       "name": "Case 7",
       "inputs": {
+        "p": 0.8,
         "image": [
           [
             [
-              3
+              10
             ],
             [
-              6
-            ],
-            [
-              9
+              20
             ]
           ],
           [
             [
-              12
+              30
             ],
             [
-              15
-            ],
-            [
-              18
-            ]
-          ],
-          [
-            [
-              21
-            ],
-            [
-              24
-            ],
-            [
-              27
+              40
             ]
           ]
         ],
-        "crop_x": 0,
-        "crop_y": 3,
-        "method": "random_crop",
-        "crop_size": 6
+        "method": "random_horizontal_flip",
+        "flip_rand": 0.3
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        [
+          [
+            20.0
+          ],
+          [
+            10.0
+          ]
+        ],
+        [
+          [
+            40.0
+          ],
+          [
+            30.0
+          ]
+        ]
+      ],
       "isPublic": false
     }
   ],
@@ -534,5 +568,6 @@
     "prev": "alexnet-pooling",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "alexnet-augmentation"
 }

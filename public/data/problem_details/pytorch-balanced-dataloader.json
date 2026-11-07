@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef pytorch_balanced_dataloader(labels: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Balanced DataLoader** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef pytorch_balanced_dataloader(labels: list) -> dict:\n    labs = np.array(labels, dtype=np.int64)\n    cl, cnt = np.unique(labs, return_counts=True)\n    cw = {int(c): round(float(len(labs)/(len(cl)*ct)), 4) for c, ct in zip(cl, cnt)}\n    return {'class_weights': cw, 'sample_weights': [round(cw[int(y)], 4) for y in labs]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Balanced DataLoader** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef pytorch_balanced_dataloader(labels: list) -> dict:\n    labs = np.array(labels, dtype=np.int64)\n    cl, cnt = np.unique(labs, return_counts=True)\n    cw = {int(c): round(float(len(labs)/(len(cl)*ct)), 4) for c, ct in zip(cl, cnt)}\n    return {'class_weights': cw, 'sample_weights': [round(cw[int(y)], 4) for y in labs]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pytorch-balanced-dataloader-tc-1",
@@ -174,22 +174,22 @@
         "labels": [
           0,
           0,
-          0,
+          1,
           0,
           1
         ]
       },
       "expectedOutput": {
         "class_weights": {
-          "0": 0.625,
-          "1": 2.5
+          "0": 0.8333,
+          "1": 1.25
         },
         "sample_weights": [
-          0.625,
-          0.625,
-          0.625,
-          0.625,
-          2.5
+          0.8333,
+          0.8333,
+          1.25,
+          0.8333,
+          1.25
         ]
       },
       "isPublic": false
@@ -200,23 +200,23 @@
       "inputs": {
         "labels": [
           0,
+          1,
           0,
           0,
-          0,
-          2
+          0
         ]
       },
       "expectedOutput": {
         "class_weights": {
           "0": 0.625,
-          "2": 2.5
+          "1": 2.5
         },
         "sample_weights": [
           0.625,
+          2.5,
           0.625,
           0.625,
-          0.625,
-          2.5
+          0.625
         ]
       },
       "isPublic": false

@@ -783,5 +783,6 @@
     "prev": null,
     "next": "unet-decoder-block"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "unet-encoder-block"
 }

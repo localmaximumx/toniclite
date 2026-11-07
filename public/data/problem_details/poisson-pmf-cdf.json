@@ -19,7 +19,7 @@
   "starterCode": "import math\n\ndef poisson_pmf_cdf(lam: float, k: int) -> dict:\n    \"\"\"\n    Returns a dictionary with pmf and cdf.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-08T13:01:04.374Z",
   "updatedAt": "2026-03-05T20:28:23.602Z",
-  "solution": "### 💡 Intuition & Approach\nProbability of observing $k$ events in a fixed interval with constant average rate $\\lambda$.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef poisson_pmf_cdf(lam: float, k: int) -> dict:\n    pmf = ((lam ** k) * math.exp(-lam)) / math.factorial(k)\n    cdf = sum(((lam ** i) * math.exp(-lam)) / math.factorial(i) for i in range(k + 1))\n    return {\n        \"pmf\": round(pmf, 6),\n        \"cdf\": round(cdf, 6)\n    }\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nProbability of observing $k$ events in a fixed interval with constant average rate $\\lambda$.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef poisson_pmf_cdf(lam: float, k: int) -> dict:\n    pmf = ((lam ** k) * math.exp(-lam)) / math.factorial(k)\n    cdf = sum(((lam ** i) * math.exp(-lam)) / math.factorial(i) for i in range(k + 1))\n    return {\n        \"pmf\": round(pmf, 6),\n        \"cdf\": round(cdf, 6)\n    }\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "PoissonViz",
   "testCases": [
     {
@@ -39,13 +39,13 @@
       "id": "poisson-pmf-cdf-tc-2",
       "name": "Case 2",
       "inputs": {
-        "k": 0,
+        "k": 2,
         "lam": 2.5
       },
       "isPublic": true,
       "expectedOutput": {
-        "pmf": 0.082085,
-        "cdf": 0.082085
+        "pmf": 0.256516,
+        "cdf": 0.543813
       }
     },
     {

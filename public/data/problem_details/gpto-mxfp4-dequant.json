@@ -61,8 +61,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# MXFP4 Dequant — reconstructed educational contract\nimport numpy as np\n\ndef solution(codes, scale):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **MXFP4 Dequant** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(codes, scale):\n    # Educational signed 4-bit quantization codebook; codes are integers 0..15.\n    # Values decode to {-6,-4.5,-3.5,-3,-2.5,-2,-1.5,-1,0,1,1.5,2,2.5,3,4,6}.\n    table=np.array([-6,-4.5,-3.5,-3,-2.5,-2,-1.5,-1,0,1,1.5,2,2.5,3,4,6],dtype=float)\n    c=np.asarray(codes,dtype=int)\n    if np.any(c<0) or np.any(c>15): raise ValueError(\"codes must be in [0,15]\")\n    return (table[c]*np.asarray(scale,dtype=float)).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# MXFP4 Dequant \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(codes, scale):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **MXFP4 Dequant** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(codes, scale):\n    # Educational signed 4-bit quantization codebook; codes are integers 0..15.\n    # Values decode to {-6,-4.5,-3.5,-3,-2.5,-2,-1.5,-1,0,1,1.5,2,2.5,3,4,6}.\n    table=np.array([-6,-4.5,-3.5,-3,-2.5,-2,-1.5,-1,0,1,1.5,2,2.5,3,4,6],dtype=float)\n    c=np.asarray(codes,dtype=int)\n    if np.any(c<0) or np.any(c>15): raise ValueError(\"codes must be in [0,15]\")\n    return (table[c]*np.asarray(scale,dtype=float)).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gpto-mxfp4-dequant-tc-1",
@@ -125,12 +125,12 @@
           7.0,
           13.0
         ],
-        "scale": -1.5
+        "scale": 0.5
       },
       "expectedOutput": [
-        2.25,
-        1.5,
-        -4.5
+        -0.75,
+        -0.5,
+        1.5
       ],
       "isPublic": false
     },

@@ -18,7 +18,7 @@
   "starterCode": "def precision_recall_at_k(recommended: list, relevant: list, k: int) -> list[float]:\n    \"\"\"\n    Returns [precision, recall] as a list of two floats.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T22:01:55.432Z",
   "updatedAt": "2026-03-05T20:30:01.457Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\ndef precision_recall_at_k(recommended: list, relevant: list, k: int) -> list[float]:\n    rec_k = set(recommended[:k])\n    rel = set(relevant)\n    hits = len(rec_k.intersection(rel))\n    prec = hits / k if k > 0 else 0.0\n    rec = hits / len(rel) if len(rel) > 0 else 0.0\n    return [round(prec, 6), round(rec, 6)]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\ndef precision_recall_at_k(recommended: list, relevant: list, k: int) -> list[float]:\n    rec_k = set(recommended[:k])\n    rel = set(relevant)\n    hits = len(rec_k.intersection(rel))\n    prec = hits / k if k > 0 else 0.0\n    rec = hits / len(rel) if len(rel) > 0 else 0.0\n    return [round(prec, 6), round(rec, 6)]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "PrecisionRecallAtKViz",
   "testCases": [
     {
@@ -151,7 +151,7 @@
       "id": "precision-recall-at-k-tc-6",
       "name": "Case 6",
       "inputs": {
-        "k": -3,
+        "k": 3,
         "relevant": [
           -1,
           -2,
@@ -168,8 +168,8 @@
         ]
       },
       "expectedOutput": [
-        0.0,
-        0.4
+        1.0,
+        0.6
       ],
       "isPublic": false
     },

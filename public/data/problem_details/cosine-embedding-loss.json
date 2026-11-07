@@ -18,7 +18,7 @@
   "starterCode": "import math\n\ndef cosine_embedding_loss(x1: list, x2: list, label: int, margin: float) -> float:\n    \"\"\"\n    Returns the cosine embedding loss as a float.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T16:55:07.038Z",
   "updatedAt": "2026-08-23T20:14:05.557Z",
-  "solution": "### 💡 Intuition & Approach\nPenalizes angle disparity for similar pairs and clamps cosine proximity below margin for dissimilar pairs.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cosine_embedding_loss(x1: list, x2: list, label: int, margin: float) -> float:\n    v1 = np.array(x1, dtype=float)\n    v2 = np.array(x2, dtype=float)\n    cos = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))\n    if label == 1:\n        loss = 1.0 - cos\n    else:\n        loss = max(0.0, cos - margin)\n    return float(round(loss, 6))\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nPenalizes angle disparity for similar pairs and clamps cosine proximity below margin for dissimilar pairs.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cosine_embedding_loss(x1: list, x2: list, label: int, margin: float) -> float:\n    v1 = np.array(x1, dtype=float)\n    v2 = np.array(x2, dtype=float)\n    cos = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))\n    if label == 1:\n        loss = 1.0 - cos\n    else:\n        loss = max(0.0, cos - margin)\n    return float(round(loss, 6))\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "CosineEmbeddingLossViz",
   "testCases": [
     {
@@ -36,7 +36,7 @@
           0
         ],
         "label": 1,
-        "margin": 0
+        "margin": 0.0
       },
       "isPublic": true,
       "expectedOutput": 0.0
@@ -56,7 +56,7 @@
           0
         ],
         "label": 1,
-        "margin": 0
+        "margin": 0.0
       },
       "isPublic": true,
       "expectedOutput": 1.0
@@ -66,19 +66,19 @@
       "name": "Case 3",
       "inputs": {
         "x1": [
-          2,
+          1,
           0,
           0
         ],
         "x2": [
-          2,
+          1,
           0,
           0
         ],
-        "label": 2,
-        "margin": 0
+        "label": -1,
+        "margin": 0.2
       },
-      "expectedOutput": 1.0,
+      "expectedOutput": 0.8,
       "isPublic": false
     },
     {
@@ -86,19 +86,19 @@
       "name": "Case 4",
       "inputs": {
         "x1": [
-          0,
-          0,
+          1,
+          1,
           0
         ],
         "x2": [
-          0,
+          1,
           0,
           0
         ],
-        "label": 0,
-        "margin": 0
+        "label": 1,
+        "margin": 0.0
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.292893,
       "isPublic": false
     },
     {
@@ -111,14 +111,14 @@
           0
         ],
         "x2": [
-          -1,
+          1,
           0,
           0
         ],
         "label": -1,
-        "margin": 0
+        "margin": 0.0
       },
-      "expectedOutput": 1.0,
+      "expectedOutput": 0.0,
       "isPublic": false
     },
     {
@@ -127,18 +127,18 @@
       "inputs": {
         "x1": [
           3,
-          0,
+          4,
           0
         ],
         "x2": [
+          4,
           3,
-          0,
           0
         ],
-        "label": 3,
-        "margin": 0
+        "label": -1,
+        "margin": 0.5
       },
-      "expectedOutput": 1.0,
+      "expectedOutput": 0.46,
       "isPublic": false
     },
     {
@@ -148,17 +148,17 @@
         "x1": [
           2.0,
           1.0,
-          1.0
+          2.0
         ],
         "x2": [
-          2.0,
           1.0,
-          1.0
+          2.0,
+          2.0
         ],
-        "label": 2.0,
-        "margin": 1.0
+        "label": 1,
+        "margin": 0.1
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.111111,
       "isPublic": false
     }
   ],

@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL INNER JOIN\nSELECT e.emp_name, e.salary, d.dept_name\nFROM employees e\nINNER JOIN departments d ON e.dept_id = d.dept_id\nORDER BY e.emp_name;",
+  "starterCode": "def sql_inner_join(employees: list, departments: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL INNER JOIN\n    SELECT e.emp_name, e.salary, d.dept_name\n    FROM employees e\n    INNER JOIN departments d ON e.dept_id = d.dept_id\n    ORDER BY e.emp_name;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **INNER JOIN** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_inner_join(employees: list, departments: list) -> list:\n    dmap = {d['dept_id']: d['dept_name'] for d in departments}\n    res = [{'emp_name': e['emp_name'], 'salary': float(e['salary']), 'dept_name': dmap[e['dept_id']]} for e in employees if e.get('dept_id') in dmap]\n    res.sort(key=lambda x: x['emp_name'])\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

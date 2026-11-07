@@ -539,5 +539,6 @@
     "next": "resnet-conv-block"
   },
   "isLocked": false,
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "resnet-identity-block"
 }

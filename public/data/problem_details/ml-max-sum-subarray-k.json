@@ -13,7 +13,7 @@
   "description": "Given an array of integers `nums` and a positive integer `k`, find the maximum sum of any contiguous subarray of size `k`.\n\nImplement the **Sliding Window** technique to update the window sum in $\\mathcal{O}(1)$ time per step, running in total $\\mathcal{O}(N)$ time.",
   "theory": "# Understanding Maximum Sum Subarray of Size K\n\n## 1. What Is It?\n\nThe **Maximum Sum Subarray of Size K** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given an array of integers `nums` and a positive integer `k`, find the maximum sum of any contiguous subarray of size `k`.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Maximum Sum Subarray of Size K**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ml_max_sum_subarray_k`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ml_max_sum_subarray_k` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Maximum Sum Subarray of Size K.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ml_max_sum_subarray_k` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ml_max_sum_subarray_k`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ml_max_sum_subarray_k`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ml_max_sum_subarray_k`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Maximum Sum Subarray of Size K** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ml_max_sum_subarray_k` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Maximum Sum Subarray of Size K."
+    "Input: nums = [2, 1, 5, 1, 3, 2], k = 3\n\nOutput: 9\n\nExplanation: Evaluated ml_max_sum_subarray_k under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ml_max_sum_subarray_k`.",
@@ -28,126 +28,120 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ml_max_sum_subarray_k(x):\n    \"\"\"\n    Maximum Sum Subarray of Size K\n    \"\"\"\n    # Implement Maximum Sum Subarray of Size K here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ml_max_sum_subarray_k(x):\n    \"\"\"\n    Maximum Sum Subarray of Size K\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def ml_max_sum_subarray_k(nums: list, k: int) -> float:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Maximum Sum Subarray of Size K** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef ml_max_sum_subarray_k(nums: list, k: int) -> float:\n    k = int(k)\n    if not nums or k <= 0 or k > len(nums):\n        return 0\n    curr = sum(nums[:k])\n    best = curr\n    for i in range(k, len(nums)):\n        curr += nums[i] - nums[i - k]\n        if curr > best:\n            best = curr\n    return best\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-max-sum-subarray-k-tc-1",
-      "name": "Standard Input",
+      "name": "Window size 3",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
-        ]
+        "nums": [
+          2,
+          1,
+          5,
+          1,
+          3,
+          2
+        ],
+        "k": 3
       },
-      "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
-      ],
+      "expectedOutput": 9,
       "isPublic": true
     },
     {
       "id": "ml-max-sum-subarray-k-tc-2",
-      "name": "Case 2",
+      "name": "Window size 2",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
-        ]
+        "nums": [
+          2,
+          3,
+          4,
+          1,
+          5
+        ],
+        "k": 2
       },
-      "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
-      ],
+      "expectedOutput": 7,
       "isPublic": true
     },
     {
       "id": "ml-max-sum-subarray-k-tc-3",
-      "name": "Case 3",
+      "name": "Negative numbers",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
-        ]
+        "nums": [
+          -5,
+          -2,
+          -1,
+          -4,
+          -3
+        ],
+        "k": 2
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
+      "expectedOutput": -3,
       "isPublic": false
     },
     {
       "id": "ml-max-sum-subarray-k-tc-4",
-      "name": "Case 4",
+      "name": "Full array window",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
-        ]
+        "nums": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "k": 4
       },
-      "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
-      ],
+      "expectedOutput": 10,
       "isPublic": false
     },
     {
       "id": "ml-max-sum-subarray-k-tc-5",
-      "name": "Case 5",
+      "name": "Window size 1",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
-        ]
+        "nums": [
+          4,
+          9,
+          2,
+          7
+        ],
+        "k": 1
       },
-      "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
-      ],
+      "expectedOutput": 9,
       "isPublic": false
     },
     {
       "id": "ml-max-sum-subarray-k-tc-6",
-      "name": "Case 6",
+      "name": "Mixed positive and negative",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
-        ]
+        "nums": [
+          1,
+          -2,
+          3,
+          4,
+          -1,
+          2,
+          1
+        ],
+        "k": 3
       },
-      "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
-      ],
+      "expectedOutput": 6,
       "isPublic": false
     },
     {
       "id": "ml-max-sum-subarray-k-tc-7",
-      "name": "Case 7",
+      "name": "Window at end",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
-        ]
+        "nums": [
+          1,
+          1,
+          1,
+          10,
+          10
+        ],
+        "k": 2
       },
-      "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
-      ],
+      "expectedOutput": 20,
       "isPublic": false
     }
   ],
@@ -159,6 +153,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

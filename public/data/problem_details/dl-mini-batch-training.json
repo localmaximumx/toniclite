@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef dl_mini_batch_training(X: list, y: list, batch_size: int = 2, lr: float = 0.1, epochs: int = 2) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Mini-Batch Training Loop** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_mini_batch_training(X: list, y: list, batch_size: int = 2, lr: float = 0.1, epochs: int = 2) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    N, D, bs = Xa.shape[0], Xa.shape[1], int(batch_size); w = np.zeros(D); ep_l = []\n    for _ in range(int(epochs)):\n        bl = []\n        for b in range(math.ceil(N / bs)):\n            xb, yb = Xa[b*bs:(b+1)*bs], ya[b*bs:(b+1)*bs]\n            diff = np.dot(xb, w) - yb; bl.append(float(np.mean(diff**2)))\n            w -= float(lr) * (2.0 / len(xb)) * np.dot(xb.T, diff)\n        ep_l.append(round(float(np.mean(bl)), 4))\n    return {'final_weights': np.round(w, 4).tolist(), 'epoch_losses': ep_l}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Mini-Batch Training Loop** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_mini_batch_training(X: list, y: list, batch_size: int = 2, lr: float = 0.1, epochs: int = 2) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    N, D, bs = Xa.shape[0], Xa.shape[1], int(batch_size); w = np.zeros(D); ep_l = []\n    for _ in range(int(epochs)):\n        bl = []\n        for b in range(math.ceil(N / bs)):\n            xb, yb = Xa[b*bs:(b+1)*bs], ya[b*bs:(b+1)*bs]\n            diff = np.dot(xb, w) - yb; bl.append(float(np.mean(diff**2)))\n            w -= float(lr) * (2.0 / len(xb)) * np.dot(xb.T, diff)\n        ep_l.append(round(float(np.mean(bl)), 4))\n    return {'final_weights': np.round(w, 4).tolist(), 'epoch_losses': ep_l}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "dl-mini-batch-training-tc-1",
@@ -256,18 +256,17 @@
           7.0,
           9.0
         ],
-        "batch_size": 3.0,
+        "batch_size": 2,
         "lr": 1.05,
-        "epochs": 3.0
+        "epochs": 2
       },
       "expectedOutput": {
         "final_weights": [
-          -1653444109.2024
+          -453287.0702
         ],
         "epoch_losses": [
-          13216.9583,
-          13055580032.1649,
-          1.2898083489533268e+16
+          4219.7506,
+          1193442879.6928
         ]
       },
       "isPublic": false
@@ -296,15 +295,18 @@
           4.0,
           6.0
         ],
-        "batch_size": 0.0,
+        "batch_size": 2,
         "lr": 1.95,
-        "epochs": 0.0
+        "epochs": 2
       },
       "expectedOutput": {
         "final_weights": [
-          0.0
+          290.55
         ],
-        "epoch_losses": []
+        "epoch_losses": [
+          14.0,
+          1592.642
+        ]
       },
       "isPublic": false
     }

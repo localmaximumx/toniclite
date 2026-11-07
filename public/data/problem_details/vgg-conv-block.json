@@ -656,5 +656,6 @@
     "prev": null,
     "next": "vgg-maxpool"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vgg-conv-block"
 }

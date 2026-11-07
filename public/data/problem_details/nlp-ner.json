@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_ner(tokens: list, entity_dict: dict) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Named Entity Recognition** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_ner(tokens: list, entity_dict: dict) -> list:\n    return [entity_dict.get(t.lower(), 'O') for t in tokens]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Named Entity Recognition** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_ner(tokens: list, entity_dict: dict) -> list:\n    return [entity_dict.get(t.lower(), 'O') for t in tokens]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-ner-tc-1",
@@ -64,24 +64,24 @@
       "name": "Case 2",
       "inputs": {
         "tokens": [
-          "Alice",
-          "visited",
-          "Paris",
-          "with",
-          "Google"
+          "Aliceed",
+          "visiteded",
+          "Parised",
+          "withed",
+          "Googleed"
         ],
         "entity_dict": {
-          "alice": "B-PER",
-          "paris": "B-LOC",
-          "google": "B-ORG"
+          "alice": "B-PERing",
+          "paris": "B-LOCing",
+          "google": "B-ORGing"
         }
       },
       "expectedOutput": [
-        "B-PER",
         "O",
-        "B-LOC",
         "O",
-        "B-ORG"
+        "O",
+        "O",
+        "O"
       ],
       "isPublic": true
     },
@@ -90,24 +90,24 @@
       "name": "Case 3",
       "inputs": {
         "tokens": [
-          "Alice",
-          "visited",
-          "Paris",
-          "with",
-          "Google"
+          "Aliceing",
+          "visiteding",
+          "Parising",
+          "withing",
+          "Googleing"
         ],
         "entity_dict": {
-          "alice": "B-PER",
-          "paris": "B-LOC",
-          "google": "B-ORG"
+          "alice": "B-PERer",
+          "paris": "B-LOCer",
+          "google": "B-ORGer"
         }
       },
       "expectedOutput": [
-        "B-PER",
         "O",
-        "B-LOC",
         "O",
-        "B-ORG"
+        "O",
+        "O",
+        "O"
       ],
       "isPublic": false
     },
@@ -116,24 +116,26 @@
       "name": "Case 4",
       "inputs": {
         "tokens": [
-          "Alice",
-          "visited",
-          "Paris",
-          "with",
-          "Google"
+          "Aliceer",
+          "visiteder",
+          "Pariser",
+          "wither",
+          "Googleer",
+          "natural language processing"
         ],
         "entity_dict": {
-          "alice": "B-PER",
-          "paris": "B-LOC",
-          "google": "B-ORG"
+          "alice": "B-PERly",
+          "paris": "B-LOCly",
+          "google": "B-ORGly"
         }
       },
       "expectedOutput": [
-        "B-PER",
         "O",
-        "B-LOC",
         "O",
-        "B-ORG"
+        "O",
+        "O",
+        "O",
+        "O"
       ],
       "isPublic": false
     },
@@ -142,24 +144,24 @@
       "name": "Case 5",
       "inputs": {
         "tokens": [
-          "Alice",
-          "visited",
-          "Paris",
-          "with",
+          "Alicetion",
+          "visitedment",
+          "Parisness",
+          "withable",
           "Google"
         ],
         "entity_dict": {
-          "alice": "B-PER",
-          "paris": "B-LOC",
-          "google": "B-ORG"
+          "alice": "B-PERtion",
+          "paris": "B-LOCtion",
+          "google": "B-ORGtion"
         }
       },
       "expectedOutput": [
-        "B-PER",
         "O",
-        "B-LOC",
         "O",
-        "B-ORG"
+        "O",
+        "O",
+        "B-ORGtion"
       ],
       "isPublic": false
     },
@@ -168,24 +170,24 @@
       "name": "Case 6",
       "inputs": {
         "tokens": [
-          "Alice",
-          "visited",
-          "Paris",
-          "with",
-          "Google"
+          "Googles",
+          "withs",
+          "Pariss",
+          "visiteds",
+          "Alices"
         ],
         "entity_dict": {
-          "alice": "B-PER",
-          "paris": "B-LOC",
-          "google": "B-ORG"
+          "alice": "B-PERment",
+          "paris": "B-LOCment",
+          "google": "B-ORGment"
         }
       },
       "expectedOutput": [
-        "B-PER",
         "O",
-        "B-LOC",
         "O",
-        "B-ORG"
+        "O",
+        "O",
+        "O"
       ],
       "isPublic": false
     },
@@ -198,20 +200,22 @@
           "visited",
           "Paris",
           "with",
-          "Google"
+          "Google",
+          "computer vision system"
         ],
         "entity_dict": {
-          "alice": "B-PER",
-          "paris": "B-LOC",
-          "google": "B-ORG"
+          "alice": "B-PERness",
+          "paris": "B-LOCness",
+          "google": "B-ORGness"
         }
       },
       "expectedOutput": [
-        "B-PER",
+        "B-PERness",
         "O",
-        "B-LOC",
+        "B-LOCness",
         "O",
-        "B-ORG"
+        "B-ORGness",
+        "O"
       ],
       "isPublic": false
     }

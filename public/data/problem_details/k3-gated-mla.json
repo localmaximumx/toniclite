@@ -23,7 +23,7 @@
   "topicId": "k3-gated-mla",
   "paperSnippet": "\"channel-wise full-rank output gate\"",
   "visualizationComponent": "K3GatedMLAViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Gated MLA** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\nimport torch\n\ndef gated_mla(hidden_states: torch.Tensor, query_projection: torch.Tensor, latent_down_projection: torch.Tensor, key_up_projection: torch.Tensor, value_up_projection: torch.Tensor, output_gate_projection: torch.Tensor, output_projection: torch.Tensor, num_heads: int, causal: bool = True) -> dict[str, torch.Tensor]:\n    X = hidden_states if isinstance(hidden_states, torch.Tensor) else torch.tensor(hidden_states, dtype=torch.float64)\n    Wq = query_projection if isinstance(query_projection, torch.Tensor) else torch.tensor(query_projection, dtype=torch.float64)\n    Wc = latent_down_projection if isinstance(latent_down_projection, torch.Tensor) else torch.tensor(latent_down_projection, dtype=torch.float64)\n    Wk = key_up_projection if isinstance(key_up_projection, torch.Tensor) else torch.tensor(key_up_projection, dtype=torch.float64)\n    Wv = value_up_projection if isinstance(value_up_projection, torch.Tensor) else torch.tensor(value_up_projection, dtype=torch.float64)\n    Wg = output_gate_projection if isinstance(output_gate_projection, torch.Tensor) else torch.tensor(output_gate_projection, dtype=torch.float64)\n    Wo = output_projection if isinstance(output_projection, torch.Tensor) else torch.tensor(output_projection, dtype=torch.float64)\n    H = int(num_heads)\n    \n    B, S, D = X.shape\n    Dh = D // H\n    \n    Q = X @ Wq.T\n    C = X @ Wc.T\n    K = C @ Wk.T\n    V = C @ Wv.T\n    \n    Q_h = Q.view(B, S, H, Dh).transpose(1, 2)\n    K_h = K.view(B, S, H, Dh).transpose(1, 2)\n    V_h = V.view(B, S, H, Dh).transpose(1, 2)\n    \n    scores = (Q_h @ K_h.transpose(-1, -2)) / math.sqrt(Dh)\n    if causal:\n        i = torch.arange(S).unsqueeze(1)\n        j = torch.arange(S).unsqueeze(0)\n        mask = torch.where(j > i, float('-inf'), 0.0)\n        scores = scores + mask\n        \n    A = torch.softmax(scores, dim=-1)\n    head_out = A @ V_h\n    O_tilde = head_out.transpose(1, 2).reshape(B, S, D)\n    \n    gate = torch.sigmoid(X @ Wg.T)\n    Y = (gate * O_tilde) @ Wo.T\n    return {\n        \"output\": torch.round(Y * 1e6) / 1e6,\n        \"latent_cache\": torch.round(C * 1e6) / 1e6\n    }\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Gated MLA** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\nimport torch\n\ndef gated_mla(hidden_states: torch.Tensor, query_projection: torch.Tensor, latent_down_projection: torch.Tensor, key_up_projection: torch.Tensor, value_up_projection: torch.Tensor, output_gate_projection: torch.Tensor, output_projection: torch.Tensor, num_heads: int, causal: bool = True) -> dict[str, torch.Tensor]:\n    X = hidden_states if isinstance(hidden_states, torch.Tensor) else torch.tensor(hidden_states, dtype=torch.float64)\n    Wq = query_projection if isinstance(query_projection, torch.Tensor) else torch.tensor(query_projection, dtype=torch.float64)\n    Wc = latent_down_projection if isinstance(latent_down_projection, torch.Tensor) else torch.tensor(latent_down_projection, dtype=torch.float64)\n    Wk = key_up_projection if isinstance(key_up_projection, torch.Tensor) else torch.tensor(key_up_projection, dtype=torch.float64)\n    Wv = value_up_projection if isinstance(value_up_projection, torch.Tensor) else torch.tensor(value_up_projection, dtype=torch.float64)\n    Wg = output_gate_projection if isinstance(output_gate_projection, torch.Tensor) else torch.tensor(output_gate_projection, dtype=torch.float64)\n    Wo = output_projection if isinstance(output_projection, torch.Tensor) else torch.tensor(output_projection, dtype=torch.float64)\n    H = int(num_heads)\n    \n    B, S, D = X.shape\n    Dh = D // H\n    \n    Q = X @ Wq.T\n    C = X @ Wc.T\n    K = C @ Wk.T\n    V = C @ Wv.T\n    \n    Q_h = Q.view(B, S, H, Dh).transpose(1, 2)\n    K_h = K.view(B, S, H, Dh).transpose(1, 2)\n    V_h = V.view(B, S, H, Dh).transpose(1, 2)\n    \n    scores = (Q_h @ K_h.transpose(-1, -2)) / math.sqrt(Dh)\n    if causal:\n        i = torch.arange(S).unsqueeze(1)\n        j = torch.arange(S).unsqueeze(0)\n        mask = torch.where(j > i, float('-inf'), 0.0)\n        scores = scores + mask\n        \n    A = torch.softmax(scores, dim=-1)\n    head_out = A @ V_h\n    O_tilde = head_out.transpose(1, 2).reshape(B, S, D)\n    \n    gate = torch.sigmoid(X @ Wg.T)\n    Y = (gate * O_tilde) @ Wo.T\n    return {\n        \"output\": torch.round(Y * 1e6) / 1e6,\n        \"latent_cache\": torch.round(C * 1e6) / 1e6\n    }\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "k3-gated-mla-tc-1",
@@ -296,7 +296,7 @@
       "id": "k3-gated-mla-tc-4",
       "name": "Case 4",
       "inputs": {
-        "causal": 0,
+        "causal": true,
         "num_heads": 1,
         "hidden_states": [
           [
@@ -358,7 +358,7 @@
       "id": "k3-gated-mla-tc-5",
       "name": "Case 5",
       "inputs": {
-        "causal": 2,
+        "causal": true,
         "num_heads": 1,
         "hidden_states": [
           [
@@ -420,43 +420,43 @@
       "id": "k3-gated-mla-tc-6",
       "name": "Case 6",
       "inputs": {
-        "causal": 1,
+        "causal": true,
         "num_heads": 1,
         "hidden_states": [
           [
             [
-              2
+              9
             ]
           ]
         ],
         "query_projection": [
           [
-            1
+            8
           ]
         ],
         "key_up_projection": [
           [
-            1
+            8
           ]
         ],
         "output_projection": [
           [
-            1
+            8
           ]
         ],
         "value_up_projection": [
           [
-            1
+            8
           ]
         ],
         "latent_down_projection": [
           [
-            1
+            8
           ]
         ],
         "output_gate_projection": [
           [
-            0
+            7
           ]
         ]
       },
@@ -464,14 +464,14 @@
         "output": [
           [
             [
-              1.0
+              4608.0
             ]
           ]
         ],
         "latent_cache": [
           [
             [
-              2.0
+              72.0
             ]
           ]
         ]
@@ -482,43 +482,43 @@
       "id": "k3-gated-mla-tc-7",
       "name": "Case 7",
       "inputs": {
-        "causal": 1,
+        "causal": true,
         "num_heads": 1,
         "hidden_states": [
           [
             [
-              2
+              10
             ]
           ]
         ],
         "query_projection": [
           [
-            1
+            9
           ]
         ],
         "key_up_projection": [
           [
-            1
+            9
           ]
         ],
         "output_projection": [
           [
-            1
+            9
           ]
         ],
         "value_up_projection": [
           [
-            1
+            9
           ]
         ],
         "latent_down_projection": [
           [
-            1
+            9
           ]
         ],
         "output_gate_projection": [
           [
-            1
+            8
           ]
         ]
       },
@@ -526,14 +526,14 @@
         "output": [
           [
             [
-              1.761594
+              7290.0
             ]
           ]
         ],
         "latent_cache": [
           [
             [
-              2.0
+              90.0
             ]
           ]
         ]
@@ -623,5 +623,6 @@
     "prev": "k3-kda-recurrence",
     "next": "k3-full-attnres"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-gated-mla"
 }

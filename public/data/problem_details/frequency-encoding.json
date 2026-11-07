@@ -18,7 +18,7 @@
   "starterCode": "def frequency_encoding(values: list) -> list:\n    \"\"\"\n    Returns the relative frequency of every input value.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T22:14:04.237Z",
   "updatedAt": "2026-08-23T21:10:33.573Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nfrom collections import Counter\n\ndef frequency_encoding(values: list) -> list:\n    N = len(values)\n    counts = Counter(values)\n    return [round(counts[v] / N, 6) for v in values]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nfrom collections import Counter\n\ndef frequency_encoding(values: list) -> list:\n    N = len(values)\n    counts = Counter(values)\n    return [round(counts[v] / N, 6) for v in values]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "FrequencyEncodingViz",
   "testCases": [
     {
@@ -89,20 +89,22 @@
       "name": "Case 4",
       "inputs": {
         "values": [
-          "a",
-          "b",
-          "a",
-          "c",
-          "a"
+          "aer",
+          "ber",
+          "aer",
+          "cer",
+          "aer",
+          "natural language processing"
         ]
       },
       "isPublic": false,
       "expectedOutput": [
-        0.6,
-        0.2,
-        0.6,
-        0.2,
-        0.6
+        0.5,
+        0.166667,
+        0.5,
+        0.166667,
+        0.5,
+        0.166667
       ]
     },
     {
@@ -110,20 +112,20 @@
       "name": "Case 5",
       "inputs": {
         "values": [
-          "cat",
-          "dog",
-          "cat",
-          "cat",
-          "dog"
+          "ation",
+          "bment",
+          "aness",
+          "cable",
+          "a"
         ]
       },
       "isPublic": false,
       "expectedOutput": [
-        0.6,
-        0.4,
-        0.6,
-        0.6,
-        0.4
+        0.2,
+        0.2,
+        0.2,
+        0.2,
+        0.2
       ]
     },
     {
@@ -131,11 +133,11 @@
       "name": "Case 6",
       "inputs": {
         "values": [
-          "a",
-          "c",
-          "a",
-          "b",
-          "a"
+          "as",
+          "cs",
+          "as",
+          "bs",
+          "as"
         ]
       },
       "expectedOutput": [
@@ -156,16 +158,18 @@
           "b",
           "a",
           "c",
-          "a"
+          "a",
+          "computer vision system"
         ]
       },
       "isPublic": false,
       "expectedOutput": [
-        0.6,
-        0.2,
-        0.6,
-        0.2,
-        0.6
+        0.5,
+        0.166667,
+        0.5,
+        0.166667,
+        0.5,
+        0.166667
       ]
     }
   ],

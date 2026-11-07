@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef dl_transposed_convolution(image: list, kernel: list, stride: int = 2) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Transposed Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_transposed_convolution(image: list, kernel: list, stride: int = 2) -> list:\n    img, Km = np.array(image, dtype=np.float64), np.array(kernel, dtype=np.float64)\n    H, W = img.shape; K = Km.shape[0]; s = int(stride)\n    out = np.zeros(((H - 1)*s + K, (W - 1)*s + K))\n    for i in range(H):\n        for j in range(W):\n            out[i*s : i*s+K, j*s : j*s+K] += img[i, j] * Km\n    return np.round(out, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Transposed Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_transposed_convolution(image: list, kernel: list, stride: int = 2) -> list:\n    img, Km = np.array(image, dtype=np.float64), np.array(kernel, dtype=np.float64)\n    H, W = img.shape; K = Km.shape[0]; s = int(stride)\n    out = np.zeros(((H - 1)*s + K, (W - 1)*s + K))\n    for i in range(H):\n        for j in range(W):\n            out[i*s : i*s+K, j*s : j*s+K] += img[i, j] * Km\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "dl-transposed-convolution-tc-1",
@@ -344,41 +344,30 @@
             2.0
           ]
         ],
-        "stride": 3.0
+        "stride": 2
       },
       "expectedOutput": [
         [
           4.0,
           4.0,
-          0.0,
           6.0,
           6.0
         ],
         [
           4.0,
           4.0,
-          0.0,
           6.0,
           6.0
         ],
         [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
           8.0,
           8.0,
-          0.0,
           10.0,
           10.0
         ],
         [
           8.0,
           8.0,
-          0.0,
           10.0,
           10.0
         ]
@@ -409,14 +398,30 @@
             -1.0
           ]
         ],
-        "stride": 0.0
+        "stride": 2
       },
       "expectedOutput": [
         [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          -1.0,
+          -1.0,
           -2.0,
           -2.0
         ],
         [
+          -1.0,
+          -1.0,
           -2.0,
           -2.0
         ]

@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef optim_dropout(x: list, mask: list, p: float = 0.5, training: bool = True) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Dropout from Scratch** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef optim_dropout(x: list, mask: list, p: float = 0.5, training: bool = True) -> list:\n    arr_x = np.array(x, dtype=float)\n    if not training or p >= 1.0: return np.round(arr_x, 4).tolist()\n    return np.round((arr_x * np.array(mask, dtype=float)) / (1.0 - p), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Dropout from Scratch** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef optim_dropout(x: list, mask: list, p: float = 0.5, training: bool = True) -> list:\n    arr_x = np.array(x, dtype=float)\n    if not training or p >= 1.0: return np.round(arr_x, 4).tolist()\n    return np.round((arr_x * np.array(mask, dtype=float)) / (1.0 - p), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "optim-dropout-tc-1",
@@ -97,7 +97,7 @@
           ]
         ],
         "p": 0.75,
-        "training": 2
+        "training": true
       },
       "expectedOutput": [
         [
@@ -136,16 +136,16 @@
           ]
         ],
         "p": 0.25,
-        "training": 0
+        "training": true
       },
       "expectedOutput": [
         [
-          0.5,
-          1.0
+          0.3333,
+          0.0
         ],
         [
-          1.5,
-          2.0
+          1.0,
+          1.3333
         ]
       ],
       "isPublic": false
@@ -175,7 +175,7 @@
           ]
         ],
         "p": 1.0,
-        "training": 2
+        "training": true
       },
       "expectedOutput": [
         [
@@ -213,17 +213,17 @@
             -1.0
           ]
         ],
-        "p": -0.5,
-        "training": -1
+        "p": 0.5,
+        "training": true
       },
       "expectedOutput": [
         [
-          0.6667,
+          2.0,
           0.0
         ],
         [
-          2.0,
-          2.6667
+          6.0,
+          8.0
         ]
       ],
       "isPublic": false
@@ -253,7 +253,7 @@
           ]
         ],
         "p": 0.4,
-        "training": 1
+        "training": true
       },
       "expectedOutput": [
         [
@@ -291,17 +291,17 @@
             3.0
           ]
         ],
-        "p": 1.5,
-        "training": 3
+        "p": 0.5,
+        "training": true
       },
       "expectedOutput": [
         [
-          3.0,
-          6.0
+          18.0,
+          0.0
         ],
         [
-          9.0,
-          12.0
+          54.0,
+          72.0
         ]
       ],
       "isPublic": false

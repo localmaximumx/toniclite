@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_edit_distance(s1: str, s2: str) -> int:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Edit Distance** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_edit_distance(s1: str, s2: str) -> int:\n    m, n = len(s1), len(s2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    for i in range(m + 1): dp[i][0] = i\n    for j in range(n + 1): dp[0][j] = j\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            dp[i][j] = dp[i-1][j-1] if s1[i-1] == s2[j-1] else 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])\n    return dp[m][n]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Edit Distance** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_edit_distance(s1: str, s2: str) -> int:\n    m, n = len(s1), len(s2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    for i in range(m + 1): dp[i][0] = i\n    for j in range(n + 1): dp[0][j] = j\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            dp[i][j] = dp[i-1][j-1] if s1[i-1] == s2[j-1] else 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])\n    return dp[m][n]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-edit-distance-tc-1",
@@ -47,8 +47,8 @@
       "id": "nlp-edit-distance-tc-2",
       "name": "Case 2",
       "inputs": {
-        "s1": "kitten",
-        "s2": "sitting"
+        "s1": "kittening",
+        "s2": "sittinging"
       },
       "expectedOutput": 3,
       "isPublic": true
@@ -57,8 +57,8 @@
       "id": "nlp-edit-distance-tc-3",
       "name": "Case 3",
       "inputs": {
-        "s1": "kitten",
-        "s2": "sitting"
+        "s1": "kittener",
+        "s2": "sittinger"
       },
       "expectedOutput": 3,
       "isPublic": false
@@ -67,8 +67,8 @@
       "id": "nlp-edit-distance-tc-4",
       "name": "Case 4",
       "inputs": {
-        "s1": "kitten",
-        "s2": "sitting"
+        "s1": "kittenly",
+        "s2": "sittingly"
       },
       "expectedOutput": 3,
       "isPublic": false
@@ -77,8 +77,8 @@
       "id": "nlp-edit-distance-tc-5",
       "name": "Case 5",
       "inputs": {
-        "s1": "kitten",
-        "s2": "sitting"
+        "s1": "kittention",
+        "s2": "sittingtion"
       },
       "expectedOutput": 3,
       "isPublic": false
@@ -87,8 +87,8 @@
       "id": "nlp-edit-distance-tc-6",
       "name": "Case 6",
       "inputs": {
-        "s1": "kitten",
-        "s2": "sitting"
+        "s1": "kittenment",
+        "s2": "sittingment"
       },
       "expectedOutput": 3,
       "isPublic": false
@@ -97,8 +97,8 @@
       "id": "nlp-edit-distance-tc-7",
       "name": "Case 7",
       "inputs": {
-        "s1": "kitten",
-        "s2": "sitting"
+        "s1": "kittenness",
+        "s2": "sittingness"
       },
       "expectedOutput": 3,
       "isPublic": false

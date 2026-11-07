@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL Nested Aggregations\nWITH daily_orders AS (\n    SELECT order_date, SUM(revenue) AS daily_rev\n    FROM orders\n    GROUP BY order_date\n)\nSELECT AVG(daily_rev) AS avg_daily_revenue\nFROM daily_orders;",
+  "starterCode": "def sql_nested_aggregations(orders: list) -> dict:\n    \"\"\"\n    Reference SQL:\n    -- SQL Nested Aggregations\n    WITH daily_orders AS (\n        SELECT order_date, SUM(revenue) AS daily_rev\n        FROM orders\n        GROUP BY order_date\n    )\n    SELECT AVG(daily_rev) AS avg_daily_revenue\n    FROM daily_orders;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **Nested Aggregations** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_nested_aggregations(orders: list) -> dict:\n    d = {}\n    for o in orders: d[o['order_date']] = d.get(o['order_date'], 0.0) + float(o['revenue'])\n    return {'daily_revenue': {k: round(v, 2) for k, v in sorted(d.items())}, 'average_daily_revenue': round(sum(d.values())/len(d), 2), 'busiest_day': max(d, key=d.get)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

@@ -399,5 +399,6 @@
     "prev": "vit-patch-embedding",
     "next": "vit-class-token"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vit-position-embedding"
 }

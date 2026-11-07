@@ -19,7 +19,7 @@
   "starterCode": "def word_count_dict(sentences: list) -> dict:\n    \"\"\"\n    Returns a dictionary of token counts.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-15T16:17:03.236Z",
   "updatedAt": "2026-08-23T11:05:25.288Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nfrom collections import Counter\n\ndef word_count_dict(sentences: list) -> dict:\n    words = [w for s in sentences for w in s]\n    return dict(Counter(words))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nfrom collections import Counter\n\ndef word_count_dict(sentences: list) -> dict:\n    words = [w for s in sentences for w in s]\n    return dict(Counter(words))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "WordCountDictViz",
   "testCases": [
     {
@@ -82,23 +82,27 @@
       "inputs": {
         "sentences": [
           [
-            "i",
-            "love",
-            "ml"
+            "ier",
+            "loveer",
+            "mler",
+            "natural language processing"
           ],
           [
-            "i",
-            "love",
-            "coding"
+            "ition",
+            "lovement",
+            "codingness"
           ]
         ]
       },
       "isPublic": false,
       "expectedOutput": {
-        "i": 2,
-        "love": 2,
-        "ml": 1,
-        "coding": 1
+        "ier": 1,
+        "loveer": 1,
+        "mler": 1,
+        "natural language processing": 1,
+        "ition": 1,
+        "lovement": 1,
+        "codingness": 1
       }
     },
     {
@@ -107,28 +111,55 @@
       "inputs": {
         "sentences": [
           [
-            "hello",
-            "hello"
+            "ition",
+            "lovement",
+            "mlness"
           ],
           [
-            "world"
+            "codings",
+            "loves",
+            "is"
           ]
         ]
       },
       "isPublic": false,
       "expectedOutput": {
-        "hello": 2,
-        "world": 1
+        "ition": 1,
+        "lovement": 1,
+        "mlness": 1,
+        "codings": 1,
+        "loves": 1,
+        "is": 1
       }
     },
     {
       "id": "word-count-dict-tc-6",
       "name": "Case 6",
       "inputs": {
-        "sentences": []
+        "sentences": [
+          [
+            "mls",
+            "loves",
+            "is"
+          ],
+          [
+            "i",
+            "love",
+            "coding",
+            "computer vision system"
+          ]
+        ]
       },
       "isPublic": false,
-      "expectedOutput": {}
+      "expectedOutput": {
+        "mls": 1,
+        "loves": 1,
+        "is": 1,
+        "i": 1,
+        "love": 1,
+        "coding": 1,
+        "computer vision system": 1
+      }
     },
     {
       "id": "word-count-dict-tc-7",
@@ -138,21 +169,25 @@
           [
             "i",
             "love",
-            "ml"
+            "ml",
+            "computer vision system"
           ],
           [
-            "i",
-            "love",
-            "coding"
+            "ied",
+            "loveed",
+            "codinged"
           ]
         ]
       },
       "isPublic": false,
       "expectedOutput": {
-        "i": 2,
-        "love": 2,
+        "i": 1,
+        "love": 1,
         "ml": 1,
-        "coding": 1
+        "computer vision system": 1,
+        "ied": 1,
+        "loveed": 1,
+        "codinged": 1
       }
     }
   ],

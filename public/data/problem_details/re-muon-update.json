@@ -59,7 +59,7 @@
     "Unless otherwise stated, dimensions must be consistent."
   ],
   "starterCode": "def solve(gradient, learning_rate, scale=1.0):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(gradient, learning_rate, scale=1.0):\n    # Simple scaled gradient update; returns parameter delta (not a full Muon optimizer).\n    return [[-learning_rate*scale*v for v in row] for row in gradient]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(gradient, learning_rate, scale=1.0):\n    # Simple scaled gradient update; returns parameter delta (not a full Muon optimizer).\n    return [[-learning_rate*scale*v for v in row] for row in gradient]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "re-muon-update-tc-1",
@@ -163,16 +163,16 @@
           ]
         ],
         "learning_rate": 0.1,
-        "scale": -1.0
+        "scale": 1.0
       },
       "expectedOutput": [
         [
-          -0.1,
-          -0.2
+          0.1,
+          0.2
         ],
         [
-          -0.3,
-          -0.4
+          0.3,
+          0.4
         ]
       ],
       "isPublic": false
@@ -250,16 +250,16 @@
           ]
         ],
         "learning_rate": 1.9,
-        "scale": -1.0
+        "scale": 1.0
       },
       "expectedOutput": [
         [
-          -1.9,
-          0.0
+          1.9,
+          -0.0
         ],
         [
-          1.9,
-          3.8
+          -1.9,
+          -3.8
         ]
       ],
       "isPublic": false

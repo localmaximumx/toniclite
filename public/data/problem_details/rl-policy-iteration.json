@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef rl_policy_iteration(P: list, R: list, gamma: float = 0.9) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Policy Iteration** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_policy_iteration(P: list, R: list, gamma: float = 0.9) -> list:\n    S, A = len(R), len(P[0])\n    pol = [0] * S\n    for _ in range(20):\n        T_pi = np.array([P[s][pol[s]] for s in range(S)])\n        R_pi = np.array([R[s][pol[s]] for s in range(S)])\n        V = np.linalg.solve(np.eye(S) - gamma * T_pi, R_pi)\n        stable = True\n        for s in range(S):\n            q = [R[s][a] + gamma * np.dot(P[s][a], V) for a in range(A)]\n            best = int(np.argmax(q))\n            if best != pol[s]: stable = False; pol[s] = best\n        if stable: break\n    return pol\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Policy Iteration** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_policy_iteration(P: list, R: list, gamma: float = 0.9) -> list:\n    S, A = len(R), len(P[0])\n    pol = [0] * S\n    for _ in range(20):\n        T_pi = np.array([P[s][pol[s]] for s in range(S)])\n        R_pi = np.array([R[s][pol[s]] for s in range(S)])\n        V = np.linalg.solve(np.eye(S) - gamma * T_pi, R_pi)\n        stable = True\n        for s in range(S):\n            q = [R[s][a] + gamma * np.dot(P[s][a], V) for a in range(A)]\n            best = int(np.argmax(q))\n            if best != pol[s]: stable = False; pol[s] = best\n        if stable: break\n    return pol\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-policy-iteration-tc-1",
@@ -244,10 +244,10 @@
             -2.0
           ]
         ],
-        "gamma": -0.9
+        "gamma": 0.9
       },
       "expectedOutput": [
-        1,
+        0,
         0
       ],
       "isPublic": false

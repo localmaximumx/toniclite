@@ -21,7 +21,7 @@
   "description": "Join user records, experiment assignments, and conversion events in SQL to compute variant revenue.\n\nLeft outer joins preserve all assigned experiment units regardless of whether conversions occurred.\n\n### Query Logic & Formulation\n$$\n\\text{SELECT } u.user\\_id, a.variant, \\operatorname{COALESCE}(\\operatorname{SUM}(c.revenue), 0) \\dots\n$$\n\n### Relational Execution Steps\n1. Inner join users with experiment_assignments\n2. Left join with conversion_events on user_id\n3. Aggregate revenue per user and variant\n\n### Expected Query Output\nStandard SQL query string.",
   "theory": "# Understanding Multiple Joins\n\n## 1. What Is It?\n\nThe **Multiple Joins** is a fundamental computational technique in Sql. In machine learning workflows, Join user records, experiment assignments, and conversion events in SQL to compute variant revenue.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Sql workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{SELECT } u.user\\_id, a.variant, \\operatorname{COALESCE}(\\operatorname{SUM}(c.revenue), 0) \\dots\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `sql_multiple_joins` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nOutput: \"SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated sql_multiple_joins under standard test conditions.\n\n**Resulting Output:**\n```python\n\"SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;\"\n```\n\n## 4. Understanding the Expected Output\n\nThe function `sql_multiple_joins` must return:\n- **Primary Output:** `\"SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;\"`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `sql_multiple_joins`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `sql_multiple_joins`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `sql_multiple_joins`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Multiple Joins** provides an essential primitive within Sql systems. By combining vectorized array computation with rigorous numerical safeguards, `sql_multiple_joins` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: \n\nOutput: \"SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;\"\n\nExplanation: Evaluated sql_multiple_joins under standard test conditions."
+    "Input: users = [{\"user_id\": 1}, {\"user_id\": 2}], experiment_assignments = [{\"user_id\": 1, \"variant\": \"treatment\"}, {\"user_id\": 2, \"variant\": \"control\"}], conversion_events = [{\"user_id\": 1, \"revenue\": 50.0}]\n\nOutput: [{\"user_id\": 1, \"variant\": \"treatment\", \"total_revenue\": 50.0}, {\"user_id\": 2, \"variant\": \"control\", \"total_revenue\": 0.0}]\n\nExplanation: Evaluated sql_multiple_joins under standard test conditions."
   ],
   "requirements": "* Function must be named `sql_multiple_joins`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
   "hints": [
@@ -29,56 +29,326 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def sql_multiple_joins() -> str:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Multiple Joins** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_multiple_joins() -> str:\n    return 'SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;'\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "def sql_multiple_joins(users: list, experiment_assignments: list, conversion_events: list) -> list:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Multiple Joins** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef sql_multiple_joins(users: list, experiment_assignments: list, conversion_events: list) -> list:\n    user_ids = {u[\"user_id\"] for u in users}\n    conv_sum = {}\n    for c in conversion_events:\n        uid = c[\"user_id\"]\n        conv_sum[uid] = conv_sum.get(uid, 0.0) + float(c.get(\"revenue\", 0.0))\n    rows = []\n    for a in experiment_assignments:\n        uid = a[\"user_id\"]\n        if uid in user_ids:\n            rev = round(conv_sum.get(uid, 0.0), 4)\n            rows.append({\"user_id\": uid, \"variant\": a[\"variant\"], \"total_revenue\": rev})\n    return sorted(rows, key=lambda r: (-r[\"total_revenue\"], r[\"user_id\"]))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "sql-multiple-joins-tc-1",
-      "name": "Standard query",
-      "inputs": {},
-      "expectedOutput": "SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;",
+      "name": "Users with and without conversions",
+      "inputs": {
+        "users": [
+          {
+            "user_id": 1
+          },
+          {
+            "user_id": 2
+          }
+        ],
+        "experiment_assignments": [
+          {
+            "user_id": 1,
+            "variant": "treatment"
+          },
+          {
+            "user_id": 2,
+            "variant": "control"
+          }
+        ],
+        "conversion_events": [
+          {
+            "user_id": 1,
+            "revenue": 50.0
+          }
+        ]
+      },
+      "expectedOutput": [
+        {
+          "user_id": 1,
+          "variant": "treatment",
+          "total_revenue": 50.0
+        },
+        {
+          "user_id": 2,
+          "variant": "control",
+          "total_revenue": 0.0
+        }
+      ],
       "isPublic": true
     },
     {
       "id": "sql-multiple-joins-tc-2",
-      "name": "Case 2",
-      "inputs": {},
-      "expectedOutput": "SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;",
+      "name": "Multiple conversion events per user",
+      "inputs": {
+        "users": [
+          {
+            "user_id": 1
+          },
+          {
+            "user_id": 2
+          }
+        ],
+        "experiment_assignments": [
+          {
+            "user_id": 1,
+            "variant": "A"
+          },
+          {
+            "user_id": 2,
+            "variant": "B"
+          }
+        ],
+        "conversion_events": [
+          {
+            "user_id": 1,
+            "revenue": 20.0
+          },
+          {
+            "user_id": 1,
+            "revenue": 35.0
+          },
+          {
+            "user_id": 2,
+            "revenue": 40.0
+          }
+        ]
+      },
+      "expectedOutput": [
+        {
+          "user_id": 1,
+          "variant": "A",
+          "total_revenue": 55.0
+        },
+        {
+          "user_id": 2,
+          "variant": "B",
+          "total_revenue": 40.0
+        }
+      ],
       "isPublic": true
     },
     {
       "id": "sql-multiple-joins-tc-3",
-      "name": "Case 3",
-      "inputs": {},
-      "expectedOutput": "SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;",
+      "name": "No conversions at all",
+      "inputs": {
+        "users": [
+          {
+            "user_id": 1
+          },
+          {
+            "user_id": 2
+          }
+        ],
+        "experiment_assignments": [
+          {
+            "user_id": 1,
+            "variant": "A"
+          },
+          {
+            "user_id": 2,
+            "variant": "B"
+          }
+        ],
+        "conversion_events": []
+      },
+      "expectedOutput": [
+        {
+          "user_id": 1,
+          "variant": "A",
+          "total_revenue": 0.0
+        },
+        {
+          "user_id": 2,
+          "variant": "B",
+          "total_revenue": 0.0
+        }
+      ],
       "isPublic": false
     },
     {
       "id": "sql-multiple-joins-tc-4",
-      "name": "Case 4",
-      "inputs": {},
-      "expectedOutput": "SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;",
+      "name": "Unassigned user ignored",
+      "inputs": {
+        "users": [
+          {
+            "user_id": 1
+          },
+          {
+            "user_id": 2
+          },
+          {
+            "user_id": 3
+          }
+        ],
+        "experiment_assignments": [
+          {
+            "user_id": 1,
+            "variant": "A"
+          },
+          {
+            "user_id": 2,
+            "variant": "B"
+          }
+        ],
+        "conversion_events": [
+          {
+            "user_id": 3,
+            "revenue": 100.0
+          },
+          {
+            "user_id": 2,
+            "revenue": 25.0
+          }
+        ]
+      },
+      "expectedOutput": [
+        {
+          "user_id": 2,
+          "variant": "B",
+          "total_revenue": 25.0
+        },
+        {
+          "user_id": 1,
+          "variant": "A",
+          "total_revenue": 0.0
+        }
+      ],
       "isPublic": false
     },
     {
       "id": "sql-multiple-joins-tc-5",
-      "name": "Case 5",
-      "inputs": {},
-      "expectedOutput": "SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;",
+      "name": "Three assigned users",
+      "inputs": {
+        "users": [
+          {
+            "user_id": 10
+          },
+          {
+            "user_id": 20
+          },
+          {
+            "user_id": 30
+          }
+        ],
+        "experiment_assignments": [
+          {
+            "user_id": 10,
+            "variant": "C"
+          },
+          {
+            "user_id": 20,
+            "variant": "T"
+          },
+          {
+            "user_id": 30,
+            "variant": "T"
+          }
+        ],
+        "conversion_events": [
+          {
+            "user_id": 30,
+            "revenue": 90.0
+          },
+          {
+            "user_id": 10,
+            "revenue": 30.0
+          }
+        ]
+      },
+      "expectedOutput": [
+        {
+          "user_id": 30,
+          "variant": "T",
+          "total_revenue": 90.0
+        },
+        {
+          "user_id": 10,
+          "variant": "C",
+          "total_revenue": 30.0
+        },
+        {
+          "user_id": 20,
+          "variant": "T",
+          "total_revenue": 0.0
+        }
+      ],
       "isPublic": false
     },
     {
       "id": "sql-multiple-joins-tc-6",
-      "name": "Case 6",
-      "inputs": {},
-      "expectedOutput": "SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;",
+      "name": "Tie breaking by user_id",
+      "inputs": {
+        "users": [
+          {
+            "user_id": 1
+          },
+          {
+            "user_id": 2
+          }
+        ],
+        "experiment_assignments": [
+          {
+            "user_id": 2,
+            "variant": "B"
+          },
+          {
+            "user_id": 1,
+            "variant": "A"
+          }
+        ],
+        "conversion_events": [
+          {
+            "user_id": 1,
+            "revenue": 50.0
+          },
+          {
+            "user_id": 2,
+            "revenue": 50.0
+          }
+        ]
+      },
+      "expectedOutput": [
+        {
+          "user_id": 1,
+          "variant": "A",
+          "total_revenue": 50.0
+        },
+        {
+          "user_id": 2,
+          "variant": "B",
+          "total_revenue": 50.0
+        }
+      ],
       "isPublic": false
     },
     {
       "id": "sql-multiple-joins-tc-7",
-      "name": "Case 7",
-      "inputs": {},
-      "expectedOutput": "SELECT u.user_id, a.variant, COALESCE(SUM(c.revenue), 0) AS total_revenue FROM users u JOIN experiment_assignments a ON u.user_id = a.user_id LEFT JOIN conversion_events c ON u.user_id = c.user_id GROUP BY u.user_id, a.variant ORDER BY total_revenue DESC;",
+      "name": "Single user experiment",
+      "inputs": {
+        "users": [
+          {
+            "user_id": 7
+          }
+        ],
+        "experiment_assignments": [
+          {
+            "user_id": 7,
+            "variant": "treatment"
+          }
+        ],
+        "conversion_events": [
+          {
+            "user_id": 7,
+            "revenue": 12.5
+          }
+        ]
+      },
+      "expectedOutput": [
+        {
+          "user_id": 7,
+          "variant": "treatment",
+          "total_revenue": 12.5
+        }
+      ],
       "isPublic": false
     }
   ],
@@ -94,7 +364,7 @@
     "sql-conditional-aggregation"
   ],
   "placeholderAnalysis": {
-    "isPlaceholder": true,
+    "isPlaceholder": false,
     "category": "sql",
     "placeholderType": "sql_dummy_select (SELECT * FROM main_table)",
     "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."

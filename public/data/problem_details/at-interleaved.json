@@ -94,8 +94,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# Interleaved RoPE + NoPE — reconstructed educational contract\nimport numpy as np\n\ndef solution(x, positions, rotary_pairs):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Interleaved RoPE + NoPE** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(x, positions, rotary_pairs):\n    x=np.asarray(x,dtype=float); out=x.copy()\n    pairs=int(rotary_pairs)\n    if pairs<0 or 2*pairs>x.shape[-1]: raise ValueError(\"rotary_pairs out of range\")\n    if pairs:\n        dim=2*pairs; sub=x[...,:dim]; pos=np.asarray(positions,dtype=float)\n        inv=1/(10000.0**(np.arange(0,dim,2,dtype=float)/dim)); ang=pos[...,None]*inv\n        c,s=np.cos(ang),np.sin(ang)\n        out[...,:dim:2]=sub[...,0::2]*c-sub[...,1::2]*s\n        out[...,1:dim:2]=sub[...,0::2]*s+sub[...,1::2]*c\n    return out.tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# Interleaved RoPE + NoPE \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(x, positions, rotary_pairs):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Interleaved RoPE + NoPE** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(x, positions, rotary_pairs):\n    x=np.asarray(x,dtype=float); out=x.copy()\n    pairs=int(rotary_pairs)\n    if pairs<0 or 2*pairs>x.shape[-1]: raise ValueError(\"rotary_pairs out of range\")\n    if pairs:\n        dim=2*pairs; sub=x[...,:dim]; pos=np.asarray(positions,dtype=float)\n        inv=1/(10000.0**(np.arange(0,dim,2,dtype=float)/dim)); ang=pos[...,None]*inv\n        c,s=np.cos(ang),np.sin(ang)\n        out[...,:dim:2]=sub[...,0::2]*c-sub[...,1::2]*s\n        out[...,1:dim:2]=sub[...,0::2]*s+sub[...,1::2]*c\n    return out.tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "at-interleaved-tc-1",
@@ -226,7 +226,7 @@
           0.0,
           0.5
         ],
-        "rotary_pairs": 0
+        "rotary_pairs": 1
       },
       "expectedOutput": [
         [
@@ -236,8 +236,8 @@
           1.5
         ],
         [
-          0.0,
-          0.5,
+          -0.2397127693021015,
+          0.4387912809451864,
           2.0,
           2.5
         ]
@@ -266,20 +266,20 @@
           1.0,
           2.0
         ],
-        "rotary_pairs": 2.0
+        "rotary_pairs": 1
       },
       "expectedOutput": [
         [
-          0.239134,
-          2.223244,
-          2.959851,
-          4.0298
+          0.23913362692838303,
+          2.2232442754839328,
+          3.0,
+          4.0
         ],
         [
-          -2.234742,
-          0.077004,
-          4.879008,
-          6.098793
+          -2.234741690198506,
+          0.0770037537313969,
+          5.0,
+          6.0
         ]
       ],
       "isPublic": false
@@ -346,7 +346,7 @@
           0.0,
           0.1
         ],
-        "rotary_pairs": 0
+        "rotary_pairs": 1
       },
       "expectedOutput": [
         [
@@ -356,8 +356,8 @@
           0.3
         ],
         [
-          0.0,
-          0.1,
+          -0.009983341664682815,
+          0.09950041652780259,
           0.4,
           0.5
         ]

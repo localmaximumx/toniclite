@@ -13,7 +13,7 @@
   "description": "Implement the **RMSprop** optimizer update rule.\n\nMaintain an exponential moving average of squared gradients $s_t = \\beta s_{t-1} + (1 - \\beta) g_t^2$ and adjust the effective learning rate coordinate-wise: $\\theta_t = \\theta_{t-1} - \\frac{\\eta}{\\sqrt{s_t + \\epsilon}} g_t$.",
   "theory": "# Understanding RMSprop Step\n\n## 1. What Is It?\n\nThe **RMSprop Step** is a fundamental computational technique in Machine Learning. In machine learning workflows, it involves performing the **RMSprop** optimizer update rule.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **RMSprop Step**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ml_opt_rmsprop`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ml_opt_rmsprop` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for RMSprop Step.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ml_opt_rmsprop` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ml_opt_rmsprop`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ml_opt_rmsprop`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ml_opt_rmsprop`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**RMSprop Step** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ml_opt_rmsprop` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for RMSprop Step."
+    "Input: w = [1.0, 2.0], grad = [1.0, -2.0], s = [0.0, 0.0], lr = 0.1, beta = 0.9, eps = 1e-08\n\nOutput: {\"w\": [0.6838, 2.3162], \"s\": [0.1, 0.4]}\n\nExplanation: Evaluated ml_opt_rmsprop under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ml_opt_rmsprop`.",
@@ -28,126 +28,231 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ml_opt_rmsprop(x):\n    \"\"\"\n    RMSprop Step\n    \"\"\"\n    # Implement RMSprop Step here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ml_opt_rmsprop(x):\n    \"\"\"\n    RMSprop Step\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "import numpy as np\n\ndef ml_opt_rmsprop(w: list, grad: list, s: list, lr: float = 0.01, beta: float = 0.9, eps: float = 1e-8) -> dict:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **RMSprop Step** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_opt_rmsprop(w: list, grad: list, s: list, lr: float = 0.01, beta: float = 0.9, eps: float = 1e-8) -> dict:\n    w_arr = np.asarray(w, dtype=np.float64)\n    g_arr = np.asarray(grad, dtype=np.float64)\n    s_arr = np.asarray(s, dtype=np.float64)\n    s_new = float(beta) * s_arr + (1.0 - float(beta)) * (g_arr ** 2)\n    w_new = w_arr - (float(lr) / np.sqrt(s_new + float(eps))) * g_arr\n    return {\"w\": np.round(w_new, 4).tolist(), \"s\": np.round(s_new, 4).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-opt-rmsprop-tc-1",
-      "name": "Standard Input",
+      "name": "First RMSprop step",
       "inputs": {
-        "x": [
+        "w": [
           1.0,
-          2.0,
-          3.0
+          2.0
+        ],
+        "grad": [
+          1.0,
+          -2.0
+        ],
+        "s": [
+          0.0,
+          0.0
+        ],
+        "lr": 0.1,
+        "beta": 0.9,
+        "eps": 1e-08
+      },
+      "expectedOutput": {
+        "w": [
+          0.6838,
+          2.3162
+        ],
+        "s": [
+          0.1,
+          0.4
         ]
       },
-      "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
-      ],
       "isPublic": true
     },
     {
       "id": "ml-opt-rmsprop-tc-2",
-      "name": "Case 2",
+      "name": "Non-zero running average",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "w": [
+          0.5,
+          -0.5
+        ],
+        "grad": [
+          0.2,
+          0.4
+        ],
+        "s": [
+          0.1,
+          0.2
+        ],
+        "lr": 0.05,
+        "beta": 0.9,
+        "eps": 1e-08
+      },
+      "expectedOutput": {
+        "w": [
+          0.4674,
+          -0.5452
+        ],
+        "s": [
+          0.094,
+          0.196
         ]
       },
-      "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
-      ],
       "isPublic": true
     },
     {
       "id": "ml-opt-rmsprop-tc-3",
-      "name": "Case 3",
+      "name": "Zero gradient",
       "inputs": {
-        "x": [
+        "w": [
+          1.5,
+          2.5
+        ],
+        "grad": [
+          0.0,
+          0.0
+        ],
+        "s": [
           0.5,
-          1.0,
-          1.5
+          0.5
+        ],
+        "lr": 0.1,
+        "beta": 0.9,
+        "eps": 1e-08
+      },
+      "expectedOutput": {
+        "w": [
+          1.5,
+          2.5
+        ],
+        "s": [
+          0.45,
+          0.45
         ]
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-rmsprop-tc-4",
-      "name": "Case 4",
+      "name": "Beta 0.99",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "w": [
+          1.0,
+          1.0
+        ],
+        "grad": [
+          2.0,
+          4.0
+        ],
+        "s": [
+          1.0,
+          1.0
+        ],
+        "lr": 0.01,
+        "beta": 0.99,
+        "eps": 1e-08
+      },
+      "expectedOutput": {
+        "w": [
+          0.9803,
+          0.9627
+        ],
+        "s": [
+          1.03,
+          1.15
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-rmsprop-tc-5",
-      "name": "Case 5",
+      "name": "3D parameters",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "w": [
+          0.0,
+          1.0,
+          2.0
+        ],
+        "grad": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "s": [
+          0.25,
+          0.25,
+          0.25
+        ],
+        "lr": 0.1,
+        "beta": 0.9,
+        "eps": 1e-08
+      },
+      "expectedOutput": {
+        "w": [
+          -0.1,
+          0.9,
+          1.9
+        ],
+        "s": [
+          0.25,
+          0.25,
+          0.25
         ]
       },
-      "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-rmsprop-tc-6",
-      "name": "Case 6",
+      "name": "Single parameter",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "w": [
+          3.0
+        ],
+        "grad": [
+          -1.5
+        ],
+        "s": [
+          2.25
+        ],
+        "lr": 0.2,
+        "beta": 0.9,
+        "eps": 1e-08
+      },
+      "expectedOutput": {
+        "w": [
+          3.2
+        ],
+        "s": [
+          2.25
         ]
       },
-      "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-rmsprop-tc-7",
-      "name": "Case 7",
+      "name": "Beta 0.5",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
+        "w": [
+          2.0,
+          -2.0
+        ],
+        "grad": [
+          1.0,
+          1.0
+        ],
+        "s": [
+          1.0,
+          1.0
+        ],
+        "lr": 0.1,
+        "beta": 0.5,
+        "eps": 1e-08
+      },
+      "expectedOutput": {
+        "w": [
+          1.9,
+          -2.1
+        ],
+        "s": [
+          1.0,
           1.0
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
-      ],
       "isPublic": false
     }
   ],
@@ -159,6 +264,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "def autograd_l02_trace_reachable_graph(graph: dict, root_id: str) -> dict:\n    \"\"\"\n    Traverse backwards from an output node in a computation graph to discover all contributing parent nodes and directed edges.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nTraverse backwards from an output node in a computation graph to discover all contributing parent nodes and directed edges.\n\n### ⚡ Python Reference Implementation\n```python\ndef autograd_l02_trace_reachable_graph(graph: dict, root_id: str) -> dict:\n    reachable = set()\n    edges = []\n    def dfs(nid):\n        if nid in reachable:\n            return\n        reachable.add(nid)\n        for p in graph.get(nid, {}).get('parents', []):\n            edges.append([p, nid])\n            dfs(p)\n    dfs(root_id)\n    return {'nodes': sorted(list(reachable)), 'edges': edges}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nTraverse backwards from an output node in a computation graph to discover all contributing parent nodes and directed edges.\n\n### \u26a1 Python Reference Implementation\n```python\ndef autograd_l02_trace_reachable_graph(graph: dict, root_id: str) -> dict:\n    reachable = set()\n    edges = []\n    def dfs(nid):\n        if nid in reachable:\n            return\n        reachable.add(nid)\n        for p in graph.get(nid, {}).get('parents', []):\n            edges.append([p, nid])\n            dfs(p)\n    dfs(root_id)\n    return {'nodes': sorted(list(reachable)), 'edges': edges}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "autograd-l02-trace-reachable-graph-tc-1",
@@ -131,44 +131,24 @@
           },
           "c": {
             "parents": [
-              "a",
-              "b"
+              "aing",
+              "bing"
             ]
           },
           "d": {
             "parents": [
-              "c",
-              "a"
+              "cing",
+              "aing"
             ]
           }
         },
-        "root_id": "d"
+        "root_id": "der"
       },
       "expectedOutput": {
         "nodes": [
-          "a",
-          "b",
-          "c",
-          "d"
+          "der"
         ],
-        "edges": [
-          [
-            "c",
-            "d"
-          ],
-          [
-            "a",
-            "c"
-          ],
-          [
-            "b",
-            "c"
-          ],
-          [
-            "a",
-            "d"
-          ]
-        ]
+        "edges": []
       },
       "isPublic": false
     },
@@ -177,31 +157,34 @@
       "name": "Case 4",
       "inputs": {
         "graph": {
-          "x": {
+          "a": {
             "parents": []
           },
-          "y": {
+          "b": {
+            "parents": []
+          },
+          "c": {
             "parents": [
-              "x"
+              "aer",
+              "ber",
+              "natural language processing"
             ]
           },
-          "z": {
-            "parents": []
+          "d": {
+            "parents": [
+              "cer",
+              "aer",
+              "natural language processing"
+            ]
           }
         },
-        "root_id": "y"
+        "root_id": "dly"
       },
       "expectedOutput": {
         "nodes": [
-          "x",
-          "y"
+          "dly"
         ],
-        "edges": [
-          [
-            "x",
-            "y"
-          ]
-        ]
+        "edges": []
       },
       "isPublic": false
     },
@@ -218,44 +201,24 @@
           },
           "c": {
             "parents": [
-              "a",
-              "b"
+              "ation",
+              "bment"
             ]
           },
           "d": {
             "parents": [
-              "c",
-              "a"
+              "ction",
+              "ament"
             ]
           }
         },
-        "root_id": "d"
+        "root_id": "dtion"
       },
       "expectedOutput": {
         "nodes": [
-          "a",
-          "b",
-          "c",
-          "d"
+          "dtion"
         ],
-        "edges": [
-          [
-            "c",
-            "d"
-          ],
-          [
-            "a",
-            "c"
-          ],
-          [
-            "b",
-            "c"
-          ],
-          [
-            "a",
-            "d"
-          ]
-        ]
+        "edges": []
       },
       "isPublic": false
     },
@@ -264,31 +227,32 @@
       "name": "Case 6",
       "inputs": {
         "graph": {
-          "x": {
+          "a": {
             "parents": []
           },
-          "y": {
+          "b": {
+            "parents": []
+          },
+          "c": {
             "parents": [
-              "x"
+              "bs",
+              "as"
             ]
           },
-          "z": {
-            "parents": []
+          "d": {
+            "parents": [
+              "as",
+              "cs"
+            ]
           }
         },
-        "root_id": "y"
+        "root_id": "dment"
       },
       "expectedOutput": {
         "nodes": [
-          "x",
-          "y"
+          "dment"
         ],
-        "edges": [
-          [
-            "x",
-            "y"
-          ]
-        ]
+        "edges": []
       },
       "isPublic": false
     },
@@ -306,43 +270,25 @@
           "c": {
             "parents": [
               "a",
-              "b"
+              "b",
+              "computer vision system"
             ]
           },
           "d": {
             "parents": [
               "c",
-              "a"
+              "a",
+              "computer vision system"
             ]
           }
         },
-        "root_id": "d"
+        "root_id": "dness"
       },
       "expectedOutput": {
         "nodes": [
-          "a",
-          "b",
-          "c",
-          "d"
+          "dness"
         ],
-        "edges": [
-          [
-            "c",
-            "d"
-          ],
-          [
-            "a",
-            "c"
-          ],
-          [
-            "b",
-            "c"
-          ],
-          [
-            "a",
-            "d"
-          ]
-        ]
+        "edges": []
       },
       "isPublic": false
     }

@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef q_learning_update(Q: list, s: int, a: int, r: float, s_next: int, alpha: float, gamma: float) -> np.ndarray:\n    \"\"\"\n    Returns a NumPy array with the same shape as Q.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-15T16:17:01.561Z",
   "updatedAt": "2026-08-23T10:37:25.159Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef q_learning_update(Q: list, s: int, a: int, r: float, s_next: int, alpha: float, gamma: float) -> np.ndarray:\n    q_arr = np.array(Q, dtype=float)\n    td_target = r + gamma * np.max(q_arr[s_next])\n    q_arr[s, a] = q_arr[s, a] + alpha * (td_target - q_arr[s, a])\n    return np.round(q_arr, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef q_learning_update(Q: list, s: int, a: int, r: float, s_next: int, alpha: float, gamma: float) -> np.ndarray:\n    q_arr = np.array(Q, dtype=float)\n    td_target = r + gamma * np.max(q_arr[s_next])\n    q_arr[s, a] = q_arr[s, a] + alpha * (td_target - q_arr[s, a])\n    return np.round(q_arr, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "QLearningUpdateViz",
   "testCases": [
     {
@@ -72,18 +72,18 @@
         "r": 2,
         "s": 1,
         "alpha": 1,
-        "gamma": 0,
+        "gamma": 0.9,
         "s_next": 1
       },
       "isPublic": true,
       "expectedOutput": [
         [
-          0,
-          0
+          0.0,
+          0.0
         ],
         [
-          2,
-          0
+          2.0,
+          0.0
         ]
       ]
     },
@@ -102,7 +102,7 @@
           ]
         ],
         "a": 0,
-        "r": 0,
+        "r": 1,
         "s": 0,
         "alpha": 0.25,
         "gamma": 0.45,
@@ -110,7 +110,7 @@
       },
       "expectedOutput": [
         [
-          0.0,
+          0.25,
           0.0
         ],
         [
@@ -135,16 +135,16 @@
           ]
         ],
         "a": -1,
-        "r": -1,
+        "r": 1,
         "s": 0,
         "alpha": 0.5,
-        "gamma": -0.9,
+        "gamma": 0.9,
         "s_next": -1
       },
       "expectedOutput": [
         [
           0.0,
-          -0.275
+          0.275
         ],
         [
           -0.5,
@@ -201,7 +201,7 @@
           ]
         ],
         "a": 0,
-        "r": 0,
+        "r": 1,
         "s": 0,
         "alpha": 0.125,
         "gamma": 0.225,
@@ -209,7 +209,7 @@
       },
       "expectedOutput": [
         [
-          0.0,
+          0.125,
           0.0
         ],
         [

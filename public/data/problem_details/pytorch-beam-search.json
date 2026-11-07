@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def pytorch_beam_search(transition_log_probs: list, beam_width: int = 2) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Beam Search Decoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef pytorch_beam_search(transition_log_probs: list, beam_width: int = 2) -> list:\n    beams = [([], 0.0)]\n    for probs in transition_log_probs:\n        cand = []\n        for s, sc in beams:\n            for tid, lp in enumerate(probs): cand.append((s + [tid], sc + lp))\n        cand.sort(key=lambda x: x[1], reverse=True)\n        beams = cand[:beam_width]\n    return [{'tokens': b[0], 'score': round(float(b[1]), 4)} for b in beams]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Beam Search Decoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef pytorch_beam_search(transition_log_probs: list, beam_width: int = 2) -> list:\n    beams = [([], 0.0)]\n    for probs in transition_log_probs:\n        cand = []\n        for s, sc in beams:\n            for tid, lp in enumerate(probs): cand.append((s + [tid], sc + lp))\n        cand.sort(key=lambda x: x[1], reverse=True)\n        beams = cand[:beam_width]\n    return [{'tokens': b[0], 'score': round(float(b[1]), 4)} for b in beams]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pytorch-beam-search-tc-1",
@@ -207,7 +207,7 @@
             0.8
           ]
         ],
-        "beam_width": -2
+        "beam_width": 2
       },
       "expectedOutput": [
         {
@@ -216,6 +216,13 @@
             1
           ],
           "score": 3.5
+        },
+        {
+          "tokens": [
+            2,
+            2
+          ],
+          "score": 2.8
         }
       ],
       "isPublic": false

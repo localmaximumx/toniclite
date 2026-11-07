@@ -13,8 +13,8 @@
   ],
   "isFree": true,
   "isLocked": false,
-  "description": "Implement inverted dropout: during training, randomly mask activations and scale retained values by 1/(1−p); apply the corresponding mask/scale to gradients in the backward pass.",
-  "theory": "# Understanding Inverted Dropout Forward and Backward\n\n## 1. What Is It?\n\nThe **Inverted Dropout Forward and Backward** is a fundamental computational technique in Assessment. In machine learning workflows, it involves performing inverted dropout: during training, randomly mask activations and scale retained values by 1/(1−p); apply the corresponding mask/scale to gradients in the backward pass.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **`grad`**: The computed gradient tensor pointing toward greatest loss increase.\n- **`p`**: The probability distribution or dropout retention/drop probability.\n- **Assessment**: Core domain concept contextualizing this task within Assessment workflows.\n- **CODE**: Core domain concept contextualizing this task within Assessment workflows.\n- **Neural Net Internals Sprint**: Core domain concept contextualizing this task within Assessment workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `solve`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `solve` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0], grad = [1.0, 1.0], p = 0.5, training = True, mask = [1, 0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Obtained by executing the transformation on the provided inputs.\n\n**Resulting Output:**\n```python\n[[2.0, 0.0], [2.0, 0.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `solve` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[2.0, 0.0]`.\n  - **Element 2**: Evaluated output component `[2.0, 0.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `solve`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `solve`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Inverted Dropout Forward and Backward** provides an essential primitive within Assessment systems. By combining vectorized array computation with rigorous numerical safeguards, `solve` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement inverted dropout: during training, randomly mask activations and scale retained values by 1/(1\u2212p); apply the corresponding mask/scale to gradients in the backward pass.",
+  "theory": "# Understanding Inverted Dropout Forward and Backward\n\n## 1. What Is It?\n\nThe **Inverted Dropout Forward and Backward** is a fundamental computational technique in Assessment. In machine learning workflows, it involves performing inverted dropout: during training, randomly mask activations and scale retained values by 1/(1\u2212p); apply the corresponding mask/scale to gradients in the backward pass.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **`grad`**: The computed gradient tensor pointing toward greatest loss increase.\n- **`p`**: The probability distribution or dropout retention/drop probability.\n- **Assessment**: Core domain concept contextualizing this task within Assessment workflows.\n- **CODE**: Core domain concept contextualizing this task within Assessment workflows.\n- **Neural Net Internals Sprint**: Core domain concept contextualizing this task within Assessment workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `solve`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `solve` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0], grad = [1.0, 1.0], p = 0.5, training = True, mask = [1, 0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Obtained by executing the transformation on the provided inputs.\n\n**Resulting Output:**\n```python\n[[2.0, 0.0], [2.0, 0.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `solve` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[2.0, 0.0]`.\n  - **Element 2**: Evaluated output component `[2.0, 0.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `solve`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `solve`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Inverted Dropout Forward and Backward** provides an essential primitive within Assessment systems. By combining vectorized array computation with rigorous numerical safeguards, `solve` accurately and efficiently performs the required transformation.\n",
   "examples": [
     {
       "inputArgs": [
@@ -61,7 +61,7 @@
     "Unless otherwise stated, dimensions must be consistent."
   ],
   "starterCode": "def solve(x, grad, p, training=True, mask=None):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(x, grad, p, training=True, mask=None):\n    # Returns (forward_output, input_gradient); mask may be supplied for deterministic tests.\n    if not training or p == 0: return list(x), list(grad)\n    if not 0 <= p < 1: raise ValueError(\"p must be in [0,1)\")\n    if mask is None: raise ValueError(\"pass a mask for deterministic reference behavior\")\n    scale=1/(1-p)\n    return [v*m*scale for v,m in zip(x,mask)], [g*m*scale for g,m in zip(grad,mask)]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(x, grad, p, training=True, mask=None):\n    # Returns (forward_output, input_gradient); mask may be supplied for deterministic tests.\n    if not training or p == 0: return list(x), list(grad)\n    if not 0 <= p < 1: raise ValueError(\"p must be in [0,1)\")\n    if mask is None: raise ValueError(\"pass a mask for deterministic reference behavior\")\n    scale=1/(1-p)\n    return [v*m*scale for v,m in zip(x,mask)], [g*m*scale for g,m in zip(grad,mask)]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds10-dropout-tc-1",
@@ -107,7 +107,7 @@
           0.5
         ],
         "p": 0.25,
-        "training": 0,
+        "training": true,
         "mask": [
           0,
           0
@@ -115,12 +115,12 @@
       },
       "expectedOutput": [
         [
-          0.5,
-          1.0
+          0.0,
+          0.0
         ],
         [
-          0.5,
-          0.5
+          0.0,
+          0.0
         ]
       ],
       "isPublic": true
@@ -138,7 +138,7 @@
           1.0
         ],
         "p": 0.5,
-        "training": 1,
+        "training": true,
         "mask": [
           0,
           1
@@ -169,7 +169,7 @@
           0.1
         ],
         "p": 0.05,
-        "training": 0,
+        "training": true,
         "mask": [
           0,
           0
@@ -177,12 +177,12 @@
       },
       "expectedOutput": [
         [
-          0.1,
-          0.2
+          0.0,
+          0.0
         ],
         [
-          0.1,
-          0.1
+          0.0,
+          0.0
         ]
       ],
       "isPublic": false
@@ -200,7 +200,7 @@
           1.5
         ],
         "p": 0.75,
-        "training": 2,
+        "training": true,
         "mask": [
           2,
           0
@@ -231,7 +231,7 @@
           0.25
         ],
         "p": 0.125,
-        "training": 0,
+        "training": true,
         "mask": [
           0,
           0
@@ -239,12 +239,12 @@
       },
       "expectedOutput": [
         [
-          0.25,
-          0.5
+          0.0,
+          0.0
         ],
         [
-          0.25,
-          0.25
+          0.0,
+          0.0
         ]
       ],
       "isPublic": false
@@ -261,8 +261,8 @@
           0.0,
           0.0
         ],
-        "p": -0.5,
-        "training": 0.0,
+        "p": 0.5,
+        "training": true,
         "mask": [
           0.0,
           -1.0
@@ -271,11 +271,11 @@
       "expectedOutput": [
         [
           0.0,
-          1.0
+          -2.0
         ],
         [
           0.0,
-          0.0
+          -0.0
         ]
       ],
       "isPublic": false

@@ -69,8 +69,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# BPE Training — reconstructed educational contract\nimport numpy as np\n\ndef solution(words, num_merges):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **BPE Training** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nfrom collections import Counter\ndef solution(words, num_merges):\n    # Educational byte/character-level BPE: repeatedly merge the most frequent adjacent pair.\n    vocab=[list(w) for w in words]\n    merges=[]\n    for _ in range(max(0,int(num_merges))):\n        pairs=Counter(pair for token in vocab for pair in zip(token,token[1:]))\n        if not pairs: break\n        best=max(pairs, key=lambda p:(pairs[p],p))\n        merged=best[0]+best[1]\n        new_vocab=[]\n        for token in vocab:\n            out=[]; i=0\n            while i<len(token):\n                if i+1<len(token) and (token[i],token[i+1])==best:\n                    out.append(merged); i+=2\n                else: out.append(token[i]); i+=1\n            new_vocab.append(out)\n        vocab=new_vocab; merges.append([best[0],best[1],merged])\n    return merges\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# BPE Training \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(words, num_merges):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **BPE Training** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nfrom collections import Counter\ndef solution(words, num_merges):\n    # Educational byte/character-level BPE: repeatedly merge the most frequent adjacent pair.\n    vocab=[list(w) for w in words]\n    merges=[]\n    for _ in range(max(0,int(num_merges))):\n        pairs=Counter(pair for token in vocab for pair in zip(token,token[1:]))\n        if not pairs: break\n        best=max(pairs, key=lambda p:(pairs[p],p))\n        merged=best[0]+best[1]\n        new_vocab=[]\n        for token in vocab:\n            out=[]; i=0\n            while i<len(token):\n                if i+1<len(token) and (token[i],token[i+1])==best:\n                    out.append(merged); i+=2\n                else: out.append(token[i]); i+=1\n            new_vocab.append(out)\n        vocab=new_vocab; merges.append([best[0],best[1],merged])\n    return merges\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gpt2-bpe-training-tc-1",
@@ -162,10 +162,10 @@
       "name": "Case 5",
       "inputs": {
         "words": [
-          "abab",
-          "abab"
+          "ababtion",
+          "ababment"
         ],
-        "num_merges": 2
+        "num_merges": 8
       },
       "expectedOutput": [
         [
@@ -177,6 +177,36 @@
           "ab",
           "ab",
           "abab"
+        ],
+        [
+          "t",
+          "i",
+          "ti"
+        ],
+        [
+          "ti",
+          "o",
+          "tio"
+        ],
+        [
+          "tio",
+          "n",
+          "tion"
+        ],
+        [
+          "n",
+          "t",
+          "nt"
+        ],
+        [
+          "m",
+          "e",
+          "me"
+        ],
+        [
+          "me",
+          "nt",
+          "ment"
         ]
       ],
       "isPublic": false

@@ -371,5 +371,6 @@
     "prev": "gru-reset-gate",
     "next": "gru-candidate"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gru-update-gate"
 }

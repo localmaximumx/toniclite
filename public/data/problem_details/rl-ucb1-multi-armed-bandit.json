@@ -30,7 +30,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math, numpy as np\n\ndef rl_ucb1-multi-armed-bandit(arm_counts: list, arm_total_rewards: list, total_steps: int, c: float = 1.414) -> dict:\n    pass",
+  "starterCode": "import math, numpy as np\n\ndef rl_ucb1_multi_armed_bandit(arm_counts: list, arm_total_rewards: list, total_steps: int, c: float = 1.414) -> dict:\n    pass",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **UCB1 for Multi-Armed Bandits** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math, numpy as np\n\ndef rl_ucb1_multi_armed_bandit(arm_counts: list, arm_total_rewards: list, total_steps: int, c: float = 1.414) -> dict:\n    scores = []\n    for i in range(len(arm_counts)):\n        if arm_counts[i] == 0: scores.append(999.0)\n        else: scores.append(arm_total_rewards[i]/arm_counts[i] + float(c)*math.sqrt(2.0*math.log(total_steps)/arm_counts[i]))\n    return {'best_arm': int(np.argmax(scores)), 'ucb_scores': [round(s, 4) for s in scores]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

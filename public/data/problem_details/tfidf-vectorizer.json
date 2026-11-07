@@ -19,7 +19,7 @@
   "starterCode": "import math\nfrom collections import Counter\nimport numpy as np\n\ndef tfidf_vectorizer(documents: list[str]) -> dict:\n    \"\"\"\n    Returns a dictionary with tfidf_matrix and vocabulary.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-10-30T23:00:02.228Z",
   "updatedAt": "2026-03-05T20:47:30.374Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport math\nfrom collections import Counter\n\ndef tfidf_vectorizer(documents: list[str]) -> dict:\n    tokenized = [doc.lower().split() for doc in documents]\n    vocab = sorted(list(set(w for doc in tokenized for w in doc)))\n    N = len(documents)\n    df = Counter()\n    for doc in tokenized:\n        for w in set(doc):\n            df[w] += 1\n    matrix = []\n    for doc in tokenized:\n        counts = Counter(doc)\n        total = len(doc)\n        row = []\n        for w in vocab:\n            tf = counts[w] / total if total > 0 else 0.0\n            idf = math.log(N / df[w]) if df[w] > 0 else 0.0\n            row.append(round(tf * idf, 6))\n        matrix.append(row)\n    return {'tfidf_matrix': matrix, 'vocabulary': vocab}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport math\nfrom collections import Counter\n\ndef tfidf_vectorizer(documents: list[str]) -> dict:\n    tokenized = [doc.lower().split() for doc in documents]\n    vocab = sorted(list(set(w for doc in tokenized for w in doc)))\n    N = len(documents)\n    df = Counter()\n    for doc in tokenized:\n        for w in set(doc):\n            df[w] += 1\n    matrix = []\n    for doc in tokenized:\n        counts = Counter(doc)\n        total = len(doc)\n        row = []\n        for w in vocab:\n            tf = counts[w] / total if total > 0 else 0.0\n            idf = math.log(N / df[w]) if df[w] > 0 else 0.0\n            row.append(round(tf * idf, 6))\n        matrix.append(row)\n    return {'tfidf_matrix': matrix, 'vocabulary': vocab}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "TfidfViz",
   "testCases": [
     {
@@ -113,38 +113,42 @@
       "name": "Case 3",
       "inputs": {
         "documents": [
-          "the cat sat",
-          "the cat ran",
-          "the dog sat"
+          "delta the cat sat",
+          "delta the cat ran",
+          "delta the dog sat"
         ]
       },
       "isPublic": false,
       "expectedOutput": {
         "tfidf_matrix": [
           [
-            0.135155,
+            0.101366,
             0.0,
             0.0,
-            0.135155,
+            0.0,
+            0.101366,
             0.0
           ],
           [
-            0.135155,
+            0.101366,
             0.0,
-            0.366204,
+            0.0,
+            0.274653,
             0.0,
             0.0
           ],
           [
             0.0,
-            0.366204,
             0.0,
-            0.135155,
+            0.274653,
+            0.0,
+            0.101366,
             0.0
           ]
         ],
         "vocabulary": [
           "cat",
+          "delta",
           "dog",
           "ran",
           "sat",
@@ -157,40 +161,65 @@
       "name": "Case 4",
       "inputs": {
         "documents": [
-          "machine learning is great",
-          "cooking pasta is fun"
+          "the cat sat the",
+          "the cat ran the",
+          "the dog sat the",
+          "natural language processing"
         ]
       },
       "isPublic": false,
       "expectedOutput": {
         "tfidf_matrix": [
           [
+            0.173287,
+            0.0,
+            0.0,
+            0.0,
             0.0,
             0.0,
             0.173287,
-            0.0,
-            0.173287,
-            0.173287,
-            0.0
+            0.143841
           ],
           [
             0.173287,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.346574,
+            0.0,
+            0.143841
+          ],
+          [
+            0.0,
+            0.346574,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
             0.173287,
+            0.143841
+          ],
+          [
             0.0,
             0.0,
+            0.462098,
+            0.462098,
+            0.462098,
             0.0,
             0.0,
-            0.173287
+            0.0
           ]
         ],
         "vocabulary": [
-          "cooking",
-          "fun",
-          "great",
-          "is",
-          "learning",
-          "machine",
-          "pasta"
+          "cat",
+          "dog",
+          "language",
+          "natural",
+          "processing",
+          "ran",
+          "sat",
+          "the"
         ]
       }
     },
@@ -199,17 +228,73 @@
       "name": "Case 5",
       "inputs": {
         "documents": [
-          "the cat sat",
-          "the cat ran",
-          "the dog sat"
+          "neural sat cat the vector",
+          "ran cat the",
+          "the dog sat matrix"
         ]
       },
       "isPublic": false,
       "expectedOutput": {
         "tfidf_matrix": [
           [
+            0.081093,
+            0.0,
+            0.0,
+            0.219722,
+            0.0,
+            0.081093,
+            0.0,
+            0.219722
+          ],
+          [
             0.135155,
             0.0,
+            0.0,
+            0.0,
+            0.366204,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.274653,
+            0.274653,
+            0.0,
+            0.0,
+            0.101366,
+            0.0,
+            0.0
+          ]
+        ],
+        "vocabulary": [
+          "cat",
+          "dog",
+          "matrix",
+          "neural",
+          "ran",
+          "sat",
+          "the",
+          "vector"
+        ]
+      }
+    },
+    {
+      "id": "tfidf-vectorizer-tc-6",
+      "name": "Case 6",
+      "inputs": {
+        "documents": [
+          "sat dog the",
+          "ran cat the",
+          "sat cat the"
+        ]
+      },
+      "isPublic": false,
+      "expectedOutput": {
+        "tfidf_matrix": [
+          [
+            0.0,
+            0.366204,
             0.0,
             0.135155,
             0.0
@@ -222,8 +307,8 @@
             0.0
           ],
           [
+            0.135155,
             0.0,
-            0.366204,
             0.0,
             0.135155,
             0.0
@@ -235,48 +320,6 @@
           "ran",
           "sat",
           "the"
-        ]
-      }
-    },
-    {
-      "id": "tfidf-vectorizer-tc-6",
-      "name": "Case 6",
-      "inputs": {
-        "documents": [
-          "machine learning is great",
-          "cooking pasta is fun"
-        ]
-      },
-      "isPublic": false,
-      "expectedOutput": {
-        "tfidf_matrix": [
-          [
-            0.0,
-            0.0,
-            0.173287,
-            0.0,
-            0.173287,
-            0.173287,
-            0.0
-          ],
-          [
-            0.173287,
-            0.173287,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.173287
-          ]
-        ],
-        "vocabulary": [
-          "cooking",
-          "fun",
-          "great",
-          "is",
-          "learning",
-          "machine",
-          "pasta"
         ]
       }
     },
@@ -287,40 +330,63 @@
         "documents": [
           "the cat sat",
           "the cat ran",
-          "the dog sat"
+          "the dog sat",
+          "computer vision system"
         ]
       },
       "isPublic": false,
       "expectedOutput": {
         "tfidf_matrix": [
           [
-            0.135155,
+            0.231049,
             0.0,
             0.0,
-            0.135155,
+            0.0,
+            0.231049,
+            0.0,
+            0.095894,
             0.0
           ],
           [
-            0.135155,
+            0.231049,
             0.0,
-            0.366204,
             0.0,
+            0.462098,
+            0.0,
+            0.0,
+            0.095894,
             0.0
           ],
           [
             0.0,
-            0.366204,
             0.0,
-            0.135155,
+            0.462098,
+            0.0,
+            0.231049,
+            0.0,
+            0.095894,
             0.0
+          ],
+          [
+            0.0,
+            0.462098,
+            0.0,
+            0.0,
+            0.0,
+            0.462098,
+            0.0,
+            0.462098
           ]
         ],
         "vocabulary": [
           "cat",
+          "computer",
           "dog",
           "ran",
           "sat",
-          "the"
+          "system",
+          "the",
+          "vision"
         ]
       }
     }

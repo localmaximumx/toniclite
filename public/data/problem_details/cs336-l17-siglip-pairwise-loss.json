@@ -30,7 +30,7 @@
   ],
   "constraints": "* Category: PYTORCH\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTORCH\n",
   "starterCode": "import numpy as np\n\ndef cs336_l17_siglip_pairwise_loss(image_features: list, text_features: list, scale: float = 1.0, bias: float = 0.0) -> float:\n    \"\"\"\n    Compute SigLIP pairwise logistic loss treating image-text matching as independent binary classifications across all batch pairs without global normalization.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nCompute SigLIP pairwise logistic loss treating image-text matching as independent binary classifications across all batch pairs without global normalization.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cs336_l17_siglip_pairwise_loss(image_features: list, text_features: list, scale: float = 1.0, bias: float = 0.0) -> float:\n    I = np.array(image_features, dtype=float) / (np.linalg.norm(image_features, axis=-1, keepdims=True) + 1e-12)\n    T = np.array(text_features, dtype=float) / (np.linalg.norm(text_features, axis=-1, keepdims=True) + 1e-12)\n    logits = np.dot(I, T.T) * scale + bias\n    labels = 2.0 * np.eye(len(logits)) - 1.0\n    return round(float(-np.mean(np.log(1.0 / (1.0 + np.exp(-labels * logits))))), 6)\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nCompute SigLIP pairwise logistic loss treating image-text matching as independent binary classifications across all batch pairs without global normalization.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cs336_l17_siglip_pairwise_loss(image_features: list, text_features: list, scale: float = 1.0, bias: float = 0.0) -> float:\n    I = np.array(image_features, dtype=float) / (np.linalg.norm(image_features, axis=-1, keepdims=True) + 1e-12)\n    T = np.array(text_features, dtype=float) / (np.linalg.norm(text_features, axis=-1, keepdims=True) + 1e-12)\n    logits = np.dot(I, T.T) * scale + bias\n    labels = 2.0 * np.eye(len(logits)) - 1.0\n    return round(float(-np.mean(np.log(1.0 / (1.0 + np.exp(-labels * logits))))), 6)\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l17-siglip-pairwise-loss-tc-1",
@@ -168,10 +168,10 @@
             -1.0
           ]
         ],
-        "scale": -1.0,
+        "scale": 1.0,
         "bias": -0.0
       },
-      "expectedOutput": 1.003204,
+      "expectedOutput": 0.503204,
       "isPublic": false
     },
     {

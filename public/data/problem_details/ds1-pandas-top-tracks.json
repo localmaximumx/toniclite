@@ -13,7 +13,7 @@
   "description": "Given a music streaming event table with columns `[user_id, track_id, genre, play_count]`, write a query/function to identify the **Top 3 Most Streamed Tracks** within each genre.\n\nRank tracks by total play counts within each genre partition, breaking ties consistently by track identifier.",
   "theory": "# Understanding Top Tracks On Pulse Charts\n\n## 1. What Is It?\n\nThe **Top Tracks On Pulse Charts** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given a music streaming event table with columns `[user_id, track_id, genre, play_count]`, write a query/function to identify the **Top 3 Most Streamed Tracks** within each genre.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Top Tracks On Pulse Charts**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ds1_pandas_top_tracks`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ds1_pandas_top_tracks` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Top Tracks On Pulse Charts.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ds1_pandas_top_tracks` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ds1_pandas_top_tracks`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ds1_pandas_top_tracks`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ds1_pandas_top_tracks`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Top Tracks On Pulse Charts** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ds1_pandas_top_tracks` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Top Tracks On Pulse Charts."
+    "Input: streams = [{\"genre\": \"Pop\", \"track_id\": \"T1\", \"play_count\": 100}, {\"genre\": \"Pop\", \"track_id\": \"T2\", \"play_count\": 300}, {\"genre\": \"Pop\", \"track_id\": \"T3\", \"play_count\": 200}, {\"genre\": \"Rock\", \"track_id\": \"R1\", \"play_count\": 50}], top_n = 2\n\nOutput: [{\"genre\": \"Pop\", \"track_id\": \"T2\", \"play_count\": 300}, {\"genre\": \"Pop\", \"track_id\": \"T3\", \"play_count\": 200}, {\"genre\": \"Rock\", \"track_id\": \"R1\", \"play_count\": 50}]\n\nExplanation: Evaluated ds1_pandas_top_tracks under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ds1_pandas_top_tracks`.",
@@ -28,125 +28,270 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ds1_pandas_top_tracks(x):\n    \"\"\"\n    Top Tracks On Pulse Charts\n    \"\"\"\n    # Implement Top Tracks On Pulse Charts here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ds1_pandas_top_tracks(x):\n    \"\"\"\n    Top Tracks On Pulse Charts\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "import pandas as pd\n\ndef ds1_pandas_top_tracks(streams: list, top_n: int = 3) -> list:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Top Tracks On Pulse Charts** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\nimport pandas as pd\n\ndef ds1_pandas_top_tracks(streams: list, top_n: int = 3) -> list:\n    df = pd.DataFrame(streams)\n    agg = df.groupby([\"genre\", \"track_id\"], as_index=False)[\"play_count\"].sum()\n    agg = agg.sort_values([\"genre\", \"play_count\", \"track_id\"], ascending=[True, False, True])\n    agg[\"rank\"] = agg.groupby(\"genre\").cumcount() + 1\n    res = agg[agg[\"rank\"] <= int(top_n)][[\"genre\", \"track_id\", \"play_count\"]]\n    return res.to_dict(orient=\"records\")\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ds1-pandas-top-tracks-tc-1",
-      "name": "Standard Input",
+      "name": "Top 2 per genre",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
-        ]
+        "streams": [
+          {
+            "genre": "Pop",
+            "track_id": "T1",
+            "play_count": 100
+          },
+          {
+            "genre": "Pop",
+            "track_id": "T2",
+            "play_count": 300
+          },
+          {
+            "genre": "Pop",
+            "track_id": "T3",
+            "play_count": 200
+          },
+          {
+            "genre": "Rock",
+            "track_id": "R1",
+            "play_count": 50
+          }
+        ],
+        "top_n": 2
       },
       "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
+        {
+          "genre": "Pop",
+          "track_id": "T2",
+          "play_count": 300
+        },
+        {
+          "genre": "Pop",
+          "track_id": "T3",
+          "play_count": 200
+        },
+        {
+          "genre": "Rock",
+          "track_id": "R1",
+          "play_count": 50
+        }
       ],
       "isPublic": true
     },
     {
       "id": "ds1-pandas-top-tracks-tc-2",
-      "name": "Case 2",
+      "name": "Aggregating multiple logs per track",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
-        ]
+        "streams": [
+          {
+            "genre": "Pop",
+            "track_id": "T1",
+            "play_count": 50
+          },
+          {
+            "genre": "Pop",
+            "track_id": "T1",
+            "play_count": 70
+          },
+          {
+            "genre": "Pop",
+            "track_id": "T2",
+            "play_count": 100
+          }
+        ],
+        "top_n": 1
       },
       "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
+        {
+          "genre": "Pop",
+          "track_id": "T1",
+          "play_count": 120
+        }
       ],
       "isPublic": true
     },
     {
       "id": "ds1-pandas-top-tracks-tc-3",
-      "name": "Case 3",
+      "name": "Tie breaking by track_id",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
-        ]
+        "streams": [
+          {
+            "genre": "Jazz",
+            "track_id": "J2",
+            "play_count": 80
+          },
+          {
+            "genre": "Jazz",
+            "track_id": "J1",
+            "play_count": 80
+          },
+          {
+            "genre": "Jazz",
+            "track_id": "J3",
+            "play_count": 40
+          }
+        ],
+        "top_n": 2
       },
       "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
+        {
+          "genre": "Jazz",
+          "track_id": "J1",
+          "play_count": 80
+        },
+        {
+          "genre": "Jazz",
+          "track_id": "J2",
+          "play_count": 80
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-top-tracks-tc-4",
-      "name": "Case 4",
+      "name": "Top 3 default",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
-        ]
+        "streams": [
+          {
+            "genre": "EDM",
+            "track_id": "E1",
+            "play_count": 10
+          },
+          {
+            "genre": "EDM",
+            "track_id": "E2",
+            "play_count": 40
+          },
+          {
+            "genre": "EDM",
+            "track_id": "E3",
+            "play_count": 30
+          },
+          {
+            "genre": "EDM",
+            "track_id": "E4",
+            "play_count": 20
+          }
+        ],
+        "top_n": 3
       },
       "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
+        {
+          "genre": "EDM",
+          "track_id": "E2",
+          "play_count": 40
+        },
+        {
+          "genre": "EDM",
+          "track_id": "E3",
+          "play_count": 30
+        },
+        {
+          "genre": "EDM",
+          "track_id": "E4",
+          "play_count": 20
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-top-tracks-tc-5",
-      "name": "Case 5",
+      "name": "Fewer tracks than top_n",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
-        ]
+        "streams": [
+          {
+            "genre": "Classical",
+            "track_id": "C1",
+            "play_count": 500
+          }
+        ],
+        "top_n": 3
       },
       "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
+        {
+          "genre": "Classical",
+          "track_id": "C1",
+          "play_count": 500
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-top-tracks-tc-6",
-      "name": "Case 6",
+      "name": "Multiple genres",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
-        ]
+        "streams": [
+          {
+            "genre": "A",
+            "track_id": "T1",
+            "play_count": 10
+          },
+          {
+            "genre": "B",
+            "track_id": "T2",
+            "play_count": 20
+          },
+          {
+            "genre": "A",
+            "track_id": "T3",
+            "play_count": 30
+          }
+        ],
+        "top_n": 1
       },
       "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
+        {
+          "genre": "A",
+          "track_id": "T3",
+          "play_count": 30
+        },
+        {
+          "genre": "B",
+          "track_id": "T2",
+          "play_count": 20
+        }
       ],
       "isPublic": false
     },
     {
       "id": "ds1-pandas-top-tracks-tc-7",
-      "name": "Case 7",
+      "name": "Four genres top 2",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
-        ]
+        "streams": [
+          {
+            "genre": "G1",
+            "track_id": "1",
+            "play_count": 5
+          },
+          {
+            "genre": "G1",
+            "track_id": "2",
+            "play_count": 15
+          },
+          {
+            "genre": "G2",
+            "track_id": "3",
+            "play_count": 25
+          }
+        ],
+        "top_n": 2
       },
       "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
+        {
+          "genre": "G1",
+          "track_id": "2",
+          "play_count": 15
+        },
+        {
+          "genre": "G1",
+          "track_id": "1",
+          "play_count": 5
+        },
+        {
+          "genre": "G2",
+          "track_id": "3",
+          "play_count": 25
+        }
       ],
       "isPublic": false
     }
@@ -159,6 +304,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

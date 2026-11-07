@@ -18,7 +18,7 @@
   "starterCode": "def conv2d(image: list, kernel: list, stride: int = 1, padding: int = 0) -> list:\n    \"\"\"\n    Returns a two-dimensional list.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T11:00:28.900Z",
   "updatedAt": "2026-08-23T18:55:49.113Z",
-  "solution": "### 💡 Intuition & Approach\nComputes 2D cross-correlation spatial filtering with kernel receptive fields.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef conv2d(image: list, kernel: list, stride: int = 1, padding: int = 0) -> list:\n    img = np.array(image, dtype=float)\n    kern = np.array(kernel, dtype=float)\n    if padding > 0:\n        img = np.pad(img, padding, mode='constant', constant_values=0)\n    H, W = img.shape\n    kH, kW = kern.shape\n    out_H = (H - kH) // stride + 1\n    out_W = (W - kW) // stride + 1\n    out = np.zeros((out_H, out_W), dtype=float)\n\n    for i in range(out_H):\n        for j in range(out_W):\n            patch = img[i * stride : i * stride + kH, j * stride : j * stride + kW]\n            out[i, j] = np.sum(patch * kern)\n    return out.tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nComputes 2D cross-correlation spatial filtering with kernel receptive fields.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef conv2d(image: list, kernel: list, stride: int = 1, padding: int = 0) -> list:\n    img = np.array(image, dtype=float)\n    kern = np.array(kernel, dtype=float)\n    if padding > 0:\n        img = np.pad(img, padding, mode='constant', constant_values=0)\n    H, W = img.shape\n    kH, kW = kern.shape\n    out_H = (H - kH) // stride + 1\n    out_W = (W - kW) // stride + 1\n    out = np.zeros((out_H, out_W), dtype=float)\n\n    for i in range(out_H):\n        for j in range(out_W):\n            patch = img[i * stride : i * stride + kH, j * stride : j * stride + kW]\n            out[i, j] = np.sum(patch * kern)\n    return out.tolist()\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "Conv2dImageFilteringViz",
   "testCases": [
     {
@@ -185,10 +185,19 @@
             -1
           ]
         ],
-        "stride": -1,
+        "stride": 1,
         "padding": 0
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        [
+          6.0,
+          8.0
+        ],
+        [
+          12.0,
+          14.0
+        ]
+      ],
       "isPublic": false
     },
     {

@@ -83,8 +83,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# YaRN RoPE — reconstructed educational contract\nimport numpy as np\n\ndef solution(seq_len, head_dim, theta=10000.0, scale=1.0):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **YaRN RoPE** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(seq_len, head_dim, theta=10000.0, scale=1.0):\n    if head_dim<=0 or head_dim%2: raise ValueError(\"head_dim must be positive and even\")\n    inv=1/(theta**(np.arange(0,head_dim,2,dtype=float)/head_dim))\n    pos=np.arange(seq_len,dtype=float)[:,None]/float(scale)\n    ang=pos*inv\n    return {\"cos\":np.cos(ang).tolist(),\"sin\":np.sin(ang).tolist()}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# YaRN RoPE \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(seq_len, head_dim, theta=10000.0, scale=1.0):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **YaRN RoPE** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(seq_len, head_dim, theta=10000.0, scale=1.0):\n    if head_dim<=0 or head_dim%2: raise ValueError(\"head_dim must be positive and even\")\n    inv=1/(theta**(np.arange(0,head_dim,2,dtype=float)/head_dim))\n    pos=np.arange(seq_len,dtype=float)[:,None]/float(scale)\n    ang=pos*inv\n    return {\"cos\":np.cos(ang).tolist(),\"sin\":np.sin(ang).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gpto-yarn-rope-tc-1",
@@ -350,7 +350,7 @@
         "seq_len": 0.0,
         "head_dim": 2.0,
         "theta": 9998.0,
-        "scale": 0.0
+        "scale": 2.0
       },
       "expectedOutput": {
         "cos": [],

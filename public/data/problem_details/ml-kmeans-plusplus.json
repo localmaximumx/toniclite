@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef ml_kmeans_plusplus(X: list, k: int, initial_center_index: int = 0) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **K-Means++ Initialization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_kmeans_plusplus(X: list, k: int, initial_center_index: int = 0) -> list:\n    data = np.array(X, dtype=float)\n    centers = [data[initial_center_index]]\n    while len(centers) < k:\n        c_arr = np.array(centers)\n        dists = np.min(np.sum((data[:, np.newaxis, :] - c_arr[np.newaxis, :, :]) ** 2, axis=2), axis=1)\n        centers.append(data[int(np.argmax(dists))])\n    return np.round(centers, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **K-Means++ Initialization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_kmeans_plusplus(X: list, k: int, initial_center_index: int = 0) -> list:\n    data = np.array(X, dtype=float)\n    centers = [data[initial_center_index]]\n    while len(centers) < k:\n        c_arr = np.array(centers)\n        dists = np.min(np.sum((data[:, np.newaxis, :] - c_arr[np.newaxis, :, :]) ** 2, axis=2), axis=1)\n        centers.append(data[int(np.argmax(dists))])\n    return np.round(centers, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ml-kmeans-plusplus-tc-1",
@@ -211,13 +211,17 @@
             -11.0
           ]
         ],
-        "k": -2,
+        "k": 2,
         "initial_center_index": 0
       },
       "expectedOutput": [
         [
           -0.0,
           -0.0
+        ],
+        [
+          -11.0,
+          -11.0
         ]
       ],
       "isPublic": false
