@@ -152,3 +152,20 @@ export async function getDraft(userId, slug) {
   if (!account || !account.codeDrafts) return null;
   return account.codeDrafts[slug] || null;
 }
+
+export async function saveUserNote(userId, url, note) {
+  const account = await getAccountById(userId);
+  if (!account) return null;
+
+  if (!account.mlMathNotes) account.mlMathNotes = {};
+  account.mlMathNotes[url] = note;
+
+  await saveAccount(account);
+  return note;
+}
+
+export async function getUserNotes(userId) {
+  const account = await getAccountById(userId);
+  if (!account || !account.mlMathNotes) return {};
+  return account.mlMathNotes;
+}

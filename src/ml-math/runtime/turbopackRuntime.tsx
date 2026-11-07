@@ -53,17 +53,18 @@ const SmartLink = React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes
         return;
       }
 
-      // Interactive practice problems / study plans -> open in-app Practice Coding Sandbox
+      // Real links to problems (/problems/:slug), study plans, research, and platform pages
       if (
         normalized.startsWith('/problems') ||
         normalized.startsWith('/study-plans') ||
         normalized.startsWith('/research') ||
+        normalized.startsWith('/interview') ||
+        normalized.startsWith('/systems') ||
+        normalized.startsWith('/ml-design') ||
         normalized.startsWith('/llm-internals')
       ) {
         e.preventDefault();
-        const slug = normalized.split('/').filter(Boolean).pop() || 'practice-sandbox';
-        const labelText = typeof children === 'string' ? children : undefined;
-        onOpenProblem(slug, labelText);
+        onNavigate(normalized);
         return;
       }
     };

@@ -16,6 +16,7 @@ import {
 import { ALL_TOPICS } from './data/curriculum';
 import { PracticeSandboxModal } from './components/PracticeSandboxModal';
 import { QuickSearchModal } from './components/QuickSearchModal';
+import { getCurrentUser, getUserMLNotes, saveUserMLNote, UserAccount } from '../services/authService';
 
 const STORAGE_COMPLETED_KEY = 'tt_ml_math_completed_v1';
 const STORAGE_NOTES_KEY = 'tt_ml_math_notes_v1';
@@ -105,29 +106,26 @@ export default function App() {
     });
   }, []);
 
-  // Personal study notes per lesson
-  const [notesMap, setNotesMap] = useState<Record<string, string>>(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_NOTES_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch {
-      // ignore
-    }
-    return {};
-  });
+  // Current authenticated user & notes synced with their database
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => getCurrentUser());
+  const [notesMap, setNotesMap] = useState<Record<string, string>>(() => getUserMLNotes());
   const [notesOpen, setNotesOpen] = useState(false);
 
-  const updateNote = useCallback((url: string, text: string) => {
-    setNotesMap((prev) => {
-      const next = { ...prev, [url]: text };
-      try {
-        localStorage.setItem(STORAGE_NOTES_KEY, JSON.stringify(next));
-      } catch {
-        // ignore
-      }
-      return next;
-    });
+  // Sync notes on auth change (login, logout, account switch)
+  useEffect(() => {
+    const handleAuth = () => {
+      const user = getCurrentUser();
+      setCurrentUser(user);
+      setNotesMap(getUserMLNotes(user?.id));
+    };
+    window.addEventListener('tensortonic_auth_change', handleAuth);
+    return () => window.removeEventListener('tensortonic_auth_change', handleAuth);
   }, []);
+
+  const updateNote = useCallback((url: string, text: string) => {
+    setNotesMap((prev) => ({ ...prev, [url]: text }));
+    saveUserMLNote(url, text, currentUser?.id);
+  }, [currentUser]);
 
   // Modals state
   const [searchOpen, setSearchOpen] = useState(false);
@@ -326,7 +324,13 @@ export default function App() {
               />
 
               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>Auto-saved locally</span>
+                <span>
+                  {currentUser ? (
+                    <span className="text-emerald-500 font-medium">✓ Synced to {currentUser.username}'s database</span>
+                  ) : (
+                    <span className="text-muted-foreground">Saved locally (sign in to sync to database)</span>
+                  )}
+                </span>
                 <span>{(notesMap[cleanPathname] || '').length} chars</span>
               </div>
             </aside>
