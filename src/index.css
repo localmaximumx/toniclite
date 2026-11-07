@@ -213,6 +213,16 @@
   --tw-shadow-color: var(--palette-glow) !important;
 }
 
+html {
+  zoom: 0.9;
+}
+
+@supports not (zoom: 0.9) {
+  html {
+    font-size: 14.4px;
+  }
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }

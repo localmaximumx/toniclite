@@ -50,6 +50,27 @@ export const Navbar: React.FC = () => {
     return document.documentElement.classList.contains('dark');
   });
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [zoomLevel, setZoomLevel] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0.9;
+    try {
+      const saved = localStorage.getItem('toniclite_zoom');
+      if (saved) return parseFloat(saved);
+    } catch {
+      // ignore
+    }
+    return 0.9;
+  });
+
+  const cycleZoom = () => {
+    const nextZoom = zoomLevel === 0.9 ? 0.85 : zoomLevel === 0.85 ? 1.0 : 0.9;
+    setZoomLevel(nextZoom);
+    try {
+      localStorage.setItem('toniclite_zoom', nextZoom.toString());
+      document.documentElement.style.zoom = nextZoom.toString();
+    } catch {
+      // ignore
+    }
+  };
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [storageUsage, setStorageUsage] = useState<UserStorageUsage>(() => getUserStorageUsage());
@@ -257,6 +278,16 @@ export const Navbar: React.FC = () => {
 
               {/* Palette Switcher */}
               <PaletteSwitcher />
+
+              {/* Display Zoom Density Toggle (90% default, cycles 90% -> 85% -> 100%) */}
+              <button
+                onClick={cycleZoom}
+                aria-label="Toggle display zoom scale"
+                className="hidden md:inline-flex items-center justify-center px-2 h-7 rounded-md text-xs font-mono font-bold text-muted-foreground hover:text-foreground hover:bg-accent border border-border/50 transition-colors"
+                title={`Display Scale: ${Math.round(zoomLevel * 100)}% (Click to toggle 90% / 85% / 100%)`}
+              >
+                {Math.round(zoomLevel * 100)}%
+              </button>
 
               {/* Theme Toggle Button (Desktop visible, on mobile moved into hamburger menu) */}
               <button
@@ -509,6 +540,17 @@ export const Navbar: React.FC = () => {
               <div className="pt-2 border-t border-border/60 flex items-center justify-between px-4 py-2">
                 <span className="text-sm font-semibold text-foreground/90">Color Palette</span>
                 <PaletteSwitcher />
+              </div>
+
+              {/* Mobile Display Scale */}
+              <div className="pt-2 border-t border-border/60 flex items-center justify-between px-4 py-2">
+                <span className="text-sm font-semibold text-foreground/90">Display Scale</span>
+                <button
+                  onClick={cycleZoom}
+                  className="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-secondary text-foreground border border-border/60 hover:bg-accent transition-colors"
+                >
+                  {Math.round(zoomLevel * 100)}%
+                </button>
               </div>
 
               {/* Mobile Solved Counter */}

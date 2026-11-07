@@ -15,8 +15,12 @@
           } else {
             document.documentElement.classList.add('dark');
           }
+
+          var savedZoom = localStorage.getItem('toniclite_zoom') || '0.9';
+          document.documentElement.style.zoom = savedZoom;
         } catch (e) {
           document.documentElement.classList.add('dark');
+          document.documentElement.style.zoom = '0.9';
         }
       })();
     </script>
