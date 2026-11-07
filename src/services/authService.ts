@@ -9,6 +9,7 @@ export interface UserAccount {
   lastLogin: string;
   solvedProblems: string[];
   codeDrafts: Record<string, string>;
+  mlMathNotes?: Record<string, string>;
   submissions: Record<string, {
     timestamp: string;
     success: boolean;
@@ -102,7 +103,8 @@ export async function syncUserSession(): Promise<UserAccount | null> {
           ...data.user,
           solvedProblems: data.user.solvedProblems || [],
           codeDrafts: data.user.codeDrafts || {},
-          submissions: data.user.submissions || {}
+          submissions: data.user.submissions || {},
+          mlMathNotes: data.user.mlMathNotes || {}
         };
         if (existingIdx !== -1) {
           accounts[existingIdx] = { ...accounts[existingIdx], ...fullUser };
@@ -391,6 +393,83 @@ export function saveUserCode(slug: string, code: string, userId?: string): void 
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ slug, code })
+    }).catch(() => {});
+  }
+}
+
+export function getUserMLNotes(userId?: string): Record<string, string> {
+  const currentId = userId || getCurrentUser()?.id;
+  if (!currentId) {
+    try {
+      const raw = localStorage.getItem('tt_ml_math_notes_v1');
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  // 1. From account
+  const accounts = getAllAccounts();
+  const target = accounts.find(a => a.id === currentId);
+  if (target?.mlMathNotes && Object.keys(target.mlMathNotes).length > 0) {
+    return target.mlMathNotes;
+  }
+
+  // 2. From user-specific localStorage key
+  try {
+    const raw = localStorage.getItem(`toniclite_ml_notes_${currentId}`);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+
+  // 3. Fallback to guest key
+  try {
+    const raw = localStorage.getItem('tt_ml_math_notes_v1');
+    if (raw) return JSON.parse(raw);
+  } catch {}
+
+  return {};
+}
+
+export function saveUserMLNote(url: string, noteText: string, userId?: string): void {
+  const currentId = userId || getCurrentUser()?.id;
+
+  // Cache locally
+  try {
+    const legacyRaw = localStorage.getItem('tt_ml_math_notes_v1');
+    const legacy = legacyRaw ? JSON.parse(legacyRaw) : {};
+    legacy[url] = noteText;
+    localStorage.setItem('tt_ml_math_notes_v1', JSON.stringify(legacy));
+  } catch {}
+
+  if (!currentId) return;
+
+  // Save to user account record
+  const accounts = getAllAccounts();
+  const target = accounts.find(a => a.id === currentId);
+  if (target) {
+    if (!target.mlMathNotes) target.mlMathNotes = {};
+    target.mlMathNotes[url] = noteText;
+    saveAccounts(accounts);
+  }
+
+  // Save to user-specific localStorage key
+  try {
+    const userNotesRaw = localStorage.getItem(`toniclite_ml_notes_${currentId}`);
+    const userNotes = userNotesRaw ? JSON.parse(userNotesRaw) : {};
+    userNotes[url] = noteText;
+    localStorage.setItem(`toniclite_ml_notes_${currentId}`, JSON.stringify(userNotes));
+  } catch {}
+
+  // Sync to database
+  const token = getAuthToken();
+  if (token) {
+    fetch('/api/notes/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ url, note: noteText })
     }).catch(() => {});
   }
 }
@@ -1007,8 +1086,10 @@ export function getUserEloRating(
 
     base += Math.min(streak.currentStreak * 3, 60);
     try {
-      const blitzHigh = parseInt(localStorage.getItem('toniclite_blitz_highscore') || '0', 10);
-      if (blitzHigh > 0) base += Math.min(200, Math.floor(blitzHigh / 15));
+      const mathCompleted = JSON.parse(localStorage.getItem('tt_ml_math_completed_v1') || '[]');
+      if (Array.isArray(mathCompleted) && mathCompleted.length > 0) {
+        base += Math.min(250, mathCompleted.length * 4);
+      }
     } catch {}
     return Math.max(1500, base);
   } catch {
