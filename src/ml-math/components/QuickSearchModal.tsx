@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, X, ArrowRight, CheckCircle2, BookOpen } from 'lucide-react';
-import { ALL_TOPICS } from '../data/mlMathCurriculum';
+import { ALL_TOPICS } from '../data/curriculum';
 
 interface QuickSearchModalProps {
   isOpen: boolean;
