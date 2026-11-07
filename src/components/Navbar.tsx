@@ -182,8 +182,22 @@ export const Navbar: React.FC = () => {
       <nav className="text-foreground sticky top-0 z-50 w-full border-b border-border bg-card/95 dark:border-border/60 dark:bg-background/95 backdrop-blur-2xl flex-shrink-0">
         <div className="w-full h-14 flex items-center justify-between px-4 sm:px-6 relative">
             
-            {/* Left: Brand logo & Nav links */}
+            {/* Left: Mobile Hamburger, Brand logo & Nav links */}
             <div className="flex items-center gap-2 md:gap-8 flex-shrink-0">
+              {/* Mobile Hamburger Button (Left corner before logo) */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsUserMenuOpen(false);
+                  setIsMobileMenuOpen((prev) => !prev);
+                }}
+                aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={isMobileMenuOpen}
+                className="lg:hidden inline-flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all shrink-0"
+              >
+                {isMobileMenuOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
+              </button>
+
               <Link to="/" className="hover:opacity-85 transition-opacity flex items-center gap-2 shrink-0">
                 <img
                   alt="TonicLite"
@@ -374,20 +388,6 @@ export const Navbar: React.FC = () => {
                 </button>
               )}
 
-              {/* Mobile Hamburger Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  setIsUserMenuOpen(false);
-                  setIsMobileMenuOpen((prev) => !prev);
-                }}
-                aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                aria-expanded={isMobileMenuOpen}
-                className="lg:hidden inline-flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all ml-1 shrink-0"
-              >
-                {isMobileMenuOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
-              </button>
-
             </div>
 
           </div>
@@ -397,7 +397,16 @@ export const Navbar: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex flex-col pointer-events-auto">
           {/* Top backdrop behind the navbar height */}
-          <div className="h-14 w-full bg-card/95 dark:bg-background/95 border-b border-border/60 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 shadow-sm">
+          <div className="h-14 w-full bg-card/95 dark:bg-background/95 border-b border-border/60 flex items-center justify-start gap-2 px-4 sm:px-6 flex-shrink-0 shadow-sm">
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close navigation menu"
+              className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all shrink-0"
+            >
+              <X className="w-5 h-5 text-foreground" />
+            </button>
+
             <Link
               to="/"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -414,15 +423,6 @@ export const Navbar: React.FC = () => {
                 Tonic<span className="text-[#93C572]">Lite</span>
               </span>
             </Link>
-
-            <button
-              type="button"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Close navigation menu"
-              className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary active:scale-95 transition-all"
-            >
-              <X className="w-5 h-5 text-foreground" />
-            </button>
           </div>
 
           {/* Dimmed backdrop area (tap outside to close) */}
@@ -465,37 +465,6 @@ export const Navbar: React.FC = () => {
                     </Link>
                   );
                 })}
-              </div>
-
-              {/* Extra Sections */}
-              <div className="pt-2 border-t border-border/60 space-y-1">
-                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider px-3 mb-1">
-                  Explore
-                </div>
-                <Link
-                  to="/study-plans"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
-                    location.pathname.startsWith('/study-plans')
-                      ? 'bg-[#93C572]/15 text-[#93C572]'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
-                  }`}
-                >
-                  <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>Study Plans</span>
-                </Link>
-                <Link
-                  to="/projects"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${
-                    location.pathname.startsWith('/projects')
-                      ? 'bg-[#93C572]/15 text-[#93C572]'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
-                  }`}
-                >
-                  <Database className="w-4 h-4 text-sky-400" />
-                  <span>Projects</span>
-                </Link>
               </div>
 
               {/* User Account / Profile */}

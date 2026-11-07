@@ -24,18 +24,29 @@
   --color-brand-cta-foreground: rgb(var(--brand-cta-foreground-rgb));
 }
 
-/* Ensure smooth scrolling and clean scrollbars across interactive lessons */
+/* Ensure smooth scrolling and theme-matched scrollbars across interactive lessons */
+*::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
+  background-color: hsl(var(--background));
 }
+*::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner,
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: hsl(var(--background));
 }
+*::-webkit-scrollbar-thumb,
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(128, 128, 128, 0.25);
+  background: rgba(140, 140, 140, 0.26);
   border-radius: 9999px;
 }
+*::-webkit-scrollbar-thumb:hover,
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(128, 128, 128, 0.4);
+  background: rgba(140, 140, 140, 0.45);
 }

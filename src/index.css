@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     /* Clean, crisp light mode theme */
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
@@ -32,6 +33,7 @@
   }
 
   .dark {
+    color-scheme: dark;
     /* Original TensorTonic dark background (#070a08) and cards (#141414) */
     --background: 140 18% 3.3%;
     --foreground: 0 0% 98%;
@@ -238,27 +240,49 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Custom Scrollbars */
+/* Global & Custom Scrollbars — matching page background color */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140, 140, 140, 0.25) hsl(var(--background));
+}
+
+.dark * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160, 160, 160, 0.22) hsl(var(--background));
+}
+
+*::-webkit-scrollbar,
 .problem-scrollbar::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
+  background-color: hsl(var(--background));
 }
 
+*::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner,
 .problem-scrollbar::-webkit-scrollbar-track,
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: hsl(var(--background));
 }
 
+*::-webkit-scrollbar-thumb,
 .problem-scrollbar::-webkit-scrollbar-thumb,
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(140, 140, 140, 0.2);
+  background: rgba(140, 140, 140, 0.26);
   border-radius: 9999px;
 }
 
+*::-webkit-scrollbar-thumb:hover,
 .problem-scrollbar::-webkit-scrollbar-thumb:hover,
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(140, 140, 140, 0.4);
+  background: rgba(140, 140, 140, 0.45);
 }
 
 /* KaTeX formatting matching TensorTonic */

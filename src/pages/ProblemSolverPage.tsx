@@ -69,121 +69,7 @@ import { AuthModal } from '../components/AuthModal';
 
 import { ReplShapeInspector } from '../components/ReplShapeInspector';
 
-/* ======================================================== */
-/* LEETCODE-STYLE PERFORMANCE PERCENTILE CHART COMPONENT   */
-/* ======================================================== */
-const PerformancePercentileChart: React.FC<{ runtimeMs: number; isSubmission: boolean }> = ({ runtimeMs, isSubmission }) => {
-  const medianMs = 38.0;
-  const ratio = runtimeMs / medianMs;
-  const percentile = Math.min(99.4, Math.max(14.2, parseFloat((100 / (1 + Math.pow(ratio, 1.3))).toFixed(1))));
 
-  const width = 360;
-  const height = 90;
-
-  const points: { x: number; y: number }[] = [];
-  const steps = 36;
-  for (let i = 0; i <= steps; i++) {
-    const xPct = i / steps;
-    const xMs = 5 + xPct * 95;
-    const exponent = -Math.pow((xMs - medianMs) / 22, 2) / 2;
-    const yVal = Math.exp(exponent);
-    const svgX = 20 + xPct * (width - 40);
-    const svgY = height - 12 - yVal * (height - 28);
-    points.push({ x: svgX, y: svgY });
-  }
-
-  const pathD = points.reduce((acc, p, idx) => `${acc} ${idx === 0 ? 'M' : 'L'} ${p.x} ${p.y}`, '');
-  const areaD = `${pathD} L ${points[points.length - 1].x} ${height - 10} L ${points[0].x} ${height - 10} Z`;
-
-  const clampedUserMs = Math.min(100, Math.max(5, runtimeMs));
-  const userXPct = (clampedUserMs - 5) / 95;
-  const userSvgX = 20 + userXPct * (width - 40);
-
-  const speedLabel = percentile >= 85 ? 'Optimal Vectorization ⚡' : percentile >= 60 ? 'Efficient Implementation 👍' : 'Can be further vectorized 💡';
-  const speedColor = percentile >= 85 ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25' : percentile >= 60 ? 'text-sky-400 bg-sky-500/10 border-sky-500/25' : 'text-amber-400 bg-amber-500/10 border-amber-500/25';
-
-  return (
-    <div className="p-3.5 sm:p-4 rounded-2xl bg-secondary/30 dark:bg-[#0c1611] border border-border/70 dark:border-[#1d3326] space-y-3 my-2">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0">
-            ⚡
-          </div>
-          <div>
-            <div className="text-xs font-bold text-foreground dark:text-white flex items-center gap-2 flex-wrap">
-              <span>Runtime Distribution</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full border font-mono ${speedColor}`}>
-                {speedLabel}
-              </span>
-            </div>
-            <div className="text-[11px] text-muted-foreground font-mono">
-              Your solution ran in <strong className="text-foreground dark:text-white">{runtimeMs.toFixed(1)} ms</strong>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-left sm:text-right font-mono">
-          <div className="text-sm font-extrabold text-[#93C572]">
-            Beats {percentile}%
-          </div>
-          <div className="text-[10px] text-muted-foreground">
-            of Python 3 submissions
-          </div>
-        </div>
-      </div>
-
-      {/* Bell Curve SVG */}
-      <div className="relative w-full max-w-md mx-auto pt-5 pb-1">
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-24 overflow-visible">
-          <defs>
-            <linearGradient id="runtimeCurveGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#93C572" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="#93C572" stopOpacity="0.02" />
-            </linearGradient>
-          </defs>
-
-          {/* Shaded Area under Bell Curve */}
-          <path d={areaD} fill="url(#runtimeCurveGradient)" />
-
-          {/* Curve Stroke */}
-          <path d={pathD} fill="none" stroke="#93C572" strokeWidth="2.5" strokeLinecap="round" />
-
-          {/* Baseline */}
-          <line x1="15" y1={height - 10} x2={width - 15} y2={height - 10} stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-
-          {/* User Marker Line */}
-          <line
-            x1={userSvgX}
-            y1={12}
-            x2={userSvgX}
-            y2={height - 10}
-            stroke="#38bdf8"
-            strokeWidth="2"
-            strokeDasharray="3 3"
-          />
-
-          {/* User Dot */}
-          <circle cx={userSvgX} cy={16} r="4.5" fill="#38bdf8" stroke="#ffffff" strokeWidth="1.5" />
-        </svg>
-
-        {/* Marker Label */}
-        <div 
-          className="absolute top-0 text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500 text-black font-extrabold transform -translate-x-1/2 shadow-md pointer-events-none whitespace-nowrap"
-          style={{ left: `${(userSvgX / width) * 100}%` }}
-        >
-          You: {runtimeMs.toFixed(1)}ms
-        </div>
-
-        {/* Distribution axis labels */}
-        <div className="flex justify-between text-[9px] text-muted-foreground font-mono px-4 pt-1">
-          <span>Fast (5ms)</span>
-          <span>Average (38ms)</span>
-          <span>Slow (100ms+)</span>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 
 interface ActiveTestCase {
@@ -1956,13 +1842,7 @@ export const ProblemSolverPage: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* LeetCode-Style Performance Percentile Distribution */}
-                    {execReport.success && (
-                      <PerformancePercentileChart
-                        runtimeMs={execReport.totalTimeMs}
-                        isSubmission={isSubmission}
-                      />
-                    )}
+
 
                     {/* Test Case Selector Pills */}
                     <div className="flex flex-wrap items-center gap-1.5 max-h-24 overflow-y-auto custom-scrollbar p-0.5">
