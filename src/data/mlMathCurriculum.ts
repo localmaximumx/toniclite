@@ -1,0 +1,527 @@
+export interface TopicItem {
+  name: string;
+  url: string;
+  description: string;
+  art: string;
+  problemSlugs?: string[];
+  problemSlug?: string;
+}
+
+export interface ModuleItem {
+  id: number;
+  title: string;
+  color: string;
+  topics: TopicItem[];
+}
+
+export const CURRICULUM_MODULES: ModuleItem[] = [
+  {
+    id: 1,
+    title: 'Statistics',
+    color: 'emerald',
+    topics: [
+      {
+        name: 'Basic Statistics',
+        url: '/ml-math/statistics/basic-statistics',
+        problemSlugs: ['mean-median-mode', 'probstat-sample-var-std', 'probstat-percentiles', 'probstat-skewness-kurtosis'],
+        description: 'Foundational concepts including mean, median, mode, and variance.',
+        art: 'bell-markers',
+      },
+      {
+        name: 'Population vs Sample',
+        url: '/ml-math/statistics/population-sample',
+        problemSlugs: ['bessels-correction', 'stratified-sampling', 'sample-bias-detection'],
+        description: 'Distinguish between the entire group and a subset of data.',
+        art: 'pop-sample',
+      },
+      {
+        name: 'Sampling Distributions',
+        url: '/ml-math/statistics/sampling-distribution',
+        problemSlugs: ['standard-error-mean', 'sampling-mean-distribution', 'sampling-proportion'],
+        description: 'Probability distribution of a given statistic based on a random sample.',
+        art: 'sampling',
+      },
+      {
+        name: 'Central Limit Theorem',
+        url: '/ml-math/statistics/central-limit-theorem',
+        problemSlugs: ['clt-simulation', 'clt-sample-size', 'clt-confidence-band'],
+        description: 'Why averages of samples tend to be normal, regardless of population distribution.',
+        art: 'clt',
+      },
+      {
+        name: 'Confidence Intervals',
+        url: '/ml-math/statistics/confidence-interval',
+        problemSlugs: ['ci-mean-known-sigma', 'ci-mean-unknown-sigma', 'ci-proportion'],
+        description: 'Range of values derived from sample statistics that is likely to contain the population parameter.',
+        art: 'interval',
+      },
+      {
+        name: 'Hypothesis Testing Fundamentals',
+        url: '/ml-math/statistics/hypothesis-testing',
+        problemSlugs: ['hypothesis-setup', 'z-test-one-sample', 'test-statistic-calc'],
+        description: 'Framework for making statistical decisions using experimental data.',
+        art: 'hypothesis',
+      },
+      {
+        name: 'P-Values & Significance',
+        url: '/ml-math/statistics/p-value',
+        problemSlugs: ['p-value-from-z', 'p-value-from-t', 'significance-decision'],
+        description: 'Evaluating the strength of evidence against the null hypothesis.',
+        art: 'p-value',
+      },
+      {
+        name: 'Type I vs Type II Errors',
+        url: '/ml-math/statistics/type-one-vs-two',
+        problemSlugs: ['type-error-classify', 'power-calculation', 'sample-size-power'],
+        description: 'Understanding false positives and false negatives in testing.',
+        art: 'error-types',
+      },
+      {
+        name: 'One-Sample T-Test',
+        url: '/ml-math/statistics/t-test',
+        problemSlugs: ['t-test-statistic', 't-test-full', 't-test-paired'],
+        description: 'Testing if a sample mean significantly differs from a known population mean.',
+        art: 't-test',
+      },
+      {
+        name: 'A/B Testing',
+        url: '/ml-math/statistics/ab-testing',
+        problemSlugs: ['ab-test-setup', 'ab-test-significance', 'ab-sample-size'],
+        description: 'Compare two versions of a variable to determine which performs better.',
+        art: 'ab',
+      },
+      {
+        name: 'ANOVA',
+        url: '/ml-math/statistics/anova',
+        problemSlugs: ['anova-f-statistic', 'one-way-anova', 'anova-tukey-hsd'],
+        description: 'Analysis of variance to check means across multiple groups.',
+        art: 'anova',
+      },
+      {
+        name: 'Correlation vs Causation',
+        url: '/ml-math/statistics/correlation',
+        problemSlugs: ['pearson-correlation', 'spearman-rank-correlation', 'correlation-matrix'],
+        description: 'Understanding the difference between related variables and cause-and-effect.',
+        art: 'scatter-trend',
+      },
+      {
+        name: 'Resampling Methods',
+        url: '/ml-math/statistics/resampling',
+        problemSlugs: ['bootstrap-ci', 'k-fold-split', 'permutation-test'],
+        description: 'Techniques like bootstrapping and cross-validation for model validation.',
+        art: 'bootstrap',
+      },
+      {
+        name: 'Maximum Likelihood Estimation (MLE)',
+        url: '/ml-math/statistics/maximum-likelihood-estimation',
+        problemSlugs: ['mle-bernoulli', 'mle-gaussian', 'log-likelihood-calc'],
+        description: 'Method for estimating the parameters of a probability distribution.',
+        art: 'mle',
+      },
+      {
+        name: 'Bayesian vs Frequentist Approach',
+        url: '/ml-math/statistics/bayesian-frequentist',
+        problemSlugs: ['bayes-theorem-apply', 'prior-posterior-update', 'bayesian-credible-interval'],
+        description: 'Contrasting philosophies on probability and statistical inference.',
+        art: 'bayes',
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: 'Probability',
+    color: 'rose',
+    topics: [
+      {
+        name: 'Conditional Probability',
+        url: '/ml-math/probability/conditional-probability',
+        problemSlug: 'conditional-probability',
+        description: 'Probability of an event given that another event has occurred.',
+        art: 'venn',
+      },
+      {
+        name: 'Probability Distributions (PDF, PMF, CDF)',
+        url: '/ml-math/probability/distributions',
+        problemSlug: 'pmf-pdf-cdf',
+        description: 'Functions that describe the likelihood of different outcomes.',
+        art: 'pmf-pdf-cdf',
+      },
+      {
+        name: 'Random Variables & Expectation',
+        url: '/ml-math/probability/random-variables',
+        problemSlug: 'expected-value-variance',
+        description: 'Variables whose values depend on outcomes of a random phenomenon.',
+        art: 'expectation',
+      },
+      {
+        name: 'Joint, Marginal, and Conditional Distributions',
+        url: '/ml-math/probability/joint-marginal',
+        problemSlug: 'joint-marginal-conditional',
+        description: 'Relationships between multiple random variables.',
+        art: 'joint',
+      },
+      {
+        name: 'Covariance Matrices',
+        url: '/ml-math/probability/covariance-matrix',
+        problemSlug: 'covariance-matrix',
+        description: 'Matrix showing covariance between many pairs of elements.',
+        art: 'covariance',
+      },
+      {
+        name: "Bayes' Theorem & Inference",
+        url: '/ml-math/probability/bayes-theorem',
+        problemSlug: 'bayes-theorem',
+        description: 'Updating the probability of a hypothesis as more evidence becomes available.',
+        art: 'bayes-update',
+      },
+      {
+        name: 'Law of Large Numbers',
+        url: '/ml-math/probability/lln',
+        problemSlug: 'law-of-large-numbers',
+        description: 'Result ensuring long-term stability of random variables.',
+        art: 'large-numbers',
+      },
+      {
+        name: "Chebyshev's Inequality",
+        url: '/ml-math/probability/chebyshev-inequality',
+        description: 'Guaranteeing a proportion of values within k standard deviations.',
+        art: 'chebyshev',
+      },
+      {
+        name: 'Monte Carlo Methods Intuition',
+        url: '/ml-math/probability/monte-carlo',
+        problemSlug: 'monte-carlo-pi',
+        description: 'Using random sampling to solve numerical problems.',
+        art: 'monte-carlo',
+      },
+      {
+        name: 'Markov Chains',
+        url: '/ml-math/probability/markov-chains',
+        description: 'Stochastic model describing a sequence of possible events.',
+        art: 'markov',
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'Linear Algebra',
+    color: 'amber',
+    topics: [
+      {
+        name: 'Dot Product & Vector Norms',
+        url: '/ml-math/linear-algebra/dot-norm',
+        problemSlug: 'vector-norms',
+        description: 'Fundamental operations for measuring length and angle between vectors.',
+        art: 'dot-product',
+      },
+      {
+        name: 'Matrix Multiplication & Tensor Operations',
+        url: '/ml-math/linear-algebra/matrix-multiplication',
+        problemSlug: 'matrix-multiplication',
+        description: 'Core operations for manipulating multi-dimensional data arrays.',
+        art: 'matmul',
+      },
+      {
+        name: 'Determinants & Matrix Inverses',
+        url: '/ml-math/linear-algebra/determinants-inverses',
+        description: 'Scalar value describing matrix properties and the reverse operation.',
+        art: 'determinant',
+      },
+      {
+        name: 'Orthogonality & Basis Vectors',
+        url: '/ml-math/linear-algebra/orthogonality',
+        problemSlug: 'gram-schmidt',
+        description: 'Concepts of perpendicularity and building blocks of vector spaces.',
+        art: 'basis',
+      },
+      {
+        name: 'Projections & Least Squares',
+        url: '/ml-math/linear-algebra/projections-least-squares',
+        description: 'Approximating solutions to overdetermined systems.',
+        art: 'projection',
+      },
+      {
+        name: 'LU / QR Decomposition',
+        url: '/ml-math/linear-algebra/lu-qr-decomposition',
+        description: 'Factoring matrices to solve systems of linear equations efficiently.',
+        art: 'lu-qr',
+      },
+      {
+        name: 'Eigenvalues & Eigenvectors',
+        url: '/ml-math/linear-algebra/eigenvalue-eigenvector',
+        problemSlug: 'eigenvalue-analysis',
+        description: 'Scalars and vectors associated with linear transformations.',
+        art: 'eigen',
+      },
+      {
+        name: 'Positive Definite Matrices',
+        url: '/ml-math/linear-algebra/positive-definite',
+        description: 'Matrices analogous to positive real numbers.',
+        art: 'positive-definite',
+      },
+      {
+        name: 'Singular Value Decomposition (SVD) Intuition',
+        url: '/ml-math/linear-algebra/svd',
+        problemSlug: 'svd-decomposition',
+        description: 'Factorization of a real or complex matrix.',
+        art: 'svd',
+      },
+      {
+        name: 'Principal Component Analysis (PCA) Intuition',
+        url: '/ml-math/linear-algebra/pca',
+        problemSlug: 'pca-from-scratch',
+        description: 'Dimensionality reduction technique preserving variance.',
+        art: 'pca',
+      },
+      {
+        name: 'Matrix Calculus',
+        url: '/ml-math/linear-algebra/matrix-calculus',
+        description: 'Calculus specialized for matrices and vectors.',
+        art: 'gradient-field',
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: 'Calculus',
+    color: 'orange',
+    topics: [
+      {
+        name: 'Limits & Continuity',
+        url: '/ml-math/calculus/limits-continuity',
+        problemSlug: 'numerical-limits',
+        description: 'Foundational concepts for defining derivatives and integrals.',
+        art: 'limit',
+      },
+      {
+        name: 'Partial Derivatives',
+        url: '/ml-math/calculus/partial-derivatives',
+        problemSlug: 'gradient-computation',
+        description: 'Derivatives of functions with multiple variables.',
+        art: 'partial',
+      },
+      {
+        name: 'Chain Rule',
+        url: '/ml-math/calculus/chain-rule',
+        problemSlug: 'chain-rule-backprop',
+        description: 'Differentiating composite functions, key to backpropagation.',
+        art: 'chain-rule',
+      },
+      {
+        name: 'Jacobian and Hessian Matrices',
+        url: '/ml-math/calculus/jacobian-hessian',
+        problemSlug: 'hessian-computation',
+        description: 'Matrices of first and second-order partial derivatives.',
+        art: 'jacobian-hessian',
+      },
+      {
+        name: 'Taylor Series Approximation',
+        url: '/ml-math/calculus/taylor-series',
+        problemSlug: 'taylor-approximation',
+        description: 'Representing functions as infinite sums of terms.',
+        art: 'taylor',
+      },
+      {
+        name: 'Integration & AUC',
+        url: '/ml-math/calculus/integration-auc',
+        description: 'Calculating area under curves, crucial for performance metrics.',
+        art: 'auc',
+      },
+      {
+        name: 'Vector Fields',
+        url: '/ml-math/calculus/vector-fields',
+        description: 'Assignment of a vector to each point in a subset of space.',
+        art: 'swirl',
+      },
+      {
+        name: 'Local Minima vs Saddle Points',
+        url: '/ml-math/calculus/local-vs-saddle',
+        problemSlug: 'critical-point-classifier',
+        description: 'Analyzing critical points in optimization landscapes.',
+        art: 'min-vs-saddle',
+      },
+      {
+        name: 'Backpropagation & Gradient Descent',
+        url: '/ml-math/calculus/backpropagation',
+        problemSlug: 'manual-backprop',
+        description: 'Computing gradients by hand and using them to train neural networks.',
+        art: 'descent',
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: 'Optimization',
+    color: 'green',
+    topics: [
+      {
+        name: 'Convex vs Non-Convex Optimization',
+        url: '/ml-math/optimization/convex-optimization',
+        problemSlug: 'convexity-check',
+        description: 'Distinguishing between easily solvable and hard optimization problems.',
+        art: 'convexity',
+      },
+      {
+        name: 'Stochastic Gradient Descent (SGD) Variants',
+        url: '/ml-math/optimization/sgd-variants',
+        problemSlug: 'sgd-minibatch',
+        description: 'Optimization using a subset of training data.',
+        art: 'minibatch',
+      },
+      {
+        name: 'Momentum & Nesterov Acceleration',
+        url: '/ml-math/optimization/momentum-nesterov',
+        problemSlug: 'momentum-optimizer',
+        description: 'Techniques to accelerate gradient vectors in the right directions.',
+        art: 'momentum',
+      },
+      {
+        name: 'Adaptive Learning Rate Methods (Adam, RMSprop)',
+        url: '/ml-math/optimization/adaptive-rates',
+        problemSlug: 'adam-implementation',
+        description: 'Algorithms that adjust learning rates during training.',
+        art: 'adaptive-steps',
+      },
+      {
+        name: 'Loss Landscapes',
+        url: '/ml-math/optimization/loss-landscapes',
+        description: 'Visualizing the geometry of the loss function.',
+        art: 'loss-landscape',
+      },
+      {
+        name: 'Regularization (L1, L2, Dropout)',
+        url: '/ml-math/optimization/regularization',
+        problemSlug: 'l1-l2-regularization',
+        description: 'Techniques to prevent overfitting.',
+        art: 'regularization',
+      },
+      {
+        name: 'Batch Normalization',
+        url: '/ml-math/optimization/batch-normalization',
+        description: 'Normalizing layer inputs to accelerate training and improve generalization.',
+        art: 'batch-norm',
+      },
+      {
+        name: "Newton's Method",
+        url: '/ml-math/optimization/newtons-method',
+        description: 'Iterative method for finding roots of functions.',
+        art: 'newton-tangent',
+      },
+      {
+        name: 'Lagrange Multipliers & KKT',
+        url: '/ml-math/optimization/lagrange-multipliers',
+        problemSlug: 'lagrangian-optimization',
+        description: 'Strategy for constrained optimization with equality and inequality constraints.',
+        art: 'lagrange-kkt',
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: 'Graph Theory',
+    color: 'blue',
+    topics: [
+      {
+        name: 'Graph Representations (Matrix, List)',
+        url: '/ml-math/graph-theory/graph-representations',
+        description: 'Different ways to store graph data structures.',
+        art: 'adjacency',
+      },
+      {
+        name: 'Spectral Graph Theory',
+        url: '/ml-math/graph-theory/spectral-graph',
+        description: 'Graph Laplacian, eigenvalues, and spectral clustering methods.',
+        art: 'spectral-cut',
+      },
+      {
+        name: 'Random Walks & Markov Chains',
+        url: '/ml-math/graph-theory/random-walks',
+        description: 'Analyzing paths on graphs and stationary distributions.',
+        art: 'random-walk',
+      },
+      {
+        name: 'Computational Graphs & Backpropagation',
+        url: '/ml-math/graph-theory/computational-graphs',
+        description: 'Representing mathematical expressions as directed graphs.',
+        art: 'dag-flow',
+      },
+      {
+        name: 'Introduction to GNNs',
+        url: '/ml-math/graph-theory/gnn-intro',
+        description: 'Extending deep learning to graph-structured data.',
+        art: 'gnn-neighborhood',
+      },
+      {
+        name: 'Message Passing (GNNs)',
+        url: '/ml-math/graph-theory/message-passing',
+        description: 'Core mechanism for aggregating information in Graph Neural Networks.',
+        art: 'message-passing',
+      },
+    ],
+  },
+  {
+    id: 7,
+    title: 'Information Theory',
+    color: 'red',
+    topics: [
+      {
+        name: 'Shannon Entropy',
+        url: '/ml-math/information-theory/shannon-entropy',
+        problemSlug: 'shannon-entropy',
+        description: 'Measuring uncertainty or information content in a random variable.',
+        art: 'entropy-bars',
+      },
+      {
+        name: 'Cross-Entropy Loss',
+        url: '/ml-math/information-theory/cross-entropy',
+        problemSlug: 'cross-entropy-loss',
+        description: 'Comparing two probability distributions, widely used as a loss function.',
+        art: 'cross-entropy',
+      },
+      {
+        name: 'Kullback-Leibler (KL) Divergence',
+        url: '/ml-math/information-theory/kl-divergence',
+        problemSlug: 'kl-divergence',
+        description: 'Measuring how one probability distribution diverges from a second.',
+        art: 'kl-divergence',
+      },
+      {
+        name: 'Mutual Information',
+        url: '/ml-math/information-theory/mutual-information',
+        description: 'Quantifying the mutual dependence between two variables.',
+        art: 'mutual-info',
+      },
+      {
+        name: 'Information Gain (Decision Trees)',
+        url: '/ml-math/information-theory/information-gain',
+        problemSlug: 'information-gain',
+        description: 'Reduction in entropy used to split nodes in decision trees.',
+        art: 'tree-split',
+      },
+      {
+        name: 'Perplexity',
+        url: '/ml-math/information-theory/perplexity',
+        problemSlug: 'perplexity',
+        description: 'Measurement of how well a probability model predicts a sample.',
+        art: 'perplexity',
+      },
+      {
+        name: 'Jensen-Shannon Divergence',
+        url: '/ml-math/information-theory/jensen-shannon',
+        description: 'Symmetrized and smoothed version of KL divergence.',
+        art: 'js-divergence',
+      },
+    ],
+  },
+];
+
+export const ALL_TOPICS = CURRICULUM_MODULES.flatMap((mod) =>
+  mod.topics.map((topic, index) => ({
+    ...topic,
+    moduleId: mod.id,
+    moduleTitle: mod.title,
+    moduleColor: mod.color,
+    topicIndex: index + 1,
+    moduleTotal: mod.topics.length,
+  }))
+);

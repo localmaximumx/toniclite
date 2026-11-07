@@ -21,7 +21,7 @@ import {
   Database,
   Flame,
   Settings,
-  Zap
+  GraduationCap
 } from 'lucide-react';
 import { 
   getCurrentUser, 
@@ -159,7 +159,7 @@ export const Navbar: React.FC = () => {
   const navLinks = [
 
     { label: 'Problems', path: '/problems', icon: Code2 },
-    { label: '3-Min Blitz ⚡', path: '/blitz', icon: Zap },
+    { label: 'ML Math', path: '/ml-math', icon: GraduationCap },
     { label: 'Research', path: '/research', icon: BookOpen },
     { label: 'Interview', path: '/interview', icon: Radio }
   ];
@@ -209,8 +209,8 @@ export const Navbar: React.FC = () => {
                   const isProblems = link.path === '/problems' && (
                     location.pathname.startsWith('/problems') && !location.search.includes('assessment=')
                   );
-                  const isBlitz = link.path === '/blitz' && location.pathname.startsWith('/blitz');
-                  const isActive = isInterview || isResearch || isProblems || isBlitz;
+                  const isMLMath = link.path === '/ml-math' && location.pathname.startsWith('/ml-math');
+                  const isActive = isInterview || isResearch || isProblems || isMLMath;
 
                   return (
                     <Link
@@ -434,8 +434,8 @@ export const Navbar: React.FC = () => {
                 const isProblems = link.path === '/problems' && (
                   location.pathname.startsWith('/problems') && !location.search.includes('assessment=')
                 );
-                const isBlitz = link.path === '/blitz' && location.pathname.startsWith('/blitz');
-                const isActive = isInterview || isResearch || isProblems || isBlitz;
+                const isMLMath = link.path === '/ml-math' && location.pathname.startsWith('/ml-math');
+                const isActive = isInterview || isResearch || isProblems || isMLMath;
 
                 return (
                   <Link

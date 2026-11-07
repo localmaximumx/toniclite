@@ -1007,8 +1007,10 @@ export function getUserEloRating(
 
     base += Math.min(streak.currentStreak * 3, 60);
     try {
-      const blitzHigh = parseInt(localStorage.getItem('toniclite_blitz_highscore') || '0', 10);
-      if (blitzHigh > 0) base += Math.min(200, Math.floor(blitzHigh / 15));
+      const mathCompleted = JSON.parse(localStorage.getItem('tt_ml_math_completed_v1') || '[]');
+      if (Array.isArray(mathCompleted) && mathCompleted.length > 0) {
+        base += Math.min(250, mathCompleted.length * 4);
+      }
     } catch {}
     return Math.max(1500, base);
   } catch {
