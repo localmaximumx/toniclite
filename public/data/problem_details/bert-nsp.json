@@ -328,5 +328,6 @@
     "prev": "bert-masked-lm",
     "next": "bert-pooler"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "bert-nsp"
 }

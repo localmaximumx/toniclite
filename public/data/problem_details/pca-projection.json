@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef pca_projection(X: list, k: int) -> list:\n    \"\"\"\n    Returns the centered data projected onto the top components.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:58:03.345Z",
   "updatedAt": "2026-08-23T20:39:28.810Z",
-  "solution": "### 💡 Intuition & Approach\nProjects features onto orthogonal principal axes maximizing explained variance.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef pca_transform(X: list, k: int) -> list:\n    arr = np.array(X, dtype=float)\n    centered = arr - np.mean(arr, axis=0)\n    cov = np.cov(centered, rowvar=False)\n    eigvals, eigvecs = np.linalg.eigh(cov)\n    # Top k eigenvectors\n    top_vecs = eigvecs[:, np.argsort(eigvals)[::-1][:k]]\n    proj = centered @ top_vecs\n    return np.round(proj, 4).tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nProjects features onto orthogonal principal axes maximizing explained variance.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef pca_projection(X: list, k: int) -> list:\n    arr = np.array(X, dtype=float)\n    centered = arr - np.mean(arr, axis=0)\n    cov = np.cov(centered, rowvar=False)\n    eigvals, eigvecs = np.linalg.eigh(cov)\n    # Top k eigenvectors\n    top_vecs = eigvecs[:, np.argsort(eigvals)[::-1][:k]]\n    proj = centered @ top_vecs\n    return np.round(proj, 4).tolist()\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "PCAProjectionViz",
   "testCases": [
     {
@@ -193,14 +193,24 @@
             0
           ]
         ],
-        "k": 0
+        "k": 1
       },
       "expectedOutput": [
-        [],
-        [],
-        [],
-        [],
-        []
+        [
+          -1.4
+        ],
+        [
+          -0.4
+        ],
+        [
+          0.6
+        ],
+        [
+          0.6
+        ],
+        [
+          0.6
+        ]
       ],
       "isPublic": false
     },
@@ -282,7 +292,7 @@
             0
           ]
         ],
-        "k": -1
+        "k": 1
       },
       "expectedOutput": [
         [

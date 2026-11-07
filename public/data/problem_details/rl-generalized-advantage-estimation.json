@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def rl_generalized_advantage_estimation(rewards: list, values: list, next_value: float, gamma: float = 0.99, lam: float = 0.95) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Generalized Advantage Estimation (GAE)** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef rl_generalized_advantage_estimation(rewards: list, values: list, next_value: float, gamma: float = 0.99, lam: float = 0.95) -> list:\n    T = len(rewards)\n    advantages = [0.0] * T\n    v_next, gae = next_value, 0.0\n    for t in reversed(range(T)):\n        delta = rewards[t] + gamma * v_next - values[t]\n        gae = delta + gamma * lam * gae\n        advantages[t] = round(gae, 4)\n        v_next = values[t]\n    return advantages\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Generalized Advantage Estimation (GAE)** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef rl_generalized_advantage_estimation(rewards: list, values: list, next_value: float, gamma: float = 0.99, lam: float = 0.95) -> list:\n    T = len(rewards)\n    advantages = [0.0] * T\n    v_next, gae = next_value, 0.0\n    for t in reversed(range(T)):\n        delta = rewards[t] + gamma * v_next - values[t]\n        gae = delta + gamma * lam * gae\n        advantages[t] = round(gae, 4)\n        v_next = values[t]\n    return advantages\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-generalized-advantage-estimation-tc-1",
@@ -147,12 +147,12 @@
           -0.9
         ],
         "next_value": -0.0,
-        "gamma": -0.99,
+        "gamma": 0.99,
         "lam": -0.95
       },
       "expectedOutput": [
-        0.8534,
-        0.597,
+        -0.3544,
+        -0.997,
         -0.1
       ],
       "isPublic": false

@@ -713,5 +713,6 @@
     "prev": "vgg-feature-extractor",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vgg-full-network"
 }

@@ -30,7 +30,7 @@
   ],
   "constraints": "* Category: PYTORCH\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTORCH\n",
   "starterCode": "import numpy as np\n\ndef alphago_l02_encode_board_history(history: list, current_player: int, T: int = 8) -> list:\n    \"\"\"\n    Encode the current board state and up to T earlier board frames from the perspective of the current player, appending an active player color plane.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nEncode the current board state and up to T earlier board frames from the perspective of the current player, appending an active player color plane.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l02_encode_board_history(history: list, current_player: int, T: int = 8) -> list:\n    H, W = len(history[0]), len(history[0][0])\n    opp = 3 - current_player\n    channels = []\n    for t in range(T):\n        if t < len(history):\n            b = np.array(history[t], dtype=int)\n            channels.append((b == current_player).astype(float).tolist())\n            channels.append((b == opp).astype(float).tolist())\n        else:\n            channels.append(np.zeros((H, W), dtype=float).tolist())\n            channels.append(np.zeros((H, W), dtype=float).tolist())\n    color_val = 1.0 if current_player == 1 else 0.0\n    channels.append(np.full((H, W), color_val, dtype=float).tolist())\n    return channels\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nEncode the current board state and up to T earlier board frames from the perspective of the current player, appending an active player color plane.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l02_encode_board_history(history: list, current_player: int, T: int = 8) -> list:\n    H, W = len(history[0]), len(history[0][0])\n    opp = 3 - current_player\n    channels = []\n    for t in range(T):\n        if t < len(history):\n            b = np.array(history[t], dtype=int)\n            channels.append((b == current_player).astype(float).tolist())\n            channels.append((b == opp).astype(float).tolist())\n        else:\n            channels.append(np.zeros((H, W), dtype=float).tolist())\n            channels.append(np.zeros((H, W), dtype=float).tolist())\n    color_val = 1.0 if current_player == 1 else 0.0\n    channels.append(np.full((H, W), color_val, dtype=float).tolist())\n    return channels\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "alphago-l02-encode-board-history-tc-1",
@@ -297,10 +297,30 @@
             ]
           ]
         ],
-        "current_player": 0,
+        "current_player": 1,
         "T": 1
       },
       "expectedOutput": [
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
         [
           [
             1.0,
@@ -308,27 +328,7 @@
           ],
           [
             1.0,
-            0.0
-          ]
-        ],
-        [
-          [
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0
-          ]
-        ],
-        [
-          [
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0
+            1.0
           ]
         ]
       ],
@@ -350,8 +350,8 @@
             ]
           ]
         ],
-        "current_player": -1,
-        "T": -2
+        "current_player": 1,
+        "T": 2
       },
       "expectedOutput": [
         [
@@ -362,6 +362,46 @@
           [
             0.0,
             0.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
           ]
         ]
       ],

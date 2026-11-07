@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: PYTORCH\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTORCH\n",
   "starterCode": "def autograd_l07_recursive_parameter_collection(module_hierarchy: dict) -> list:\n    \"\"\"\n    Recursively traverse a hierarchical neural network module tree to collect all registered weight and bias parameter identifiers.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nRecursively traverse a hierarchical neural network module tree to collect all registered weight and bias parameter identifiers.\n\n### ⚡ Python Reference Implementation\n```python\ndef autograd_l07_recursive_parameter_collection(module_hierarchy: dict) -> list:\n    params = []\n    def dfs(obj):\n        if isinstance(obj, dict):\n            if 'params' in obj and isinstance(obj['params'], list):\n                params.extend(obj['params'])\n            for v in obj.values(): dfs(v)\n        elif isinstance(obj, list):\n            for it in obj: dfs(it)\n    dfs(module_hierarchy)\n    return sorted(list(set(params)))\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nRecursively traverse a hierarchical neural network module tree to collect all registered weight and bias parameter identifiers.\n\n### \u26a1 Python Reference Implementation\n```python\ndef autograd_l07_recursive_parameter_collection(module_hierarchy: dict) -> list:\n    params = []\n    def dfs(obj):\n        if isinstance(obj, dict):\n            if 'params' in obj and isinstance(obj['params'], list):\n                params.extend(obj['params'])\n            for v in obj.values(): dfs(v)\n        elif isinstance(obj, list):\n            for it in obj: dfs(it)\n    dfs(module_hierarchy)\n    return sorted(list(set(params)))\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "autograd-l07-recursive-parameter-collection-tc-1",
@@ -83,25 +83,25 @@
         "module_hierarchy": {
           "layer1": {
             "params": [
-              "w1",
-              "b1"
+              "w1ing",
+              "b1ing"
             ]
           },
           "submodule": {
             "layer2": {
               "params": [
-                "w2",
-                "b2"
+                "w2ing",
+                "b2ing"
               ]
             }
           }
         }
       },
       "expectedOutput": [
-        "b1",
-        "b2",
-        "w1",
-        "w2"
+        "b1ing",
+        "b2ing",
+        "w1ing",
+        "w2ing"
       ],
       "isPublic": false
     },
@@ -110,15 +110,30 @@
       "name": "Case 4",
       "inputs": {
         "module_hierarchy": {
-          "params": [
-            "weight",
-            "bias"
-          ]
+          "layer1": {
+            "params": [
+              "w1er",
+              "b1er",
+              "natural language processing"
+            ]
+          },
+          "submodule": {
+            "layer2": {
+              "params": [
+                "w2er",
+                "b2er",
+                "natural language processing"
+              ]
+            }
+          }
         }
       },
       "expectedOutput": [
-        "bias",
-        "weight"
+        "b1er",
+        "b2er",
+        "natural language processing",
+        "w1er",
+        "w2er"
       ],
       "isPublic": false
     },
@@ -129,25 +144,25 @@
         "module_hierarchy": {
           "layer1": {
             "params": [
-              "w1",
-              "b1"
+              "w1tion",
+              "b1ment"
             ]
           },
           "submodule": {
             "layer2": {
               "params": [
-                "w2",
-                "b2"
+                "w2tion",
+                "b2ment"
               ]
             }
           }
         }
       },
       "expectedOutput": [
-        "b1",
-        "b2",
-        "w1",
-        "w2"
+        "b1ment",
+        "b2ment",
+        "w1tion",
+        "w2tion"
       ],
       "isPublic": false
     },
@@ -156,15 +171,27 @@
       "name": "Case 6",
       "inputs": {
         "module_hierarchy": {
-          "params": [
-            "weight",
-            "bias"
-          ]
+          "layer1": {
+            "params": [
+              "b1s",
+              "w1s"
+            ]
+          },
+          "submodule": {
+            "layer2": {
+              "params": [
+                "b2s",
+                "w2s"
+              ]
+            }
+          }
         }
       },
       "expectedOutput": [
-        "bias",
-        "weight"
+        "b1s",
+        "b2s",
+        "w1s",
+        "w2s"
       ],
       "isPublic": false
     },
@@ -176,14 +203,16 @@
           "layer1": {
             "params": [
               "w1",
-              "b1"
+              "b1",
+              "computer vision system"
             ]
           },
           "submodule": {
             "layer2": {
               "params": [
                 "w2",
-                "b2"
+                "b2",
+                "computer vision system"
               ]
             }
           }
@@ -192,6 +221,7 @@
       "expectedOutput": [
         "b1",
         "b2",
+        "computer vision system",
         "w1",
         "w2"
       ],

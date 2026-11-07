@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import math\n\ndef probstat_permutations_combinations(n: int, k: int) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Permutations and Combinations** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef probstat_permutations_combinations(n: int, k: int) -> dict:\n    n, k = int(n), int(k)\n    fn = math.factorial(n)\n    p = math.factorial(n) // math.factorial(n - k) if 0 <= k <= n else 0\n    c = math.factorial(n) // (math.factorial(k) * math.factorial(n - k)) if 0 <= k <= n else 0\n    return {'factorial_n': fn, 'permutations_n_k': p, 'combinations_n_k': c}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Permutations and Combinations** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef probstat_permutations_combinations(n: int, k: int) -> dict:\n    n, k = int(n), int(k)\n    fn = math.factorial(n)\n    p = math.factorial(n) // math.factorial(n - k) if 0 <= k <= n else 0\n    c = math.factorial(n) // (math.factorial(k) * math.factorial(n - k)) if 0 <= k <= n else 0\n    return {'factorial_n': fn, 'permutations_n_k': p, 'combinations_n_k': c}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "probstat-permutations-combinations-tc-1",
@@ -121,12 +121,12 @@
       "name": "Case 7",
       "inputs": {
         "n": 1,
-        "k": 0
+        "k": 2
       },
       "expectedOutput": {
         "factorial_n": 1,
-        "permutations_n_k": 1,
-        "combinations_n_k": 1
+        "permutations_n_k": 0,
+        "combinations_n_k": 0
       },
       "isPublic": false
     }

@@ -983,5 +983,6 @@
     "prev": "vae-elbo-loss",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vae-full-network"
 }

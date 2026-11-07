@@ -411,5 +411,6 @@
     "prev": "gru-update-gate",
     "next": "gru-hidden-update"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gru-candidate"
 }

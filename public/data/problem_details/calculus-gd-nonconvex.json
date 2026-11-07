@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def calculus_gd_nonconvex(initial_x: float, lr: float = 0.05, steps: int = 10) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Gradient Descent on a Non-Convex Loss** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef calculus_gd_nonconvex(initial_x: float, lr: float = 0.05, steps: int = 10) -> dict:\n    x, path = float(initial_x), [round(float(initial_x), 4)]\n    for _ in range(int(steps)):\n        x -= float(lr) * (4.0 * (x**3) - 4.0 * x); path.append(round(x, 4))\n    return {'final_x': round(x, 4), 'trajectory': path}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Gradient Descent on a Non-Convex Loss** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef calculus_gd_nonconvex(initial_x: float, lr: float = 0.05, steps: int = 10) -> dict:\n    x, path = float(initial_x), [round(float(initial_x), 4)]\n    for _ in range(int(steps)):\n        x -= float(lr) * (4.0 * (x**3) - 4.0 * x); path.append(round(x, 4))\n    return {'final_x': round(x, 4), 'trajectory': path}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "calculus-gd-nonconvex-tc-1",
@@ -100,15 +100,17 @@
       "inputs": {
         "initial_x": -0.5,
         "lr": 1.95,
-        "steps": 3.0
+        "steps": 5
       },
       "expectedOutput": {
-        "final_x": -177242973.6567,
+        "final_x": -6.389982372458232e+77,
         "trajectory": [
           -0.5,
           -3.425,
           283.2436,
-          -177242973.6567
+          -177242973.6567,
+          4.3431185675544575e+25,
+          -6.389982372458232e+77
         ]
       },
       "isPublic": false
@@ -119,12 +121,17 @@
       "inputs": {
         "initial_x": 0.15,
         "lr": 0.005,
-        "steps": 0
+        "steps": 5
       },
       "expectedOutput": {
-        "final_x": 0.15,
+        "final_x": 0.1652,
         "trajectory": [
-          0.15
+          0.15,
+          0.1529,
+          0.1559,
+          0.159,
+          0.1621,
+          0.1652
         ]
       },
       "isPublic": false
@@ -157,14 +164,22 @@
       "id": "calculus-gd-nonconvex-tc-7",
       "name": "Case 7",
       "inputs": {
-        "initial_x": -3.0,
-        "lr": 0.1,
-        "steps": 10
+        "initial_x": -0.5,
+        "lr": 0.02,
+        "steps": 8
       },
       "expectedOutput": {
-        "final_x": -3.0,
+        "final_x": -0.7398,
         "trajectory": [
-          -3.0
+          -0.5,
+          -0.53,
+          -0.5605,
+          -0.5912,
+          -0.622,
+          -0.6525,
+          -0.6825,
+          -0.7117,
+          -0.7398
         ]
       },
       "isPublic": false

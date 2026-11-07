@@ -838,5 +838,6 @@
     "next": null
   },
   "isLocked": false,
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "resnet-full-network"
 }

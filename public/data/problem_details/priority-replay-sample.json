@@ -18,7 +18,7 @@
   "starterCode": "def priority_replay_sample(priorities: list, alpha: float, beta: float) -> list:\n    \"\"\"\n    Returns sampling probabilities and normalized importance weights.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:15:13.080Z",
   "updatedAt": "2026-08-23T20:14:05.557Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef priority_replay_sample(priorities: list, alpha: float, beta: float) -> list:\n    p = np.array(priorities, dtype=float) ** alpha\n    probs = p / np.sum(p)\n    N = len(priorities)\n    weights = (N * probs) ** (-beta)\n    weights /= np.max(weights)\n    return [np.round(probs, 6).tolist(), np.round(weights, 6).tolist()]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef priority_replay_sample(priorities: list, alpha: float, beta: float) -> list:\n    p = np.array(priorities, dtype=float) ** alpha\n    probs = p / np.sum(p)\n    N = len(priorities)\n    weights = (N * probs) ** (-beta)\n    weights /= np.max(weights)\n    return [np.round(probs, 6).tolist(), np.round(weights, 6).tolist()]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "PriorityReplayViz",
   "testCases": [
     {
@@ -155,7 +155,7 @@
       "id": "priority-replay-sample-tc-6",
       "name": "Case 6",
       "inputs": {
-        "beta": -1,
+        "beta": 1,
         "alpha": 1,
         "priorities": [
           -1,
@@ -170,9 +170,9 @@
           0.5
         ],
         [
-          0.333333,
-          0.666667,
-          1.0
+          1.0,
+          0.5,
+          0.333333
         ]
       ],
       "isPublic": false

@@ -303,5 +303,6 @@
     "prev": "word2vec-subsampling",
     "next": "word2vec-noise-dist"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "word2vec-skipgram-pairs"
 }

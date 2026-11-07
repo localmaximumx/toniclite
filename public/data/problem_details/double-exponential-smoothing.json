@@ -18,7 +18,7 @@
   "starterCode": "def double_exponential_smoothing(series: list, alpha: float, beta: float) -> list:\n    \"\"\"\n    Returns the smoothed level at every time step.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T22:29:12.402Z",
   "updatedAt": "2026-08-23T21:25:45.823Z",
-  "solution": "### 💡 Intuition & Approach\nHolt linear trend method capturing both instantaneous level $L_t$ and slope velocity $T_t$.\n\n### ⚡ Python Reference Implementation\n```python\ndef double_exponential_smoothing(series: list, alpha: float, beta: float) -> list:\n    if not series: return []\n    level = series[0]\n    trend = series[1] - series[0] if len(series) > 1 else 0.0\n    smoothed = [round(level, 4)]\n\n    for t in range(1, len(series)):\n        prev_level = level\n        level = alpha * series[t] + (1.0 - alpha) * (prev_level + trend)\n        trend = beta * (level - prev_level) + (1.0 - beta) * trend\n        smoothed.append(round(level, 4))\n    return smoothed\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nHolt linear trend method capturing both instantaneous level $L_t$ and slope velocity $T_t$.\n\n### \u26a1 Python Reference Implementation\n```python\ndef double_exponential_smoothing(series: list, alpha: float, beta: float) -> list:\n    if not series: return []\n    level = series[0]\n    trend = series[1] - series[0] if len(series) > 1 else 0.0\n    smoothed = [round(level, 4)]\n\n    for t in range(1, len(series)):\n        prev_level = level\n        level = alpha * series[t] + (1.0 - alpha) * (prev_level + trend)\n        trend = beta * (level - prev_level) + (1.0 - beta) * trend\n        smoothed.append(round(level, 4))\n    return smoothed\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "DoubleExpSmoothingViz",
   "testCases": [
     {
@@ -103,7 +103,7 @@
       "id": "double-exponential-smoothing-tc-5",
       "name": "Case 5",
       "inputs": {
-        "beta": -0.5,
+        "beta": 0.5,
         "alpha": 0.5,
         "series": [
           -10,

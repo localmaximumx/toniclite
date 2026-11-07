@@ -658,5 +658,6 @@
     "prev": "rnn-vanishing-gradients",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "rnn-full-network"
 }

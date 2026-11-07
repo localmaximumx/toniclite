@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_evaluation_metrics_bleu_rouge(candidate: str, reference: str) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Evaluation Metrics (BLEU, ROUGE)** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef nlp_evaluation_metrics_bleu_rouge(candidate: str, reference: str) -> dict:\n    c, r = candidate.lower().split(), reference.lower().split()\n    ref_counts = {}\n    for w in r: ref_counts[w] = ref_counts.get(w, 0) + 1\n    matches, temp = 0, dict(ref_counts)\n    for w in c:\n        if temp.get(w, 0) > 0: matches += 1; temp[w] -= 1\n    p1 = matches / max(len(c), 1)\n    bp = 1.0 if len(c) > len(r) else math.exp(1.0 - len(r) / max(len(c), 1))\n    r1 = matches / max(len(r), 1)\n    f1 = (2.0 * p1 * r1) / (p1 + r1 + 1e-12)\n    return {'bleu_1': round(bp * p1, 4), 'rouge_1_recall': round(r1, 4), 'rouge_1_f1': round(f1, 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Evaluation Metrics (BLEU, ROUGE)** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef nlp_evaluation_metrics_bleu_rouge(candidate: str, reference: str) -> dict:\n    c, r = candidate.lower().split(), reference.lower().split()\n    ref_counts = {}\n    for w in r: ref_counts[w] = ref_counts.get(w, 0) + 1\n    matches, temp = 0, dict(ref_counts)\n    for w in c:\n        if temp.get(w, 0) > 0: matches += 1; temp[w] -= 1\n    p1 = matches / max(len(c), 1)\n    bp = 1.0 if len(c) > len(r) else math.exp(1.0 - len(r) / max(len(c), 1))\n    r1 = matches / max(len(r), 1)\n    f1 = (2.0 * p1 * r1) / (p1 + r1 + 1e-12)\n    return {'bleu_1': round(bp * p1, 4), 'rouge_1_recall': round(r1, 4), 'rouge_1_f1': round(f1, 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-evaluation-metrics-bleu-rouge-tc-1",
@@ -51,13 +51,13 @@
       "id": "nlp-evaluation-metrics-bleu-rouge-tc-2",
       "name": "Case 2",
       "inputs": {
-        "candidate": "the cat sat on the mat",
-        "reference": "the cat was sitting on the mat"
+        "candidate": "delta the cat sat on the mat",
+        "reference": "delta the cat was sitting on the mat"
       },
       "expectedOutput": {
-        "bleu_1": 0.7054,
-        "rouge_1_recall": 0.7143,
-        "rouge_1_f1": 0.7692
+        "bleu_1": 0.743,
+        "rouge_1_recall": 0.75,
+        "rouge_1_f1": 0.8
       },
       "isPublic": true
     },
@@ -65,13 +65,13 @@
       "id": "nlp-evaluation-metrics-bleu-rouge-tc-3",
       "name": "Case 3",
       "inputs": {
-        "candidate": "the cat sat on the mat",
-        "reference": "the cat was sitting on the mat"
+        "candidate": "the cat sat on the mat the",
+        "reference": "the cat was sitting on the mat the"
       },
       "expectedOutput": {
-        "bleu_1": 0.7054,
-        "rouge_1_recall": 0.7143,
-        "rouge_1_f1": 0.7692
+        "bleu_1": 0.743,
+        "rouge_1_recall": 0.75,
+        "rouge_1_f1": 0.8
       },
       "isPublic": false
     },
@@ -79,8 +79,8 @@
       "id": "nlp-evaluation-metrics-bleu-rouge-tc-4",
       "name": "Case 4",
       "inputs": {
-        "candidate": "the cat sat on the mat",
-        "reference": "the cat was sitting on the mat"
+        "candidate": "the cat sat on the model",
+        "reference": "the cat was sitting on the model"
       },
       "expectedOutput": {
         "bleu_1": 0.7054,
@@ -93,13 +93,13 @@
       "id": "nlp-evaluation-metrics-bleu-rouge-tc-5",
       "name": "Case 5",
       "inputs": {
-        "candidate": "the cat sat on the mat",
-        "reference": "the cat was sitting on the mat"
+        "candidate": "neural mat the on sat cat the vector",
+        "reference": "neural mat the on sitting was cat the vector"
       },
       "expectedOutput": {
-        "bleu_1": 0.7054,
-        "rouge_1_recall": 0.7143,
-        "rouge_1_f1": 0.7692
+        "bleu_1": 0.7722,
+        "rouge_1_recall": 0.7778,
+        "rouge_1_f1": 0.8235
       },
       "isPublic": false
     },
@@ -107,8 +107,8 @@
       "id": "nlp-evaluation-metrics-bleu-rouge-tc-6",
       "name": "Case 6",
       "inputs": {
-        "candidate": "the cat sat on the mat",
-        "reference": "the cat was sitting on the mat"
+        "candidate": "mat the on sat cat the",
+        "reference": "mat the on sitting was cat the"
       },
       "expectedOutput": {
         "bleu_1": 0.7054,
@@ -121,13 +121,13 @@
       "id": "nlp-evaluation-metrics-bleu-rouge-tc-7",
       "name": "Case 7",
       "inputs": {
-        "candidate": "the cat sat on the mat",
-        "reference": "the cat was sitting on the mat"
+        "candidate": "the cat sat on the mat matrix",
+        "reference": "the cat was sitting on the mat matrix"
       },
       "expectedOutput": {
-        "bleu_1": 0.7054,
-        "rouge_1_recall": 0.7143,
-        "rouge_1_f1": 0.7692
+        "bleu_1": 0.743,
+        "rouge_1_recall": 0.75,
+        "rouge_1_f1": 0.8
       },
       "isPublic": false
     }

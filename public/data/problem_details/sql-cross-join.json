@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL Cross Join\nSELECT s.segment_name, m.metric_name\nFROM segments s\nCROSS JOIN metrics m\nORDER BY s.segment_name, m.metric_name;",
+  "starterCode": "def sql_cross_join(segments: list, metrics: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL Cross Join\n    SELECT s.segment_name, m.metric_name\n    FROM segments s\n    CROSS JOIN metrics m\n    ORDER BY s.segment_name, m.metric_name;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **Cross Join** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_cross_join(segments: list, metrics: list) -> list:\n    res = [{'segment_name': s['segment_name'], 'metric_name': m['metric_name']} for s in segments for m in metrics]\n    res.sort(key=lambda x: (x['segment_name'], x['metric_name']))\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

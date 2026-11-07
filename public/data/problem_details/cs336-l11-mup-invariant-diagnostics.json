@@ -215,28 +215,28 @@
       "name": "Case 7",
       "inputs": {
         "widths": [
-          254.0,
-          510.0,
-          1022.0,
-          2046.0
+          256.0,
+          512.0,
+          1024.0,
+          2048.0
         ],
         "rms_activations": [
-          -0.98,
-          -0.99,
-          -1.01,
-          -1.0
+          0.8,
+          0.6,
+          0.4,
+          0.3
         ],
         "rms_changes": [
-          -1.95,
-          -1.949,
-          -1.951,
-          -1.95
+          0.5,
+          0.4,
+          0.3,
+          0.2
         ],
-        "tolerance": -1.9
+        "tolerance": 0.05
       },
       "expectedOutput": {
-        "act_rms_slope": 0.0,
-        "chg_rms_slope": 0.0,
+        "act_rms_slope": -0.483007,
+        "chg_rms_slope": -0.438082,
         "is_mup_invariant": false
       },
       "isPublic": false

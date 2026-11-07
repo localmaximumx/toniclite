@@ -20,7 +20,7 @@ if 'torch' not in sys.modules:
     F = types.ModuleType('torch.nn.functional')
 
     class Tensor:
-        def __init__(self, data, dtype=None):
+        def __init__(self, data, dtype=None, requires_grad=False, _children=(), _op=''):
             if isinstance(data, Tensor):
                 self._arr = np.array(data._arr, dtype=dtype or data._arr.dtype)
             elif isinstance(data, np.ndarray):
@@ -35,6 +35,59 @@ if 'torch' not in sys.modules:
                     self._arr = arr.astype(np.int64)
                 else:
                     self._arr = arr
+            self.requires_grad = bool(requires_grad)
+            self.grad = None
+            self._backward = lambda: None
+            self._prev = list(_children)
+            self._op = _op
+            self._indices = None
+
+        def __hash__(self):
+            return id(self)
+
+        def requires_grad_(self, mode=True):
+            self.requires_grad = bool(mode)
+            return self
+
+        @property
+        def values(self):
+            return self
+
+        @property
+        def indices(self):
+            return self._indices
+
+        @staticmethod
+        def _unbroadcast(grad, shape):
+            g = np.asarray(grad, dtype=np.float64)
+            while g.ndim > len(shape):
+                g = g.sum(axis=0)
+            for i, dim in enumerate(shape):
+                if dim == 1 and g.shape[i] > 1:
+                    g = g.sum(axis=i, keepdims=True)
+            return g.reshape(shape) if shape != g.shape else g
+
+        def backward(self, grad=None):
+            topo = []
+            visited = set()
+            def build_topo(v):
+                if id(v) not in visited:
+                    visited.add(id(v))
+                    for child in v._prev:
+                        build_topo(child)
+                    topo.append(v)
+            build_topo(self)
+            if grad is None:
+                self._grad_arr = np.ones_like(self._arr, dtype=np.float64)
+            else:
+                g_arr = grad._arr if isinstance(grad, Tensor) else np.asarray(grad, dtype=np.float64)
+                self._grad_arr = np.array(g_arr, dtype=np.float64)
+            self.grad = Tensor(self._grad_arr.astype(np.float32))
+            for v in reversed(topo):
+                v._backward()
+            for v in topo:
+                if v.requires_grad and hasattr(v, '_grad_arr'):
+                    v.grad = Tensor(v._grad_arr.astype(v._arr.dtype if np.issubdtype(v._arr.dtype, np.floating) else np.float32))
 
         @property
         def shape(self):
@@ -64,10 +117,10 @@ if 'torch' not in sys.modules:
             return self._arr.size
 
         def clone(self):
-            return Tensor(self._arr.copy())
+            return Tensor(self._arr.copy(), requires_grad=self.requires_grad)
 
         def detach(self):
-            return self
+            return Tensor(self._arr.copy(), requires_grad=False)
 
         def cpu(self):
             return self
@@ -88,16 +141,16 @@ if 'torch' not in sys.modules:
             for a in args:
                 if isinstance(a, (type, np.dtype)) or hasattr(a, 'name'):
                     try:
-                        return Tensor(self._arr.astype(a))
+                        return Tensor(self._arr.astype(a), requires_grad=self.requires_grad)
                     except Exception:
                         pass
             return self
 
         def float(self):
-            return Tensor(self._arr.astype(np.float32))
+            return Tensor(self._arr.astype(np.float32), requires_grad=self.requires_grad)
 
         def double(self):
-            return Tensor(self._arr.astype(np.float64))
+            return Tensor(self._arr.astype(np.float64), requires_grad=self.requires_grad)
 
         def long(self):
             return Tensor(self._arr.astype(np.int64))
@@ -114,7 +167,7 @@ if 'torch' not in sys.modules:
         def reshape(self, *shape):
             if len(shape) == 1 and isinstance(shape[0], (tuple, list)):
                 shape = shape[0]
-            return Tensor(self._arr.reshape(shape))
+            return Tensor(self._arr.reshape(shape), requires_grad=self.requires_grad)
 
         def view(self, *shape):
             return self.reshape(*shape)
@@ -122,46 +175,89 @@ if 'torch' not in sys.modules:
         def transpose(self, dim0, dim1):
             axes = list(range(self._arr.ndim))
             axes[dim0], axes[dim1] = axes[dim1], axes[dim0]
-            return Tensor(np.transpose(self._arr, axes))
+            return Tensor(np.transpose(self._arr, axes), requires_grad=self.requires_grad)
+
+        def t(self):
+            return Tensor(self._arr.T, requires_grad=self.requires_grad)
 
         def permute(self, *dims):
             if len(dims) == 1 and isinstance(dims[0], (tuple, list)):
                 dims = dims[0]
-            return Tensor(np.transpose(self._arr, dims))
+            return Tensor(np.transpose(self._arr, dims), requires_grad=self.requires_grad)
 
         def squeeze(self, dim=None):
-            return Tensor(np.squeeze(self._arr, axis=dim))
+            return Tensor(np.squeeze(self._arr, axis=dim), requires_grad=self.requires_grad)
 
         def unsqueeze(self, dim):
-            return Tensor(np.expand_dims(self._arr, axis=dim))
+            return Tensor(np.expand_dims(self._arr, axis=dim), requires_grad=self.requires_grad)
+
+        def expand(self, *sizes):
+            if len(sizes) == 1 and isinstance(sizes[0], (tuple, list)):
+                sizes = sizes[0]
+            target_shape = list(sizes)
+            ndim_diff = len(target_shape) - self._arr.ndim
+            orig_padded = [1] * max(0, ndim_diff) + list(self._arr.shape)
+            for i in range(len(target_shape)):
+                if target_shape[i] == -1:
+                    target_shape[i] = orig_padded[i]
+            return Tensor(np.broadcast_to(self._arr, tuple(target_shape)).copy(), requires_grad=self.requires_grad)
+
+        def repeat_interleave(self, repeats, dim=None):
+            r = repeats._arr if isinstance(repeats, Tensor) else repeats
+            return Tensor(np.repeat(self._arr, r, axis=dim), requires_grad=self.requires_grad)
 
         def flatten(self, start_dim=0, end_dim=-1):
             if end_dim == -1:
                 end_dim = self._arr.ndim - 1
             shape = list(self._arr.shape[:start_dim]) + [-1] + list(self._arr.shape[end_dim+1:])
-            return Tensor(self._arr.reshape(shape))
+            return Tensor(self._arr.reshape(shape), requires_grad=self.requires_grad)
 
         @property
         def T(self):
             if self._arr.ndim >= 2:
-                return Tensor(np.swapaxes(self._arr, -1, -2))
-            return Tensor(self._arr.T)
+                return Tensor(np.swapaxes(self._arr, -1, -2), requires_grad=self.requires_grad)
+            return Tensor(self._arr.T, requires_grad=self.requires_grad)
 
         def sum(self, dim=None, keepdim=False):
-            return Tensor(np.sum(self._arr, axis=dim, keepdims=keepdim))
+            out = Tensor(np.sum(self._arr, axis=dim, keepdims=keepdim), requires_grad=self.requires_grad, _children=(self,) if self.requires_grad else ())
+            if self.requires_grad:
+                def _backward():
+                    if not hasattr(self, '_grad_arr'):
+                        self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                    g = out._grad_arr
+                    if dim is not None and not keepdim:
+                        g = np.expand_dims(g, axis=dim)
+                    self._grad_arr = self._grad_arr + np.broadcast_to(g, self._arr.shape)
+                out._backward = _backward
+            return out
 
         def mean(self, dim=None, keepdim=False):
-            return Tensor(np.mean(self._arr, axis=dim, keepdims=keepdim))
+            out = Tensor(np.mean(self._arr, axis=dim, keepdims=keepdim), requires_grad=self.requires_grad, _children=(self,) if self.requires_grad else ())
+            if self.requires_grad:
+                def _backward():
+                    if not hasattr(self, '_grad_arr'):
+                        self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                    g = out._grad_arr
+                    count = self._arr.size if dim is None else (np.prod([self._arr.shape[d] for d in (dim if isinstance(dim, (list, tuple)) else [dim])]))
+                    if dim is not None and not keepdim:
+                        g = np.expand_dims(g, axis=dim)
+                    self._grad_arr = self._grad_arr + np.broadcast_to(g / float(count), self._arr.shape)
+                out._backward = _backward
+            return out
 
         def max(self, dim=None, keepdim=False):
             if dim is None:
                 return Tensor(np.max(self._arr))
-            return Tensor(np.max(self._arr, axis=dim, keepdims=keepdim))
+            vals = Tensor(np.max(self._arr, axis=dim, keepdims=keepdim))
+            vals._indices = Tensor(np.argmax(self._arr, axis=dim, keepdims=keepdim))
+            return vals
 
         def min(self, dim=None, keepdim=False):
             if dim is None:
                 return Tensor(np.min(self._arr))
-            return Tensor(np.min(self._arr, axis=dim, keepdims=keepdim))
+            vals = Tensor(np.min(self._arr, axis=dim, keepdims=keepdim))
+            vals._indices = Tensor(np.argmin(self._arr, axis=dim, keepdims=keepdim))
+            return vals
 
         def argmax(self, dim=None, keepdim=False):
             return Tensor(np.argmax(self._arr, axis=dim, keepdims=keepdim))
@@ -202,7 +298,37 @@ if 'torch' not in sys.modules:
             return Tensor(np.round(self._arr, decimals=decimals))
 
         def square(self):
-            return Tensor(np.square(self._arr))
+            return self ** 2
+
+        def pow(self, exponent):
+            return self ** exponent
+
+        def relu(self):
+            return torch.relu(self)
+
+        def add_(self, other):
+            o = other._arr if isinstance(other, Tensor) else other
+            self._arr = self._arr + o
+            return self
+
+        def sub_(self, other):
+            o = other._arr if isinstance(other, Tensor) else other
+            self._arr = self._arr - o
+            return self
+
+        def mul_(self, other):
+            o = other._arr if isinstance(other, Tensor) else other
+            self._arr = self._arr * o
+            return self
+
+        def div_(self, other):
+            o = other._arr if isinstance(other, Tensor) else other
+            self._arr = self._arr / o
+            return self
+
+        def zero_(self):
+            self._arr.fill(0)
+            return self
 
         def gather(self, dim, index):
             return torch.gather(self, dim, index)
@@ -265,36 +391,80 @@ if 'torch' not in sys.modules:
                 return tuple(Tensor(x) for x in nz)
             return Tensor(np.column_stack(nz))
 
-        # Operators
+        # Operators with Autograd
         def __add__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(self._arr + o)
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            req = self.requires_grad or other_t.requires_grad
+            out = Tensor(self._arr + other_t._arr, requires_grad=req, _children=(self, other_t) if req else ())
+            if req:
+                def _backward():
+                    if self.requires_grad:
+                        if not hasattr(self, '_grad_arr'): self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                        self._grad_arr = self._grad_arr + Tensor._unbroadcast(out._grad_arr, self._arr.shape)
+                    if other_t.requires_grad:
+                        if not hasattr(other_t, '_grad_arr'): other_t._grad_arr = np.zeros_like(other_t._arr, dtype=np.float64)
+                        other_t._grad_arr = other_t._grad_arr + Tensor._unbroadcast(out._grad_arr, other_t._arr.shape)
+                out._backward = _backward
+            return out
 
         def __radd__(self, other):
             return self.__add__(other)
 
         def __sub__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(self._arr - o)
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            req = self.requires_grad or other_t.requires_grad
+            out = Tensor(self._arr - other_t._arr, requires_grad=req, _children=(self, other_t) if req else ())
+            if req:
+                def _backward():
+                    if self.requires_grad:
+                        if not hasattr(self, '_grad_arr'): self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                        self._grad_arr = self._grad_arr + Tensor._unbroadcast(out._grad_arr, self._arr.shape)
+                    if other_t.requires_grad:
+                        if not hasattr(other_t, '_grad_arr'): other_t._grad_arr = np.zeros_like(other_t._arr, dtype=np.float64)
+                        other_t._grad_arr = other_t._grad_arr - Tensor._unbroadcast(out._grad_arr, other_t._arr.shape)
+                out._backward = _backward
+            return out
 
         def __rsub__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(o - self._arr)
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            return other_t.__sub__(self)
 
         def __mul__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(self._arr * o)
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            req = self.requires_grad or other_t.requires_grad
+            out = Tensor(self._arr * other_t._arr, requires_grad=req, _children=(self, other_t) if req else ())
+            if req:
+                def _backward():
+                    if self.requires_grad:
+                        if not hasattr(self, '_grad_arr'): self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                        self._grad_arr = self._grad_arr + Tensor._unbroadcast(out._grad_arr * other_t._arr, self._arr.shape)
+                    if other_t.requires_grad:
+                        if not hasattr(other_t, '_grad_arr'): other_t._grad_arr = np.zeros_like(other_t._arr, dtype=np.float64)
+                        other_t._grad_arr = other_t._grad_arr + Tensor._unbroadcast(out._grad_arr * self._arr, other_t._arr.shape)
+                out._backward = _backward
+            return out
 
         def __rmul__(self, other):
             return self.__mul__(other)
 
         def __truediv__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(self._arr / o)
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            req = self.requires_grad or other_t.requires_grad
+            out = Tensor(self._arr / other_t._arr, requires_grad=req, _children=(self, other_t) if req else ())
+            if req:
+                def _backward():
+                    if self.requires_grad:
+                        if not hasattr(self, '_grad_arr'): self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                        self._grad_arr = self._grad_arr + Tensor._unbroadcast(out._grad_arr / other_t._arr, self._arr.shape)
+                    if other_t.requires_grad:
+                        if not hasattr(other_t, '_grad_arr'): other_t._grad_arr = np.zeros_like(other_t._arr, dtype=np.float64)
+                        other_t._grad_arr = other_t._grad_arr - Tensor._unbroadcast(out._grad_arr * self._arr / (other_t._arr ** 2), other_t._arr.shape)
+                out._backward = _backward
+            return out
 
         def __rtruediv__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(o / self._arr)
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            return other_t.__truediv__(self)
 
         def __floordiv__(self, other):
             o = other._arr if isinstance(other, Tensor) else other
@@ -305,18 +475,36 @@ if 'torch' not in sys.modules:
             return Tensor(self._arr % o)
 
         def __matmul__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(np.matmul(self._arr, o))
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            req = self.requires_grad or other_t.requires_grad
+            out = Tensor(np.matmul(self._arr, other_t._arr), requires_grad=req, _children=(self, other_t) if req else ())
+            if req:
+                def _backward():
+                    if self.requires_grad:
+                        if not hasattr(self, '_grad_arr'): self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                        self._grad_arr = self._grad_arr + np.matmul(out._grad_arr, np.swapaxes(other_t._arr, -1, -2))
+                    if other_t.requires_grad:
+                        if not hasattr(other_t, '_grad_arr'): other_t._grad_arr = np.zeros_like(other_t._arr, dtype=np.float64)
+                        other_t._grad_arr = other_t._grad_arr + np.matmul(np.swapaxes(self._arr, -1, -2), out._grad_arr)
+                out._backward = _backward
+            return out
 
         def __rmatmul__(self, other):
-            o = other._arr if isinstance(other, Tensor) else other
-            return Tensor(np.matmul(o, self._arr))
+            other_t = other if isinstance(other, Tensor) else Tensor(other)
+            return other_t.__matmul__(self)
 
         def __pow__(self, other):
-            return Tensor(self._arr ** (other._arr if isinstance(other, Tensor) else other))
+            exp_val = other._arr if isinstance(other, Tensor) else other
+            out = Tensor(self._arr ** exp_val, requires_grad=self.requires_grad, _children=(self,) if self.requires_grad else ())
+            if self.requires_grad:
+                def _backward():
+                    if not hasattr(self, '_grad_arr'): self._grad_arr = np.zeros_like(self._arr, dtype=np.float64)
+                    self._grad_arr = self._grad_arr + Tensor._unbroadcast(out._grad_arr * exp_val * (self._arr ** (exp_val - 1)), self._arr.shape)
+                out._backward = _backward
+            return out
 
         def __neg__(self):
-            return Tensor(-self._arr)
+            return self * -1.0
 
         def __pos__(self):
             return self
@@ -392,27 +580,27 @@ if 'torch' not in sys.modules:
             return f"tensor({self._arr.tolist()})"
 
     torch.Tensor = Tensor
-    torch.tensor = lambda data, dtype=None, device=None: Tensor(data, dtype=dtype)
+    torch.tensor = lambda data, dtype=None, device=None, requires_grad=False: Tensor(data, dtype=dtype, requires_grad=requires_grad)
     torch.as_tensor = torch.tensor
     torch.from_numpy = lambda arr: Tensor(arr)
-    torch.zeros = lambda *shape, **kwargs: Tensor(np.zeros(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape, dtype=kwargs.get('dtype', np.float32)))
-    torch.ones = lambda *shape, **kwargs: Tensor(np.ones(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape, dtype=kwargs.get('dtype', np.float32)))
-    torch.zeros_like = lambda t, **kwargs: Tensor(np.zeros_like(t._arr if isinstance(t, Tensor) else t, dtype=kwargs.get('dtype', getattr(t, 'dtype', np.float32))))
-    torch.ones_like = lambda t, **kwargs: Tensor(np.ones_like(t._arr if isinstance(t, Tensor) else t, dtype=kwargs.get('dtype', getattr(t, 'dtype', np.float32))))
+    torch.zeros = lambda *shape, **kwargs: Tensor(np.zeros(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape, dtype=kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.ones = lambda *shape, **kwargs: Tensor(np.ones(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape, dtype=kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.zeros_like = lambda t, **kwargs: Tensor(np.zeros_like(t._arr if isinstance(t, Tensor) else t, dtype=kwargs.get('dtype', getattr(t, 'dtype', np.float32))), requires_grad=kwargs.get('requires_grad', False))
+    torch.ones_like = lambda t, **kwargs: Tensor(np.ones_like(t._arr if isinstance(t, Tensor) else t, dtype=kwargs.get('dtype', getattr(t, 'dtype', np.float32))), requires_grad=kwargs.get('requires_grad', False))
     torch.empty = torch.zeros
     torch.empty_like = torch.zeros_like
-    torch.full = lambda shape, val, **kwargs: Tensor(np.full(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape, val, dtype=kwargs.get('dtype', np.float32)))
-    torch.full_like = lambda t, val, **kwargs: Tensor(np.full_like(t._arr if isinstance(t, Tensor) else t, val, dtype=kwargs.get('dtype', getattr(t, 'dtype', np.float32))))
-    torch.arange = lambda *args, **kwargs: Tensor(np.arange(*args, dtype=kwargs.get('dtype', np.int64)))
-    torch.linspace = lambda start, end, steps, **kwargs: Tensor(np.linspace(start, end, steps, dtype=kwargs.get('dtype', np.float32)))
-    torch.eye = lambda n, **kwargs: Tensor(np.eye(n, dtype=kwargs.get('dtype', np.float32)))
-    torch.randn = lambda *shape, **kwargs: Tensor(np.random.randn(*(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape)).astype(kwargs.get('dtype', np.float32)))
-    torch.randn_like = lambda t, **kwargs: Tensor(np.random.randn(*(t._arr if isinstance(t, Tensor) else t).shape).astype(kwargs.get('dtype', np.float32)))
-    torch.rand = lambda *shape, **kwargs: Tensor(np.random.rand(*(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape)).astype(kwargs.get('dtype', np.float32)))
-    torch.rand_like = lambda t, **kwargs: Tensor(np.random.rand(*(t._arr if isinstance(t, Tensor) else t).shape).astype(kwargs.get('dtype', np.float32)))
+    torch.full = lambda shape, val, **kwargs: Tensor(np.full(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape, val, dtype=kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.full_like = lambda t, val, **kwargs: Tensor(np.full_like(t._arr if isinstance(t, Tensor) else t, val, dtype=kwargs.get('dtype', getattr(t, 'dtype', np.float32))), requires_grad=kwargs.get('requires_grad', False))
+    torch.arange = lambda *args, **kwargs: Tensor(np.arange(*args, dtype=kwargs.get('dtype', np.int64)), requires_grad=kwargs.get('requires_grad', False))
+    torch.linspace = lambda start, end, steps, **kwargs: Tensor(np.linspace(start, end, steps, dtype=kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.eye = lambda n, **kwargs: Tensor(np.eye(n, dtype=kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.randn = lambda *shape, **kwargs: Tensor(np.random.randn(*(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape)).astype(kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.randn_like = lambda t, **kwargs: Tensor(np.random.randn(*(t._arr if isinstance(t, Tensor) else t).shape).astype(kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.rand = lambda *shape, **kwargs: Tensor(np.random.rand(*(shape[0] if len(shape)==1 and isinstance(shape[0], (tuple,list)) else shape)).astype(kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
+    torch.rand_like = lambda t, **kwargs: Tensor(np.random.rand(*(t._arr if isinstance(t, Tensor) else t).shape).astype(kwargs.get('dtype', np.float32)), requires_grad=kwargs.get('requires_grad', False))
     torch.randint = lambda low, high, size, **kwargs: Tensor(np.random.randint(low, high, size, dtype=kwargs.get('dtype', np.int64)))
 
-    torch.matmul = lambda a, b: Tensor(np.matmul(a._arr if isinstance(a, Tensor) else a, b._arr if isinstance(b, Tensor) else b))
+    torch.matmul = lambda a, b: (a if isinstance(a, Tensor) else Tensor(a)) @ (b if isinstance(b, Tensor) else Tensor(b))
     torch.bmm = torch.matmul
     torch.mm = torch.matmul
     torch.dot = lambda a, b: Tensor(np.dot(a._arr if isinstance(a, Tensor) else a, b._arr if isinstance(b, Tensor) else b))
@@ -433,11 +621,15 @@ if 'torch' not in sys.modules:
     torch.cos = lambda t: Tensor(np.cos(t._arr if isinstance(t, Tensor) else t))
     torch.tanh = lambda t: Tensor(np.tanh(t._arr if isinstance(t, Tensor) else t))
     torch.sigmoid = lambda t: Tensor(1.0 / (1.0 + np.exp(-np.array(t._arr if isinstance(t, Tensor) else t, dtype=float))))
+    torch.relu = lambda t: Tensor(np.maximum(0, t._arr if isinstance(t, Tensor) else t))
+    torch.pow = lambda t, exp: (t if isinstance(t, Tensor) else Tensor(t)) ** exp
     torch.clamp = lambda t, min=None, max=None: Tensor(np.clip(t._arr if isinstance(t, Tensor) else t, min, max))
-    torch.mean = lambda t, dim=None, keepdim=False: Tensor(np.mean(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim))
-    torch.sum = lambda t, dim=None, keepdim=False: Tensor(np.sum(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim))
-    torch.max = lambda t, dim=None, keepdim=False: (Tensor(np.max(t._arr if isinstance(t, Tensor) else t)) if dim is None else Tensor(np.max(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim)))
-    torch.min = lambda t, dim=None, keepdim=False: (Tensor(np.min(t._arr if isinstance(t, Tensor) else t)) if dim is None else Tensor(np.min(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim)))
+    torch.mean = lambda t, dim=None, keepdim=False: (t.mean(dim=dim, keepdim=keepdim) if isinstance(t, Tensor) else Tensor(t).mean(dim=dim, keepdim=keepdim))
+    torch.sum = lambda t, dim=None, keepdim=False: (t.sum(dim=dim, keepdim=keepdim) if isinstance(t, Tensor) else Tensor(t).sum(dim=dim, keepdim=keepdim))
+    torch.max = lambda t, dim=None, keepdim=False: (t.max(dim=dim, keepdim=keepdim) if isinstance(t, Tensor) else Tensor(t).max(dim=dim, keepdim=keepdim))
+    torch.min = lambda t, dim=None, keepdim=False: (t.min(dim=dim, keepdim=keepdim) if isinstance(t, Tensor) else Tensor(t).min(dim=dim, keepdim=keepdim))
+    torch.amax = lambda t, dim=None, keepdim=False: Tensor(np.amax(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim))
+    torch.amin = lambda t, dim=None, keepdim=False: Tensor(np.amin(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim))
     torch.argmax = lambda t, dim=None, keepdim=False: Tensor(np.argmax(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim))
     torch.argmin = lambda t, dim=None, keepdim=False: Tensor(np.argmin(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim))
     torch.std = lambda t, dim=None, keepdim=False, unbiased=True: Tensor(np.std(t._arr if isinstance(t, Tensor) else t, axis=dim, keepdims=keepdim, ddof=1 if unbiased else 0))
@@ -470,6 +662,7 @@ if 'torch' not in sys.modules:
     torch.isclose = lambda a, b, rtol=1e-5, atol=1e-8: Tensor(np.isclose(a._arr if isinstance(a, Tensor) else a, b._arr if isinstance(b, Tensor) else b, rtol=rtol, atol=atol))
     torch.allclose = lambda a, b, rtol=1e-5, atol=1e-8: bool(np.allclose(a._arr if isinstance(a, Tensor) else a, b._arr if isinstance(b, Tensor) else b, rtol=rtol, atol=atol))
     torch.concat = torch.cat
+    torch.repeat_interleave = lambda t, repeats, dim=None: (t.repeat_interleave(repeats, dim=dim) if isinstance(t, Tensor) else Tensor(t).repeat_interleave(repeats, dim=dim))
 
     class TopKResult:
         def __init__(self, values, indices):
@@ -533,6 +726,63 @@ if 'torch' not in sys.modules:
                     return fn(*args, **kwargs)
             return wrapper
     torch.no_grad = no_grad
+
+    class _SGD:
+        def __init__(self, params, lr=0.01, momentum=0.0, weight_decay=0.0):
+            self.params = list(params)
+            self.lr = float(lr)
+            self.momentum = float(momentum)
+            self.weight_decay = float(weight_decay)
+            self.velocities = [np.zeros_like(p._arr, dtype=np.float64) for p in self.params]
+        def zero_grad(self):
+            for p in self.params:
+                p.grad = None
+                if hasattr(p, '_grad_arr'):
+                    delattr(p, '_grad_arr')
+        def step(self):
+            for i, p in enumerate(self.params):
+                if p.grad is not None:
+                    g = np.array(p.grad._arr, dtype=np.float64)
+                    if self.weight_decay != 0:
+                        g = g + self.weight_decay * p._arr
+                    if self.momentum != 0:
+                        self.velocities[i] = self.momentum * self.velocities[i] + g
+                        g = self.velocities[i]
+                    p._arr = (p._arr - self.lr * g).astype(p._arr.dtype)
+
+    class _Adam:
+        def __init__(self, params, lr=0.001, betas=(0.9, 0.999), eps=1e-8, weight_decay=0.0):
+            self.params = list(params)
+            self.lr = float(lr)
+            self.beta1, self.beta2 = betas
+            self.eps = float(eps)
+            self.weight_decay = float(weight_decay)
+            self.m = [np.zeros_like(p._arr, dtype=np.float64) for p in self.params]
+            self.v = [np.zeros_like(p._arr, dtype=np.float64) for p in self.params]
+            self.t = 0
+        def zero_grad(self):
+            for p in self.params:
+                p.grad = None
+                if hasattr(p, '_grad_arr'):
+                    delattr(p, '_grad_arr')
+        def step(self):
+            self.t += 1
+            for i, p in enumerate(self.params):
+                if p.grad is not None:
+                    g = np.array(p.grad._arr, dtype=np.float64)
+                    if self.weight_decay != 0:
+                        g = g + self.weight_decay * p._arr
+                    self.m[i] = self.beta1 * self.m[i] + (1.0 - self.beta1) * g
+                    self.v[i] = self.beta2 * self.v[i] + (1.0 - self.beta2) * (g ** 2)
+                    m_hat = self.m[i] / (1.0 - self.beta1 ** self.t)
+                    v_hat = self.v[i] / (1.0 - self.beta2 ** self.t)
+                    p._arr = (p._arr - self.lr * m_hat / (np.sqrt(v_hat) + self.eps)).astype(p._arr.dtype)
+
+    optim = types.ModuleType('torch.optim')
+    optim.SGD = _SGD
+    optim.Adam = _Adam
+    torch.optim = optim
+    sys.modules['torch.optim'] = optim
 
     # Types
     torch.float32 = np.float32
@@ -785,7 +1035,7 @@ if 'torch' not in sys.modules:
     nn.Dropout = lambda p=0.5: Module()
     nn.Embedding = lambda num, dim: Module()
     nn.Sequential = lambda *layers: Module()
-    nn.Parameter = lambda data: Tensor(data)
+    nn.Parameter = lambda data: Tensor(data, requires_grad=True)
     nn.ModuleList = ModuleList
 
     torch.nn = nn
@@ -826,14 +1076,19 @@ def _serialize_res(res):
     if res is None:
         return None
     elif hasattr(res, 'detach'):
-        return res.detach().cpu().numpy().tolist()
+        return _serialize_res(res.detach().cpu().numpy().tolist())
     elif hasattr(res, 'tolist'):
-        return res.tolist()
+        return _serialize_res(res.tolist())
     elif isinstance(res, np.ndarray):
-        return res.tolist()
+        return _serialize_res(res.tolist())
     elif isinstance(res, (np.floating, float)):
-        return float(res)
-    elif isinstance(res, (np.integer, int)):
+        f = float(res)
+        if np.isnan(f):
+            return None
+        if np.isinf(f):
+            return "-inf" if f < 0 else "inf"
+        return f
+    elif isinstance(res, (np.integer, int)) and not isinstance(res, bool):
         return int(res)
     elif isinstance(res, (np.bool_, bool)):
         return bool(res)
@@ -847,7 +1102,7 @@ def _check_equal(actual, expected):
     if actual is None and expected is not None:
         return False, "Function returned None. Make sure to return the computed result."
     if expected is None:
-        return (actual is not None), ""
+        return (actual is None), ("" if actual is None else f"Expected None, got {actual}")
 
     if hasattr(actual, 'detach'):
         actual = actual.detach().cpu().numpy()
@@ -863,6 +1118,18 @@ def _check_equal(actual, expected):
         actual = actual.item()
     if hasattr(expected, 'item') and hasattr(expected, 'ndim') and expected.ndim == 0:
         expected = expected.item()
+
+    # Handle -inf / inf string representations
+    if isinstance(expected, str) and expected in ("-inf", "-Infinity", "inf", "Infinity"):
+        try:
+            expected = float(expected)
+        except Exception:
+            pass
+    if isinstance(actual, str) and actual in ("-inf", "-Infinity", "inf", "Infinity"):
+        try:
+            actual = float(actual)
+        except Exception:
+            pass
 
     # Handle numpy / list / tuple
     if isinstance(expected, (list, tuple)) or isinstance(actual, (list, tuple, np.ndarray)):
@@ -921,8 +1188,12 @@ def _check_equal(actual, expected):
 
     # Handle float/int
     if isinstance(expected, (int, float)) and isinstance(actual, (int, float, np.number)):
-        diff = abs(float(actual) - float(expected))
-        ok = (diff <= 1e-3) or (diff / (abs(float(expected)) + 1e-9) <= 1e-3)
+        f_act, f_exp = float(actual), float(expected)
+        if np.isinf(f_act) and np.isinf(f_exp):
+            ok = (f_act > 0) == (f_exp > 0)
+            return ok, "" if ok else f"Expected {expected}, got {actual}"
+        diff = abs(f_act - f_exp)
+        ok = (diff <= 1e-3) or (diff / (abs(f_exp) + 1e-9) <= 1e-3)
         return ok, "" if ok else f"Expected {expected}, got {actual}"
 
     eq = (actual == expected)
@@ -1233,17 +1504,26 @@ export async function runPythonCode(
     console.warn('Preamble refresh warning:', err);
   }
 
-  try {
-    // 1. Run user code definitions in global namespace
-    await pyodide.runPythonAsync(userCode);
-  } catch (err: any) {
-    return {
-      success: false,
-      results: [],
-      stdout: capturedStdout,
-      stderr: err.message || String(err),
-      totalTimeMs: performance.now() - startTime
-    };
+  const trimmedCode = (userCode || '').trim();
+  const isSqlMode =
+    !/^\s*(def|class|import|from)\s+/m.test(trimmedCode) &&
+    /^\s*(--.*?\n|\s*\/\*[\s\S]*?\*\/\s*)*(SELECT|WITH)\b/i.test(trimmedCode);
+
+  if (!isSqlMode) {
+    try {
+      // 1. Run user code definitions in global namespace
+      await pyodide.runPythonAsync(userCode);
+    } catch (err: any) {
+      return {
+        success: false,
+        results: [],
+        stdout: capturedStdout,
+        stderr: err.message || String(err),
+        totalTimeMs: performance.now() - startTime
+      };
+    }
+  } else {
+    pyodide.globals.set('__sql_query_str__', trimmedCode);
   }
 
   const results: TestCaseExecutionResult[] = [];
@@ -1252,23 +1532,67 @@ export async function runPythonCode(
   for (const tc of testCases) {
     const tcStart = performance.now();
     try {
-      // Pass inputs into Pyodide namespace
+      // Pass inputs into Pyodide namespace using non-colliding prefix
       const inputKeys = Object.keys(tc.inputs || {});
       for (const k of inputKeys) {
-        pyodide.globals.set(`__tc_${k}`, pyodide.toPy(tc.inputs[k]));
+        pyodide.globals.set(`__tc_inp_${k}`, pyodide.toPy(tc.inputs[k]));
       }
 
       // Pass expected output into namespace
       if (tc.expectedOutput !== undefined) {
-        pyodide.globals.set('__tc_expected', pyodide.toPy(tc.expectedOutput));
+        pyodide.globals.set('__tc_expected_output__', pyodide.toPy(tc.expectedOutput));
       } else {
-        pyodide.runPython('__tc_expected = None');
+        pyodide.runPython('__tc_expected_output__ = None');
       }
 
       const inputKeysJson = JSON.stringify(inputKeys);
-      const runnerCode = `
+      const runnerCode = isSqlMode
+        ? `
 try:
-    import inspect
+    import sqlite3, re
+    __conn = sqlite3.connect(':memory:')
+    __cur = __conn.cursor()
+    __input_keys = ${inputKeysJson}
+    for __tname in __input_keys:
+        __rows = globals().get('__tc_inp_' + __tname)
+        if hasattr(__rows, 'to_py'):
+            __rows = __rows.to_py()
+        if isinstance(__rows, list) and len(__rows) > 0 and isinstance(__rows[0], dict):
+            __cols = list(__rows[0].keys())
+            __col_defs = ", ".join(f'"{c}"' for c in __cols)
+            __cur.execute(f'CREATE TABLE "{__tname}" ({__col_defs})')
+            __placeholders = ", ".join("?" for _ in __cols)
+            for __r in __rows:
+                __cur.execute(f'INSERT INTO "{__tname}" VALUES ({__placeholders})', [__r.get(c) for c in __cols])
+    __sql = globals().get('__sql_query_str__', '')
+    # Normalize common Postgres casts for SQLite compatibility
+    __sql = re.sub(r"::(date|int|integer|float|numeric|text|varchar)", "", __sql, flags=re.IGNORECASE)
+    __cur.execute(__sql)
+    __fetched = __cur.fetchall()
+    __col_names = [desc[0] for desc in (__cur.description or [])]
+    __exp_py = __tc_expected_output__.to_py() if hasattr(__tc_expected_output__, 'to_py') else __tc_expected_output__
+    if isinstance(__exp_py, list) and len(__exp_py) > 0 and isinstance(__exp_py[0], dict):
+        __actual_raw = [{__col_names[i]: row[i] for i in range(len(__col_names))} for row in __fetched]
+    else:
+        __actual_raw = [list(row) for row in __fetched]
+    __conn.close()
+    __passed, __err_msg = _check_equal(__actual_raw, __tc_expected_output__)
+    __res_obj = {
+        "passed": __passed,
+        "actual": _serialize_res(__actual_raw),
+        "error": __err_msg if not __passed else ""
+    }
+except Exception as __e:
+    __res_obj = {
+        "passed": False,
+        "actual": None,
+        "error": str(__e)
+    }
+json.dumps(__res_obj)
+`
+        : `
+try:
+    import inspect, copy
     __fn = globals().get('${functionName}') or locals().get('${functionName}')
     if not callable(__fn):
         # Fallback 1: check if a class provides this method
@@ -1282,14 +1606,14 @@ try:
                 except Exception:
                     pass
 
-        # Fallback 2: search globals for candidate user function
+        # Fallback 2: search globals for candidate user function (pick last defined function so helpers come first)
         if not callable(__fn):
             __candidates = [
                 v for k, v in list(globals().items()) 
                 if inspect.isfunction(v) and not k.startswith('_') and k not in ['getPyodide', 'json', 'np', 'numpy', '_check_equal', '_serialize_res']
             ]
             if __candidates:
-                __fn = __candidates[0]
+                __fn = __candidates[-1]
             else:
                 raise NameError("Function '${functionName}' is not defined. Please implement def ${functionName}(...)")
     
@@ -1301,7 +1625,7 @@ try:
     # Check which parameters match input keys
     for __p_name in __params:
         if __p_name in __input_keys:
-            __kwargs[__p_name] = globals()['__tc_' + __p_name]
+            __kwargs[__p_name] = copy.deepcopy(globals()['__tc_inp_' + __p_name])
     
     # Check if all required positional params were matched
     __required_missing = [
@@ -1313,7 +1637,7 @@ try:
     
     def _invoke(__use_tensor=False):
         import torch
-        __active_kwargs = dict(__kwargs)
+        __active_kwargs = copy.deepcopy(__kwargs)
         if __use_tensor:
             for __k, __v in __active_kwargs.items():
                 if isinstance(__v, list):
@@ -1325,7 +1649,7 @@ try:
             if any(__p.kind == inspect.Parameter.VAR_KEYWORD for __p in __params.values()):
                 for __k in __input_keys:
                     if __k not in __active_kwargs:
-                        val = globals()['__tc_' + __k]
+                        val = copy.deepcopy(globals()['__tc_inp_' + __k])
                         if __use_tensor and isinstance(val, list):
                             try:
                                 val = torch.tensor(val)
@@ -1334,7 +1658,7 @@ try:
                         __active_kwargs[__k] = val
             return __fn(**__active_kwargs)
         else:
-            __pos_args = [globals()['__tc_' + __k] for __k in __input_keys]
+            __pos_args = [copy.deepcopy(globals()['__tc_inp_' + __k]) for __k in __input_keys]
             if __use_tensor:
                 __converted = []
                 for x in __pos_args:
@@ -1357,7 +1681,7 @@ try:
         except Exception:
             raise __initial_err
         
-    __passed, __err_msg = _check_equal(__actual_raw, __tc_expected)
+    __passed, __err_msg = _check_equal(__actual_raw, __tc_expected_output__)
     __res_obj = {
         "passed": __passed,
         "actual": _serialize_res(__actual_raw),

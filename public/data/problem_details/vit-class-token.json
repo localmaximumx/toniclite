@@ -398,5 +398,6 @@
     "prev": "vit-position-embedding",
     "next": "vit-encoder-block"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vit-class-token"
 }

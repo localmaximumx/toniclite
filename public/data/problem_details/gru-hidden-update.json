@@ -272,5 +272,6 @@
     "prev": "gru-candidate",
     "next": "gru-cell"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gru-hidden-update"
 }

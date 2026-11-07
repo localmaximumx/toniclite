@@ -47,7 +47,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(eigenvalues,k=None):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(eigenvalues,k=None):\n    total=sum(eigenvalues)\n    if total<=0:return []\n    vals=sorted(eigenvalues,reverse=True)\n    if k is not None: vals=vals[:k]\n    return [v/total for v in vals]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(eigenvalues,k=None):\n    total=sum(eigenvalues)\n    if total<=0:return []\n    vals=sorted(eigenvalues,reverse=True)\n    if k is not None: vals=vals[:k]\n    return [v/total for v in vals]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-unsup-pca-variance-tc-1",
@@ -109,7 +109,7 @@
           -2.0,
           -1.0
         ],
-        "k": -2
+        "k": 2
       },
       "expectedOutput": [],
       "isPublic": false

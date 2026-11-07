@@ -61,7 +61,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(X,y,weights,bias,lr=1.0,epochs=1):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(X,y,weights,bias,lr=1.0,epochs=1):\n    weights=list(weights)\n    for _ in range(epochs):\n      for x,t in zip(X,y):\n       pred=1 if sum(a*b for a,b in zip(x,weights))+bias>=0 else 0\n       err=t-pred\n       weights=[w+lr*err*a for w,a in zip(weights,x)];bias+=lr*err\n    return weights,bias\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(X,y,weights,bias,lr=1.0,epochs=1):\n    weights=list(weights)\n    for _ in range(epochs):\n      for x,t in zip(X,y):\n       pred=1 if sum(a*b for a,b in zip(x,weights))+bias>=0 else 0\n       err=t-pred\n       weights=[w+lr*err*a for w,a in zip(weights,x)];bias+=lr*err\n    return weights,bias\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-sup-perceptron-tc-1",
@@ -146,13 +146,13 @@
         ],
         "bias": 0.0,
         "lr": 0.5,
-        "epochs": 0
+        "epochs": 1
       },
       "expectedOutput": [
         [
           0.0
         ],
-        0.0
+        -0.5
       ],
       "isPublic": false
     },

@@ -21,7 +21,7 @@
   "topicId": "rnn-hidden-state",
   "paperSnippet": "\"The context units... provide a simple type of memory. The activations of the hidden units at time t-1 provide input to the hidden units at time t.\"",
   "visualizationComponent": "RNNHiddenViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Hidden State** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef init_hidden(batch_size: int, hidden_dim: int) -> np.ndarray:\n    return np.zeros((int(batch_size), int(hidden_dim)), dtype=float)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Hidden State** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef init_hidden(batch_size: int, hidden_dim: int) -> np.ndarray:\n    return np.zeros((int(batch_size), int(hidden_dim)), dtype=float)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rnn-hidden-state-tc-1",
@@ -86,10 +86,14 @@
       "id": "rnn-hidden-state-tc-4",
       "name": "Case 4",
       "inputs": {
-        "batch_size": 0,
+        "batch_size": 1,
         "hidden_dim": 1
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        [
+          0.0
+        ]
+      ],
       "isPublic": false
     },
     {
@@ -154,10 +158,23 @@
       "id": "rnn-hidden-state-tc-7",
       "name": "Case 7",
       "inputs": {
-        "batch_size": 0,
-        "hidden_dim": 0
+        "batch_size": 3,
+        "hidden_dim": 2
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
       "isPublic": false
     }
   ],
@@ -200,5 +217,6 @@
     "prev": "rnn-cell",
     "next": "rnn-forward-sequence"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "rnn-hidden-state"
 }

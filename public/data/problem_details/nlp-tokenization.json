@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import re\n\ndef nlp_tokenization(text: str) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Tokenization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport re\n\ndef nlp_tokenization(text: str) -> list:\n    return re.findall(r'\\w+|[^\\w\\s]', text)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Tokenization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_tokenization(text: str) -> list:\n    return re.findall(r'\\w+|[^\\w\\s]', text)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-tokenization-tc-1",
@@ -55,9 +55,10 @@
       "id": "nlp-tokenization-tc-2",
       "name": "Case 2",
       "inputs": {
-        "text": "Hello, world! How are you?"
+        "text": "delta Hello, world! How are you?"
       },
       "expectedOutput": [
+        "delta",
         "Hello",
         ",",
         "world",
@@ -73,7 +74,7 @@
       "id": "nlp-tokenization-tc-3",
       "name": "Case 3",
       "inputs": {
-        "text": "Hello, world! How are you?"
+        "text": "Hello, world! How are you? Hello,"
       },
       "expectedOutput": [
         "Hello",
@@ -83,7 +84,9 @@
         "How",
         "are",
         "you",
-        "?"
+        "?",
+        "Hello",
+        ","
       ],
       "isPublic": false
     },
@@ -91,7 +94,7 @@
       "id": "nlp-tokenization-tc-4",
       "name": "Case 4",
       "inputs": {
-        "text": "Hello, world! How are you?"
+        "text": "Hello, world! How are model"
       },
       "expectedOutput": [
         "Hello",
@@ -100,8 +103,7 @@
         "!",
         "How",
         "are",
-        "you",
-        "?"
+        "model"
       ],
       "isPublic": false
     },
@@ -109,17 +111,19 @@
       "id": "nlp-tokenization-tc-5",
       "name": "Case 5",
       "inputs": {
-        "text": "Hello, world! How are you?"
+        "text": "neural you? are How world! Hello, vector"
       },
       "expectedOutput": [
-        "Hello",
-        ",",
+        "neural",
+        "you",
+        "?",
+        "are",
+        "How",
         "world",
         "!",
-        "How",
-        "are",
-        "you",
-        "?"
+        "Hello",
+        ",",
+        "vector"
       ],
       "isPublic": false
     },
@@ -127,17 +131,17 @@
       "id": "nlp-tokenization-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": "Hello, world! How are you?"
+        "text": "you? are How world! Hello,"
       },
       "expectedOutput": [
-        "Hello",
-        ",",
+        "you",
+        "?",
+        "are",
+        "How",
         "world",
         "!",
-        "How",
-        "are",
-        "you",
-        "?"
+        "Hello",
+        ","
       ],
       "isPublic": false
     },
@@ -145,7 +149,7 @@
       "id": "nlp-tokenization-tc-7",
       "name": "Case 7",
       "inputs": {
-        "text": "Hello, world! How are you?"
+        "text": "Hello, world! How are you? matrix"
       },
       "expectedOutput": [
         "Hello",
@@ -155,7 +159,8 @@
         "How",
         "are",
         "you",
-        "?"
+        "?",
+        "matrix"
       ],
       "isPublic": false
     }

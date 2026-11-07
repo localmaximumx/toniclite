@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import torch\n\ndef cv_miou(pred_mask: list, target_mask: list, num_classes: int = 3) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Mean IoU for Segmentation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_miou(pred_mask: list, target_mask: list, num_classes: int = 3) -> dict:\n    p, t = np.array(pred_mask, dtype=np.int64).flatten(), np.array(target_mask, dtype=np.int64).flatten()\n    ious = {}\n    for c in range(int(num_classes)):\n        u = np.sum((p == c) | (t == c))\n        ious[c] = round(float(np.sum((p == c) & (t == c))) / float(u) if u > 0 else 1.0, 4)\n    return {'class_ious': ious, 'mean_iou': round(float(np.mean(list(ious.values()))), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Mean IoU for Segmentation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_miou(pred_mask: list, target_mask: list, num_classes: int = 3) -> dict:\n    p, t = np.array(pred_mask, dtype=np.int64).flatten(), np.array(target_mask, dtype=np.int64).flatten()\n    ious = {}\n    for c in range(int(num_classes)):\n        u = np.sum((p == c) | (t == c))\n        ious[c] = round(float(np.sum((p == c) & (t == c))) / float(u) if u > 0 else 1.0, 4)\n    return {'class_ious': ious, 'mean_iou': round(float(np.mean(list(ious.values()))), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-miou-tc-1",
@@ -321,15 +321,14 @@
             2.0
           ]
         ],
-        "num_classes": 3.0
+        "num_classes": 2
       },
       "expectedOutput": {
         "class_ious": {
           "0": 1.0,
-          "1": 0.75,
-          "2": 0.8333
+          "1": 0.75
         },
-        "mean_iou": 0.8611
+        "mean_iou": 0.875
       },
       "isPublic": false
     },
@@ -339,43 +338,47 @@
       "inputs": {
         "pred_mask": [
           [
-            -2.0,
-            -2.0,
-            -1.0
+            0,
+            1,
+            2
           ],
           [
-            -2.0,
-            -1.0,
-            -1.0
+            0,
+            2,
+            2
           ],
           [
-            -1.0,
-            -1.0,
-            -1.0
+            1,
+            1,
+            2
           ]
         ],
         "target_mask": [
           [
-            -2.0,
-            -2.0,
-            -2.0
+            0,
+            1,
+            1
           ],
           [
-            -2.0,
-            -1.0,
-            -1.0
+            0,
+            2,
+            2
           ],
           [
-            -1.0,
-            -1.0,
-            -1.0
+            1,
+            2,
+            2
           ]
         ],
-        "num_classes": 0.0
+        "num_classes": 3
       },
       "expectedOutput": {
-        "class_ious": {},
-        "mean_iou": 0.0
+        "class_ious": {
+          "0": 1.0,
+          "1": 0.5,
+          "2": 0.6
+        },
+        "mean_iou": 0.7
       },
       "isPublic": false
     }

@@ -30,7 +30,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "def cs336_l15_canonical_preference_pairs(records: list) -> list:\n    \"\"\"\n    Convert complete strict candidate rankings into deterministic winner-loser pairs and reject invalid prompt records, creating canonical pairwise training datasets for Direct Preference Optimization (DPO).\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nConvert complete strict candidate rankings into deterministic winner-loser pairs and reject invalid prompt records, creating canonical pairwise training datasets for Direct Preference Optimization (DPO).\n\n### ⚡ Python Reference Implementation\n```python\ndef cs336_l15_canonical_preference_pairs(records: list) -> list:\n    pairs = []\n    for rec in records:\n        prompt = rec.get('prompt', '')\n        comps = rec.get('ranked_completions', [])\n        if not isinstance(comps, list) or len(comps) < 2:\n            continue\n        for i in range(len(comps)):\n            for j in range(i + 1, len(comps)):\n                pairs.append({'prompt': prompt, 'chosen': comps[i], 'rejected': comps[j]})\n    return pairs\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nConvert complete strict candidate rankings into deterministic winner-loser pairs and reject invalid prompt records, creating canonical pairwise training datasets for Direct Preference Optimization (DPO).\n\n### \u26a1 Python Reference Implementation\n```python\ndef cs336_l15_canonical_preference_pairs(records: list) -> list:\n    pairs = []\n    for rec in records:\n        prompt = rec.get('prompt', '')\n        comps = rec.get('ranked_completions', [])\n        if not isinstance(comps, list) or len(comps) < 2:\n            continue\n        for i in range(len(comps)):\n            for j in range(i + 1, len(comps)):\n                pairs.append({'prompt': prompt, 'chosen': comps[i], 'rejected': comps[j]})\n    return pairs\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l15-canonical-preference-pairs-tc-1",
@@ -101,30 +101,30 @@
       "inputs": {
         "records": [
           {
-            "prompt": "Summarize attention",
+            "prompt": "Summarize attention Summarize",
             "ranked_completions": [
-              "Best",
-              "Good",
-              "Bad"
+              "Besting",
+              "Gooding",
+              "Bading"
             ]
           }
         ]
       },
       "expectedOutput": [
         {
-          "prompt": "Summarize attention",
-          "chosen": "Best",
-          "rejected": "Good"
+          "prompt": "Summarize attention Summarize",
+          "chosen": "Besting",
+          "rejected": "Gooding"
         },
         {
-          "prompt": "Summarize attention",
-          "chosen": "Best",
-          "rejected": "Bad"
+          "prompt": "Summarize attention Summarize",
+          "chosen": "Besting",
+          "rejected": "Bading"
         },
         {
-          "prompt": "Summarize attention",
-          "chosen": "Good",
-          "rejected": "Bad"
+          "prompt": "Summarize attention Summarize",
+          "chosen": "Gooding",
+          "rejected": "Bading"
         }
       ],
       "isPublic": false
@@ -135,25 +135,46 @@
       "inputs": {
         "records": [
           {
-            "prompt": "Empty test",
+            "prompt": "Summarize model",
             "ranked_completions": [
-              "Single"
-            ]
-          },
-          {
-            "prompt": "Valid",
-            "ranked_completions": [
-              "Winner",
-              "Loser"
+              "Bester",
+              "Gooder",
+              "Bader",
+              "natural language processing"
             ]
           }
         ]
       },
       "expectedOutput": [
         {
-          "prompt": "Valid",
-          "chosen": "Winner",
-          "rejected": "Loser"
+          "prompt": "Summarize model",
+          "chosen": "Bester",
+          "rejected": "Gooder"
+        },
+        {
+          "prompt": "Summarize model",
+          "chosen": "Bester",
+          "rejected": "Bader"
+        },
+        {
+          "prompt": "Summarize model",
+          "chosen": "Bester",
+          "rejected": "natural language processing"
+        },
+        {
+          "prompt": "Summarize model",
+          "chosen": "Gooder",
+          "rejected": "Bader"
+        },
+        {
+          "prompt": "Summarize model",
+          "chosen": "Gooder",
+          "rejected": "natural language processing"
+        },
+        {
+          "prompt": "Summarize model",
+          "chosen": "Bader",
+          "rejected": "natural language processing"
         }
       ],
       "isPublic": false
@@ -164,30 +185,30 @@
       "inputs": {
         "records": [
           {
-            "prompt": "Summarize attention",
+            "prompt": "neural attention Summarize vector",
             "ranked_completions": [
-              "Best",
-              "Good",
-              "Bad"
+              "Besttion",
+              "Goodment",
+              "Badness"
             ]
           }
         ]
       },
       "expectedOutput": [
         {
-          "prompt": "Summarize attention",
-          "chosen": "Best",
-          "rejected": "Good"
+          "prompt": "neural attention Summarize vector",
+          "chosen": "Besttion",
+          "rejected": "Goodment"
         },
         {
-          "prompt": "Summarize attention",
-          "chosen": "Best",
-          "rejected": "Bad"
+          "prompt": "neural attention Summarize vector",
+          "chosen": "Besttion",
+          "rejected": "Badness"
         },
         {
-          "prompt": "Summarize attention",
-          "chosen": "Good",
-          "rejected": "Bad"
+          "prompt": "neural attention Summarize vector",
+          "chosen": "Goodment",
+          "rejected": "Badness"
         }
       ],
       "isPublic": false
@@ -198,25 +219,30 @@
       "inputs": {
         "records": [
           {
-            "prompt": "Empty test",
+            "prompt": "attention Summarize",
             "ranked_completions": [
-              "Single"
-            ]
-          },
-          {
-            "prompt": "Valid",
-            "ranked_completions": [
-              "Winner",
-              "Loser"
+              "Bads",
+              "Goods",
+              "Bests"
             ]
           }
         ]
       },
       "expectedOutput": [
         {
-          "prompt": "Valid",
-          "chosen": "Winner",
-          "rejected": "Loser"
+          "prompt": "attention Summarize",
+          "chosen": "Bads",
+          "rejected": "Goods"
+        },
+        {
+          "prompt": "attention Summarize",
+          "chosen": "Bads",
+          "rejected": "Bests"
+        },
+        {
+          "prompt": "attention Summarize",
+          "chosen": "Goods",
+          "rejected": "Bests"
         }
       ],
       "isPublic": false
@@ -227,30 +253,46 @@
       "inputs": {
         "records": [
           {
-            "prompt": "Summarize attention",
+            "prompt": "Summarize attention matrix",
             "ranked_completions": [
               "Best",
               "Good",
-              "Bad"
+              "Bad",
+              "computer vision system"
             ]
           }
         ]
       },
       "expectedOutput": [
         {
-          "prompt": "Summarize attention",
+          "prompt": "Summarize attention matrix",
           "chosen": "Best",
           "rejected": "Good"
         },
         {
-          "prompt": "Summarize attention",
+          "prompt": "Summarize attention matrix",
           "chosen": "Best",
           "rejected": "Bad"
         },
         {
-          "prompt": "Summarize attention",
+          "prompt": "Summarize attention matrix",
+          "chosen": "Best",
+          "rejected": "computer vision system"
+        },
+        {
+          "prompt": "Summarize attention matrix",
           "chosen": "Good",
           "rejected": "Bad"
+        },
+        {
+          "prompt": "Summarize attention matrix",
+          "chosen": "Good",
+          "rejected": "computer vision system"
+        },
+        {
+          "prompt": "Summarize attention matrix",
+          "chosen": "Bad",
+          "rejected": "computer vision system"
         }
       ],
       "isPublic": false

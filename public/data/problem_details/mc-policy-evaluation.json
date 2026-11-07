@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef mc_policy_evaluation(episodes: list, gamma: float, n_states: int) -> np.ndarray:\n    \"\"\"\n    Returns the state values as a NumPy array.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-15T16:17:01.837Z",
   "updatedAt": "2026-08-23T10:37:25.159Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nfrom collections import defaultdict\nimport numpy as np\n\ndef mc_policy_evaluation(episodes: list, gamma: float, n_states: int) -> np.ndarray:\n    returns = defaultdict(list)\n    for ep in episodes:\n        visited = set()\n        G = 0.0\n        # Calculate returns backwards\n        ep_returns = []\n        for s, r in reversed(ep):\n            G = r + gamma * G\n            ep_returns.append((s, G))\n        for s, ret in reversed(ep_returns):\n            if s not in visited:\n                visited.add(s)\n                returns[s].append(ret)\n    V = np.zeros(n_states, dtype=float)\n    for s in range(n_states):\n        if s in returns:\n            V[s] = np.mean(returns[s])\n    return np.round(V, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nfrom collections import defaultdict\nimport numpy as np\n\ndef mc_policy_evaluation(episodes: list, gamma: float, n_states: int) -> np.ndarray:\n    returns = defaultdict(list)\n    for ep in episodes:\n        visited = set()\n        G = 0.0\n        # Calculate returns backwards\n        ep_returns = []\n        for s, r in reversed(ep):\n            G = r + gamma * G\n            ep_returns.append((s, G))\n        for s, ret in reversed(ep_returns):\n            if s not in visited:\n                visited.add(s)\n                returns[s].append(ret)\n    V = np.zeros(n_states, dtype=float)\n    for s in range(n_states):\n        if s in returns:\n            V[s] = np.mean(returns[s])\n    return np.round(V, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "McPolicyEvaluationViz",
   "testCases": [
     {
@@ -116,7 +116,7 @@
       "id": "mc-policy-evaluation-tc-4",
       "name": "Case 4",
       "inputs": {
-        "gamma": 0,
+        "gamma": 1,
         "episodes": [
           [
             [
@@ -136,7 +136,7 @@
         "n_states": 2
       },
       "expectedOutput": [
-        0.0,
+        3.0,
         2.0
       ],
       "isPublic": false

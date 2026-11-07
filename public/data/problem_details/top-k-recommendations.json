@@ -18,7 +18,7 @@
   "starterCode": "def top_k_recommendations(scores: list, rated_indices: list, k: int) -> list:\n    \"\"\"\n    Returns the highest-scoring unrated item indices.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T21:11:38.242Z",
   "updatedAt": "2026-08-23T21:02:58.279Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\ndef top_k_recommendations(scores: list, rated_indices: list, k: int) -> list:\n    rated = set(rated_indices)\n    unrated = [(s, i) for i, s in enumerate(scores) if i not in rated]\n    unrated.sort(key=lambda x: (-x[0], x[1]))\n    return [i for _, i in unrated[:k]]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\ndef top_k_recommendations(scores: list, rated_indices: list, k: int) -> list:\n    rated = set(rated_indices)\n    unrated = [(s, i) for i, s in enumerate(scores) if i not in rated]\n    unrated.sort(key=lambda x: (-x[0], x[1]))\n    return [i for _, i in unrated[:k]]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "TopKRecommendationsViz",
   "testCases": [
     {
@@ -136,7 +136,7 @@
       "id": "top-k-recommendations-tc-6",
       "name": "Case 6",
       "inputs": {
-        "k": -2,
+        "k": 2,
         "scores": [
           -3.5,
           -1.2,

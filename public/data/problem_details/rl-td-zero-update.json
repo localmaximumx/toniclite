@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef rl_td_zero_update(v_values: list, state: int, reward: float, next_state: int, gamma: float = 0.9, alpha: float = 0.1) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **TD(0) Value Update** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_td_zero_update(v_values: list, state: int, reward: float, next_state: int, gamma: float = 0.9, alpha: float = 0.1) -> list:\n    V = np.array(v_values, dtype=np.float64)\n    V[int(state)] += float(alpha) * (float(reward) + float(gamma)*V[int(next_state)] - V[int(state)])\n    return np.round(V, 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **TD(0) Value Update** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_td_zero_update(v_values: list, state: int, reward: float, next_state: int, gamma: float = 0.9, alpha: float = 0.1) -> list:\n    V = np.array(v_values, dtype=np.float64)\n    V[int(state)] += float(alpha) * (float(reward) + float(gamma)*V[int(next_state)] - V[int(state)])\n    return np.round(V, 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-td-zero-update-tc-1",
@@ -83,11 +83,11 @@
         "state": 0,
         "reward": -2.0,
         "next_state": -1,
-        "gamma": -0.9,
+        "gamma": 0.9,
         "alpha": 0.5
       },
       "expectedOutput": [
-        0.75,
+        -3.75,
         -5.0
       ],
       "isPublic": false

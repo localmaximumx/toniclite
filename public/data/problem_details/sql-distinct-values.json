@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL DISTINCT Values\nSELECT customer_id, COUNT(DISTINCT product_id) AS distinct_products\nFROM sales\nGROUP BY customer_id\nORDER BY distinct_products DESC, customer_id ASC;",
+  "starterCode": "def sql_distinct_values(sales: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL DISTINCT Values\n    SELECT customer_id, COUNT(DISTINCT product_id) AS distinct_products\n    FROM sales\n    GROUP BY customer_id\n    ORDER BY distinct_products DESC, customer_id ASC;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **DISTINCT Values** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_distinct_values(sales: list) -> list:\n    cmap = {}\n    for s in sales:\n        cmap.setdefault(s['customer_id'], set()).add(s['product_id'])\n    out = [{'customer_id': c, 'distinct_products': len(p)} for c, p in cmap.items()]\n    out.sort(key=lambda x: (-x['distinct_products'], x['customer_id']))\n    return out\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

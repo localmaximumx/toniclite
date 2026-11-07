@@ -1509,5 +1509,6 @@
     "prev": "transformers-attention",
     "next": "transformers-feed-forward"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "transformers-multi-head-attention"
 }

@@ -13,7 +13,7 @@
   "description": "Given an array of `intervals` where `intervals[i] = [start_i, end_i]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.\n\nIn telemetry processing and distributed event logging, coalescing overlapping time windows into unified operational segments is critical for downstream metric aggregation.",
   "theory": "# Understanding Merge Intervals\n\n## 1. What Is It?\n\nThe **Merge Intervals** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given an array of `intervals` where `intervals[i] = [start_i, end_i]`, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.\n\n### Key Terminology\n- **Merge Intervals**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `merge_intervals`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `merge_intervals` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nintervals = [[1, 3], [2, 6], [8, 10], [15, 18]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n\n\n**Resulting Output:**\n```python\n[[1, 6], [8, 10], [15, 18]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `merge_intervals` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[1, 6]`.\n  - **Element 2**: Evaluated output component `[8, 10]`.\n  - **Element 3**: Evaluated output component `[15, 18]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `merge_intervals`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `merge_intervals`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Merge Intervals** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `merge_intervals` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]\nOutput: [[1, 6], [8, 10], [15, 18]]"
+    "Input: intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]\n\nOutput: [[1, 6], [8, 10], [15, 18]]\n\nExplanation: Evaluated merge_intervals under standard test conditions."
   ],
   "requirements": [
     "Implement the function `merge_intervals`.",
@@ -28,8 +28,8 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "def merge_intervals(intervals):\n    \"\"\"\n    Merge all overlapping intervals.\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef merge_intervals(intervals):\n    \"\"\"\n    Sort by start time and merge overlaps\n    \"\"\"\n    if not intervals: return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for current in intervals[1:]:\n        prev = merged[-1]\n        if current[0] <= prev[1]:\n            prev[1] = max(prev[1], current[1])\n        else:\n            merged.append(current)\n    return merged\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def merge_intervals(intervals: list) -> list:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Merge Intervals** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef merge_intervals(intervals: list) -> list:\n    if not intervals:\n        return []\n    s = sorted([list(iv) for iv in intervals], key=lambda x: x[0])\n    merged = [s[0]]\n    for curr in s[1:]:\n        if curr[0] <= merged[-1][1]:\n            merged[-1][1] = max(merged[-1][1], curr[1])\n        else:\n            merged.append(curr)\n    return merged\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ds-py-merge-intervals-tc-1",
@@ -38,7 +38,7 @@
         "intervals": [
           [
             1,
-            6
+            3
           ],
           [
             2,
@@ -72,238 +72,166 @@
     },
     {
       "id": "ds-py-merge-intervals-tc-2",
-      "name": "Case 2",
+      "name": "Touching endpoints",
       "inputs": {
         "intervals": [
           [
-            2,
-            12
+            1,
+            4
           ],
           [
             4,
-            12
-          ],
-          [
-            16,
-            20
-          ],
-          [
-            30,
-            36
+            5
           ]
         ]
       },
       "expectedOutput": [
         [
-          2,
-          12
-        ],
-        [
-          16,
-          20
-        ],
-        [
-          30,
-          36
+          1,
+          5
         ]
       ],
       "isPublic": true
     },
     {
       "id": "ds-py-merge-intervals-tc-3",
-      "name": "Case 3",
+      "name": "Nested interval",
       "inputs": {
         "intervals": [
           [
-            0,
-            3
-          ],
-          [
             1,
-            3
+            10
           ],
           [
-            4,
+            2,
             5
           ],
           [
-            8,
+            6,
             9
           ]
         ]
       },
       "expectedOutput": [
         [
-          0,
-          3
-        ],
-        [
-          4,
-          5
-        ],
-        [
-          8,
-          9
+          1,
+          10
         ]
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-merge-intervals-tc-4",
-      "name": "Case 4",
+      "name": "Unsorted intervals",
       "inputs": {
         "intervals": [
           [
-            -15,
-            -18
+            8,
+            10
           ],
           [
-            -8,
-            -10
+            1,
+            3
           ],
           [
-            -2,
-            -6
-          ],
-          [
-            -1,
-            -3
+            2,
+            6
           ]
         ]
       },
       "expectedOutput": [
         [
-          -15,
-          -18
+          1,
+          6
         ],
         [
-          -8,
-          -10
-        ],
-        [
-          -2,
-          -6
-        ],
-        [
-          -1,
-          -3
+          8,
+          10
         ]
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-merge-intervals-tc-5",
-      "name": "Case 5",
+      "name": "Non-overlapping",
       "inputs": {
         "intervals": [
           [
-            3,
-            18
+            1,
+            2
           ],
           [
-            6,
-            18
+            4,
+            5
           ],
           [
-            24,
-            30
-          ],
-          [
-            45,
-            54
+            7,
+            8
           ]
         ]
       },
       "expectedOutput": [
         [
-          3,
-          18
+          1,
+          2
         ],
         [
-          24,
-          30
+          4,
+          5
         ],
         [
-          45,
-          54
+          7,
+          8
         ]
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-merge-intervals-tc-6",
-      "name": "Case 6",
+      "name": "Single interval",
       "inputs": {
         "intervals": [
           [
-            2.0,
-            7.0
-          ],
-          [
-            3.0,
-            7.0
-          ],
-          [
-            9.0,
-            11.0
-          ],
-          [
-            16.0,
-            19.0
+            5,
+            10
           ]
         ]
       },
       "expectedOutput": [
         [
-          2.0,
-          7.0
-        ],
-        [
-          9.0,
-          11.0
-        ],
-        [
-          16.0,
-          19.0
+          5,
+          10
         ]
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-merge-intervals-tc-7",
-      "name": "Case 7",
+      "name": "All merge into one",
       "inputs": {
         "intervals": [
           [
-            -1.0,
-            4.0
+            1,
+            4
           ],
           [
-            0.0,
-            4.0
+            2,
+            6
           ],
           [
-            6.0,
-            8.0
+            5,
+            9
           ],
           [
-            13.0,
-            16.0
+            8,
+            12
           ]
         ]
       },
       "expectedOutput": [
         [
-          -1.0,
-          4.0
-        ],
-        [
-          6.0,
-          8.0
-        ],
-        [
-          13.0,
-          16.0
+          1,
+          12
         ]
       ],
       "isPublic": false
@@ -317,6 +245,7 @@
         "type": "list",
         "description": "List of [start, end] pairs"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

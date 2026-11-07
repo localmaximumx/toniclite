@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef rl_dqn_loss_with_target_network(states_q: list, actions: list, rewards: list, next_states_target_q: list, dones: list, gamma: float = 0.99) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **DQN Loss with Target Network** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_dqn_loss_with_target_network(states_q: list, actions: list, rewards: list, next_states_target_q: list, dones: list, gamma: float = 0.99) -> float:\n    q_s, acts = np.array(states_q, dtype=np.float64), np.array(actions, dtype=np.int64)\n    r, d = np.array(rewards, dtype=np.float64), np.array(dones, dtype=np.float64)\n    q_next = np.array(next_states_target_q, dtype=np.float64)\n    targets = r + float(gamma) * (1.0 - d) * np.max(q_next, axis=1)\n    return round(float(np.mean((q_s[np.arange(len(acts)), acts] - targets)**2)), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **DQN Loss with Target Network** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_dqn_loss_with_target_network(states_q: list, actions: list, rewards: list, next_states_target_q: list, dones: list, gamma: float = 0.99) -> float:\n    q_s, acts = np.array(states_q, dtype=np.float64), np.array(actions, dtype=np.int64)\n    r, d = np.array(rewards, dtype=np.float64), np.array(dones, dtype=np.float64)\n    q_next = np.array(next_states_target_q, dtype=np.float64)\n    targets = r + float(gamma) * (1.0 - d) * np.max(q_next, axis=1)\n    return round(float(np.mean((q_s[np.arange(len(acts)), acts] - targets)**2)), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-dqn-loss-with-target-network-tc-1",
@@ -152,9 +152,9 @@
           0,
           -1
         ],
-        "gamma": -0.95
+        "gamma": 0.95
       },
-      "expectedOutput": 5.25625,
+      "expectedOutput": 0.50625,
       "isPublic": false
     },
     {

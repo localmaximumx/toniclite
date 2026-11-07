@@ -886,5 +886,6 @@
     "prev": "unet-decoder-block",
     "next": "unet-bottleneck"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "unet-skip-connection"
 }

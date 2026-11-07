@@ -399,5 +399,6 @@
     "prev": "vae-reparameterization",
     "next": "vae-kl-divergence"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vae-decoder"
 }

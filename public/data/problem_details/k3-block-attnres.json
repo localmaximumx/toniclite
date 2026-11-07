@@ -576,5 +576,6 @@
     "prev": "k3-full-attnres",
     "next": "k3-situ-glu"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-block-attnres"
 }

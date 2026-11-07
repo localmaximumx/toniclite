@@ -856,5 +856,6 @@
     "prev": "lstm-output-gate",
     "next": "lstm-full-network"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "lstm-cell"
 }

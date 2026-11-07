@@ -711,5 +711,6 @@
     "next": "resnet-bottleneck"
   },
   "isLocked": false,
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "resnet-conv-block"
 }

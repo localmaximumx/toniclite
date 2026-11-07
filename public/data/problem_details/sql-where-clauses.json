@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL WHERE Clauses\nSELECT emp_name, salary\nFROM employees\nWHERE department = 'Engineering' AND salary > 80000\nORDER BY salary DESC;",
+  "starterCode": "def sql_where_clauses(employees: list, target_dept: str = 'Engineering', min_salary: float = 80000.0) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL WHERE Clauses\n    SELECT emp_name, salary\n    FROM employees\n    WHERE department = 'Engineering' AND salary > 80000\n    ORDER BY salary DESC;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **WHERE Clauses** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_where_clauses(employees: list, target_dept: str = 'Engineering', min_salary: float = 80000.0) -> list:\n    res = [{'emp_name': e['emp_name'], 'salary': float(e['salary'])} for e in employees if e.get('department') == target_dept and float(e.get('salary', 0)) > float(min_salary)]\n    res.sort(key=lambda x: -x['salary'])\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

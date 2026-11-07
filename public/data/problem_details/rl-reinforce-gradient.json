@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def rl_reinforce_gradient(log_probs: list, rewards: list, gamma: float = 0.99) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **REINFORCE Gradient** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef rl_reinforce_gradient(log_probs: list, rewards: list, gamma: float = 0.99) -> list:\n    T = len(rewards); returns = [0.0] * T; G = 0.0\n    for t in reversed(range(T)):\n        G = rewards[t] + gamma * G\n        returns[t] = G\n    return [round(float(lp * g), 4) for lp, g in zip(log_probs, returns)]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **REINFORCE Gradient** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef rl_reinforce_gradient(log_probs: list, rewards: list, gamma: float = 0.99) -> list:\n    T = len(rewards); returns = [0.0] * T; G = 0.0\n    for t in reversed(range(T)):\n        G = rewards[t] + gamma * G\n        returns[t] = G\n    return [round(float(lp * g), 4) for lp, g in zip(log_probs, returns)]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-reinforce-gradient-tc-1",
@@ -139,11 +139,11 @@
           -0.0,
           -2.0
         ],
-        "gamma": -0.99
+        "gamma": 0.99
       },
       "expectedOutput": [
         -1.4801,
-        1.584,
+        -1.584,
         -0.4
       ],
       "isPublic": false

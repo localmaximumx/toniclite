@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "def cs336_l14_stable_exact_deduplication(documents: list) -> dict:\n    \"\"\"\n    Normalize document text strings, retain the earliest unique occurrence, and map every removed duplicate back to its retained canonical index.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nNormalize document text strings, retain the earliest unique occurrence, and map every removed duplicate back to its retained canonical index.\n\n### ⚡ Python Reference Implementation\n```python\ndef cs336_l14_stable_exact_deduplication(documents: list) -> dict:\n    seen, u_docs, remap = {}, [], []\n    for d in documents:\n        n = ' '.join(d.strip().split())\n        if n not in seen:\n            seen[n] = len(u_docs)\n            u_docs.append(n)\n        remap.append(seen[n])\n    return {'unique_documents': u_docs, 'document_mapping': remap, 'num_duplicates_removed': len(documents) - len(u_docs)}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nNormalize document text strings, retain the earliest unique occurrence, and map every removed duplicate back to its retained canonical index.\n\n### \u26a1 Python Reference Implementation\n```python\ndef cs336_l14_stable_exact_deduplication(documents: list) -> dict:\n    seen, u_docs, remap = {}, [], []\n    for d in documents:\n        n = ' '.join(d.strip().split())\n        if n not in seen:\n            seen[n] = len(u_docs)\n            u_docs.append(n)\n        remap.append(seen[n])\n    return {'unique_documents': u_docs, 'document_mapping': remap, 'num_duplicates_removed': len(documents) - len(u_docs)}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l14-stable-exact-deduplication-tc-1",
@@ -113,20 +113,23 @@
       "name": "Case 4",
       "inputs": {
         "documents": [
-          "The quick brown fox",
-          "  The  quick   brown fox ",
-          "Different doc"
+          "The quick brown fox The",
+          "The quick brown fox The",
+          "Different doc Different",
+          "natural language processing"
         ]
       },
       "expectedOutput": {
         "unique_documents": [
-          "The quick brown fox",
-          "Different doc"
+          "The quick brown fox The",
+          "Different doc Different",
+          "natural language processing"
         ],
         "document_mapping": [
           0,
           0,
-          1
+          1,
+          2
         ],
         "num_duplicates_removed": 1
       },
@@ -137,27 +140,23 @@
       "name": "Case 5",
       "inputs": {
         "documents": [
-          "A",
-          "B",
-          "A",
-          "C",
-          "B"
+          "neural fox brown quick The vector",
+          "fox brown quick The",
+          "Different doc matrix"
         ]
       },
       "expectedOutput": {
         "unique_documents": [
-          "A",
-          "B",
-          "C"
+          "neural fox brown quick The vector",
+          "fox brown quick The",
+          "Different doc matrix"
         ],
         "document_mapping": [
           0,
           1,
-          0,
-          2,
-          1
+          2
         ],
-        "num_duplicates_removed": 2
+        "num_duplicates_removed": 0
       },
       "isPublic": false
     },
@@ -166,15 +165,15 @@
       "name": "Case 6",
       "inputs": {
         "documents": [
-          "Different doc",
-          "  The  quick   brown fox ",
-          "The quick brown fox"
+          "doc Different",
+          "fox brown quick The",
+          "fox brown quick The"
         ]
       },
       "expectedOutput": {
         "unique_documents": [
-          "Different doc",
-          "The quick brown fox"
+          "doc Different",
+          "fox brown quick The"
         ],
         "document_mapping": [
           0,
@@ -192,18 +191,21 @@
         "documents": [
           "The quick brown fox",
           "  The  quick   brown fox ",
-          "Different doc"
+          "Different doc",
+          "computer vision system"
         ]
       },
       "expectedOutput": {
         "unique_documents": [
           "The quick brown fox",
-          "Different doc"
+          "Different doc",
+          "computer vision system"
         ],
         "document_mapping": [
           0,
           0,
-          1
+          1,
+          2
         ],
         "num_duplicates_removed": 1
       },

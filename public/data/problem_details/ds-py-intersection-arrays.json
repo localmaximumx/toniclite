@@ -13,7 +13,7 @@
   "description": "Given two integer arrays `nums1` and `nums2`, return an array of their **intersection**.\n\nEach element in the result must be **unique** and you may return the result in any order.\n\nIn database query engines and feature engineering, computing the distinct set intersection of identifiers across user activity logs is a core primitive.",
   "theory": "# Understanding Intersection of Two Arrays\n\n## 1. What Is It?\n\nThe **Intersection of Two Arrays** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given two integer arrays `nums1` and `nums2`, return an array of their **intersection**.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Intersection of Two Arrays**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ds_py_intersection_arrays`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ds_py_intersection_arrays` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Intersection of Two Arrays.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ds_py_intersection_arrays` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ds_py_intersection_arrays`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ds_py_intersection_arrays`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ds_py_intersection_arrays`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Intersection of Two Arrays** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ds_py_intersection_arrays` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Intersection of Two Arrays."
+    "Input: nums1 = [1, 2, 2, 1], nums2 = [2, 2]\n\nOutput: [2]\n\nExplanation: Evaluated ds_py_intersection_arrays under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ds_py_intersection_arrays`.",
@@ -28,125 +28,151 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ds_py_intersection_arrays(x):\n    \"\"\"\n    Intersection of Two Arrays\n    \"\"\"\n    # Implement Intersection of Two Arrays here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ds_py_intersection_arrays(x):\n    \"\"\"\n    Intersection of Two Arrays\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def ds_py_intersection_arrays(nums1: list, nums2: list) -> list:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Intersection of Two Arrays** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef ds_py_intersection_arrays(nums1: list, nums2: list) -> list:\n    return sorted(list(set(nums1) & set(nums2)))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ds-py-intersection-arrays-tc-1",
-      "name": "Standard Input",
+      "name": "Duplicate elements",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "nums1": [
+          1,
+          2,
+          2,
+          1
+        ],
+        "nums2": [
+          2,
+          2
         ]
       },
       "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
+        2
       ],
       "isPublic": true
     },
     {
       "id": "ds-py-intersection-arrays-tc-2",
-      "name": "Case 2",
+      "name": "Multiple shared",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "nums1": [
+          4,
+          9,
+          5
+        ],
+        "nums2": [
+          9,
+          4,
+          9,
+          8,
+          4
         ]
       },
       "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
+        4,
+        9
       ],
       "isPublic": true
     },
     {
       "id": "ds-py-intersection-arrays-tc-3",
-      "name": "Case 3",
+      "name": "Disjoint arrays",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "nums1": [
+          1,
+          3,
+          5
+        ],
+        "nums2": [
+          2,
+          4,
+          6
         ]
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
+      "expectedOutput": [],
       "isPublic": false
     },
     {
       "id": "ds-py-intersection-arrays-tc-4",
-      "name": "Case 4",
+      "name": "Identical sets",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "nums1": [
+          10,
+          20,
+          30
+        ],
+        "nums2": [
+          30,
+          20,
+          10
         ]
       },
       "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
+        10,
+        20,
+        30
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-intersection-arrays-tc-5",
-      "name": "Case 5",
+      "name": "Negative numbers",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "nums1": [
+          -5,
+          -2,
+          0,
+          3
+        ],
+        "nums2": [
+          -2,
+          3,
+          7
         ]
       },
       "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
+        -2,
+        3
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-intersection-arrays-tc-6",
-      "name": "Case 6",
+      "name": "Single element match",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "nums1": [
+          7
+        ],
+        "nums2": [
+          7,
+          8,
+          9
         ]
       },
       "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
+        7
       ],
       "isPublic": false
     },
     {
       "id": "ds-py-intersection-arrays-tc-7",
-      "name": "Case 7",
+      "name": "Subset array",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "nums1": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "nums2": [
+          2,
+          4
         ]
       },
       "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
+        2,
+        4
       ],
       "isPublic": false
     }
@@ -159,6 +185,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

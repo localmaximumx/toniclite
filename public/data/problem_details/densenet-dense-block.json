@@ -899,5 +899,6 @@
     "prev": "densenet-bottleneck",
     "next": "densenet-transition"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "densenet-dense-block"
 }

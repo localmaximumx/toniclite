@@ -22,7 +22,7 @@
   "topicId": "word2vec-subsampling",
   "paperSnippet": "\"To counter the imbalance between the rare and frequent words, we used a simple subsampling approach: each word w_i in the training set is discarded with probability computed by the formula P(w_i) = 1 - sqrt(t / f(w_i)), where f(w_i) is the frequency of word w_i and t is a chosen threshold, typically around 10^-5.\"",
   "visualizationComponent": "Word2VecSubsamplingViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Frequent-Word Subsampling** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch\n\ndef subsample_keep_probs(counts: torch.Tensor,\n                         t: float = 1e-5) -> torch.Tensor:\n    c = counts.to(torch.float64) if isinstance(counts, torch.Tensor) else torch.tensor(counts, dtype=torch.float64)\n    total = torch.sum(c)\n    f = c / total\n    t_val = float(t)\n    keep = torch.clamp(torch.sqrt(t_val / f), max=1.0)\n    return torch.round(keep * 1e6) / 1e6\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Frequent-Word Subsampling** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef subsample_keep_probs(counts: torch.Tensor,\n                         t: float = 1e-5) -> torch.Tensor:\n    c = counts.to(torch.float64) if isinstance(counts, torch.Tensor) else torch.tensor(counts, dtype=torch.float64)\n    total = torch.sum(c)\n    f = c / total\n    t_val = float(t)\n    keep = torch.clamp(torch.sqrt(t_val / f), max=1.0)\n    return torch.round(keep * 1e6) / 1e6\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "word2vec-subsampling-tc-1",
@@ -126,38 +126,40 @@
       "id": "word2vec-subsampling-tc-6",
       "name": "Case 6",
       "inputs": {
-        "t": 0.001,
+        "t": 0.0003,
         "counts": [
-          25,
-          25,
-          25,
-          25
+          34,
+          35,
+          34,
+          35
         ]
       },
       "isPublic": false,
       "expectedOutput": [
-        0.063246,
-        0.063246,
-        0.063246,
-        0.063246
+        0.034895,
+        0.034393,
+        0.034895,
+        0.034393
       ]
     },
     {
       "id": "word2vec-subsampling-tc-7",
       "name": "Case 7",
       "inputs": {
-        "t": 0.001,
+        "t": 0.0025,
         "counts": [
-          10000,
-          1,
-          1
+          33,
+          34,
+          33,
+          34
         ]
       },
       "isPublic": false,
       "expectedOutput": [
-        0.031626,
-        1.0,
-        1.0
+        0.100755,
+        0.099262,
+        0.100755,
+        0.099262
       ]
     }
   ],
@@ -205,5 +207,6 @@
     "prev": null,
     "next": "word2vec-skipgram-pairs"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "word2vec-subsampling"
 }

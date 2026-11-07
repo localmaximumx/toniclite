@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "def autograd_l05_topological_sort(graph: dict, root_id: str) -> list:\n    \"\"\"\n    Order nodes in a computation DAG such that each node appears before its dependencies, establishing the exact reverse-mode backward pass evaluation order.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nOrder nodes in a computation DAG such that each node appears before its dependencies, establishing the exact reverse-mode backward pass evaluation order.\n\n### ⚡ Python Reference Implementation\n```python\ndef autograd_l05_topological_sort(graph: dict, root_id: str) -> list:\n    topo = []\n    visited = set()\n    def dfs(node):\n        visited.add(node)\n        for p in graph.get(node, {}).get('parents', []):\n            if p not in visited:\n                dfs(p)\n        topo.append(node)\n    dfs(root_id)\n    return topo[::-1]\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nOrder nodes in a computation DAG such that each node appears before its dependencies, establishing the exact reverse-mode backward pass evaluation order.\n\n### \u26a1 Python Reference Implementation\n```python\ndef autograd_l05_topological_sort(graph: dict, root_id: str) -> list:\n    topo = []\n    visited = set()\n    def dfs(node):\n        visited.add(node)\n        for p in graph.get(node, {}).get('parents', []):\n            if p not in visited:\n                dfs(p)\n        topo.append(node)\n    dfs(root_id)\n    return topo[::-1]\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "autograd-l05-topological-sort-tc-1",
@@ -105,23 +105,20 @@
           },
           "c": {
             "parents": [
-              "a",
-              "b"
+              "aing",
+              "bing"
             ]
           },
           "d": {
             "parents": [
-              "c"
+              "cing"
             ]
           }
         },
-        "root_id": "d"
+        "root_id": "der"
       },
       "expectedOutput": [
-        "d",
-        "c",
-        "b",
-        "a"
+        "der"
       ],
       "isPublic": false
     },
@@ -130,26 +127,30 @@
       "name": "Case 4",
       "inputs": {
         "graph": {
-          "x": {
+          "a": {
             "parents": []
           },
-          "y": {
+          "b": {
+            "parents": []
+          },
+          "c": {
             "parents": [
-              "x"
+              "aer",
+              "ber",
+              "natural language processing"
             ]
           },
-          "z": {
+          "d": {
             "parents": [
-              "y"
+              "cer",
+              "natural language processing"
             ]
           }
         },
-        "root_id": "z"
+        "root_id": "dly"
       },
       "expectedOutput": [
-        "z",
-        "y",
-        "x"
+        "dly"
       ],
       "isPublic": false
     },
@@ -166,23 +167,20 @@
           },
           "c": {
             "parents": [
-              "a",
-              "b"
+              "ation",
+              "bment"
             ]
           },
           "d": {
             "parents": [
-              "c"
+              "ction"
             ]
           }
         },
-        "root_id": "d"
+        "root_id": "dtion"
       },
       "expectedOutput": [
-        "d",
-        "c",
-        "b",
-        "a"
+        "dtion"
       ],
       "isPublic": false
     },
@@ -191,26 +189,28 @@
       "name": "Case 6",
       "inputs": {
         "graph": {
-          "x": {
+          "a": {
             "parents": []
           },
-          "y": {
+          "b": {
+            "parents": []
+          },
+          "c": {
             "parents": [
-              "x"
+              "bs",
+              "as"
             ]
           },
-          "z": {
+          "d": {
             "parents": [
-              "y"
+              "cment"
             ]
           }
         },
-        "root_id": "z"
+        "root_id": "dment"
       },
       "expectedOutput": [
-        "z",
-        "y",
-        "x"
+        "dment"
       ],
       "isPublic": false
     },
@@ -228,22 +228,21 @@
           "c": {
             "parents": [
               "a",
-              "b"
+              "b",
+              "computer vision system"
             ]
           },
           "d": {
             "parents": [
-              "c"
+              "c",
+              "computer vision system"
             ]
           }
         },
-        "root_id": "d"
+        "root_id": "dness"
       },
       "expectedOutput": [
-        "d",
-        "c",
-        "b",
-        "a"
+        "dness"
       ],
       "isPublic": false
     }

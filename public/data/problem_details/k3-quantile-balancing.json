@@ -484,5 +484,6 @@
     "prev": "k3-situ-glu",
     "next": "k3-stable-latent-moe"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-quantile-balancing"
 }

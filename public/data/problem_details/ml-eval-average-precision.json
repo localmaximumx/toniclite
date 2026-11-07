@@ -47,7 +47,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(ranking,relevant):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(ranking,relevant):\n    relevant=set(relevant)\n    if not relevant:return 0.0\n    hits=0; total=0.0\n    for i,item in enumerate(ranking,1):\n      if item in relevant:\n       hits+=1; total+=hits/i\n    return total/len(relevant)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(ranking,relevant):\n    relevant=set(relevant)\n    if not relevant:return 0.0\n    hits=0; total=0.0\n    for i,item in enumerate(ranking,1):\n      if item in relevant:\n       hits+=1; total+=hits/i\n    return total/len(relevant)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-eval-average-precision-tc-1",
@@ -88,16 +88,16 @@
       "name": "Case 3",
       "inputs": {
         "ranking": [
-          "a",
-          "b",
-          "c"
+          "aing",
+          "bing",
+          "cing"
         ],
         "relevant": [
-          "a",
-          "c"
+          "aing",
+          "cing"
         ]
       },
-      "expectedOutput": 0.833333,
+      "expectedOutput": 0.8333333333333333,
       "isPublic": false
     },
     {
@@ -105,16 +105,18 @@
       "name": "Case 4",
       "inputs": {
         "ranking": [
-          "c",
-          "b",
-          "a"
+          "aer",
+          "ber",
+          "cer",
+          "natural language processing"
         ],
         "relevant": [
-          "c",
-          "a"
+          "aer",
+          "cer",
+          "natural language processing"
         ]
       },
-      "expectedOutput": 0.833333,
+      "expectedOutput": 0.8055555555555555,
       "isPublic": false
     },
     {
@@ -122,16 +124,16 @@
       "name": "Case 5",
       "inputs": {
         "ranking": [
-          "a",
-          "b",
-          "c"
+          "ation",
+          "bment",
+          "cness"
         ],
         "relevant": [
-          "a",
-          "c"
+          "ation",
+          "cment"
         ]
       },
-      "expectedOutput": 0.833333,
+      "expectedOutput": 0.5,
       "isPublic": false
     },
     {
@@ -139,16 +141,16 @@
       "name": "Case 6",
       "inputs": {
         "ranking": [
-          "c",
-          "b",
-          "a"
+          "cs",
+          "bs",
+          "as"
         ],
         "relevant": [
-          "c",
-          "a"
+          "cs",
+          "as"
         ]
       },
-      "expectedOutput": 0.833333,
+      "expectedOutput": 0.8333333333333333,
       "isPublic": false
     },
     {
@@ -158,14 +160,16 @@
         "ranking": [
           "a",
           "b",
-          "c"
+          "c",
+          "computer vision system"
         ],
         "relevant": [
           "a",
-          "c"
+          "c",
+          "computer vision system"
         ]
       },
-      "expectedOutput": 0.833333,
+      "expectedOutput": 0.8055555555555555,
       "isPublic": false
     }
   ],

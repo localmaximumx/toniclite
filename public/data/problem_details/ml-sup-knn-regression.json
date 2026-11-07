@@ -58,7 +58,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(train_X,train_y,query,k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(train_X,train_y,query,k):\n    idx=sorted(range(len(train_X)),key=lambda i:(sum((a-b)**2 for a,b in zip(train_X[i],query)),i))[:k]\n    return sum(train_y[i] for i in idx)/len(idx)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(train_X,train_y,query,k):\n    idx=sorted(range(len(train_X)),key=lambda i:(sum((a-b)**2 for a,b in zip(train_X[i],query)),i))[:k]\n    return sum(train_y[i] for i in idx)/len(idx)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-sup-knn-regression-tc-1",
@@ -167,9 +167,9 @@
         "query": [
           -3.0
         ],
-        "k": -2
+        "k": 2
       },
-      "expectedOutput": -2.0,
+      "expectedOutput": -3.0,
       "isPublic": false
     },
     {

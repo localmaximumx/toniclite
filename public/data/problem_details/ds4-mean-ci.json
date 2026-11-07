@@ -45,7 +45,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "import math\ndef solve(mean, sigma, n, z=1.96):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport math\ndef solve(mean, sigma, n, z=1.96):\n    if n <= 0: raise ValueError(\"n must be positive\")\n    margin = z*sigma/math.sqrt(n)\n    return (mean-margin, mean+margin)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nimport math\ndef solve(mean, sigma, n, z=1.96):\n    if n <= 0: raise ValueError(\"n must be positive\")\n    margin = z*sigma/math.sqrt(n)\n    return (mean-margin, mean+margin)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds4-mean-ci-tc-1",
@@ -113,12 +113,12 @@
       "inputs": {
         "mean": 11.0,
         "sigma": 3.0,
-        "n": 26.0,
+        "n": 25,
         "z": 2.96
       },
       "expectedOutput": [
-        9.258489,
-        12.741511
+        9.224,
+        12.776
       ],
       "isPublic": false
     },
@@ -127,13 +127,13 @@
       "name": "Case 6",
       "inputs": {
         "mean": 8.0,
-        "sigma": 0.0,
-        "n": 23.0,
+        "sigma": 2,
+        "n": 25,
         "z": -0.040000000000000036
       },
       "expectedOutput": [
-        8.0,
-        8.0
+        8.016,
+        7.984
       ],
       "isPublic": false
     },

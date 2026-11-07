@@ -10,7 +10,7 @@
   ],
   "isFree": true,
   "isLocked": false,
-  "description": "Implement a **Gaussian Naive Bayes** classifier step.\n\nCalculate class prior probabilities $P(C_k)$ and feature likelihoods under normal distributions $\\mathcal{N}(\\mu_{k, j}, \\sigma_{k, j}^2)$, returning the class that maximizes the log-posterior probability.",
+  "description": "Implement **Bayes' Theorem** (`bayes_posterior`) to compute the posterior probability $P(A \\mid B)$ given the prior $P(A)$, likelihood $P(B \\mid A)$, and marginal evidence $P(B)$:\n\n$$\nP(A \\mid B) = \\frac{P(B \\mid A) \\cdot P(A)}{P(B)}\n$$\n\nReturn `0.0` if `evidence == 0`, otherwise return the posterior probability rounded to 4 decimal places.",
   "theory": "# Understanding Gaussian Naive Bayes\n\n## 1. What Is It?\n\nThe **Gaussian Naive Bayes** is a fundamental computational technique in Machine Learning. In machine learning workflows, it involves performing **Gaussian Naive Bayes** classifier step.\n\n### Key Terminology\n- **Gaussian Naive Bayes**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `bayes_posterior`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `bayes_posterior` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nprior = 0.01, likelihood = 0.9, evidence = 0.05\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n\n\n**Resulting Output:**\n```python\n0.18\n```\n\n## 4. Understanding the Expected Output\n\nThe function `bayes_posterior` must return:\n- **Primary Output:** `0.18`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `bayes_posterior`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `bayes_posterior`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `bayes_posterior`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Gaussian Naive Bayes** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `bayes_posterior` accurately and efficiently performs the required transformation.\n",
   "examples": [
     "Input: prior = 0.01, likelihood = 0.9, evidence = 0.05\nOutput: 0.18"
@@ -47,10 +47,10 @@
       "name": "Case 2",
       "inputs": {
         "prior": 0.02,
-        "likelihood": 1.8,
+        "likelihood": 0.8,
         "evidence": 0.1
       },
-      "expectedOutput": 0.36,
+      "expectedOutput": 0.16,
       "isPublic": true
     },
     {
@@ -68,44 +68,44 @@
       "id": "ml-naive-bayes-tc-4",
       "name": "Case 4",
       "inputs": {
-        "prior": -0.01,
-        "likelihood": -0.9,
-        "evidence": -0.05
+        "prior": 0.5,
+        "likelihood": 0.6,
+        "evidence": 0.75
       },
-      "expectedOutput": -0.18,
+      "expectedOutput": 0.4,
       "isPublic": false
     },
     {
       "id": "ml-naive-bayes-tc-5",
       "name": "Case 5",
       "inputs": {
-        "prior": 0.03,
-        "likelihood": 2.7,
-        "evidence": 0.15
+        "prior": 0.1,
+        "likelihood": 0.95,
+        "evidence": 0.2
       },
-      "expectedOutput": 0.54,
+      "expectedOutput": 0.475,
       "isPublic": false
     },
     {
       "id": "ml-naive-bayes-tc-6",
       "name": "Case 6",
       "inputs": {
-        "prior": 1.01,
-        "likelihood": 1.9,
-        "evidence": 1.05
+        "prior": 0.25,
+        "likelihood": 0.4,
+        "evidence": 0.5
       },
-      "expectedOutput": 1.8276,
+      "expectedOutput": 0.2,
       "isPublic": false
     },
     {
       "id": "ml-naive-bayes-tc-7",
       "name": "Case 7",
       "inputs": {
-        "prior": -1.99,
-        "likelihood": -1.1,
-        "evidence": -1.95
+        "prior": 0.2,
+        "likelihood": 0.5,
+        "evidence": 0.0
       },
-      "expectedOutput": -1.1226,
+      "expectedOutput": 0.0,
       "isPublic": false
     }
   ],

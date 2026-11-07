@@ -218,5 +218,6 @@
     "prev": "alexnet-conv-layers",
     "next": "alexnet-dropout"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "alexnet-relu"
 }

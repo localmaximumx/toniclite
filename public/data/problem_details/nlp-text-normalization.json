@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import re\n\ndef nlp_text_normalization(text: str) -> str:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Text Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport re\n\ndef nlp_text_normalization(text: str) -> str:\n    t = re.sub(r'[^\\w\\s]', '', text.lower())\n    return re.sub(r'\\s+', ' ', t).strip()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Text Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_text_normalization(text: str) -> str:\n    t = re.sub(r'[^\\w\\s]', '', text.lower())\n    return re.sub(r'\\s+', ' ', t).strip()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-text-normalization-tc-1",
@@ -46,54 +46,54 @@
       "id": "nlp-text-normalization-tc-2",
       "name": "Case 2",
       "inputs": {
-        "text": "  Hello,   World!  This is a   Test... "
+        "text": "delta   Hello,   World!  This is a   Test... "
       },
-      "expectedOutput": "hello world this is a test",
+      "expectedOutput": "delta hello world this is a test",
       "isPublic": true
     },
     {
       "id": "nlp-text-normalization-tc-3",
       "name": "Case 3",
       "inputs": {
-        "text": "  Hello,   World!  This is a   Test... "
+        "text": "Hello, World! This is a Test... Hello,"
       },
-      "expectedOutput": "hello world this is a test",
+      "expectedOutput": "hello world this is a test hello",
       "isPublic": false
     },
     {
       "id": "nlp-text-normalization-tc-4",
       "name": "Case 4",
       "inputs": {
-        "text": "  Hello,   World!  This is a   Test... "
+        "text": "Hello, World! This is a model"
       },
-      "expectedOutput": "hello world this is a test",
+      "expectedOutput": "hello world this is a model",
       "isPublic": false
     },
     {
       "id": "nlp-text-normalization-tc-5",
       "name": "Case 5",
       "inputs": {
-        "text": "  Hello,   World!  This is a   Test... "
+        "text": "neural Test... a is This World! Hello, vector"
       },
-      "expectedOutput": "hello world this is a test",
+      "expectedOutput": "neural test a is this world hello vector",
       "isPublic": false
     },
     {
       "id": "nlp-text-normalization-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": "  Hello,   World!  This is a   Test... "
+        "text": "Test... a is This World! Hello,"
       },
-      "expectedOutput": "hello world this is a test",
+      "expectedOutput": "test a is this world hello",
       "isPublic": false
     },
     {
       "id": "nlp-text-normalization-tc-7",
       "name": "Case 7",
       "inputs": {
-        "text": "  Hello,   World!  This is a   Test... "
+        "text": "  Hello,   World!  This is a   Test...  matrix"
       },
-      "expectedOutput": "hello world this is a test",
+      "expectedOutput": "hello world this is a test matrix",
       "isPublic": false
     }
   ],

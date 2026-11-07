@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "def cs336_l10_kv_cache_capacity_planner(num_layers: int, num_kv_heads: int, head_dim: int, max_seq_len: int, total_gpu_mem_bytes: int, model_param_bytes: int, bytes_per_elem: int = 2) -> dict:\n    \"\"\"\n    Calculate per-token and per-request KV cache memory footprints to determine maximum serving concurrency on available GPU memory.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nCalculate per-token and per-request KV cache memory footprints to determine maximum serving concurrency on available GPU memory.\n\n### ⚡ Python Reference Implementation\n```python\ndef cs336_l10_kv_cache_capacity_planner(num_layers: int, num_kv_heads: int, head_dim: int, max_seq_len: int, total_gpu_mem_bytes: int, model_param_bytes: int, bytes_per_elem: int = 2) -> dict:\n    b_tok = 2 * num_layers * num_kv_heads * head_dim * bytes_per_elem\n    b_req = b_tok * max_seq_len\n    avail = total_gpu_mem_bytes - model_param_bytes\n    return {'bytes_per_token': b_tok, 'bytes_per_request': b_req, 'available_kv_memory_bytes': avail, 'max_batch_size': max(0, avail // b_req) if b_req else 0}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nCalculate per-token and per-request KV cache memory footprints to determine maximum serving concurrency on available GPU memory.\n\n### \u26a1 Python Reference Implementation\n```python\ndef cs336_l10_kv_cache_capacity_planner(num_layers: int, num_kv_heads: int, head_dim: int, max_seq_len: int, total_gpu_mem_bytes: int, model_param_bytes: int, bytes_per_elem: int = 2) -> dict:\n    b_tok = 2 * num_layers * num_kv_heads * head_dim * bytes_per_elem\n    b_req = b_tok * max_seq_len\n    avail = total_gpu_mem_bytes - model_param_bytes\n    return {'bytes_per_token': b_tok, 'bytes_per_request': b_req, 'available_kv_memory_bytes': avail, 'max_batch_size': max(0, avail // b_req) if b_req else 0}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l10-kv-cache-capacity-planner-tc-1",
@@ -149,7 +149,7 @@
       "id": "cs336-l10-kv-cache-capacity-planner-tc-7",
       "name": "Case 7",
       "inputs": {
-        "num_layers": 33.0,
+        "num_layers": 32,
         "num_kv_heads": 9.0,
         "head_dim": 129.0,
         "max_seq_len": 4097.0,
@@ -157,10 +157,10 @@
         "model_param_bytes": 14000000001.0
       },
       "expectedOutput": {
-        "bytes_per_token": 153252.0,
-        "bytes_per_request": 627873444.0,
+        "bytes_per_token": 148608.0,
+        "bytes_per_request": 608846976.0,
         "available_kv_memory_bytes": 66000000000.0,
-        "max_batch_size": 105.0
+        "max_batch_size": 108.0
       },
       "isPublic": false
     }

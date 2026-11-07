@@ -45,7 +45,7 @@
     "Unless otherwise stated, dimensions must be consistent."
   ],
   "starterCode": "import math\ndef solve(position,d_model):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport math\ndef solve(position,d_model):\n    out=[]\n    for i in range(d_model):\n      angle=position/(10000**(2*(i//2)/d_model))\n      out.append(math.sin(angle) if i%2==0 else math.cos(angle))\n    return out\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nimport math\ndef solve(position,d_model):\n    out=[]\n    for i in range(d_model):\n      angle=position/(10000**(2*(i//2)/d_model))\n      out.append(math.sin(angle) if i%2==0 else math.cos(angle))\n    return out\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "re-pos-sinusoidal-tc-1",
@@ -98,10 +98,15 @@
       "id": "re-pos-sinusoidal-tc-4",
       "name": "Case 4",
       "inputs": {
-        "position": 0,
-        "d_model": -4
+        "position": 5,
+        "d_model": 4
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        -0.9589242746631385,
+        0.28366218546322625,
+        0.04997916927067833,
+        0.9987502603949663
+      ],
       "isPublic": false
     },
     {
@@ -182,10 +187,15 @@
       "id": "re-pos-sinusoidal-tc-7",
       "name": "Case 7",
       "inputs": {
-        "position": 0,
-        "d_model": 0
+        "position": 8,
+        "d_model": 4
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        0.9893582466233818,
+        -0.14550003380861354,
+        0.0799146939691727,
+        0.9968017063026194
+      ],
       "isPublic": false
     }
   ],

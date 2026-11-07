@@ -31,11 +31,11 @@
       "inputs": {
         "text": "hello world"
       },
-      "isPublic": true,
       "expectedOutput": [
         5,
         9
-      ]
+      ],
+      "isPublic": true
     },
     {
       "id": "transformers-tokenization-tc-2",
@@ -43,11 +43,11 @@
       "inputs": {
         "text": "hello unknown"
       },
-      "isPublic": true,
       "expectedOutput": [
         5,
         1
-      ]
+      ],
+      "isPublic": true
     },
     {
       "id": "transformers-tokenization-tc-3",
@@ -55,61 +55,67 @@
       "inputs": {
         "text": "foo bar baz"
       },
-      "isPublic": false,
       "expectedOutput": [
         1,
         1,
         1
-      ]
+      ],
+      "isPublic": false
     },
     {
       "id": "transformers-tokenization-tc-4",
       "name": "Case 4",
       "inputs": {
-        "text": "hello world"
+        "text": "this is a test"
       },
-      "isPublic": false,
       "expectedOutput": [
-        5,
-        9
-      ]
+        8,
+        6,
+        4,
+        7
+      ],
+      "isPublic": false
     },
     {
       "id": "transformers-tokenization-tc-5",
       "name": "Case 5",
       "inputs": {
-        "text": "hello unknown"
+        "text": "HELLO TEST world"
       },
-      "isPublic": false,
       "expectedOutput": [
         5,
-        1
-      ]
+        7,
+        9
+      ],
+      "isPublic": false
     },
     {
       "id": "transformers-tokenization-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": "foo bar baz"
+        "text": "a test is this"
       },
-      "isPublic": false,
       "expectedOutput": [
-        1,
-        1,
-        1
-      ]
+        4,
+        7,
+        6,
+        8
+      ],
+      "isPublic": false
     },
     {
       "id": "transformers-tokenization-tc-7",
       "name": "Case 7",
       "inputs": {
-        "text": "hello world"
+        "text": "world hello unknown test"
       },
-      "isPublic": false,
       "expectedOutput": [
+        9,
         5,
-        9
-      ]
+        1,
+        7
+      ],
+      "isPublic": false
     }
   ],
   "functionMetadata": {
@@ -145,5 +151,6 @@
     "prev": null,
     "next": "transformers-embedding"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "transformers-tokenization"
 }

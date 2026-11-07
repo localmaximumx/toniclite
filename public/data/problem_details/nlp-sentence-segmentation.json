@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import re\n\ndef nlp_sentence_segmentation(text: str) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Sentence Segmentation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport re\n\ndef nlp_sentence_segmentation(text: str) -> list:\n    return [s.strip() for s in re.split(r'(?<=[.!?])\\s+', text.strip()) if s.strip()]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Sentence Segmentation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_sentence_segmentation(text: str) -> list:\n    return [s.strip() for s in re.split(r'(?<=[.!?])\\s+', text.strip()) if s.strip()]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-sentence-segmentation-tc-1",
@@ -50,10 +50,10 @@
       "id": "nlp-sentence-segmentation-tc-2",
       "name": "Case 2",
       "inputs": {
-        "text": "Hello world! This is TensorTonic. Are you ready?"
+        "text": "delta Hello world! This is TensorTonic. Are you ready?"
       },
       "expectedOutput": [
-        "Hello world!",
+        "delta Hello world!",
         "This is TensorTonic.",
         "Are you ready?"
       ],
@@ -63,12 +63,13 @@
       "id": "nlp-sentence-segmentation-tc-3",
       "name": "Case 3",
       "inputs": {
-        "text": "Hello world! This is TensorTonic. Are you ready?"
+        "text": "Hello world! This is TensorTonic. Are you ready? Hello"
       },
       "expectedOutput": [
         "Hello world!",
         "This is TensorTonic.",
-        "Are you ready?"
+        "Are you ready?",
+        "Hello"
       ],
       "isPublic": false
     },
@@ -76,12 +77,12 @@
       "id": "nlp-sentence-segmentation-tc-4",
       "name": "Case 4",
       "inputs": {
-        "text": "Hello world! This is TensorTonic. Are you ready?"
+        "text": "Hello world! This is TensorTonic. Are you model"
       },
       "expectedOutput": [
         "Hello world!",
         "This is TensorTonic.",
-        "Are you ready?"
+        "Are you model"
       ],
       "isPublic": false
     },
@@ -89,12 +90,13 @@
       "id": "nlp-sentence-segmentation-tc-5",
       "name": "Case 5",
       "inputs": {
-        "text": "Hello world! This is TensorTonic. Are you ready?"
+        "text": "neural ready? you Are TensorTonic. is This world! Hello vector"
       },
       "expectedOutput": [
-        "Hello world!",
-        "This is TensorTonic.",
-        "Are you ready?"
+        "neural ready?",
+        "you Are TensorTonic.",
+        "is This world!",
+        "Hello vector"
       ],
       "isPublic": false
     },
@@ -102,12 +104,13 @@
       "id": "nlp-sentence-segmentation-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": "Hello world! This is TensorTonic. Are you ready?"
+        "text": "ready? you Are TensorTonic. is This world! Hello"
       },
       "expectedOutput": [
-        "Hello world!",
-        "This is TensorTonic.",
-        "Are you ready?"
+        "ready?",
+        "you Are TensorTonic.",
+        "is This world!",
+        "Hello"
       ],
       "isPublic": false
     },
@@ -115,12 +118,13 @@
       "id": "nlp-sentence-segmentation-tc-7",
       "name": "Case 7",
       "inputs": {
-        "text": "Hello world! This is TensorTonic. Are you ready?"
+        "text": "Hello world! This is TensorTonic. Are you ready? matrix"
       },
       "expectedOutput": [
         "Hello world!",
         "This is TensorTonic.",
-        "Are you ready?"
+        "Are you ready?",
+        "matrix"
       ],
       "isPublic": false
     }

@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def optim_linear_warmup(step: int, warmup_steps: int, base_lr: float) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Linear Warmup** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef optim_linear_warmup(step: int, warmup_steps: int, base_lr: float) -> float:\n    if step < 0: return 0.0\n    if step >= warmup_steps: return round(float(base_lr), 6)\n    return round(float(base_lr * (step / max(1, warmup_steps))), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Linear Warmup** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef optim_linear_warmup(step: int, warmup_steps: int, base_lr: float) -> float:\n    if step < 0: return 0.0\n    if step >= warmup_steps: return round(float(base_lr), 6)\n    return round(float(base_lr * (step / max(1, warmup_steps))), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "optim-linear-warmup-tc-1",
@@ -80,11 +80,11 @@
       "id": "optim-linear-warmup-tc-5",
       "name": "Case 5",
       "inputs": {
-        "step": 50,
-        "warmup_steps": 100,
-        "base_lr": 0.001
+        "step": 56,
+        "warmup_steps": 106,
+        "base_lr": 0.002
       },
-      "expectedOutput": 0.0005,
+      "expectedOutput": 0.001057,
       "isPublic": false
     },
     {

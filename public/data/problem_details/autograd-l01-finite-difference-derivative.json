@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "def autograd_l01_finite_difference_derivative(f_val_plus: float, f_val_center: float, h: float = 1e-5) -> float:\n    \"\"\"\n    Estimate a scalar derivative using a forward finite difference approximation, serving as the foundational verification step in building an automatic differentiation engine from scratch.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nEstimate a scalar derivative using a forward finite difference approximation, serving as the foundational verification step in building an automatic differentiation engine from scratch.\n\n### ⚡ Python Reference Implementation\n```python\ndef autograd_l01_finite_difference_derivative(f_val_plus: float, f_val_center: float, h: float = 1e-5) -> float:\n    return round((f_val_plus - f_val_center) / h, 6)\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nEstimate a scalar derivative using a forward finite difference approximation, serving as the foundational verification step in building an automatic differentiation engine from scratch.\n\n### \u26a1 Python Reference Implementation\n```python\ndef autograd_l01_finite_difference_derivative(f_val_plus: float, f_val_center: float, h: float = 1e-5) -> float:\n    return round((f_val_plus - f_val_center) / h, 6)\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "autograd-l01-finite-difference-derivative-tc-1",
@@ -69,9 +69,9 @@
       "inputs": {
         "f_val_plus": 2.0000400000000003,
         "f_val_center": 2.0,
-        "h": -1.99999
+        "h": 1e-05
       },
-      "expectedOutput": -2e-05,
+      "expectedOutput": 4.0,
       "isPublic": false
     },
     {
@@ -80,9 +80,9 @@
       "inputs": {
         "f_val_plus": -4.00004,
         "f_val_center": -4.0,
-        "h": -1e-05
+        "h": 1e-05
       },
-      "expectedOutput": 4.0,
+      "expectedOutput": -4.0,
       "isPublic": false
     },
     {

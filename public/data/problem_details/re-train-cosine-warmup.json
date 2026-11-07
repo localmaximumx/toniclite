@@ -42,7 +42,7 @@
     "Unless otherwise stated, dimensions must be consistent."
   ],
   "starterCode": "import math\ndef solve(step,total_steps,warmup_steps,base_lr):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport math\ndef solve(step,total_steps,warmup_steps,base_lr):\n    if step<warmup_steps: return base_lr*(step+1)/max(1,warmup_steps)\n    progress=(step-warmup_steps)/max(1,total_steps-warmup_steps)\n    return base_lr*0.5*(1+math.cos(math.pi*min(1,progress)))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nimport math\ndef solve(step,total_steps,warmup_steps,base_lr):\n    if step<warmup_steps: return base_lr*(step+1)/max(1,warmup_steps)\n    progress=(step-warmup_steps)/max(1,total_steps-warmup_steps)\n    return base_lr*0.5*(1+math.cos(math.pi*min(1,progress)))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "re-train-cosine-warmup-tc-1",
@@ -84,12 +84,12 @@
       "id": "re-train-cosine-warmup-tc-4",
       "name": "Case 4",
       "inputs": {
-        "step": 5,
-        "total_steps": 100,
-        "warmup_steps": 10,
-        "base_lr": 0.001
+        "step": 10,
+        "total_steps": 105,
+        "warmup_steps": 15,
+        "base_lr": 0.0018
       },
-      "expectedOutput": 0.0006,
+      "expectedOutput": 0.00132,
       "isPublic": false
     },
     {
@@ -109,11 +109,11 @@
       "name": "Case 6",
       "inputs": {
         "step": 6.0,
-        "total_steps": 101.0,
-        "warmup_steps": 11.0,
+        "total_steps": 100,
+        "warmup_steps": 10,
         "base_lr": 1.001
       },
-      "expectedOutput": 0.637,
+      "expectedOutput": 0.7007,
       "isPublic": false
     },
     {
@@ -121,11 +121,11 @@
       "name": "Case 7",
       "inputs": {
         "step": 3.0,
-        "total_steps": 98.0,
-        "warmup_steps": 8.0,
+        "total_steps": 100,
+        "warmup_steps": 10,
         "base_lr": 1.999
       },
-      "expectedOutput": 0.9995,
+      "expectedOutput": 0.7996,
       "isPublic": false
     }
   ],

@@ -65,7 +65,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(X,y,weights,bias,lr=0.01,epochs=1):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(X,y,weights,bias,lr=0.01,epochs=1):\n    n=len(X); d=len(weights)\n    for _ in range(epochs):\n      gw=[0.0]*d; gb=0.0\n      for row,t in zip(X,y):\n       err=bias+sum(a*b for a,b in zip(row,weights))-t\n       for j in range(d):gw[j]+=2*err*row[j]/n\n       gb+=2*err/n\n      weights=[w-lr*g for w,g in zip(weights,gw)];bias-=lr*gb\n    return weights,bias\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(X,y,weights,bias,lr=0.01,epochs=1):\n    n=len(X); d=len(weights)\n    for _ in range(epochs):\n      gw=[0.0]*d; gb=0.0\n      for row,t in zip(X,y):\n       err=bias+sum(a*b for a,b in zip(row,weights))-t\n       for j in range(d):gw[j]+=2*err*row[j]/n\n       gb+=2*err/n\n      weights=[w-lr*g for w,g in zip(weights,gw)];bias-=lr*gb\n    return weights,bias\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-sup-linreg-sgd-tc-1",
@@ -162,13 +162,13 @@
         ],
         "bias": 0.0,
         "lr": 0.005,
-        "epochs": 0
+        "epochs": 1
       },
       "expectedOutput": [
         [
-          0.0
+          0.010833333333333335
         ],
-        0.0
+        0.015
       ],
       "isPublic": false
     },

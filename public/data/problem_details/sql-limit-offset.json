@@ -29,7 +29,7 @@
     "Utilize vectorized operations rather than manual loops for optimal performance."
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "-- SQL LIMIT and OFFSET\nSELECT sale_id, revenue\nFROM sales\nORDER BY revenue DESC, sale_id ASC\nLIMIT 3 OFFSET 1;",
+  "starterCode": "def sql_limit_offset(sales: list, limit: int = 3, offset: int = 1) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL LIMIT and OFFSET\n    SELECT sale_id, revenue\n    FROM sales\n    ORDER BY revenue DESC, sale_id ASC\n    LIMIT 3 OFFSET 1;\n    \"\"\"\n    pass\n",
   "solution": "### 💡 Intuition & Approach\nThe implementation computes **LIMIT and OFFSET** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_limit_offset(sales: list, limit: int = 3, offset: int = 1) -> list:\n    s = sorted(sales, key=lambda x: (-float(x['revenue']), x['sale_id']))\n    return s[int(offset) : int(offset) + int(limit)]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {

@@ -13,7 +13,7 @@
   "description": "You are given an integer array `nums`. The unique elements of an array are the elements that appear **exactly once** in the array.\n\nReturn the **sum** of all the unique elements of `nums`.",
   "theory": "# Understanding Sum of Unique Elements\n\n## 1. What Is It?\n\nThe **Sum of Unique Elements** is a fundamental computational technique in Machine Learning. In machine learning workflows, You are given an integer array `nums`. The unique elements of an array are the elements that appear **exactly once** in the array.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Sum of Unique Elements**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ml_sum_unique_elements`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ml_sum_unique_elements` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Sum of Unique Elements.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ml_sum_unique_elements` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ml_sum_unique_elements`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ml_sum_unique_elements`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ml_sum_unique_elements`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Sum of Unique Elements** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ml_sum_unique_elements` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Sum of Unique Elements."
+    "Input: nums = [1, 2, 3, 2]\n\nOutput: 4\n\nExplanation: Evaluated ml_sum_unique_elements under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ml_sum_unique_elements`.",
@@ -28,126 +28,108 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ml_sum_unique_elements(x):\n    \"\"\"\n    Sum of Unique Elements\n    \"\"\"\n    # Implement Sum of Unique Elements here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ml_sum_unique_elements(x):\n    \"\"\"\n    Sum of Unique Elements\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def ml_sum_unique_elements(nums: list) -> int:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Sum of Unique Elements** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\nfrom collections import Counter\n\ndef ml_sum_unique_elements(nums: list) -> int:\n    counts = Counter(nums)\n    return sum(k for k, v in counts.items() if v == 1)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-sum-unique-elements-tc-1",
-      "name": "Standard Input",
+      "name": "Mixed duplicates",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "nums": [
+          1,
+          2,
+          3,
+          2
         ]
       },
-      "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
-      ],
+      "expectedOutput": 4,
       "isPublic": true
     },
     {
       "id": "ml-sum-unique-elements-tc-2",
-      "name": "Case 2",
+      "name": "All duplicates",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "nums": [
+          1,
+          1,
+          1,
+          1,
+          1
         ]
       },
-      "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
-      ],
+      "expectedOutput": 0,
       "isPublic": true
     },
     {
       "id": "ml-sum-unique-elements-tc-3",
-      "name": "Case 3",
+      "name": "All unique",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "nums": [
+          1,
+          2,
+          3,
+          4,
+          5
         ]
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
+      "expectedOutput": 15,
       "isPublic": false
     },
     {
       "id": "ml-sum-unique-elements-tc-4",
-      "name": "Case 4",
+      "name": "Negative numbers",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "nums": [
+          -5,
+          -5,
+          10,
+          -3,
+          7
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
-      ],
+      "expectedOutput": 14,
       "isPublic": false
     },
     {
       "id": "ml-sum-unique-elements-tc-5",
-      "name": "Case 5",
+      "name": "Single element",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "nums": [
+          42
         ]
       },
-      "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
-      ],
+      "expectedOutput": 42,
       "isPublic": false
     },
     {
       "id": "ml-sum-unique-elements-tc-6",
-      "name": "Case 6",
+      "name": "Two pairs one unique",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "nums": [
+          4,
+          4,
+          8,
+          9,
+          8
         ]
       },
-      "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
-      ],
+      "expectedOutput": 9,
       "isPublic": false
     },
     {
       "id": "ml-sum-unique-elements-tc-7",
-      "name": "Case 7",
+      "name": "Zeros and positives",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "nums": [
+          0,
+          1,
+          0,
+          2,
+          3,
+          2
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
-      ],
+      "expectedOutput": 4,
       "isPublic": false
     }
   ],
@@ -159,6 +141,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

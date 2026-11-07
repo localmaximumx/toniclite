@@ -606,5 +606,6 @@
     "prev": "vgg-maxpool",
     "next": "vgg-config"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vgg-classifier"
 }

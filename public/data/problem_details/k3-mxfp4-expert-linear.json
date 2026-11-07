@@ -960,5 +960,6 @@
     "prev": "k3-stable-latent-moe",
     "next": "k3-per-head-muon"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-mxfp4-expert-linear"
 }

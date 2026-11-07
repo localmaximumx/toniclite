@@ -17,7 +17,7 @@
   ],
   "constraints": "- X has shape $(N,T,D)$.\n- W_r, W_z, and W_h have shape $(H,H+D)$; their biases have shape $(H,)$.\n- W_y has shape $(O,H)$ and b_y has shape $(O,)$.\n- All arrays use float64.",
   "difficulty": "Hard",
-  "starterCode": "import numpy as np\n\ndef sigmoid(x: np.ndarray) -> np.ndarray:\n    return 1.0 / (1.0 + np.exp(-np.clip(x, -500, 500)))\n\nclass GRU:\n    def __init__(self, input_dim: int, hidden_dim: int, output_dim: int):\n        self.hidden_dim = hidden_dim\n        scale = np.sqrt(2.0 / (input_dim + hidden_dim))\n        self.W_r = np.random.randn(hidden_dim, hidden_dim + input_dim) * scale\n        self.W_z = np.random.randn(hidden_dim, hidden_dim + input_dim) * scale\n        self.W_h = np.random.randn(hidden_dim, hidden_dim + input_dim) * scale\n        self.b_r = np.zeros(hidden_dim)\n        self.b_z = np.zeros(hidden_dim)\n        self.b_h = np.zeros(hidden_dim)\n        self.W_y = np.random.randn(output_dim, hidden_dim) * np.sqrt(2.0 / (hidden_dim + output_dim))\n        self.b_y = np.zeros(output_dim)\n\n    def forward(self, X: np.ndarray) -> dict:\n        \"\"\"\n        Returns outputs and final_hidden_state as float64 arrays.\n        \"\"\"\n        pass",
+  "starterCode": "import numpy as np\n\ndef sigmoid(x: np.ndarray) -> np.ndarray:\n    return 1.0 / (1.0 + np.exp(-np.clip(x, -500, 500)))\n\nclass GRU:\n    def __init__(self, input_dim: int, hidden_dim: int, output_dim: int):\n        self.hidden_dim = hidden_dim\n        scale = np.sqrt(2.0 / (input_dim + hidden_dim))\n        self.W_r = np.random.randn(hidden_dim, hidden_dim + input_dim) * scale\n        self.W_z = np.random.randn(hidden_dim, hidden_dim + input_dim) * scale\n        self.W_h = np.random.randn(hidden_dim, hidden_dim + input_dim) * scale\n        self.b_r = np.zeros(hidden_dim)\n        self.b_z = np.zeros(hidden_dim)\n        self.b_h = np.zeros(hidden_dim)\n        self.W_y = np.random.randn(output_dim, hidden_dim) * np.sqrt(2.0 / (hidden_dim + output_dim))\n        self.b_y = np.zeros(output_dim)\n\n    def forward(self, X: np.ndarray) -> dict:\n        \"\"\"\n        Returns outputs and final_hidden_state as float64 arrays.\n        \"\"\"\n        pass\n\ndef gru_forward(X: np.ndarray, W_r: np.ndarray, W_z: np.ndarray, W_h: np.ndarray, b_r: np.ndarray, b_z: np.ndarray, b_h: np.ndarray, W_y: np.ndarray, b_y: np.ndarray) -> dict:\n    \"\"\"\n    Runs the complete GRU network forward pass using the supplied parameters.\n    \"\"\"\n    pass\n",
   "createdAt": "2026-01-11T16:51:24.990Z",
   "updatedAt": "2026-04-15T23:24:35.023Z",
   "topicId": "gru-full-network",
@@ -870,5 +870,6 @@
     "prev": "gru-cell",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gru-full-network"
 }

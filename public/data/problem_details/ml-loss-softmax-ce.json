@@ -13,7 +13,7 @@
   "description": "Implement **Fused Softmax Cross-Entropy Loss** and its gradient with respect to input logits $Z$.\n\nGiven logits $Z \\in \\mathbb{R}^{N \\times C}$ and one-hot ground truth labels $Y \\in \\mathbb{R}^{N \\times C}$, compute cross-entropy loss stably using the log-sum-exp trick, and return the simplified analytic gradient $\\frac{\\partial \\mathcal{L}}{\\partial Z} = \\frac{1}{N} (P - Y)$ where $P = \\text{softmax}(Z)$.",
   "theory": "# Understanding Softmax + Cross-Entropy (Fused) + Gradient\n\n## 1. What Is It?\n\nThe **Softmax + Cross-Entropy (Fused) + Gradient** is a fundamental computational technique in Machine Learning. In machine learning workflows, it involves performing **Fused Softmax Cross-Entropy Loss** and its gradient with respect to input logits $Z$.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Softmax + Cross-Entropy (Fused) + Gradient**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `softmax`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `softmax` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n\n\n**Resulting Output:**\n```python\n[0.09, 0.2447, 0.6652]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `softmax` must return:\n- **Primary Output:** `[0.09, 0.2447, 0.6652]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `softmax`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `softmax`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `softmax`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Softmax + Cross-Entropy (Fused) + Gradient** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `softmax` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [0.09, 0.2447, 0.6652]"
+    "Input: logits = [[2.0, 1.0, 0.1], [0.1, 2.0, 1.0]], targets = [[1, 0, 0], [0, 1, 0]]\n\nOutput: {\"loss\": 0.417, \"grad\": [[-0.1705, 0.1212, 0.0493], [0.0493, -0.1705, 0.1212]]}\n\nExplanation: Evaluated ml_loss_softmax_ce under standard test conditions."
   ],
   "requirements": [
     "Implement the function `softmax`.",
@@ -28,137 +28,278 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef softmax(x):\n    \"\"\"\n    Compute numerically stable softmax along the last axis.\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef softmax(x):\n    \"\"\"\n    Compute numerically stable softmax.\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    shift_x = x_arr - np.max(x_arr, axis=-1, keepdims=True)\n    exps = np.exp(shift_x)\n    probs = exps / np.sum(exps, axis=-1, keepdims=True)\n    return np.round(probs, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "import numpy as np\n\ndef ml_loss_softmax_ce(logits: list, targets: list) -> dict:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Softmax + Cross-Entropy (Fused) + Gradient** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_loss_softmax_ce(logits: list, targets: list) -> dict:\n    Z = np.asarray(logits, dtype=np.float64)\n    Y = np.asarray(targets, dtype=np.float64)\n    if Z.ndim == 1:\n        Z = Z[None, :]\n        Y = Y[None, :]\n    shifted = Z - np.max(Z, axis=-1, keepdims=True)\n    exp_z = np.exp(shifted)\n    probs = exp_z / np.sum(exp_z, axis=-1, keepdims=True)\n    n = Z.shape[0]\n    loss = float(-np.sum(Y * (shifted - np.log(np.sum(exp_z, axis=-1, keepdims=True)))) / n)\n    grad = (probs - Y) / n\n    return {\"loss\": round(loss, 4), \"grad\": np.round(grad, 4).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-loss-softmax-ce-tc-1",
-      "name": "Simple 1D array",
+      "name": "2 samples 3 classes",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "logits": [
+          [
+            2.0,
+            1.0,
+            0.1
+          ],
+          [
+            0.1,
+            2.0,
+            1.0
+          ]
+        ],
+        "targets": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
         ]
       },
-      "expectedOutput": [
-        0.09,
-        0.2447,
-        0.6652
-      ],
+      "expectedOutput": {
+        "loss": 0.417,
+        "grad": [
+          [
+            -0.1705,
+            0.1212,
+            0.0493
+          ],
+          [
+            0.0493,
+            -0.1705,
+            0.1212
+          ]
+        ]
+      },
       "isPublic": true
     },
     {
       "id": "ml-loss-softmax-ce-tc-2",
-      "name": "Case 2",
+      "name": "Uniform logits",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "logits": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "targets": [
+          [
+            0,
+            0,
+            1
+          ]
         ]
       },
-      "expectedOutput": [
-        0.0159,
-        0.1173,
-        0.8668
-      ],
+      "expectedOutput": {
+        "loss": 1.0986,
+        "grad": [
+          [
+            0.3333,
+            0.3333,
+            -0.6667
+          ]
+        ]
+      },
       "isPublic": true
     },
     {
       "id": "ml-loss-softmax-ce-tc-3",
-      "name": "Case 3",
+      "name": "Large logits numerical stability",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "logits": [
+          [
+            1000.0,
+            1001.0,
+            1002.0
+          ]
+        ],
+        "targets": [
+          [
+            0,
+            0,
+            1
+          ]
         ]
       },
-      "expectedOutput": [
-        0.1863,
-        0.3072,
-        0.5065
-      ],
+      "expectedOutput": {
+        "loss": 0.4076,
+        "grad": [
+          [
+            0.09,
+            0.2447,
+            -0.3348
+          ]
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "ml-loss-softmax-ce-tc-4",
-      "name": "Case 4",
+      "name": "2 samples 2 classes",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "logits": [
+          [
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0
+          ]
+        ],
+        "targets": [
+          [
+            1,
+            0
+          ],
+          [
+            0,
+            1
+          ]
         ]
       },
-      "expectedOutput": [
-        0.6652,
-        0.2447,
-        0.09
-      ],
+      "expectedOutput": {
+        "loss": 0.1269,
+        "grad": [
+          [
+            -0.0596,
+            0.0596
+          ],
+          [
+            0.0596,
+            -0.0596
+          ]
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "ml-loss-softmax-ce-tc-5",
-      "name": "Case 5",
+      "name": "Wrong prediction high loss",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "logits": [
+          [
+            -2.0,
+            2.0
+          ]
+        ],
+        "targets": [
+          [
+            1,
+            0
+          ]
         ]
       },
-      "expectedOutput": [
-        0.0024,
-        0.0473,
-        0.9503
-      ],
+      "expectedOutput": {
+        "loss": 4.0181,
+        "grad": [
+          [
+            -0.982,
+            0.982
+          ]
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "ml-loss-softmax-ce-tc-6",
-      "name": "Case 6",
+      "name": "3 samples 2 classes",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "logits": [
+          [
+            0.5,
+            1.5
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "targets": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            0
+          ]
         ]
       },
-      "expectedOutput": [
-        0.09,
-        0.2447,
-        0.6652
-      ],
+      "expectedOutput": {
+        "loss": 0.3778,
+        "grad": [
+          [
+            0.0896,
+            -0.0896
+          ],
+          [
+            -0.0397,
+            0.0397
+          ],
+          [
+            -0.1667,
+            0.1667
+          ]
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "ml-loss-softmax-ce-tc-7",
-      "name": "Case 7",
+      "name": "Negative logits",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "logits": [
+          [
+            -1.0,
+            -2.0,
+            -3.0
+          ]
+        ],
+        "targets": [
+          [
+            1,
+            0,
+            0
+          ]
         ]
       },
-      "expectedOutput": [
-        0.09,
-        0.2447,
-        0.6652
-      ],
+      "expectedOutput": {
+        "loss": 0.4076,
+        "grad": [
+          [
+            -0.3348,
+            0.2447,
+            0.09
+          ]
+        ]
+      },
       "isPublic": false
     }
   ],
   "functionMetadata": {
-    "name": "softmax",
+    "name": "ml_loss_softmax_ce",
     "parameters": [
       {
         "name": "x",
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

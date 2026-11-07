@@ -994,5 +994,6 @@
     "prev": "lstm-cell",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "lstm-full-network"
 }

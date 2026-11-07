@@ -1196,5 +1196,6 @@
     "prev": "unet-output-layer",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "unet-full-network"
 }

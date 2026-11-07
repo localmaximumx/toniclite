@@ -18,7 +18,7 @@
   "starterCode": "import math\n\ndef log_loss(y_true: list, y_pred: list, eps: float = 1e-15) -> list:\n    \"\"\"\n    Returns a list of loss values.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-30T22:28:11.276Z",
   "updatedAt": "2026-08-23T11:59:44.127Z",
-  "solution": "### 💡 Intuition & Approach\nBinary cross-entropy loss evaluated on an individual sample basis.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef sample_log_loss(y_true: list, y_pred: list, eps: float = 1e-15) -> list:\n    yt = np.array(y_true, dtype=float)\n    yp = np.clip(np.array(y_pred, dtype=float), eps, 1.0 - eps)\n    loss = - (yt * np.log(yp) + (1.0 - yt) * np.log(1.0 - yp))\n    return np.round(loss, 6).tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### 💡 Intuition & Approach\nBinary cross-entropy loss evaluated on an individual sample basis.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef log_loss(y_true: list, y_pred: list, eps: float = 1e-15) -> list:\n    yt = np.array(y_true, dtype=float)\n    yp = np.clip(np.array(y_pred, dtype=float), eps, 1.0 - eps)\n    loss = - (yt * np.log(yp) + (1.0 - yt) * np.log(1.0 - yp))\n    return np.round(loss, 6).tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "LogLossPerSampleViz",
   "testCases": [
     {
@@ -114,22 +114,22 @@
       "id": "log-loss-per-sample-tc-5",
       "name": "Case 5",
       "inputs": {
-        "eps": 1.0,
+        "eps": 1e-15,
         "y_pred": [
-          1.9,
-          1.1,
-          1.8
+          0.85,
+          0.15,
+          0.75
         ],
         "y_true": [
-          2,
           1,
-          2
+          0,
+          1
         ]
       },
       "expectedOutput": [
-        0.0,
-        0.0,
-        0.0
+        0.162519,
+        0.162519,
+        0.287682
       ],
       "isPublic": false
     },

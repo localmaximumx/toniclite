@@ -22,7 +22,7 @@
   "topicId": "alexnet-pooling",
   "paperSnippet": "\"Pooling layers in CNNs summarize the outputs of neighboring groups of neurons in the same kernel map. We generally observe that models with overlapping pooling find it slightly more difficult to overfit.\"",
   "visualizationComponent": "OverlappingPoolViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Overlapping Max Pooling** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef max_pool2d(x: np.ndarray, kernel_size: int, stride: int) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    k_size = int(kernel_size)\n    s = int(stride)\n    \n    N, H, W, C = x_arr.shape\n    out_h = (H - k_size) // s + 1\n    out_w = (W - k_size) // s + 1\n    \n    out = np.zeros((N, out_h, out_w, C), dtype=float)\n    for n in range(N):\n        for oh in range(out_h):\n            for ow in range(out_w):\n                ih = oh * s\n                iw = ow * s\n                patch = x_arr[n, ih:ih+k_size, iw:iw+k_size, :]\n                out[n, oh, ow, :] = np.max(patch, axis=(0, 1))\n    return np.round(out, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Overlapping Max Pooling** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef max_pool2d(x: np.ndarray, kernel_size: int, stride: int) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    k_size = int(kernel_size)\n    s = int(stride)\n    \n    N, H, W, C = x_arr.shape\n    out_h = (H - k_size) // s + 1\n    out_w = (W - k_size) // s + 1\n    \n    out = np.zeros((N, out_h, out_w, C), dtype=float)\n    for n in range(N):\n        for oh in range(out_h):\n            for ow in range(out_w):\n                ih = oh * s\n                iw = ow * s\n                patch = x_arr[n, ih:ih+k_size, iw:iw+k_size, :]\n                out[n, oh, ow, :] = np.max(patch, axis=(0, 1))\n    return np.round(out, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "alexnet-pooling-tc-1",
@@ -431,12 +431,23 @@
             ]
           ]
         ],
-        "stride": 2.0,
-        "kernel_size": 4.0
+        "stride": 1,
+        "kernel_size": 3
       },
       "expectedOutput": [
         [
           [
+            [
+              12.0
+            ],
+            [
+              13.0
+            ]
+          ],
+          [
+            [
+              16.0
+            ],
             [
               17.0
             ]
@@ -509,11 +520,28 @@
             ]
           ]
         ],
-        "stride": 6.0,
-        "kernel_size": 8.0
+        "stride": 1,
+        "kernel_size": 3
       },
       "expectedOutput": [
-        []
+        [
+          [
+            [
+              16.0
+            ],
+            [
+              17.0
+            ]
+          ],
+          [
+            [
+              20.0
+            ],
+            [
+              21.0
+            ]
+          ]
+        ]
       ],
       "isPublic": false
     },
@@ -624,7 +652,7 @@
   "topic": {
     "id": "alexnet-pooling",
     "name": "Overlapping Max Pooling",
-    "description": "3Ã3 pooling with stride 2",
+    "description": "3\u00c3\u00973 pooling with stride 2",
     "color": "#ec4899"
   },
   "paper": {
@@ -641,5 +669,6 @@
     "prev": "alexnet-lrn",
     "next": "alexnet-augmentation"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "alexnet-pooling"
 }

@@ -20,9 +20,9 @@
   "createdAt": "2026-01-23T18:46:11.011Z",
   "updatedAt": "2026-04-04T12:04:50.928Z",
   "topicId": "ddpm-schedule",
-  "paperSnippet": "\"We set the forward process variances to constants increasing linearly from Î²_1 = 10^â4 to Î²_T = 0.02.\"",
+  "paperSnippet": "\"We set the forward process variances to constants increasing linearly from \u00ce\u00b2_1 = 10^\u00e2\u0088\u00924 to \u00ce\u00b2_T = 0.02.\"",
   "visualizationComponent": "NoiseScheduleViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Noise Schedule** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef linear_beta_schedule(T: int,\n                         beta_1: float = 0.0001,\n                         beta_T: float = 0.02) -> list[float]:\n    sched = np.linspace(float(beta_1), float(beta_T), int(T), dtype=float)\n    return np.round(sched, 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Noise Schedule** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef linear_beta_schedule(T: int,\n                         beta_1: float = 0.0001,\n                         beta_T: float = 0.02) -> list[float]:\n    sched = np.linspace(float(beta_1), float(beta_T), int(T), dtype=float)\n    return np.round(sched, 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ddpm-schedule-tc-1",
@@ -137,16 +137,15 @@
       "id": "ddpm-schedule-tc-7",
       "name": "Case 7",
       "inputs": {
-        "T": 6.0,
+        "T": 5,
         "beta_1": 1.0001,
         "beta_T": 1.02
       },
       "expectedOutput": [
         1.0001,
-        1.00408,
-        1.00806,
-        1.01204,
-        1.01602,
+        1.005075,
+        1.01005,
+        1.015025,
         1.02
       ],
       "isPublic": false
@@ -181,7 +180,7 @@
   "topic": {
     "id": "ddpm-schedule",
     "name": "Noise Schedule",
-    "description": "Linear and cosine Î² schedules",
+    "description": "Linear and cosine \u00ce\u00b2 schedules",
     "color": "#f59e0b"
   },
   "paper": {
@@ -198,5 +197,6 @@
     "prev": "ddpm-reverse",
     "next": "ddpm-loss"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "ddpm-schedule"
 }

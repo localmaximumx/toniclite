@@ -792,5 +792,6 @@
     "next": "resnet-skip-connection"
   },
   "isLocked": false,
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "resnet-bottleneck"
 }

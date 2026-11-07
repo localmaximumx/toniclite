@@ -54,7 +54,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(X,k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(X,k):\n    clusters=[{i} for i in range(len(X))]\n    dist=lambda a,b:sum((x-y)**2 for x,y in zip(X[a],X[b]))**0.5\n    while len(clusters)>k:\n      best=None\n      for i in range(len(clusters)):\n       for j in range(i+1,len(clusters)):\n        d=min(dist(a,b) for a in clusters[i] for b in clusters[j])\n        cand=(d,i,j)\n        if best is None or cand<best:best=cand\n      _,i,j=best; clusters[i]|=clusters[j];clusters.pop(j)\n    labels=[0]*len(X)\n    for c,items in enumerate(clusters):\n      for i in items:labels[i]=c\n    return labels\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(X,k):\n    clusters=[{i} for i in range(len(X))]\n    dist=lambda a,b:sum((x-y)**2 for x,y in zip(X[a],X[b]))**0.5\n    while len(clusters)>k:\n      best=None\n      for i in range(len(clusters)):\n       for j in range(i+1,len(clusters)):\n        d=min(dist(a,b) for a in clusters[i] for b in clusters[j])\n        cand=(d,i,j)\n        if best is None or cand<best:best=cand\n      _,i,j=best; clusters[i]|=clusters[j];clusters.pop(j)\n    labels=[0]*len(X)\n    for c,items in enumerate(clusters):\n      for i in items:labels[i]=c\n    return labels\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ml-unsup-hierarchical-single-tc-1",
@@ -167,12 +167,12 @@
             11.0
           ]
         ],
-        "k": 3.0
+        "k": 2
       },
       "expectedOutput": [
         0,
-        1,
-        2
+        0,
+        1
       ],
       "isPublic": false
     },
@@ -215,12 +215,12 @@
             15.0
           ]
         ],
-        "k": 7.0
+        "k": 2
       },
       "expectedOutput": [
         0,
-        1,
-        2
+        0,
+        1
       ],
       "isPublic": false
     }

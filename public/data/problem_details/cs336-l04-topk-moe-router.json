@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: PYTORCH\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTORCH\n",
   "starterCode": "import numpy as np\n\ndef cs336_l04_topk_moe_router(logits: list, k: int = 2) -> dict:\n    \"\"\"\n    Route tokens to their k highest-scoring experts using top-k gating with normalized softmax routing coefficients.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nRoute tokens to their k highest-scoring experts using top-k gating with normalized softmax routing coefficients.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cs336_l04_topk_moe_router(logits: list, k: int = 2) -> dict:\n    arr = np.array(logits, dtype=float)\n    idx = np.argsort(-arr, axis=-1)[..., :k]\n    vals = np.take_along_axis(arr, idx, axis=-1)\n    exp_v = np.exp(vals - np.max(vals, axis=-1, keepdims=True))\n    w = exp_v / np.sum(exp_v, axis=-1, keepdims=True)\n    return {'indices': idx.tolist(), 'weights': np.round(w, 6).tolist()}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nRoute tokens to their k highest-scoring experts using top-k gating with normalized softmax routing coefficients.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cs336_l04_topk_moe_router(logits: list, k: int = 2) -> dict:\n    arr = np.array(logits, dtype=float)\n    idx = np.argsort(-arr, axis=-1)[..., :k]\n    vals = np.take_along_axis(arr, idx, axis=-1)\n    exp_v = np.exp(vals - np.max(vals, axis=-1, keepdims=True))\n    w = exp_v / np.sum(exp_v, axis=-1, keepdims=True)\n    return {'indices': idx.tolist(), 'weights': np.round(w, 6).tolist()}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "cs336-l04-topk-moe-router-tc-1",
@@ -153,7 +153,7 @@
           -3.0,
           -2.0
         ],
-        "k": -2
+        "k": 2
       },
       "expectedOutput": {
         "indices": [

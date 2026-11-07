@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef numpy_winsorize(data: list, p_low: float = 5.0, p_high: float = 95.0) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Winsorize** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_winsorize(data: list, p_low: float = 5.0, p_high: float = 95.0) -> list:\n    arr = np.array(data, dtype=float)\n    return np.round(np.clip(arr, np.percentile(arr, p_low), np.percentile(arr, p_high)), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Winsorize** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_winsorize(data: list, p_low: float = 5.0, p_high: float = 95.0) -> list:\n    arr = np.array(data, dtype=float)\n    return np.round(np.clip(arr, np.percentile(arr, p_low), np.percentile(arr, p_high)), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "numpy-winsorize-tc-1",
@@ -153,21 +153,21 @@
       "name": "Case 6",
       "inputs": {
         "data": [
-          1.0,
+          0.3,
           10.0,
-          11.0,
+          3.3,
           12.0,
-          100.0
+          30.0
         ],
-        "p_low": 10.0,
-        "p_high": 90.0
+        "p_low": 3.0,
+        "p_high": 27.0
       },
       "expectedOutput": [
-        4.6,
-        10.0,
-        11.0,
-        12.0,
-        64.8
+        0.66,
+        3.836,
+        3.3,
+        3.836,
+        3.836
       ],
       "isPublic": false
     },
@@ -176,21 +176,21 @@
       "name": "Case 7",
       "inputs": {
         "data": [
-          0.5,
-          5.0,
-          5.5,
-          6.0,
-          50.0
+          1.0,
+          12.5,
+          11.0,
+          15.0,
+          100.0
         ],
-        "p_low": 5.0,
-        "p_high": 45.0
+        "p_low": 10.0,
+        "p_high": 90.0
       },
       "expectedOutput": [
-        1.4,
         5.0,
-        5.4,
-        5.4,
-        5.4
+        12.5,
+        11.0,
+        15.0,
+        66.0
       ],
       "isPublic": false
     }

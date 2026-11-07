@@ -19,9 +19,9 @@
   "solved": false,
   "isLocked": true,
   "description": "Infer and report internal pandas data storage types across DataFrame columns.\n\nPandas leverages NumPy dtype representations. Using specialized dtypes (e.g. float32, category) optimizes memory bandwidth and SIMD vectorization.\n\n### Mathematical Formulation\n$$\n\\tau(C) \\in \\{ \\text{int64}, \\text{float64}, \\text{object}, \\text{bool} \\}\n$$\n\n### Step-by-Step Implementation\n1. Construct DataFrame from input column dictionary\n2. Inspect df.dtypes attribute mapping columns to types\n3. Return stringified type names for each column\n\n### Returns\nDictionary mapping column names to string data types.",
-  "theory": "# Understanding Data Types Overview\n\n## 1. What Is It?\n\nThe **Data Types Overview** is a fundamental computational technique in Pandas. In machine learning workflows, Infer and report internal pandas data storage types across DataFrame columns.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Pandas workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\tau(C) \\in \\{ \\text{int64}, \\text{float64}, \\text{object}, \\text{bool} \\}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pandas_data_types` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ndata = {\"id\": [1, 2], \"score\": [3.5, 4.0], \"name\": [\"A\", \"B\"]}\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pandas_data_types under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"id\": \"int64\", \"score\": \"float64\", \"name\": \"str\"}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pandas_data_types` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`id`**: Represents `id` (e.g. `int64`), reflecting the updated state or component.\n  - **`score`**: Represents `score` (e.g. `float64`), reflecting the updated state or component.\n  - **`name`**: Represents `name` (e.g. `str`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `pandas_data_types`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pandas_data_types`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pandas_data_types`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Data Types Overview** provides an essential primitive within Pandas systems. By combining vectorized array computation with rigorous numerical safeguards, `pandas_data_types` accurately and efficiently performs the required transformation.\n",
+  "theory": "# Understanding Data Types Overview\n\n## 1. What Is It?\n\nThe **Data Types Overview** is a fundamental computational technique in Pandas. In machine learning workflows, Infer and report internal pandas data storage types across DataFrame columns.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Pandas workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\tau(C) \\in \\{ \\text{int64}, \\text{float64}, \\text{object}, \\text{bool} \\}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pandas_data_types` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ndata = {\"id\": [1, 2], \"score\": [3.5, 4.0], \"name\": [\"A\", \"B\"]}\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pandas_data_types under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"id\": \"int64\", \"score\": \"float64\", \"name\": \"object\"}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pandas_data_types` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`id`**: Represents `id` (e.g. `int64`), reflecting the updated state or component.\n  - **`score`**: Represents `score` (e.g. `float64`), reflecting the updated state or component.\n  - **`name`**: Represents `name` (e.g. `object`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `pandas_data_types`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pandas_data_types`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pandas_data_types`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Data Types Overview** provides an essential primitive within Pandas systems. By combining vectorized array computation with rigorous numerical safeguards, `pandas_data_types` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: data = {\"id\": [1, 2], \"score\": [3.5, 4.0], \"name\": [\"A\", \"B\"]}\n\nOutput: {\"id\": \"int64\", \"score\": \"float64\", \"name\": \"str\"}\n\nExplanation: Evaluated pandas_data_types under standard test conditions."
+    "Input: data = {\"id\": [1, 2], \"score\": [3.5, 4.0], \"name\": [\"A\", \"B\"]}\n\nOutput: {\"id\": \"int64\", \"score\": \"float64\", \"name\": \"object\"}\n\nExplanation: Evaluated pandas_data_types under standard test conditions."
   ],
   "requirements": "* Function must be named `pandas_data_types`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
   "hints": [
@@ -54,7 +54,7 @@
       "expectedOutput": {
         "id": "int64",
         "score": "float64",
-        "name": "str"
+        "name": "object"
       },
       "isPublic": true
     },
@@ -63,24 +63,21 @@
       "name": "Case 2",
       "inputs": {
         "data": {
-          "id": [
-            2,
-            3
+          "count": [
+            10,
+            20,
+            30
           ],
-          "score": [
-            5.25,
-            6.0
-          ],
-          "name": [
-            "A",
-            "B"
+          "active": [
+            true,
+            false,
+            true
           ]
         }
       },
       "expectedOutput": {
-        "id": "int64",
-        "score": "float64",
-        "name": "str"
+        "count": "int64",
+        "active": "bool"
       },
       "isPublic": true
     },
@@ -89,24 +86,24 @@
       "name": "Case 3",
       "inputs": {
         "data": {
-          "id": [
-            0,
-            1
+          "price": [
+            9.99,
+            19.99
           ],
-          "score": [
-            1.75,
-            2.0
+          "label": [
+            "basic",
+            "pro"
           ],
-          "name": [
-            "A",
-            "B"
+          "flag": [
+            false,
+            true
           ]
         }
       },
       "expectedOutput": {
-        "id": "int64",
-        "score": "float64",
-        "name": "str"
+        "price": "float64",
+        "label": "object",
+        "flag": "bool"
       },
       "isPublic": false
     },
@@ -115,24 +112,23 @@
       "name": "Case 4",
       "inputs": {
         "data": {
-          "id": [
+          "x": [
+            1,
             2,
+            3,
             4
           ],
-          "score": [
-            7.0,
-            8.0
-          ],
-          "name": [
-            "A",
-            "B"
+          "y": [
+            0.1,
+            0.2,
+            0.3,
+            0.4
           ]
         }
       },
       "expectedOutput": {
-        "id": "int64",
-        "score": "float64",
-        "name": "str"
+        "x": "int64",
+        "y": "float64"
       },
       "isPublic": false
     },
@@ -141,24 +137,29 @@
       "name": "Case 5",
       "inputs": {
         "data": {
-          "id": [
-            -1,
-            -2
+          "user": [
+            "u1",
+            "u2"
           ],
-          "score": [
-            -3.5,
-            -4.0
+          "age": [
+            25,
+            30
           ],
-          "name": [
-            "A",
-            "B"
+          "verified": [
+            true,
+            true
+          ],
+          "rating": [
+            4.5,
+            4.8
           ]
         }
       },
       "expectedOutput": {
-        "id": "int64",
-        "score": "float64",
-        "name": "str"
+        "user": "object",
+        "age": "int64",
+        "verified": "bool",
+        "rating": "float64"
       },
       "isPublic": false
     },
@@ -167,24 +168,21 @@
       "name": "Case 6",
       "inputs": {
         "data": {
-          "id": [
-            1,
-            2
+          "a": [
+            -5,
+            0,
+            5
           ],
-          "score": [
-            2.8,
-            3.2
-          ],
-          "name": [
-            "A",
-            "B"
+          "b": [
+            "low",
+            "mid",
+            "high"
           ]
         }
       },
       "expectedOutput": {
-        "id": "int64",
-        "score": "float64",
-        "name": "str"
+        "a": "int64",
+        "b": "object"
       },
       "isPublic": false
     },
@@ -193,24 +191,24 @@
       "name": "Case 7",
       "inputs": {
         "data": {
-          "id": [
-            3,
-            6
+          "flag1": [
+            true,
+            false
           ],
-          "score": [
-            10.5,
-            12.0
+          "flag2": [
+            false,
+            false
           ],
-          "name": [
-            "A",
-            "B"
+          "val": [
+            1.0,
+            2.0
           ]
         }
       },
       "expectedOutput": {
-        "id": "int64",
-        "score": "float64",
-        "name": "str"
+        "flag1": "bool",
+        "flag2": "bool",
+        "val": "float64"
       },
       "isPublic": false
     }

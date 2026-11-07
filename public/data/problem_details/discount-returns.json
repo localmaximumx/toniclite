@@ -18,7 +18,7 @@
   "starterCode": "def discount_returns(rewards: list, gamma: float) -> list:\n    \"\"\"\n    Returns the discounted return at every timestep.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:14:26.025Z",
   "updatedAt": "2026-10-12T07:46:35.024Z",
-  "solution": "### 💡 Intuition & Approach\nBackward recursion computing discounted future trajectory reward $G_t = r_t + \\gamma G_{t+1}$.\n\n### ⚡ Python Reference Implementation\n```python\ndef discount_returns(rewards: list, gamma: float) -> list:\n    n = len(rewards)\n    returns = [0.0] * n\n    G = 0.0\n    for t in reversed(range(n)):\n        G = rewards[t] + gamma * G\n        returns[t] = round(G, 4)\n    return returns\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nBackward recursion computing discounted future trajectory reward $G_t = r_t + \\gamma G_{t+1}$.\n\n### \u26a1 Python Reference Implementation\n```python\ndef discount_returns(rewards: list, gamma: float) -> list:\n    n = len(rewards)\n    returns = [0.0] * n\n    G = 0.0\n    for t in reversed(range(n)):\n        G = rewards[t] + gamma * G\n        returns[t] = round(G, 4)\n    return returns\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "DiscountReturnsViz",
   "testCases": [
     {
@@ -81,7 +81,7 @@
       "id": "discount-returns-tc-4",
       "name": "Case 4",
       "inputs": {
-        "gamma": 0,
+        "gamma": 1,
         "rewards": [
           0,
           0,
@@ -99,7 +99,7 @@
       "id": "discount-returns-tc-5",
       "name": "Case 5",
       "inputs": {
-        "gamma": -1,
+        "gamma": 1,
         "rewards": [
           -1,
           -1,
@@ -107,8 +107,8 @@
         ]
       },
       "expectedOutput": [
-        -1.0,
-        0.0,
+        -3.0,
+        -2.0,
         -1.0
       ],
       "isPublic": false

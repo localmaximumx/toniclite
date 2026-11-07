@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "import numpy as np\n\ndef alphago_l03_initialize_edge_statistics(legal_actions: list, prior_probs: list, num_actions: int = None) -> dict:\n    \"\"\"\n    Initialize Monte Carlo Tree Search edge statistics when expanding a newly visited state node, ensuring illegal actions receive zero probability and legal actions receive normalized prior probabilities from the policy network.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nInitialize Monte Carlo Tree Search edge statistics when expanding a newly visited state node, ensuring illegal actions receive zero probability and legal actions receive normalized prior probabilities from the policy network.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l03_initialize_edge_statistics(legal_actions: list, prior_probs: list, num_actions: int = None) -> dict:\n    if num_actions is None:\n        num_actions = len(prior_probs)\n    N = np.zeros(num_actions, dtype=float)\n    W = np.zeros(num_actions, dtype=float)\n    Q = np.zeros(num_actions, dtype=float)\n    P = np.zeros(num_actions, dtype=float)\n    raw_p = np.array(prior_probs, dtype=float)\n    mask = np.zeros(num_actions, dtype=bool)\n    for a in legal_actions:\n        if 0 <= a < num_actions:\n            mask[a] = True\n    legal_mass = np.sum(raw_p[mask])\n    if legal_mass > 0:\n        P[mask] = raw_p[mask] / legal_mass\n    elif len(legal_actions) > 0:\n        P[mask] = 1.0 / len(legal_actions)\n    return {'N': N.tolist(), 'W': W.tolist(), 'Q': Q.tolist(), 'P': np.round(P, 6).tolist()}\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nInitialize Monte Carlo Tree Search edge statistics when expanding a newly visited state node, ensuring illegal actions receive zero probability and legal actions receive normalized prior probabilities from the policy network.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l03_initialize_edge_statistics(legal_actions: list, prior_probs: list, num_actions: int = None) -> dict:\n    if num_actions is None:\n        num_actions = len(prior_probs)\n    N = np.zeros(num_actions, dtype=float)\n    W = np.zeros(num_actions, dtype=float)\n    Q = np.zeros(num_actions, dtype=float)\n    P = np.zeros(num_actions, dtype=float)\n    raw_p = np.array(prior_probs, dtype=float)\n    mask = np.zeros(num_actions, dtype=bool)\n    for a in legal_actions:\n        if 0 <= a < num_actions:\n            mask[a] = True\n    legal_mass = np.sum(raw_p[mask])\n    if legal_mass > 0:\n        P[mask] = raw_p[mask] / legal_mass\n    elif len(legal_actions) > 0:\n        P[mask] = 1.0 / len(legal_actions)\n    return {'N': N.tolist(), 'W': W.tolist(), 'Q': Q.tolist(), 'P': np.round(P, 6).tolist()}\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "alphago-l03-initialize-edge-statistics-tc-1",
@@ -170,13 +170,33 @@
           0.02,
           0.01
         ],
-        "num_actions": 0
+        "num_actions": 4
       },
       "expectedOutput": {
-        "N": [],
-        "W": [],
-        "Q": [],
-        "P": []
+        "N": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "W": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Q": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "P": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
       },
       "isPublic": false
     },
@@ -185,14 +205,14 @@
       "name": "Case 5",
       "inputs": {
         "legal_actions": [
-          0,
-          2
+          6,
+          9
         ],
         "prior_probs": [
-          0.4,
-          0.3,
-          0.2,
-          0.1
+          0.3871,
+          0.3387,
+          0.1613,
+          0.1129
         ],
         "num_actions": 4
       },
@@ -216,9 +236,9 @@
           0.0
         ],
         "P": [
-          0.666667,
           0.0,
-          0.333333,
+          0.0,
+          0.0,
           0.0
         ]
       },
@@ -229,52 +249,14 @@
       "name": "Case 6",
       "inputs": {
         "legal_actions": [
-          1
+          9,
+          12
         ],
         "prior_probs": [
-          0.2,
-          0.5,
-          0.3
-        ],
-        "num_actions": 3
-      },
-      "expectedOutput": {
-        "N": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "W": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "Q": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "P": [
-          0.0,
-          1.0,
-          0.0
-        ]
-      },
-      "isPublic": false
-    },
-    {
-      "id": "alphago-l03-initialize-edge-statistics-tc-7",
-      "name": "Case 7",
-      "inputs": {
-        "legal_actions": [
-          2,
-          0
-        ],
-        "prior_probs": [
-          0.1,
-          0.2,
-          0.3,
-          0.4
+          0.3548,
+          0.3065,
+          0.2581,
+          0.0806
         ],
         "num_actions": 4
       },
@@ -298,9 +280,53 @@
           0.0
         ],
         "P": [
-          0.25,
           0.0,
-          0.75,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "isPublic": false
+    },
+    {
+      "id": "alphago-l03-initialize-edge-statistics-tc-7",
+      "name": "Case 7",
+      "inputs": {
+        "legal_actions": [
+          12,
+          15
+        ],
+        "prior_probs": [
+          0.3226,
+          0.2742,
+          0.2258,
+          0.1774
+        ],
+        "num_actions": 4
+      },
+      "expectedOutput": {
+        "N": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "W": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Q": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "P": [
+          0.0,
+          0.0,
+          0.0,
           0.0
         ]
       },

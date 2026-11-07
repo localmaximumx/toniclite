@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef probstat_bootstrap_ci(data: list, n_bootstraps: int = 100, confidence: float = 0.95, seed: int = 42) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Bootstrap Confidence Interval** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef probstat_bootstrap_ci(data: list, n_bootstraps: int = 100, confidence: float = 0.95, seed: int = 42) -> dict:\n    np.random.seed(seed)\n    arr = np.array(data, dtype=float)\n    means = [float(np.mean(np.random.choice(arr, size=len(arr), replace=True))) for _ in range(n_bootstraps)]\n    a = (1.0 - confidence) / 2.0\n    return {'mean': round(float(np.mean(arr)), 4), 'ci_lower': round(float(np.percentile(means, 100.0 * a)), 4), 'ci_upper': round(float(np.percentile(means, 100.0 * (1.0 - a))), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Bootstrap Confidence Interval** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef probstat_bootstrap_ci(data: list, n_bootstraps: int = 100, confidence: float = 0.95, seed: int = 42) -> dict:\n    np.random.seed(seed)\n    arr = np.array(data, dtype=float)\n    means = [float(np.mean(np.random.choice(arr, size=len(arr), replace=True))) for _ in range(n_bootstraps)]\n    a = (1.0 - confidence) / 2.0\n    return {'mean': round(float(np.mean(arr)), 4), 'ci_lower': round(float(np.percentile(means, 100.0 * a)), 4), 'ci_upper': round(float(np.percentile(means, 100.0 * (1.0 - a))), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "probstat-bootstrap-ci-tc-1",
@@ -172,25 +172,25 @@
       "name": "Case 6",
       "inputs": {
         "data": [
-          12.0,
-          15.0,
-          14.0,
-          10.0,
-          18.0,
-          16.0,
-          14.0,
-          13.0,
-          15.0,
-          17.0
+          -6.0,
+          37.5,
+          -7.0,
+          25.0,
+          -9.0,
+          40.0,
+          -7.0,
+          32.5,
+          -7.5,
+          42.5
         ],
-        "n_bootstraps": 50,
-        "confidence": 0.9,
+        "n_bootstraps": 57,
+        "confidence": 0.7,
         "seed": 42
       },
       "expectedOutput": {
-        "mean": 14.4,
-        "ci_lower": 13.145,
-        "ci_upper": 15.4
+        "mean": 14.1,
+        "ci_lower": 2.99,
+        "ci_upper": 20.8
       },
       "isPublic": false
     },
@@ -199,25 +199,25 @@
       "name": "Case 7",
       "inputs": {
         "data": [
-          6.0,
-          7.5,
-          7.0,
-          5.0,
-          9.0,
-          8.0,
-          7.0,
-          6.5,
-          7.5,
-          8.5
+          30.0,
+          4.5,
+          35.0,
+          3.0,
+          45.0,
+          4.8,
+          35.0,
+          3.9,
+          37.5,
+          5.1
         ],
-        "n_bootstraps": 25,
-        "confidence": 0.45,
-        "seed": 21
+        "n_bootstraps": 58,
+        "confidence": 0.75,
+        "seed": 42
       },
       "expectedOutput": {
-        "mean": 7.2,
-        "ci_lower": 7.0,
-        "ci_upper": 7.32
+        "mean": 20.38,
+        "ci_lower": 15.3038,
+        "ci_upper": 29.8775
       },
       "isPublic": false
     }

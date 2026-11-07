@@ -357,5 +357,6 @@
     "prev": "gan-generator",
     "next": "gan-loss"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gan-discriminator"
 }

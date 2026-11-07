@@ -415,5 +415,6 @@
     "prev": "vae-encoder",
     "next": "vae-decoder"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vae-reparameterization"
 }

@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef cv_topk_accuracy(logits: list, targets: list, k: int = 1) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Top-K Classification Accuracy** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_topk_accuracy(logits: list, targets: list, k: int = 1) -> float:\n    L = np.array(logits, dtype=float)\n    T = np.array(targets, dtype=int)\n    topk = np.argsort(-L, axis=1)[:, :k]\n    return round(float(np.mean([T[i] in topk[i] for i in range(len(T))])), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Top-K Classification Accuracy** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_topk_accuracy(logits: list, targets: list, k: int = 1) -> float:\n    L = np.array(logits, dtype=float)\n    T = np.array(targets, dtype=int)\n    topk = np.argsort(-L, axis=1)[:, :k]\n    return round(float(np.mean([T[i] in topk[i] for i in range(len(T))])), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-topk-accuracy-tc-1",
@@ -152,9 +152,9 @@
           0,
           -2
         ],
-        "k": -2
+        "k": 2
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.333333,
       "isPublic": false
     },
     {

@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def dl_dropout(x: list, p: float = 0.5, training: bool = True) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Dropout** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef dl_dropout(x: list, p: float = 0.5, training: bool = True) -> dict:\n    return {'scale': round(float(1.0 / (1.0 - p) if p < 1.0 else 1.0), 4), 'is_training': training}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Dropout** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef dl_dropout(x: list, p: float = 0.5, training: bool = True) -> dict:\n    return {'scale': round(float(1.0 / (1.0 - p) if p < 1.0 else 1.0), 4), 'is_training': training}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "dl-dropout-tc-1",
@@ -62,11 +62,11 @@
           ]
         ],
         "p": 0.4,
-        "training": 2
+        "training": true
       },
       "expectedOutput": {
         "scale": 1.6667,
-        "is_training": 2
+        "is_training": true
       },
       "isPublic": true
     },
@@ -81,11 +81,11 @@
           ]
         ],
         "p": 0.1,
-        "training": 0
+        "training": true
       },
       "expectedOutput": {
         "scale": 1.1111,
-        "is_training": 0
+        "is_training": true
       },
       "isPublic": false
     },
@@ -99,12 +99,12 @@
             -2.0
           ]
         ],
-        "p": -0.2,
-        "training": -1
+        "p": 0.2,
+        "training": true
       },
       "expectedOutput": {
-        "scale": 0.8333,
-        "is_training": -1
+        "scale": 1.25,
+        "is_training": true
       },
       "isPublic": false
     },
@@ -119,11 +119,11 @@
           ]
         ],
         "p": 0.6,
-        "training": 3
+        "training": true
       },
       "expectedOutput": {
         "scale": 2.5,
-        "is_training": 3
+        "is_training": true
       },
       "isPublic": false
     },
@@ -137,12 +137,12 @@
             3.0
           ]
         ],
-        "p": 1.2,
-        "training": 2.0
+        "p": 0.2,
+        "training": true
       },
       "expectedOutput": {
-        "scale": 1.0,
-        "is_training": 2.0
+        "scale": 1.25,
+        "is_training": true
       },
       "isPublic": false
     },
@@ -156,12 +156,12 @@
             0.0
           ]
         ],
-        "p": -1.8,
-        "training": -1.0
+        "p": 0.2,
+        "training": true
       },
       "expectedOutput": {
-        "scale": 0.3571,
-        "is_training": -1.0
+        "scale": 1.25,
+        "is_training": true
       },
       "isPublic": false
     }

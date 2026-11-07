@@ -18,7 +18,7 @@
   "starterCode": "import math\n\ndef cosine_annealing_schedule(base_lr: float, min_lr: float, total_steps: int, current_step: int) -> float:\n    \"\"\"\n    Returns the cosine-annealed learning rate for the requested step.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T15:34:04.783Z",
   "updatedAt": "2026-08-23T19:34:01.145Z",
-  "solution": "### 💡 Intuition & Approach\nSmoothly reduces learning rate along a half-cosine wave from initial peak down to minimum floor.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef cosine_annealing_schedule(base_lr: float, min_lr: float, total_steps: int, current_step: int) -> float:\n    progress = current_step / total_steps\n    lr = min_lr + 0.5 * (base_lr - min_lr) * (1.0 + math.cos(math.pi * progress))\n    return round(lr, 6)\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nSmoothly reduces learning rate along a half-cosine wave from initial peak down to minimum floor.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef cosine_annealing_schedule(base_lr: float, min_lr: float, total_steps: int, current_step: int) -> float:\n    progress = current_step / total_steps\n    lr = min_lr + 0.5 * (base_lr - min_lr) * (1.0 + math.cos(math.pi * progress))\n    return round(lr, 6)\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "CosineAnnealingLRViz",
   "testCases": [
     {
@@ -73,12 +73,12 @@
       "id": "cosine-annealing-lr-tc-5",
       "name": "Case 5",
       "inputs": {
-        "min_lr": 0,
-        "base_lr": 0.1,
-        "total_steps": 100,
-        "current_step": 0
+        "min_lr": 6,
+        "base_lr": 0.2,
+        "total_steps": 106,
+        "current_step": 6
       },
-      "expectedOutput": 0.1,
+      "expectedOutput": 0.245731,
       "isPublic": false
     },
     {
@@ -99,10 +99,10 @@
       "inputs": {
         "min_lr": 1.0,
         "base_lr": 1.1,
-        "total_steps": 101.0,
+        "total_steps": 100,
         "current_step": 1.0
       },
-      "expectedOutput": 1.099976,
+      "expectedOutput": 1.099975,
       "isPublic": false
     }
   ],

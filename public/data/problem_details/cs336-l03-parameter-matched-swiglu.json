@@ -340,7 +340,7 @@
     }
   ],
   "functionMetadata": {
-    "name": "cs336_l03_parameter_matched-swiglu",
+    "name": "cs336_l03_parameter_matched_swiglu",
     "parameters": [
       {
         "name": "x",

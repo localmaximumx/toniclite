@@ -18,7 +18,7 @@
   "starterCode": "def random_forest_vote(predictions: list) -> list:\n    \"\"\"\n    Returns the majority-vote label for every sample.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:57:55.889Z",
   "updatedAt": "2026-08-23T20:39:28.810Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nfrom collections import Counter\nimport numpy as np\n\ndef random_forest_vote(predictions: list) -> list:\n    arr = np.array(predictions)\n    out = []\n    for col in range(arr.shape[1]):\n        votes = arr[:, col]\n        counts = Counter(votes)\n        max_c = max(counts.values())\n        cands = [k for k, v in counts.items() if v == max_c]\n        out.append(int(min(cands)))\n    return out\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nfrom collections import Counter\nimport numpy as np\n\ndef random_forest_vote(predictions: list) -> list:\n    arr = np.array(predictions)\n    out = []\n    for col in range(arr.shape[1]):\n        votes = arr[:, col]\n        counts = Counter(votes)\n        max_c = max(counts.values())\n        cands = [k for k, v in counts.items() if v == max_c]\n        out.append(int(min(cands)))\n    return out\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "RandomForestVoteViz",
   "testCases": [
     {
@@ -194,17 +194,17 @@
         "predictions": [
           [
             0,
-            1,
+            0,
             0
           ],
           [
-            0,
+            1,
             1,
             1
           ],
           [
             0,
-            0,
+            1,
             0
           ]
         ]

@@ -384,5 +384,6 @@
     "prev": "k3-gated-mla",
     "next": "k3-block-attnres"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-full-attnres"
 }

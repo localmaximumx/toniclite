@@ -331,5 +331,6 @@
     "prev": "k3-block-attnres",
     "next": "k3-quantile-balancing"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-situ-glu"
 }

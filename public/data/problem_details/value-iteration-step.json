@@ -18,7 +18,7 @@
   "starterCode": "def value_iteration_step(values: list, transitions: list, rewards: list, gamma: float) -> list[float]:\n    \"\"\"\n    Returns one updated floating-point value for every state.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:15:22.399Z",
   "updatedAt": "2026-03-05T20:47:30.361Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef value_iteration_step(values: list, transitions: list, rewards: list, gamma: float) -> list[float]:\n    v_arr = np.array(values, dtype=float)\n    T = np.array(transitions, dtype=float)\n    R = np.array(rewards, dtype=float)\n    n_states, n_actions = R.shape\n    new_v = []\n    for s in range(n_states):\n        q_vals = []\n        for a in range(n_actions):\n            q = R[s, a] + gamma * np.sum(T[s, a] * v_arr)\n            q_vals.append(q)\n        new_v.append(round(float(max(q_vals)), 6))\n    return new_v\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef value_iteration_step(values: list, transitions: list, rewards: list, gamma: float) -> list[float]:\n    v_arr = np.array(values, dtype=float)\n    T = np.array(transitions, dtype=float)\n    R = np.array(rewards, dtype=float)\n    n_states, n_actions = R.shape\n    new_v = []\n    for s in range(n_states):\n        q_vals = []\n        for a in range(n_actions):\n            q = R[s, a] + gamma * np.sum(T[s, a] * v_arr)\n            q_vals.append(q)\n        new_v.append(round(float(max(q_vals)), 6))\n    return new_v\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "ValueIterationStepViz",
   "testCases": [
     {
@@ -287,7 +287,7 @@
       "id": "value-iteration-step-tc-6",
       "name": "Case 6",
       "inputs": {
-        "gamma": -0.9,
+        "gamma": 0.9,
         "values": [
           0,
           0

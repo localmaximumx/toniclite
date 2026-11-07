@@ -51,7 +51,7 @@
     "Unless otherwise stated, dimensions must be consistent."
   ],
   "starterCode": "def solve(weights, gradients, lr, weight_decay):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(weights, gradients, lr, weight_decay):\n    return [w-lr*(g+weight_decay*w) for w,g in zip(weights,gradients)]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(weights, gradients, lr, weight_decay):\n    return [w-lr*(g+weight_decay*w) for w,g in zip(weights,gradients)]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "re-train-weight-decay-tc-1",
@@ -129,11 +129,11 @@
           -0.2
         ],
         "lr": 0.01,
-        "weight_decay": -0.1
+        "weight_decay": 0.1
       },
       "expectedOutput": [
-        -1.0,
-        -2.0
+        -0.998,
+        -1.996
       ],
       "isPublic": false
     },
@@ -171,11 +171,11 @@
           1.2
         ],
         "lr": 1.01,
-        "weight_decay": 1.1
+        "weight_decay": 0.1
       },
       "expectedOutput": [
-        -1.333,
-        -1.545
+        0.687,
+        1.485
       ],
       "isPublic": false
     },
@@ -192,10 +192,10 @@
           -1.8
         ],
         "lr": 1.99,
-        "weight_decay": -1.9
+        "weight_decay": 0.1
       },
       "expectedOutput": [
-        -1.0,
+        2.98,
         3.582
       ],
       "isPublic": false

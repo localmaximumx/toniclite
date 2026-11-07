@@ -44,7 +44,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(logits, k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(logits, k):\n    if k<=0: raise ValueError(\"k must be positive\")\n    return sorted(range(len(logits)),key=lambda i:(-logits[i],i))[:min(k,len(logits))][0]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(logits, k):\n    if k<=0: raise ValueError(\"k must be positive\")\n    return sorted(range(len(logits)),key=lambda i:(-logits[i],i))[:min(k,len(logits))][0]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds11-nlp-greedy-topk-sample-tc-1",
@@ -139,7 +139,7 @@
           8.0,
           7.0
         ],
-        "k": 7.0
+        "k": 2
       },
       "expectedOutput": 1,
       "isPublic": false

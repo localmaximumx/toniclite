@@ -539,5 +539,6 @@
     "prev": "lstm-forget-gate",
     "next": "lstm-cell-state"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "lstm-input-gate"
 }

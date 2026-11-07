@@ -41,7 +41,7 @@
     "Unless otherwise stated, dimensions must be consistent."
   ],
   "starterCode": "def solve(policy_logp, reference_logp, beta=0.1):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(policy_logp, reference_logp, beta=0.1):\n    return beta*(policy_logp-reference_logp)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(policy_logp, reference_logp, beta=0.1):\n    return beta*(policy_logp-reference_logp)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "re-dpo-implicit-reward-tc-1",
@@ -82,9 +82,9 @@
       "inputs": {
         "policy_logp": 2.0,
         "reference_logp": 3.0,
-        "beta": -0.1
+        "beta": 0.1
       },
-      "expectedOutput": 0.1,
+      "expectedOutput": -0.1,
       "isPublic": false
     },
     {
@@ -115,9 +115,9 @@
       "inputs": {
         "policy_logp": -4.0,
         "reference_logp": -5.0,
-        "beta": -1.9
+        "beta": 0.1
       },
-      "expectedOutput": -1.9,
+      "expectedOutput": 0.1,
       "isPublic": false
     }
   ],

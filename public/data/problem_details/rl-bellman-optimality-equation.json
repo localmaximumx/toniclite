@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def rl_bellman_optimality_equation(V: list, P: list, R: list, gamma: float = 0.9) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Bellman Optimality Equation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef rl_bellman_optimality_equation(V: list, P: list, R: list, gamma: float = 0.9) -> list:\n    S, A = len(V), len(P[0])\n    return [round(float(max(R[s][a] + gamma * sum(P[s][a][sp] * V[sp] for sp in range(S)) for a in range(A))), 4) for s in range(S)]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Bellman Optimality Equation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef rl_bellman_optimality_equation(V: list, P: list, R: list, gamma: float = 0.9) -> list:\n    S, A = len(V), len(P[0])\n    return [round(float(max(R[s][a] + gamma * sum(P[s][a][sp] * V[sp] for sp in range(S)) for a in range(A))), 4) for s in range(S)]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "rl-bellman-optimality-equation-tc-1",
@@ -264,11 +264,11 @@
             -0.0
           ]
         ],
-        "gamma": -0.9
+        "gamma": 0.9
       },
       "expectedOutput": [
         -1.0,
-        -0.0
+        0.0
       ],
       "isPublic": false
     },

@@ -18,7 +18,7 @@
   "starterCode": "def text_chunking(tokens: list, chunk_size: int, overlap: int) -> list:\n    \"\"\"\n    Returns fixed-size token chunks with the requested overlap.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T20:21:22.759Z",
   "updatedAt": "2026-08-23T20:57:07.421Z",
-  "solution": "### 💡 Intuition & Approach\nPartitions long text into overlapping token windows for retrieval-augmented generation.\n\n### ⚡ Python Reference Implementation\n```python\ndef chunk_tokens(tokens: list, chunk_size: int, overlap: int) -> list:\n    step = chunk_size - overlap\n    chunks = []\n    for i in range(0, len(tokens), step):\n        chunk = tokens[i:i + chunk_size]\n        if chunk:\n            chunks.append(chunk)\n        if i + chunk_size >= len(tokens):\n            break\n    return chunks\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nPartitions long text into overlapping token windows for retrieval-augmented generation.\n\n### \u26a1 Python Reference Implementation\n```python\ndef text_chunking(tokens: list, chunk_size: int, overlap: int) -> list:\n    step = chunk_size - overlap\n    chunks = []\n    for i in range(0, len(tokens), step):\n        chunk = tokens[i:i + chunk_size]\n        if chunk:\n            chunks.append(chunk)\n        if i + chunk_size >= len(tokens):\n            break\n    return chunks\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "TextChunkingViz",
   "testCases": [
     {
@@ -177,26 +177,24 @@
       "name": "Case 6",
       "inputs": {
         "tokens": [
-          "a",
-          "b",
-          "c",
-          "d",
-          "e",
-          "f"
+          "fs",
+          "es",
+          "ds",
+          "cs",
+          "bs",
+          "as"
         ],
-        "overlap": 0,
-        "chunk_size": 3
+        "overlap": 7,
+        "chunk_size": 10
       },
       "expectedOutput": [
         [
-          "a",
-          "b",
-          "c"
-        ],
-        [
-          "d",
-          "e",
-          "f"
+          "fs",
+          "es",
+          "ds",
+          "cs",
+          "bs",
+          "as"
         ]
       ],
       "isPublic": false

@@ -52,7 +52,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(documents):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(documents):\n    vocab={}\n    for doc in documents:\n      for token in doc:\n       if token not in vocab: vocab[token]=len(vocab)\n    return vocab\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(documents):\n    vocab={}\n    for doc in documents:\n      for token in doc:\n       if token not in vocab: vocab[token]=len(vocab)\n    return vocab\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds11-nlp-vocab-builder-tc-1",
@@ -104,19 +104,22 @@
       "inputs": {
         "documents": [
           [
-            "hi",
-            "there"
+            "hiing",
+            "thereing"
           ],
           [
-            "there",
-            "friend"
+            "thereer",
+            "friender",
+            "natural language processing"
           ]
         ]
       },
       "expectedOutput": {
-        "hi": 0,
-        "there": 1,
-        "friend": 2
+        "hiing": 0,
+        "thereing": 1,
+        "thereer": 2,
+        "friender": 3,
+        "natural language processing": 4
       },
       "isPublic": false
     },
@@ -126,19 +129,22 @@
       "inputs": {
         "documents": [
           [
-            "there",
-            "hi"
+            "hier",
+            "thereer",
+            "natural language processing"
           ],
           [
-            "friend",
-            "there"
+            "theretion",
+            "friendment"
           ]
         ]
       },
       "expectedOutput": {
-        "there": 0,
-        "hi": 1,
-        "friend": 2
+        "hier": 0,
+        "thereer": 1,
+        "natural language processing": 2,
+        "theretion": 3,
+        "friendment": 4
       },
       "isPublic": false
     },
@@ -148,19 +154,20 @@
       "inputs": {
         "documents": [
           [
-            "hi",
-            "there"
+            "hition",
+            "therement"
           ],
           [
-            "there",
-            "friend"
+            "friends",
+            "theres"
           ]
         ]
       },
       "expectedOutput": {
-        "hi": 0,
-        "there": 1,
-        "friend": 2
+        "hition": 0,
+        "therement": 1,
+        "friends": 2,
+        "theres": 3
       },
       "isPublic": false
     },
@@ -170,19 +177,22 @@
       "inputs": {
         "documents": [
           [
-            "there",
-            "hi"
+            "theres",
+            "his"
           ],
           [
+            "there",
             "friend",
-            "there"
+            "computer vision system"
           ]
         ]
       },
       "expectedOutput": {
-        "there": 0,
-        "hi": 1,
-        "friend": 2
+        "theres": 0,
+        "his": 1,
+        "there": 2,
+        "friend": 3,
+        "computer vision system": 4
       },
       "isPublic": false
     },
@@ -193,18 +203,21 @@
         "documents": [
           [
             "hi",
-            "there"
+            "there",
+            "computer vision system"
           ],
           [
-            "there",
-            "friend"
+            "thereed",
+            "friended"
           ]
         ]
       },
       "expectedOutput": {
         "hi": 0,
         "there": 1,
-        "friend": 2
+        "computer vision system": 2,
+        "thereed": 3,
+        "friended": 4
       },
       "isPublic": false
     }

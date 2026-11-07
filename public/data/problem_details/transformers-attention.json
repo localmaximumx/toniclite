@@ -464,5 +464,6 @@
     "prev": "transformers-positional-encoding",
     "next": "transformers-multi-head-attention"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "transformers-attention"
 }

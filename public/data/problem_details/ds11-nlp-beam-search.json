@@ -70,7 +70,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(beams, next_logprobs, beam_width):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(beams, next_logprobs, beam_width):\n    # beams: [(token_list, cumulative_logprob)]; next_logprobs(prefix) -> [(token, logprob)]\n    candidates=[]\n    for tokens,score in beams:\n      for token,lp in (next_logprobs(tokens) if callable(next_logprobs) else next_logprobs.get(\" \".join(tokens), next_logprobs.get(\"\", []))):\n        candidates.append((tokens+[token],score+lp))\n    candidates.sort(key=lambda x:(-x[1],x[0]))\n    return candidates[:beam_width]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(beams, next_logprobs, beam_width):\n    # beams: [(token_list, cumulative_logprob)]; next_logprobs(prefix) -> [(token, logprob)]\n    candidates=[]\n    for tokens,score in beams:\n      for token,lp in (next_logprobs(tokens) if callable(next_logprobs) else next_logprobs.get(\" \".join(tokens), next_logprobs.get(\"\", []))):\n        candidates.append((tokens+[token],score+lp))\n    candidates.sort(key=lambda x:(-x[1],x[0]))\n    return candidates[:beam_width]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds11-nlp-beam-search-tc-1",
@@ -208,9 +208,22 @@
             ]
           ]
         },
-        "beam_width": -2
+        "beam_width": 2
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        [
+          [
+            "a"
+          ],
+          -0.1
+        ],
+        [
+          [
+            "b"
+          ],
+          -0.5
+        ]
+      ],
       "isPublic": false
     },
     {
@@ -300,24 +313,37 @@
         "beams": [
           [
             [],
-            0.0
+            1.8
           ]
         ],
         "next_logprobs": {
           "": [
             [
-              "a",
-              -0.1
+              "aness",
+              -0.03
             ],
             [
-              "b",
+              "bable",
               -0.5
             ]
           ]
         },
-        "beam_width": 0
+        "beam_width": 10
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        [
+          [
+            "aness"
+          ],
+          1.77
+        ],
+        [
+          [
+            "bable"
+          ],
+          1.3
+        ]
+      ],
       "isPublic": false
     }
   ],

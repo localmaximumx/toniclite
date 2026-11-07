@@ -929,5 +929,6 @@
     "prev": "transformers-multi-head-attention",
     "next": "transformers-layer-normalization"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "transformers-feed-forward"
 }

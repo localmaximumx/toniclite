@@ -648,5 +648,6 @@
     "prev": "gru-hidden-update",
     "next": "gru-full-network"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gru-cell"
 }

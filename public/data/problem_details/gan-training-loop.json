@@ -480,5 +480,6 @@
     "prev": "gan-loss",
     "next": "gan-mode-collapse"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gan-training-loop"
 }

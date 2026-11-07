@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import math\n\ndef probstat_binomial_distribution(n: int, k: int, p: float) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Binomial Distribution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef probstat_binomial_distribution(n: int, k: int, p: float) -> float:\n    if k < 0 or k > n or p < 0 or p > 1: return 0.0\n    return round(float(math.comb(n, k) * (p**k) * ((1.0 - p)**(n - k))), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Binomial Distribution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef probstat_binomial_distribution(n: int, k: int, p: float) -> float:\n    if k < 0 or k > n or p < 0 or p > 1: return 0.0\n    return round(float(math.comb(n, k) * (p**k) * ((1.0 - p)**(n - k))), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "probstat-binomial-distribution-tc-1",
@@ -80,11 +80,11 @@
       "id": "probstat-binomial-distribution-tc-5",
       "name": "Case 5",
       "inputs": {
-        "n": -10,
-        "k": -3,
-        "p": -0.5
+        "n": 10,
+        "k": 3,
+        "p": 0.6
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.042467,
       "isPublic": false
     },
     {
@@ -104,9 +104,9 @@
       "inputs": {
         "n": 30,
         "k": 9,
-        "p": 1.5
+        "p": 0.5
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.013325,
       "isPublic": false
     }
   ],

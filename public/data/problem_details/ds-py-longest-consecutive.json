@@ -13,7 +13,7 @@
   "description": "Given an unsorted array of integers `nums`, return the length of the **longest consecutive elements sequence**.\n\nYou must write an algorithm that runs in $\\mathcal{O}(N)$ time.\n\n### Strategy\n- Insert all numbers into a hash set for $\\mathcal{O}(1)$ membership lookups.\n- Only initiate a consecutive sequence search from numbers that represent the start of a streak (i.e. `num - 1 not in set`).",
   "theory": "# Understanding Longest Consecutive Sequence\n\n## 1. What Is It?\n\nThe **Longest Consecutive Sequence** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given an unsorted array of integers `nums`, return the length of the **longest consecutive elements sequence**.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Longest Consecutive Sequence**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ds_py_longest_consecutive`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ds_py_longest_consecutive` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Longest Consecutive Sequence.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ds_py_longest_consecutive` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ds_py_longest_consecutive`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ds_py_longest_consecutive`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ds_py_longest_consecutive`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Longest Consecutive Sequence** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ds_py_longest_consecutive` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Longest Consecutive Sequence."
+    "Input: nums = [100, 4, 200, 1, 3, 2]\n\nOutput: 4\n\nExplanation: Evaluated ds_py_longest_consecutive under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ds_py_longest_consecutive`.",
@@ -28,126 +28,112 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ds_py_longest_consecutive(x):\n    \"\"\"\n    Longest Consecutive Sequence\n    \"\"\"\n    # Implement Longest Consecutive Sequence here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ds_py_longest_consecutive(x):\n    \"\"\"\n    Longest Consecutive Sequence\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def ds_py_longest_consecutive(nums: list) -> int:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Longest Consecutive Sequence** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef ds_py_longest_consecutive(nums: list) -> int:\n    if not nums:\n        return 0\n    num_set = set(nums)\n    best = 0\n    for x in num_set:\n        if x - 1 not in num_set:\n            curr = x\n            streak = 1\n            while curr + 1 in num_set:\n                curr += 1\n                streak += 1\n            if streak > best:\n                best = streak\n    return best\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ds-py-longest-consecutive-tc-1",
-      "name": "Standard Input",
+      "name": "Streak of 4",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "nums": [
+          100,
+          4,
+          200,
+          1,
+          3,
+          2
         ]
       },
-      "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
-      ],
+      "expectedOutput": 4,
       "isPublic": true
     },
     {
       "id": "ds-py-longest-consecutive-tc-2",
-      "name": "Case 2",
+      "name": "Streak of 9 with duplicates",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "nums": [
+          0,
+          3,
+          7,
+          2,
+          5,
+          8,
+          4,
+          6,
+          0,
+          1
         ]
       },
-      "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
-      ],
+      "expectedOutput": 9,
       "isPublic": true
     },
     {
       "id": "ds-py-longest-consecutive-tc-3",
-      "name": "Case 3",
+      "name": "Empty array",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
-        ]
+        "nums": []
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
+      "expectedOutput": 0,
       "isPublic": false
     },
     {
       "id": "ds-py-longest-consecutive-tc-4",
-      "name": "Case 4",
+      "name": "Single element",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "nums": [
+          42
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
-      ],
+      "expectedOutput": 1,
       "isPublic": false
     },
     {
       "id": "ds-py-longest-consecutive-tc-5",
-      "name": "Case 5",
+      "name": "Negative sequence",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "nums": [
+          -3,
+          -2,
+          -1,
+          0,
+          1,
+          10
         ]
       },
-      "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
-      ],
+      "expectedOutput": 5,
       "isPublic": false
     },
     {
       "id": "ds-py-longest-consecutive-tc-6",
-      "name": "Case 6",
+      "name": "No consecutive pairs",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "nums": [
+          2,
+          4,
+          6,
+          8,
+          10
         ]
       },
-      "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
-      ],
+      "expectedOutput": 1,
       "isPublic": false
     },
     {
       "id": "ds-py-longest-consecutive-tc-7",
-      "name": "Case 7",
+      "name": "Two separate streaks",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "nums": [
+          1,
+          2,
+          3,
+          10,
+          11,
+          12,
+          13,
+          14
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
-      ],
+      "expectedOutput": 5,
       "isPublic": false
     }
   ],
@@ -159,6 +145,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

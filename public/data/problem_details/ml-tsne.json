@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef ml_tsne(distances: list, perplexity: float = 2.0) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **t-SNE Affinity Matrix** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_tsne(distances: list, perplexity: float = 2.0) -> list:\n    D = np.array(distances, dtype=np.float64); N = D.shape[0]\n    ex = np.exp(-D / (2.0 * (float(perplexity)**2))); np.fill_diagonal(ex, 0.0)\n    P = ex / np.maximum(np.sum(ex, axis=1, keepdims=True), 1e-12)\n    return np.round((P + P.T) / (2.0 * N), 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **t-SNE Affinity Matrix** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_tsne(distances: list, perplexity: float = 2.0) -> list:\n    D = np.array(distances, dtype=np.float64); N = D.shape[0]\n    ex = np.exp(-D / (2.0 * (float(perplexity)**2))); np.fill_diagonal(ex, 0.0)\n    P = ex / np.maximum(np.sum(ex, axis=1, keepdims=True), 1e-12)\n    return np.round((P + P.T) / (2.0 * N), 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ml-tsne-tc-1",
@@ -222,7 +222,7 @@
             -0.0
           ]
         ],
-        "perplexity": -2.0
+        "perplexity": 2.0
       },
       "expectedOutput": [
         [

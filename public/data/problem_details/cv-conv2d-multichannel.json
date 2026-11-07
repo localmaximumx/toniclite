@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef cv_conv2d_multichannel(x: list, kernels: list, bias: list = None, stride: int = 1, padding: int = 0) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Multichannel 2D Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_conv2d_multichannel(x: list, kernels: list, bias: list = None, stride: int = 1, padding: int = 0) -> list:\n    X = np.array(x, dtype=np.float64)\n    K = np.array(kernels, dtype=np.float64)\n    Cin, H, W = X.shape\n    Cout, _, kH, kW = K.shape\n    s, p = int(stride), int(padding)\n    X_pad = np.pad(X, ((0, 0), (p, p), (p, p)), mode='constant') if p > 0 else X\n    H_out = (H + 2 * p - kH) // s + 1\n    W_out = (W + 2 * p - kW) // s + 1\n    out = np.zeros((Cout, H_out, W_out), dtype=np.float64)\n    for oc in range(Cout):\n        for i in range(H_out):\n            for j in range(W_out):\n                patch = X_pad[:, i*s:i*s+kH, j*s:j*s+kW]\n                out[oc, i, j] = np.sum(patch * K[oc])\n        if bias is not None:\n            out[oc] += bias[oc]\n    return np.round(out, 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Multichannel 2D Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_conv2d_multichannel(x: list, kernels: list, bias: list = None, stride: int = 1, padding: int = 0) -> list:\n    X = np.array(x, dtype=np.float64)\n    K = np.array(kernels, dtype=np.float64)\n    Cin, H, W = X.shape\n    Cout, _, kH, kW = K.shape\n    s, p = int(stride), int(padding)\n    X_pad = np.pad(X, ((0, 0), (p, p), (p, p)), mode='constant') if p > 0 else X\n    H_out = (H + 2 * p - kH) // s + 1\n    W_out = (W + 2 * p - kW) // s + 1\n    out = np.zeros((Cout, H_out, W_out), dtype=np.float64)\n    for oc in range(Cout):\n        for i in range(H_out):\n            for j in range(W_out):\n                patch = X_pad[:, i*s:i*s+kH, j*s:j*s+kW]\n                out[oc, i, j] = np.sum(patch * K[oc])\n        if bias is not None:\n            out[oc] += bias[oc]\n    return np.round(out, 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-conv2d-multichannel-tc-1",
@@ -181,11 +181,20 @@
         "bias": [
           -0.5
         ],
-        "stride": -1,
+        "stride": 1,
         "padding": 0
       },
       "expectedOutput": [
-        []
+        [
+          [
+            5.5,
+            7.5
+          ],
+          [
+            11.5,
+            13.5
+          ]
+        ]
       ],
       "isPublic": false
     },
@@ -281,18 +290,34 @@
         "bias": [
           1.5
         ],
-        "stride": 2.0,
+        "stride": 1,
         "padding": 1.0
       },
       "expectedOutput": [
         [
           [
             5.5,
-            12.5
+            9.5,
+            12.5,
+            5.5
+          ],
+          [
+            13.5,
+            25.5,
+            31.5,
+            16.5
           ],
           [
             22.5,
-            49.5
+            43.5,
+            49.5,
+            25.5
+          ],
+          [
+            9.5,
+            26.5,
+            29.5,
+            21.5
           ]
         ]
       ],

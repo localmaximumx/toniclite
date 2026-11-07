@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef batch_generator(X: list, y: list, batch_size: int, seed: int = 42, drop_last: bool = False):\n    \"\"\"\n    Returns a generator of (X_batch, y_batch) tuples.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-09T14:33:44.196Z",
   "updatedAt": "2026-03-05T16:57:37.777Z",
-  "solution": "### 💡 Intuition & Approach\nPermutes indices deterministically with a random seed and slices consecutive mini-batches of size $B$.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef batch_generator(X: list, y: list, batch_size: int, seed: int = 42, drop_last: bool = False):\n    rng = np.random.default_rng(seed)\n    n = len(X)\n    indices = np.arange(n)\n    rng.shuffle(indices)\n\n    batches = []\n    for i in range(0, n, batch_size):\n        batch_idx = indices[i:i + batch_size]\n        if drop_last and len(batch_idx) < batch_size:\n            continue\n        batch_x = [X[j] for j in batch_idx]\n        batch_y = [y[j] for j in batch_idx]\n        batches.append([batch_x, batch_y])\n    return batches\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nPermutes indices deterministically with a random seed and slices consecutive mini-batches of size $B$.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef batch_generator(X: list, y: list, batch_size: int, seed: int = 42, drop_last: bool = False):\n    rng = np.random.default_rng(seed)\n    n = len(X)\n    indices = np.arange(n)\n    rng.shuffle(indices)\n\n    batches = []\n    for i in range(0, n, batch_size):\n        batch_idx = indices[i:i + batch_size]\n        if drop_last and len(batch_idx) < batch_size:\n            continue\n        batch_x = [X[j] for j in batch_idx]\n        batch_y = [y[j] for j in batch_idx]\n        batches.append([batch_x, batch_y])\n    return batches\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "BatchGeneratorViz",
   "testCases": [
     {
@@ -160,7 +160,7 @@
           12
         ],
         "seed": 84,
-        "drop_last": 0,
+        "drop_last": false,
         "batch_size": 6
       },
       "expectedOutput": [
@@ -216,7 +216,7 @@
           3
         ],
         "seed": 21,
-        "drop_last": 0,
+        "drop_last": false,
         "batch_size": 2
       },
       "expectedOutput": [
@@ -284,7 +284,7 @@
           18
         ],
         "seed": 126,
-        "drop_last": 0,
+        "drop_last": false,
         "batch_size": 9
       },
       "expectedOutput": [
@@ -334,7 +334,7 @@
           0
         ],
         "seed": 42,
-        "drop_last": 0,
+        "drop_last": false,
         "batch_size": 3
       },
       "expectedOutput": [
@@ -396,7 +396,7 @@
           60
         ],
         "seed": 420,
-        "drop_last": 0,
+        "drop_last": false,
         "batch_size": 30
       },
       "expectedOutput": [

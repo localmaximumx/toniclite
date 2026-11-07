@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_spell_correction(word: str, dictionary: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Spell Correction** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_spell_correction(word: str, dictionary: list) -> dict:\n    def ld(s1, s2):\n        dp = [[0]*(len(s2)+1) for _ in range(len(s1)+1)]\n        for i in range(len(s1)+1): dp[i][0] = i\n        for j in range(len(s2)+1): dp[0][j] = j\n        for i in range(1, len(s1)+1):\n            for j in range(1, len(s2)+1):\n                dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1] + (0 if s1[i-1]==s2[j-1] else 1))\n        return dp[len(s1)][len(s2)]\n    best = min([(ld(word.lower(), d.lower()), d) for d in dictionary], key=lambda x: (x[0], x[1]))\n    return {'original_word': word, 'corrected_word': best[1], 'edit_distance': best[0]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Spell Correction** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_spell_correction(word: str, dictionary: list) -> dict:\n    def ld(s1, s2):\n        dp = [[0]*(len(s2)+1) for _ in range(len(s1)+1)]\n        for i in range(len(s1)+1): dp[i][0] = i\n        for j in range(len(s2)+1): dp[0][j] = j\n        for i in range(1, len(s1)+1):\n            for j in range(1, len(s2)+1):\n                dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1] + (0 if s1[i-1]==s2[j-1] else 1))\n        return dp[len(s1)][len(s2)]\n    best = min([(ld(word.lower(), d.lower()), d) for d in dictionary], key=lambda x: (x[0], x[1]))\n    return {'original_word': word, 'corrected_word': best[1], 'edit_distance': best[0]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-spell-correction-tc-1",
@@ -55,17 +55,17 @@
       "id": "nlp-spell-correction-tc-2",
       "name": "Case 2",
       "inputs": {
-        "word": "speling",
+        "word": "spelinging",
         "dictionary": [
-          "spelling",
-          "spring",
-          "spiel"
+          "spellinged",
+          "springed",
+          "spieled"
         ]
       },
       "expectedOutput": {
-        "original_word": "speling",
-        "corrected_word": "spelling",
-        "edit_distance": 1
+        "original_word": "spelinging",
+        "corrected_word": "spellinged",
+        "edit_distance": 4
       },
       "isPublic": true
     },
@@ -73,17 +73,17 @@
       "id": "nlp-spell-correction-tc-3",
       "name": "Case 3",
       "inputs": {
-        "word": "speling",
+        "word": "spelinger",
         "dictionary": [
-          "spelling",
-          "spring",
-          "spiel"
+          "spellinging",
+          "springing",
+          "spieling"
         ]
       },
       "expectedOutput": {
-        "original_word": "speling",
-        "corrected_word": "spelling",
-        "edit_distance": 1
+        "original_word": "spelinger",
+        "corrected_word": "spieling",
+        "edit_distance": 3
       },
       "isPublic": false
     },
@@ -91,17 +91,18 @@
       "id": "nlp-spell-correction-tc-4",
       "name": "Case 4",
       "inputs": {
-        "word": "speling",
+        "word": "spelingly",
         "dictionary": [
-          "spelling",
-          "spring",
-          "spiel"
+          "spellinger",
+          "springer",
+          "spieler",
+          "natural language processing"
         ]
       },
       "expectedOutput": {
-        "original_word": "speling",
-        "corrected_word": "spelling",
-        "edit_distance": 1
+        "original_word": "spelingly",
+        "corrected_word": "spellinger",
+        "edit_distance": 3
       },
       "isPublic": false
     },
@@ -109,16 +110,16 @@
       "id": "nlp-spell-correction-tc-5",
       "name": "Case 5",
       "inputs": {
-        "word": "speling",
+        "word": "spelingtion",
         "dictionary": [
-          "spelling",
-          "spring",
-          "spiel"
+          "spellingtion",
+          "springment",
+          "spielness"
         ]
       },
       "expectedOutput": {
-        "original_word": "speling",
-        "corrected_word": "spelling",
+        "original_word": "spelingtion",
+        "corrected_word": "spellingtion",
         "edit_distance": 1
       },
       "isPublic": false
@@ -127,17 +128,17 @@
       "id": "nlp-spell-correction-tc-6",
       "name": "Case 6",
       "inputs": {
-        "word": "speling",
+        "word": "spelingment",
         "dictionary": [
-          "spelling",
-          "spring",
-          "spiel"
+          "spiels",
+          "springs",
+          "spellings"
         ]
       },
       "expectedOutput": {
-        "original_word": "speling",
-        "corrected_word": "spelling",
-        "edit_distance": 1
+        "original_word": "spelingment",
+        "corrected_word": "spellings",
+        "edit_distance": 5
       },
       "isPublic": false
     },
@@ -145,17 +146,18 @@
       "id": "nlp-spell-correction-tc-7",
       "name": "Case 7",
       "inputs": {
-        "word": "speling",
+        "word": "spelingness",
         "dictionary": [
           "spelling",
           "spring",
-          "spiel"
+          "spiel",
+          "computer vision system"
         ]
       },
       "expectedOutput": {
-        "original_word": "speling",
+        "original_word": "spelingness",
         "corrected_word": "spelling",
-        "edit_distance": 1
+        "edit_distance": 5
       },
       "isPublic": false
     }

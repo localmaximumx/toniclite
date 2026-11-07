@@ -56,7 +56,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(rankings, relevant_items):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(rankings, relevant_items):\n    vals=[]\n    for ranking,relevant in zip(rankings,relevant_items):\n      vals.append(1/(next((i+1 for i,x in enumerate(ranking) if x in relevant),float(\"inf\"))))\n    return sum(vals)/len(vals) if vals else 0.0\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(rankings, relevant_items):\n    vals=[]\n    for ranking,relevant in zip(rankings,relevant_items):\n      vals.append(1/(next((i+1 for i,x in enumerate(ranking) if x in relevant),float(\"inf\"))))\n    return sum(vals)/len(vals) if vals else 0.0\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds7-rank-mrr-tc-1",
@@ -116,24 +116,26 @@
       "inputs": {
         "rankings": [
           [
-            "a",
-            "b"
+            "aing",
+            "bing"
           ],
           [
-            "c",
-            "a"
+            "cer",
+            "aer",
+            "natural language processing"
           ]
         ],
         "relevant_items": [
           [
-            "b"
+            "bing"
           ],
           [
-            "z"
+            "zer",
+            "natural language processing"
           ]
         ]
       },
-      "expectedOutput": 0.25,
+      "expectedOutput": 0.41666666666666663,
       "isPublic": false
     },
     {
@@ -142,24 +144,26 @@
       "inputs": {
         "rankings": [
           [
-            "b",
-            "a"
+            "aer",
+            "ber",
+            "natural language processing"
           ],
           [
-            "a",
-            "c"
+            "ction",
+            "ament"
           ]
         ],
         "relevant_items": [
           [
-            "b"
+            "ber",
+            "natural language processing"
           ],
           [
-            "z"
+            "ztion"
           ]
         ]
       },
-      "expectedOutput": 0.5,
+      "expectedOutput": 0.25,
       "isPublic": false
     },
     {
@@ -168,24 +172,24 @@
       "inputs": {
         "rankings": [
           [
-            "a",
-            "b"
+            "ation",
+            "bment"
           ],
           [
-            "c",
-            "a"
+            "as",
+            "cs"
           ]
         ],
         "relevant_items": [
           [
-            "b"
+            "btion"
           ],
           [
-            "z"
+            "zment"
           ]
         ]
       },
-      "expectedOutput": 0.25,
+      "expectedOutput": 0.0,
       "isPublic": false
     },
     {
@@ -194,24 +198,26 @@
       "inputs": {
         "rankings": [
           [
-            "b",
-            "a"
+            "bs",
+            "as"
           ],
           [
+            "c",
             "a",
-            "c"
+            "computer vision system"
           ]
         ],
         "relevant_items": [
           [
-            "b"
+            "bment"
           ],
           [
-            "z"
+            "z",
+            "computer vision system"
           ]
         ]
       },
-      "expectedOutput": 0.5,
+      "expectedOutput": 0.16666666666666666,
       "isPublic": false
     },
     {
@@ -221,19 +227,21 @@
         "rankings": [
           [
             "a",
-            "b"
+            "b",
+            "computer vision system"
           ],
           [
-            "c",
-            "a"
+            "ced",
+            "aed"
           ]
         ],
         "relevant_items": [
           [
-            "b"
+            "b",
+            "computer vision system"
           ],
           [
-            "z"
+            "zed"
           ]
         ]
       },

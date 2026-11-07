@@ -60,7 +60,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(documents, vocabulary):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(documents, vocabulary):\n    return [[sum(1 for token in doc if token==word) for word,_ in sorted(vocabulary.items(),key=lambda kv:kv[1])] for doc in documents]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(documents, vocabulary):\n    return [[sum(1 for token in doc if token==word) for word,_ in sorted(vocabulary.items(),key=lambda kv:kv[1])] for doc in documents]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds11-nlp-bow-vectorize-tc-1",
@@ -249,15 +249,16 @@
         "documents": [
           [
             "hi",
-            "there"
+            "there",
+            "computer vision system"
           ],
           [
-            "there"
+            "thereed"
           ]
         ],
         "vocabulary": {
-          "hi": 0,
-          "there": 1
+          "hi": 8,
+          "there": 9
         }
       },
       "expectedOutput": [
@@ -267,7 +268,7 @@
         ],
         [
           0,
-          1
+          0
         ]
       ],
       "isPublic": false

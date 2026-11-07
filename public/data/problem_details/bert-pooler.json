@@ -419,5 +419,6 @@
     "prev": "bert-nsp",
     "next": "bert-fine-tuning"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "bert-pooler"
 }

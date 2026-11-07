@@ -13,7 +13,7 @@
   "description": "Implement **Nesterov Accelerated Gradient (NAG)** momentum step.\n\nNAG calculates gradients at the 'look-ahead' position $\\theta - \\gamma v_{t-1}$, applying anticipatory velocity updates that reduce oscillations when approaching local minima.",
   "theory": "# Understanding Nesterov Momentum Step\n\n## 1. What Is It?\n\nThe **Nesterov Momentum Step** is a fundamental computational technique in Machine Learning. In machine learning workflows, it involves performing **Nesterov Accelerated Gradient (NAG)** momentum step.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Nesterov Momentum Step**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ml_opt_nesterov`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ml_opt_nesterov` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Nesterov Momentum Step.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ml_opt_nesterov` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ml_opt_nesterov`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ml_opt_nesterov`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ml_opt_nesterov`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Nesterov Momentum Step** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ml_opt_nesterov` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Nesterov Momentum Step."
+    "Input: w = [1.0, 2.0], grad = [0.5, -0.5], v = [0.0, 0.0], lr = 0.1, momentum = 0.9\n\nOutput: {\"w\": [0.905, 2.095], \"v\": [0.05, -0.05]}\n\nExplanation: Evaluated ml_opt_nesterov under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ml_opt_nesterov`.",
@@ -28,126 +28,224 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ml_opt_nesterov(x):\n    \"\"\"\n    Nesterov Momentum Step\n    \"\"\"\n    # Implement Nesterov Momentum Step here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ml_opt_nesterov(x):\n    \"\"\"\n    Nesterov Momentum Step\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "import numpy as np\n\ndef ml_opt_nesterov(w: list, grad: list, v: list, lr: float = 0.01, momentum: float = 0.9) -> dict:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Nesterov Momentum Step** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_opt_nesterov(w: list, grad: list, v: list, lr: float = 0.01, momentum: float = 0.9) -> dict:\n    w_arr = np.asarray(w, dtype=np.float64)\n    g_arr = np.asarray(grad, dtype=np.float64)\n    v_arr = np.asarray(v, dtype=np.float64)\n    v_new = float(momentum) * v_arr + float(lr) * g_arr\n    w_new = w_arr - (float(momentum) * v_new + float(lr) * g_arr)\n    return {\"w\": np.round(w_new, 4).tolist(), \"v\": np.round(v_new, 4).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-opt-nesterov-tc-1",
-      "name": "Standard Input",
+      "name": "Zero initial velocity",
       "inputs": {
-        "x": [
+        "w": [
           1.0,
-          2.0,
-          3.0
+          2.0
+        ],
+        "grad": [
+          0.5,
+          -0.5
+        ],
+        "v": [
+          0.0,
+          0.0
+        ],
+        "lr": 0.1,
+        "momentum": 0.9
+      },
+      "expectedOutput": {
+        "w": [
+          0.905,
+          2.095
+        ],
+        "v": [
+          0.05,
+          -0.05
         ]
       },
-      "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
-      ],
       "isPublic": true
     },
     {
       "id": "ml-opt-nesterov-tc-2",
-      "name": "Case 2",
+      "name": "With existing velocity",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "w": [
+          1.0,
+          -1.0
+        ],
+        "grad": [
+          1.0,
+          2.0
+        ],
+        "v": [
+          0.1,
+          -0.1
+        ],
+        "lr": 0.05,
+        "momentum": 0.9
+      },
+      "expectedOutput": {
+        "w": [
+          0.824,
+          -1.109
+        ],
+        "v": [
+          0.14,
+          0.01
         ]
       },
-      "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
-      ],
       "isPublic": true
     },
     {
       "id": "ml-opt-nesterov-tc-3",
-      "name": "Case 3",
+      "name": "Zero gradient",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "w": [
+          2.0,
+          3.0
+        ],
+        "grad": [
+          0.0,
+          0.0
+        ],
+        "v": [
+          0.2,
+          0.4
+        ],
+        "lr": 0.1,
+        "momentum": 0.5
+      },
+      "expectedOutput": {
+        "w": [
+          1.95,
+          2.9
+        ],
+        "v": [
+          0.1,
+          0.2
         ]
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-nesterov-tc-4",
-      "name": "Case 4",
+      "name": "Zero momentum reduces to SGD",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "w": [
+          1.0,
+          2.0
+        ],
+        "grad": [
+          1.0,
+          2.0
+        ],
+        "v": [
+          0.5,
+          0.5
+        ],
+        "lr": 0.1,
+        "momentum": 0.0
+      },
+      "expectedOutput": {
+        "w": [
+          0.9,
+          1.8
+        ],
+        "v": [
+          0.1,
+          0.2
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-nesterov-tc-5",
-      "name": "Case 5",
+      "name": "3D parameters",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "w": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "grad": [
+          1.0,
+          -2.0,
+          3.0
+        ],
+        "v": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lr": 0.1,
+        "momentum": 0.8
+      },
+      "expectedOutput": {
+        "w": [
+          -0.18,
+          0.36,
+          -0.54
+        ],
+        "v": [
+          0.1,
+          -0.2,
+          0.3
         ]
       },
-      "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-nesterov-tc-6",
-      "name": "Case 6",
+      "name": "Negative weights and gradients",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "w": [
+          -1.0,
+          -2.0
+        ],
+        "grad": [
+          -0.5,
+          -1.0
+        ],
+        "v": [
+          -0.1,
+          -0.2
+        ],
+        "lr": 0.1,
+        "momentum": 0.9
+      },
+      "expectedOutput": {
+        "w": [
+          -0.824,
+          -1.648
+        ],
+        "v": [
+          -0.14,
+          -0.28
         ]
       },
-      "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-nesterov-tc-7",
-      "name": "Case 7",
+      "name": "High learning rate",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
+        "w": [
+          5.0
+        ],
+        "grad": [
+          2.0
+        ],
+        "v": [
           1.0
+        ],
+        "lr": 0.5,
+        "momentum": 0.9
+      },
+      "expectedOutput": {
+        "w": [
+          2.29
+        ],
+        "v": [
+          1.9
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
-      ],
       "isPublic": false
     }
   ],
@@ -159,6 +257,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: CUDA\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, CUDA\n",
   "starterCode": "import numpy as np\n\ndef dropout(x: list, p: float = 0.5, training: bool = True, mask: list = None) -> list:\n    \"\"\"\n    Implement inverted dropout for deep neural network regularisation, scaling active activations by 1/(1 - p) during training so that evaluation requires no additional scaling.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nImplement inverted dropout for deep neural network regularisation, scaling active activations by 1/(1 - p) during training so that evaluation requires no additional scaling.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dropout(x: list, p: float = 0.5, training: bool = True, mask: list = None) -> list:\n    arr = np.array(x, dtype=float)\n    if not training or p == 0.0:\n        return np.round(arr, 6).tolist()\n    if mask is not None:\n        m = np.array(mask, dtype=float)\n        return np.round((arr * m) / (1.0 - p), 6).tolist()\n    return np.round(arr / (1.0 - p), 6).tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nImplement inverted dropout for deep neural network regularisation, scaling active activations by 1/(1 - p) during training so that evaluation requires no additional scaling.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dropout(x: list, p: float = 0.5, training: bool = True, mask: list = None) -> list:\n    arr = np.array(x, dtype=float)\n    if not training or p == 0.0:\n        return np.round(arr, 6).tolist()\n    if mask is not None:\n        m = np.array(mask, dtype=float)\n        return np.round((arr * m) / (1.0 - p), 6).tolist()\n    return np.round(arr / (1.0 - p), 6).tolist()\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "dropout-tc-1",
@@ -88,19 +88,19 @@
           12.0,
           16.0
         ],
-        "p": 1.0,
-        "training": 2,
+        "p": 0.25,
+        "training": true,
         "mask": [
-          2.0,
+          1.0,
           0.0,
-          2.0,
+          1.0,
           0.0
         ]
       },
       "expectedOutput": [
+        5.333333,
         0.0,
-        0.0,
-        0.0,
+        16.0,
         0.0
       ],
       "isPublic": false
@@ -142,7 +142,7 @@
           -6.0,
           -8.0
         ],
-        "p": -0.5,
+        "p": 0.5,
         "training": -1,
         "mask": [
           -1.0,
@@ -152,9 +152,9 @@
         ]
       },
       "expectedOutput": [
-        1.333333,
-        0.0,
         4.0,
+        0.0,
+        12.0,
         0.0
       ],
       "isPublic": false
@@ -169,7 +169,7 @@
           18.0,
           24.0
         ],
-        "p": 1.5,
+        "p": 0.5,
         "training": 3,
         "mask": [
           3.0,
@@ -179,10 +179,10 @@
         ]
       },
       "expectedOutput": [
-        -36.0,
-        -0.0,
-        -108.0,
-        -0.0
+        36.0,
+        0.0,
+        108.0,
+        0.0
       ],
       "isPublic": false
     },
@@ -196,7 +196,7 @@
           7.0,
           9.0
         ],
-        "p": 1.5,
+        "p": 0.5,
         "training": 2.0,
         "mask": [
           2.0,
@@ -206,10 +206,10 @@
         ]
       },
       "expectedOutput": [
-        -12.0,
-        -10.0,
-        -28.0,
-        -18.0
+        12.0,
+        10.0,
+        28.0,
+        18.0
       ],
       "isPublic": false
     }

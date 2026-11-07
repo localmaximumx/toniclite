@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def cv_soft_nms(boxes: list, scores: list, sigma: float = 0.5, score_threshold: float = 0.001) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Soft Non-Maximum Suppression** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef cv_soft_nms(boxes: list, scores: list, sigma: float = 0.5, score_threshold: float = 0.001) -> dict:\n    b, s = np.array(boxes, dtype=np.float64), np.array(scores, dtype=np.float64)\n    def iou(b1, b2):\n        inter = max(0.0, min(b1[2], b2[2]) - max(b1[0], b2[0])) * max(0.0, min(b1[3], b2[3]) - max(b1[1], b2[1]))\n        return inter / max((b1[2]-b1[0])*(b1[3]-b1[1]) + (b2[2]-b2[0])*(b2[3]-b2[1]) - inter, 1e-12)\n    k_b, k_s = [], []\n    for _ in range(len(s)):\n        idx = np.argmax(s); mx = s[idx]\n        if mx < float(score_threshold): break\n        k_b.append(b[idx].tolist()); k_s.append(round(float(mx), 4)); s[idx] = -1.0\n        for j in range(len(s)):\n            if s[j] > 0: s[j] *= math.exp(-(iou(b[idx], b[j])**2) / float(sigma))\n    return {'retained_boxes': k_b, 'decayed_scores': k_s}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Soft Non-Maximum Suppression** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef cv_soft_nms(boxes: list, scores: list, sigma: float = 0.5, score_threshold: float = 0.001) -> dict:\n    b, s = np.array(boxes, dtype=np.float64), np.array(scores, dtype=np.float64)\n    def iou(b1, b2):\n        inter = max(0.0, min(b1[2], b2[2]) - max(b1[0], b2[0])) * max(0.0, min(b1[3], b2[3]) - max(b1[1], b2[1]))\n        return inter / max((b1[2]-b1[0])*(b1[3]-b1[1]) + (b2[2]-b2[0])*(b2[3]-b2[1]) - inter, 1e-12)\n    k_b, k_s = [], []\n    for _ in range(len(s)):\n        idx = np.argmax(s); mx = s[idx]\n        if mx < float(score_threshold): break\n        k_b.append(b[idx].tolist()); k_s.append(round(float(mx), 4)); s[idx] = -1.0\n        for j in range(len(s)):\n            if s[j] > 0: s[j] *= math.exp(-(iou(b[idx], b[j])**2) / float(sigma))\n    return {'retained_boxes': k_b, 'decayed_scores': k_s}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-soft-nms-tc-1",
@@ -196,8 +196,8 @@
           -0.9,
           -0.8
         ],
-        "sigma": -0.5,
-        "score_threshold": -0.01
+        "sigma": 0.5,
+        "score_threshold": 0.01
       },
       "expectedOutput": {
         "retained_boxes": [],
@@ -275,7 +275,7 @@
           1.8
         ],
         "sigma": 1.5,
-        "score_threshold": 1.01
+        "score_threshold": 0.01
       },
       "expectedOutput": {
         "retained_boxes": [
@@ -321,28 +321,12 @@
           -1.1,
           -1.2
         ],
-        "sigma": -1.5,
-        "score_threshold": -1.99
+        "sigma": 0.5,
+        "score_threshold": 0.01
       },
       "expectedOutput": {
-        "retained_boxes": [
-          [
-            -2.0,
-            -2.0,
-            8.0,
-            8.0
-          ],
-          [
-            -2.0,
-            -2.0,
-            8.0,
-            8.0
-          ]
-        ],
-        "decayed_scores": [
-          -1.1,
-          -1.0
-        ]
+        "retained_boxes": [],
+        "decayed_scores": []
       },
       "isPublic": false
     }

@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def pandas_resetting_index(df_data: list, index_col: str, drop: bool = False) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Resetting Index** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef pandas_resetting_index(df_data: list, index_col: str, drop: bool = False) -> list:\n    res = []\n    for r in df_data:\n        d = dict(r)\n        if drop and index_col in d: del d[index_col]\n        res.append(d)\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Resetting Index** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef pandas_resetting_index(df_data: list, index_col: str, drop: bool = False) -> list:\n    res = []\n    for r in df_data:\n        d = dict(r)\n        if drop and index_col in d: del d[index_col]\n        res.append(d)\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pandas-resetting-index-tc-1",
@@ -74,7 +74,7 @@
           }
         ],
         "index_col": "user_id",
-        "drop": 2
+        "drop": true
       },
       "expectedOutput": [
         {
@@ -101,15 +101,13 @@
           }
         ],
         "index_col": "user_id",
-        "drop": 0
+        "drop": true
       },
       "expectedOutput": [
         {
-          "user_id": 50,
           "val": "A"
         },
         {
-          "user_id": 51,
           "val": "B"
         }
       ],
@@ -130,7 +128,7 @@
           }
         ],
         "index_col": "user_id",
-        "drop": 2
+        "drop": true
       },
       "expectedOutput": [
         {
@@ -157,7 +155,7 @@
           }
         ],
         "index_col": "user_id",
-        "drop": -1
+        "drop": true
       },
       "expectedOutput": [
         {
@@ -184,7 +182,7 @@
           }
         ],
         "index_col": "user_id",
-        "drop": 1
+        "drop": true
       },
       "expectedOutput": [
         {
@@ -211,7 +209,7 @@
           }
         ],
         "index_col": "user_id",
-        "drop": 3
+        "drop": true
       },
       "expectedOutput": [
         {

@@ -44,7 +44,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "import math\ndef solve(relevances,k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport math\ndef solve(relevances,k):\n    dcg=sum((2*r-1)/(math.log2(i+2)) for i,r in enumerate(relevances[:k]))\n    ideal=sorted(relevances,reverse=True)[:k]\n    idcg=sum((2*r-1)/(math.log2(i+2)) for i,r in enumerate(ideal))\n    return dcg/idcg if idcg else 0.0\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\nimport math\ndef solve(relevances,k):\n    dcg=sum((2*r-1)/(math.log2(i+2)) for i,r in enumerate(relevances[:k]))\n    ideal=sorted(relevances,reverse=True)[:k]\n    idcg=sum((2*r-1)/(math.log2(i+2)) for i,r in enumerate(ideal))\n    return dcg/idcg if idcg else 0.0\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds7-rank-ndcg-at-k-tc-1",
@@ -97,9 +97,9 @@
           -2,
           0
         ],
-        "k": -3
+        "k": 3
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 1.3919187007766223,
       "isPublic": false
     },
     {

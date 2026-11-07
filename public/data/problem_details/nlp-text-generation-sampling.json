@@ -33,7 +33,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef nlp_text_generation_sampling(logits: list, temperature: float = 1.0, top_k: int = 3) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Text Generation Sampling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef nlp_text_generation_sampling(logits: list, temperature: float = 1.0, top_k: int = 3) -> dict:\n    arr = np.array(logits, dtype=np.float64) / max(float(temperature), 1e-8)\n    k = min(int(top_k), len(arr))\n    top_idx = np.argsort(-arr)[:k]\n    filt = np.full_like(arr, -1e9); filt[top_idx] = arr[top_idx]\n    ex = np.exp(filt - np.max(filt))\n    return {'filtered_probabilities': np.round(ex / np.sum(ex), 4).tolist(), 'top_k_indices': sorted(top_idx.tolist())}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Text Generation Sampling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef nlp_text_generation_sampling(logits: list, temperature: float = 1.0, top_k: int = 3) -> dict:\n    arr = np.array(logits, dtype=np.float64) / max(float(temperature), 1e-8)\n    k = min(int(top_k), len(arr))\n    top_idx = np.argsort(-arr)[:k]\n    filt = np.full_like(arr, -1e9); filt[top_idx] = arr[top_idx]\n    ex = np.exp(filt - np.max(filt))\n    return {'filtered_probabilities': np.round(ex / np.sum(ex), 4).tolist(), 'top_k_indices': sorted(top_idx.tolist())}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-text-generation-sampling-tc-1",
@@ -165,19 +165,18 @@
           -0.5
         ],
         "temperature": 1.0,
-        "top_k": -2
+        "top_k": 2
       },
       "expectedOutput": {
         "filtered_probabilities": [
-          0.3315,
+          0.3775,
           0.0,
-          0.122,
           0.0,
-          0.5465
+          0.0,
+          0.6225
         ],
         "top_k_indices": [
           0,
-          2,
           4
         ]
       },

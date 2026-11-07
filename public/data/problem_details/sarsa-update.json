@@ -18,7 +18,7 @@
   "starterCode": "def sarsa_update(q_table: list, state: int, action: int, reward: float, next_state: int, next_action: int, alpha: float, gamma: float) -> list:\n    \"\"\"\n    Returns a copied Q-table after one SARSA update.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:14:36.265Z",
   "updatedAt": "2026-10-12T07:47:35.464Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef sarsa_update(q_table: list, state: int, action: int, reward: float, next_state: int, next_action: int, alpha: float, gamma: float) -> list:\n    Q = np.array(q_table, dtype=float)\n    td = reward + gamma * Q[next_state, next_action] - Q[state, action]\n    Q[state, action] += alpha * td\n    return np.round(Q, 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef sarsa_update(q_table: list, state: int, action: int, reward: float, next_state: int, next_action: int, alpha: float, gamma: float) -> list:\n    Q = np.array(q_table, dtype=float)\n    td = reward + gamma * Q[next_state, next_action] - Q[state, action]\n    Q[state, action] += alpha * td\n    return np.round(Q, 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "SarsaUpdateViz",
   "testCases": [
     {
@@ -128,7 +128,7 @@
       "name": "Case 4",
       "inputs": {
         "alpha": 0.1,
-        "gamma": -0.9,
+        "gamma": 0.9,
         "state": 0,
         "action": -1,
         "reward": -1,

@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import torch\n\ndef pytorch_mini_training(batches: list, initial_weight: float, lr: float = 0.1) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Mini Training Loop** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch, numpy as np\n\ndef pytorch_mini_training(batches: list, initial_weight: float, lr: float = 0.1) -> dict:\n    w = torch.tensor([float(initial_weight)], requires_grad=True)\n    opt = torch.optim.SGD([w], lr=float(lr))\n    losses = []\n    for b in batches:\n        x, y = torch.tensor(b['x'], dtype=torch.float32), torch.tensor(b['y'], dtype=torch.float32)\n        opt.zero_grad()\n        loss = torch.mean((x * w - y)**2)\n        loss.backward()\n        opt.step()\n        losses.append(float(loss.item()))\n    return {'final_weight': round(float(w.item()), 4), 'mean_loss': round(float(np.mean(losses)), 4), 'batch_losses': [round(l, 4) for l in losses]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Mini Training Loop** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch, numpy as np\n\ndef pytorch_mini_training(batches: list, initial_weight: float, lr: float = 0.1) -> dict:\n    w = torch.tensor([float(initial_weight)], requires_grad=True)\n    opt = torch.optim.SGD([w], lr=float(lr))\n    losses = []\n    for b in batches:\n        x, y = torch.tensor(b['x'], dtype=torch.float32), torch.tensor(b['y'], dtype=torch.float32)\n        opt.zero_grad()\n        loss = torch.mean((x * w - y)**2)\n        loss.backward()\n        opt.step()\n        losses.append(float(loss.item()))\n    return {'final_weight': round(float(w.item()), 4), 'mean_loss': round(float(np.mean(losses)), 4), 'batch_losses': [round(l, 4) for l in losses]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "pytorch-mini-training-tc-1",
@@ -79,34 +79,34 @@
         "batches": [
           {
             "x": [
-              1.0,
-              2.0
+              1.5,
+              1.0
             ],
             "y": [
-              2.0,
-              4.0
+              3.0,
+              2.0
             ]
           },
           {
             "x": [
-              3.0,
-              4.0
+              1.5,
+              7.0
             ],
             "y": [
-              6.0,
-              8.0
+              3.0,
+              14.0
             ]
           }
         ],
-        "initial_weight": 0.0,
-        "lr": 0.05
+        "initial_weight": 0.6,
+        "lr": 0.0125
       },
       "expectedOutput": {
-        "final_weight": 2.375,
-        "mean_loss": 19.0625,
+        "final_weight": 1.5173,
+        "mean_loss": 24.7061,
         "batch_losses": [
-          10.0,
-          28.125
+          3.185,
+          46.2271
         ]
       },
       "isPublic": true
@@ -118,34 +118,34 @@
         "batches": [
           {
             "x": [
-              1.0,
-              2.0
+              0.5,
+              3.5
             ],
             "y": [
-              2.0,
-              4.0
+              1.0,
+              7.0
             ]
           },
           {
             "x": [
-              3.0,
-              4.0
+              5.25,
+              8.0
             ],
             "y": [
-              6.0,
-              8.0
+              10.5,
+              16.0
             ]
           }
         ],
-        "initial_weight": 0.0,
-        "lr": 0.05
+        "initial_weight": 0.8,
+        "lr": 0.1
       },
       "expectedOutput": {
-        "final_weight": 2.375,
-        "mean_loss": 19.0625,
+        "final_weight": -0.4469,
+        "mean_loss": 6.5602,
         "batch_losses": [
-          10.0,
-          28.125
+          9.0,
+          4.1203
         ]
       },
       "isPublic": false
@@ -157,34 +157,34 @@
         "batches": [
           {
             "x": [
-              1.0,
-              2.0
+              1.75,
+              4.0
             ],
             "y": [
-              2.0,
-              4.0
+              3.5,
+              8.0
             ]
           },
           {
             "x": [
-              3.0,
-              4.0
+              6.0,
+              -2.0
             ],
             "y": [
-              6.0,
-              8.0
+              12.0,
+              -4.0
             ]
           }
         ],
-        "initial_weight": 0.0,
-        "lr": 0.05
+        "initial_weight": 1.0,
+        "lr": 0.04
       },
       "expectedOutput": {
-        "final_weight": 2.375,
-        "mean_loss": 19.0625,
+        "final_weight": 2.1425,
+        "mean_loss": 5.3297,
         "batch_losses": [
-          10.0,
-          28.125
+          9.5312,
+          1.1281
         ]
       },
       "isPublic": false
@@ -196,34 +196,34 @@
         "batches": [
           {
             "x": [
-              1.0,
-              2.0
+              2.0,
+              -1.0
             ],
             "y": [
-              2.0,
-              4.0
+              4.0,
+              -2.0
             ]
           },
           {
             "x": [
-              3.0,
-              4.0
+              -1.5,
+              10.0
             ],
             "y": [
-              6.0,
-              8.0
+              -3.0,
+              20.0
             ]
           }
         ],
-        "initial_weight": 0.0,
-        "lr": 0.05
+        "initial_weight": 1.2,
+        "lr": 0.06
       },
       "expectedOutput": {
-        "final_weight": 2.375,
-        "mean_loss": 19.0625,
+        "final_weight": 4.8756,
+        "mean_loss": 8.8164,
         "batch_losses": [
-          10.0,
-          28.125
+          1.6,
+          16.0328
         ]
       },
       "isPublic": false
@@ -235,34 +235,34 @@
         "batches": [
           {
             "x": [
-              1.0,
-              2.0
+              -0.5,
+              5.0
             ],
             "y": [
-              2.0,
-              4.0
+              -1.0,
+              10.0
             ]
           },
           {
             "x": [
-              3.0,
-              4.0
+              7.5,
+              1.2
             ],
             "y": [
-              6.0,
-              8.0
+              15.0,
+              2.4
             ]
           }
         ],
-        "initial_weight": 0.0,
+        "initial_weight": 1.4,
         "lr": 0.05
       },
       "expectedOutput": {
-        "final_weight": 2.375,
-        "mean_loss": 19.0625,
+        "final_weight": 1.7032,
+        "mean_loss": 2.6303,
         "batch_losses": [
-          10.0,
-          28.125
+          4.545,
+          0.7155
         ]
       },
       "isPublic": false
@@ -274,34 +274,34 @@
         "batches": [
           {
             "x": [
-              1.0,
-              2.0
+              2.5,
+              0.6
             ],
             "y": [
-              2.0,
-              4.0
+              5.0,
+              1.2
             ]
           },
           {
             "x": [
-              3.0,
+              0.9,
               4.0
             ],
             "y": [
-              6.0,
+              1.8,
               8.0
             ]
           }
         ],
-        "initial_weight": 0.0,
-        "lr": 0.05
+        "initial_weight": 1.6,
+        "lr": 0.025
       },
       "expectedOutput": {
-        "final_weight": 2.375,
-        "mean_loss": 19.0625,
+        "final_weight": 1.8064,
+        "mean_loss": 0.7329,
         "batch_losses": [
-          10.0,
-          28.125
+          0.5288,
+          0.9371
         ]
       },
       "isPublic": false

@@ -591,5 +591,6 @@
     "prev": "rnn-hidden-state",
     "next": "rnn-bptt"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "rnn-forward-sequence"
 }

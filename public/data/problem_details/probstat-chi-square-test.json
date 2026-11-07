@@ -145,25 +145,21 @@
       "name": "Case 5",
       "inputs": {
         "observed": [
-          -18,
-          -12,
-          -15,
-          -17,
-          -16,
-          -22
+          20,
+          25,
+          15,
+          20
         ],
         "expected": [
-          -16.666,
-          -16.666,
-          -16.666,
-          -16.666,
-          -16.666,
-          -16.666
+          20.0,
+          20.0,
+          20.0,
+          20.0
         ]
       },
       "expectedOutput": {
-        "chi2_statistic": 55333336000000.0,
-        "degrees_of_freedom": 5
+        "chi2_statistic": 2.5,
+        "degrees_of_freedom": 3
       },
       "isPublic": false
     },

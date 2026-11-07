@@ -33,7 +33,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_text_classification(train_docs: list, train_labels: list, test_docs: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Text Classification** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math, numpy as np\n\ndef nlp_text_classification(train_docs: list, train_labels: list, test_docs: list) -> list:\n    classes = sorted(list(set(train_labels)))\n    vocab = sorted(list(set(w for d in train_docs for w in d.lower().split())))\n    V, w2i = len(vocab), {w: i for i, w in enumerate(vocab)}\n    priors = {c: train_labels.count(c)/len(train_docs) for c in classes}\n    wc = {c: np.zeros(V) for c in classes}; tw = {c: 0.0 for c in classes}\n    for d, l in zip(train_docs, train_labels):\n        for w in d.lower().split():\n            wc[l][w2i[w]] += 1; tw[l] += 1\n    preds = []\n    for d in test_docs:\n        scores = {c: math.log(priors[c]) + sum(math.log((wc[c][w2i[w]] + 1.0)/(tw[c] + V)) for w in d.lower().split() if w in w2i) for c in classes}\n        preds.append(max(scores, key=scores.get))\n    return preds\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Text Classification** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math, numpy as np\n\ndef nlp_text_classification(train_docs: list, train_labels: list, test_docs: list) -> list:\n    classes = sorted(list(set(train_labels)))\n    vocab = sorted(list(set(w for d in train_docs for w in d.lower().split())))\n    V, w2i = len(vocab), {w: i for i, w in enumerate(vocab)}\n    priors = {c: train_labels.count(c)/len(train_docs) for c in classes}\n    wc = {c: np.zeros(V) for c in classes}; tw = {c: 0.0 for c in classes}\n    for d, l in zip(train_docs, train_labels):\n        for w in d.lower().split():\n            wc[l][w2i[w]] += 1; tw[l] += 1\n    preds = []\n    for d in test_docs:\n        scores = {c: math.log(priors[c]) + sum(math.log((wc[c][w2i[w]] + 1.0)/(tw[c] + V)) for w in d.lower().split() if w in w2i) for c in classes}\n        preds.append(max(scores, key=scores.get))\n    return preds\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-text-classification-tc-1",
@@ -65,23 +65,23 @@
       "name": "Case 2",
       "inputs": {
         "train_docs": [
-          "football match goal team",
-          "python code computer software",
-          "soccer league tournament"
+          "football match goal team gamma",
+          "python code computer software gamma",
+          "soccer league tournament gamma"
         ],
         "train_labels": [
-          "sports",
-          "tech",
-          "sports"
+          "sportsed",
+          "teched",
+          "sportsed"
         ],
         "test_docs": [
-          "software program",
-          "football tournament"
+          "software program gamma",
+          "football tournament gamma"
         ]
       },
       "expectedOutput": [
-        "tech",
-        "sports"
+        "teched",
+        "sportsed"
       ],
       "isPublic": true
     },
@@ -90,23 +90,23 @@
       "name": "Case 3",
       "inputs": {
         "train_docs": [
-          "football match goal team",
-          "python code computer software",
-          "soccer league tournament"
+          "delta football match goal team",
+          "delta python code computer software",
+          "delta soccer league tournament"
         ],
         "train_labels": [
-          "sports",
-          "tech",
-          "sports"
+          "sportsing",
+          "teching",
+          "sportsing"
         ],
         "test_docs": [
-          "software program",
-          "football tournament"
+          "delta software program",
+          "delta football tournament"
         ]
       },
       "expectedOutput": [
-        "tech",
-        "sports"
+        "teching",
+        "sportsing"
       ],
       "isPublic": false
     },
@@ -115,23 +115,27 @@
       "name": "Case 4",
       "inputs": {
         "train_docs": [
-          "football match goal team",
-          "python code computer software",
-          "soccer league tournament"
+          "football match goal team football",
+          "python code computer software python",
+          "soccer league tournament soccer",
+          "natural language processing"
         ],
         "train_labels": [
-          "sports",
-          "tech",
-          "sports"
+          "sportser",
+          "techer",
+          "sportser",
+          "natural language processing"
         ],
         "test_docs": [
-          "software program",
-          "football tournament"
+          "software program software",
+          "football tournament football",
+          "natural language processing"
         ]
       },
       "expectedOutput": [
-        "tech",
-        "sports"
+        "techer",
+        "sportser",
+        "natural language processing"
       ],
       "isPublic": false
     },
@@ -140,23 +144,23 @@
       "name": "Case 5",
       "inputs": {
         "train_docs": [
-          "football match goal team",
-          "python code computer software",
-          "soccer league tournament"
+          "neural team goal match football vector",
+          "software computer code python",
+          "soccer league tournament matrix"
         ],
         "train_labels": [
-          "sports",
-          "tech",
-          "sports"
+          "sportstion",
+          "techment",
+          "sportsness"
         ],
         "test_docs": [
-          "software program",
-          "football tournament"
+          "neural program software vector",
+          "tournament football"
         ]
       },
       "expectedOutput": [
-        "tech",
-        "sports"
+        "sportstion",
+        "sportsness"
       ],
       "isPublic": false
     },
@@ -165,23 +169,23 @@
       "name": "Case 6",
       "inputs": {
         "train_docs": [
-          "football match goal team",
-          "python code computer software",
-          "soccer league tournament"
+          "tournament league soccer",
+          "software computer code python",
+          "team goal match football"
         ],
         "train_labels": [
-          "sports",
-          "tech",
-          "sports"
+          "sportss",
+          "techs",
+          "sportss"
         ],
         "test_docs": [
-          "software program",
-          "football tournament"
+          "tournament football",
+          "program software"
         ]
       },
       "expectedOutput": [
-        "tech",
-        "sports"
+        "sportss",
+        "techs"
       ],
       "isPublic": false
     },
@@ -192,21 +196,25 @@
         "train_docs": [
           "football match goal team",
           "python code computer software",
-          "soccer league tournament"
+          "soccer league tournament",
+          "computer vision system"
         ],
         "train_labels": [
           "sports",
           "tech",
-          "sports"
+          "sports",
+          "computer vision system"
         ],
         "test_docs": [
           "software program",
-          "football tournament"
+          "football tournament",
+          "computer vision system"
         ]
       },
       "expectedOutput": [
         "tech",
-        "sports"
+        "sports",
+        "computer vision system"
       ],
       "isPublic": false
     }

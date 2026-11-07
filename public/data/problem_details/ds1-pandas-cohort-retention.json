@@ -13,7 +13,7 @@
   "description": "In product analytics, cohort retention analyzes how user engagement evolves over successive time intervals relative to their sign-up date.\n\nGiven a transaction or activity dataset with columns `[user_id, event_date]`, construct a **Cohort Retention Matrix**:\n1. Determine each user's acquisition cohort (month/week of their first activity).\n2. Calculate the retention period offset for subsequent activity events.\n3. Compute the percentage of cohort members active in each subsequent period relative to period 0.",
   "theory": "# Understanding Cohort Retention Matrix\n\n## 1. What Is It?\n\nThe **Cohort Retention Matrix** is a fundamental computational technique in Machine Learning. In machine learning workflows, In product analytics, cohort retention analyzes how user engagement evolves over successive time intervals relative to their sign-up date.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Cohort Retention Matrix**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ds1_pandas_cohort_retention`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ds1_pandas_cohort_retention` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Cohort Retention Matrix.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ds1_pandas_cohort_retention` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ds1_pandas_cohort_retention`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ds1_pandas_cohort_retention`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ds1_pandas_cohort_retention`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Cohort Retention Matrix** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ds1_pandas_cohort_retention` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Cohort Retention Matrix."
+    "Input: events = [{\"user_id\": 1, \"event_month\": \"2024-01\"}, {\"user_id\": 2, \"event_month\": \"2024-01\"}, {\"user_id\": 1, \"event_month\": \"2024-02\"}]\n\nOutput: {\"2024-01\": {\"0\": 1.0, \"1\": 0.5}}\n\nExplanation: Evaluated ds1_pandas_cohort_retention under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ds1_pandas_cohort_retention`.",
@@ -28,126 +28,223 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ds1_pandas_cohort_retention(x):\n    \"\"\"\n    Cohort Retention Matrix\n    \"\"\"\n    # Implement Cohort Retention Matrix here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ds1_pandas_cohort_retention(x):\n    \"\"\"\n    Cohort Retention Matrix\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def ds1_pandas_cohort_retention(events: list) -> dict:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Cohort Retention Matrix** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef ds1_pandas_cohort_retention(events: list) -> dict:\n    user_first = {}\n    user_months = set()\n    for e in events:\n        uid = e[\"user_id\"]\n        m_str = str(e[\"event_month\"])\n        if \"-\" in m_str:\n            y, m = map(int, m_str.split(\"-\")[:2])\n            m_idx = y * 12 + m\n        else:\n            m_idx = int(m_str)\n        user_months.add((uid, m_idx, m_str[:7]))\n        if uid not in user_first or m_idx < user_first[uid][0]:\n            user_first[uid] = (m_idx, m_str[:7])\n    cohorts = {}\n    for uid, (c_idx, c_label) in user_first.items():\n        cohorts.setdefault(c_label, {\"base_idx\": c_idx, \"users\": set(), \"offsets\": {}})\n        cohorts[c_label][\"users\"].add(uid)\n    for uid, m_idx, _ in user_months:\n        c_idx, c_label = user_first[uid]\n        offset = m_idx - c_idx\n        cohorts[c_label][\"offsets\"].setdefault(offset, set()).add(uid)\n    result = {}\n    for c_label in sorted(cohorts.keys()):\n        total = len(cohorts[c_label][\"users\"])\n        offs = cohorts[c_label][\"offsets\"]\n        result[c_label] = {\n            str(k): round(len(offs[k]) / total, 4)\n            for k in sorted(offs.keys())\n        }\n    return result\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ds1-pandas-cohort-retention-tc-1",
-      "name": "Standard Input",
+      "name": "Single cohort 50% retention",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "events": [
+          {
+            "user_id": 1,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-02"
+          }
         ]
       },
-      "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
-      ],
+      "expectedOutput": {
+        "2024-01": {
+          "0": 1.0,
+          "1": 0.5
+        }
+      },
       "isPublic": true
     },
     {
       "id": "ds1-pandas-cohort-retention-tc-2",
-      "name": "Case 2",
+      "name": "Two cohorts",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "events": [
+          {
+            "user_id": 1,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-02"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-02"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-03"
+          }
         ]
       },
-      "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
-      ],
+      "expectedOutput": {
+        "2024-01": {
+          "0": 1.0,
+          "1": 1.0
+        },
+        "2024-02": {
+          "0": 1.0,
+          "1": 1.0
+        }
+      },
       "isPublic": true
     },
     {
       "id": "ds1-pandas-cohort-retention-tc-3",
-      "name": "Case 3",
+      "name": "Full retention",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "events": [
+          {
+            "user_id": 1,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-02"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-02"
+          }
         ]
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
+      "expectedOutput": {
+        "2024-01": {
+          "0": 1.0,
+          "1": 1.0
+        }
+      },
       "isPublic": false
     },
     {
       "id": "ds1-pandas-cohort-retention-tc-4",
-      "name": "Case 4",
+      "name": "Three months decay",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "events": [
+          {
+            "user_id": 1,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 3,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 4,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-02"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-02"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-03"
+          }
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
-      ],
+      "expectedOutput": {
+        "2024-01": {
+          "0": 1.0,
+          "1": 0.5,
+          "2": 0.25
+        }
+      },
       "isPublic": false
     },
     {
       "id": "ds1-pandas-cohort-retention-tc-5",
-      "name": "Case 5",
+      "name": "Duplicate events in same month",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "events": [
+          {
+            "user_id": 1,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-02"
+          }
         ]
       },
-      "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
-      ],
+      "expectedOutput": {
+        "2024-01": {
+          "0": 1.0,
+          "1": 1.0
+        }
+      },
       "isPublic": false
     },
     {
       "id": "ds1-pandas-cohort-retention-tc-6",
-      "name": "Case 6",
+      "name": "Skipped month return",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "events": [
+          {
+            "user_id": 1,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 2,
+            "event_month": "2024-01"
+          },
+          {
+            "user_id": 1,
+            "event_month": "2024-03"
+          }
         ]
       },
-      "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
-      ],
+      "expectedOutput": {
+        "2024-01": {
+          "0": 1.0,
+          "2": 0.5
+        }
+      },
       "isPublic": false
     },
     {
       "id": "ds1-pandas-cohort-retention-tc-7",
-      "name": "Case 7",
+      "name": "No repeat activity",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "events": [
+          {
+            "user_id": 10,
+            "event_month": "2024-05"
+          },
+          {
+            "user_id": 20,
+            "event_month": "2024-06"
+          }
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
-      ],
+      "expectedOutput": {
+        "2024-05": {
+          "0": 1.0
+        },
+        "2024-06": {
+          "0": 1.0
+        }
+      },
       "isPublic": false
     }
   ],
@@ -159,6 +256,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

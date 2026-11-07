@@ -28,7 +28,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "def autograd_l01_scalar_expression_partials(f_center: float, f_xp: float, f_yp: float, f_zp: float, h: float = 1e-5) -> dict:\n    \"\"\"\n    Estimate the three partial derivatives of a scalar multivariate expression f(x, y, z) by perturbing one input variable at a time.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nEstimate the three partial derivatives of a scalar multivariate expression f(x, y, z) by perturbing one input variable at a time.\n\n### ⚡ Python Reference Implementation\n```python\ndef autograd_l01_scalar_expression_partials(f_center: float, f_xp: float, f_yp: float, f_zp: float, h: float = 1e-5) -> dict:\n    return {\n        'dx': round((f_xp - f_center) / h, 6),\n        'dy': round((f_yp - f_center) / h, 6),\n        'dz': round((f_zp - f_center) / h, 6)\n    }\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nEstimate the three partial derivatives of a scalar multivariate expression f(x, y, z) by perturbing one input variable at a time.\n\n### \u26a1 Python Reference Implementation\n```python\ndef autograd_l01_scalar_expression_partials(f_center: float, f_xp: float, f_yp: float, f_zp: float, h: float = 1e-5) -> dict:\n    return {\n        'dx': round((f_xp - f_center) / h, 6),\n        'dy': round((f_yp - f_center) / h, 6),\n        'dz': round((f_zp - f_center) / h, 6)\n    }\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "autograd-l01-scalar-expression-partials-tc-1",
@@ -89,12 +89,12 @@
         "f_xp": 8.00003,
         "f_yp": 7.999980000000001,
         "f_zp": 8.00005,
-        "h": -1.99999
+        "h": 1e-05
       },
       "expectedOutput": {
-        "dx": -1.5e-05,
-        "dy": 1e-05,
-        "dz": -2.5e-05
+        "dx": 3.0,
+        "dy": -2.0,
+        "dz": 5.0
       },
       "isPublic": false
     },
@@ -106,12 +106,12 @@
         "f_xp": -10.00003,
         "f_yp": -9.99998,
         "f_zp": -10.00005,
-        "h": -1e-05
+        "h": 1e-05
       },
       "expectedOutput": {
-        "dx": 3.0,
-        "dy": -2.0,
-        "dz": 5.0
+        "dx": -3.0,
+        "dy": 2.0,
+        "dz": -5.0
       },
       "isPublic": false
     },

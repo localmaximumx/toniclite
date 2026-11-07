@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def ml_categorical_encoding(categories: list, method: str = 'one_hot') -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Categorical Encoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef ml_categorical_encoding(categories: list, method: str = 'one_hot') -> dict:\n    u = sorted(list(set(categories)))\n    c2i = {c: i for i, c in enumerate(u)}\n    if method == 'label': enc = [c2i[c] for c in categories]\n    else:\n        enc = []\n        for c in categories:\n            r = [0] * len(u); r[c2i[c]] = 1; enc.append(r)\n    return {'categories': u, 'encoded': enc}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Categorical Encoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef ml_categorical_encoding(categories: list, method: str = 'one_hot') -> dict:\n    u = sorted(list(set(categories)))\n    c2i = {c: i for i, c in enumerate(u)}\n    if method == 'label': enc = [c2i[c] for c in categories]\n    else:\n        enc = []\n        for c in categories:\n            r = [0] * len(u); r[c2i[c]] = 1; enc.append(r)\n    return {'categories': u, 'encoded': enc}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ml-categorical-encoding-tc-1",
@@ -125,18 +125,18 @@
       "name": "Case 3",
       "inputs": {
         "categories": [
-          "cat",
-          "dog",
-          "cat",
-          "bird"
+          "cating",
+          "doging",
+          "cating",
+          "birding"
         ],
         "method": "one_hot"
       },
       "expectedOutput": {
         "categories": [
-          "bird",
-          "cat",
-          "dog"
+          "birding",
+          "cating",
+          "doging"
         ],
         "encoded": [
           [
@@ -168,39 +168,51 @@
       "name": "Case 4",
       "inputs": {
         "categories": [
-          "bird",
-          "cat",
-          "dog",
-          "cat"
+          "cater",
+          "doger",
+          "cater",
+          "birder",
+          "natural language processing"
         ],
-        "method": "toh_eno"
+        "method": "one_hot"
       },
       "expectedOutput": {
         "categories": [
-          "bird",
-          "cat",
-          "dog"
+          "birder",
+          "cater",
+          "doger",
+          "natural language processing"
         ],
         "encoded": [
           [
+            0,
             1,
             0,
             0
           ],
           [
             0,
+            0,
             1,
             0
           ],
           [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
             0,
             0,
             1
-          ],
-          [
-            0,
-            1,
-            0
           ]
         ]
       },
@@ -211,26 +223,29 @@
       "name": "Case 5",
       "inputs": {
         "categories": [
-          "cat",
-          "dog",
-          "cat",
-          "bird"
+          "cattion",
+          "dogment",
+          "catness",
+          "birdable"
         ],
         "method": "one_hot"
       },
       "expectedOutput": {
         "categories": [
-          "bird",
-          "cat",
-          "dog"
+          "birdable",
+          "catness",
+          "cattion",
+          "dogment"
         ],
         "encoded": [
           [
+            0,
             0,
             1,
             0
           ],
           [
+            0,
             0,
             0,
             1
@@ -238,10 +253,12 @@
           [
             0,
             1,
+            0,
             0
           ],
           [
             1,
+            0,
             0,
             0
           ]
@@ -254,18 +271,18 @@
       "name": "Case 6",
       "inputs": {
         "categories": [
-          "bird",
-          "cat",
-          "dog",
-          "cat"
+          "birds",
+          "cats",
+          "dogs",
+          "cats"
         ],
-        "method": "toh_eno"
+        "method": "one_hot"
       },
       "expectedOutput": {
         "categories": [
-          "bird",
-          "cat",
-          "dog"
+          "birds",
+          "cats",
+          "dogs"
         ],
         "encoded": [
           [
@@ -300,7 +317,8 @@
           "cat",
           "dog",
           "cat",
-          "bird"
+          "bird",
+          "computer vision system"
         ],
         "method": "one_hot"
       },
@@ -308,15 +326,18 @@
         "categories": [
           "bird",
           "cat",
+          "computer vision system",
           "dog"
         ],
         "encoded": [
           [
             0,
             1,
+            0,
             0
           ],
           [
+            0,
             0,
             0,
             1
@@ -324,11 +345,19 @@
           [
             0,
             1,
+            0,
             0
           ],
           [
             1,
             0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
             0
           ]
         ]

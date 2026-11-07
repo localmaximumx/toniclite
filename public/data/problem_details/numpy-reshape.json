@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef numpy_reshape(array_data: list, target_shape: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Reshaping Arrays** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_reshape(array_data: list, target_shape: list) -> list:\n    return np.round(np.array(array_data, dtype=np.float64).reshape([int(s) for s in target_shape]), 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Reshaping Arrays** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_reshape(array_data: list, target_shape: list) -> list:\n    return np.round(np.array(array_data, dtype=np.float64).reshape([int(s) for s in target_shape]), 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "numpy-reshape-tc-1",
@@ -118,10 +118,10 @@
       "name": "Case 4",
       "inputs": {
         "array_data": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          1.75,
+          4.0,
+          5.25,
+          8.0
         ],
         "target_shape": [
           2,
@@ -130,12 +130,12 @@
       },
       "expectedOutput": [
         [
-          1.0,
-          2.0
+          1.75,
+          4.0
         ],
         [
-          3.0,
-          4.0
+          5.25,
+          8.0
         ]
       ],
       "isPublic": false
@@ -145,10 +145,10 @@
       "name": "Case 5",
       "inputs": {
         "array_data": [
-          0.8,
-          1.6,
-          2.4,
-          3.2
+          2.0,
+          -1.0,
+          6.0,
+          -2.0
         ],
         "target_shape": [
           2,
@@ -157,12 +157,12 @@
       },
       "expectedOutput": [
         [
-          0.8,
-          1.6
+          2.0,
+          -1.0
         ],
         [
-          2.4,
-          3.2
+          6.0,
+          -2.0
         ]
       ],
       "isPublic": false
@@ -172,10 +172,10 @@
       "name": "Case 6",
       "inputs": {
         "array_data": [
-          1.2,
-          2.4,
-          3.6,
-          4.8
+          -0.5,
+          5.0,
+          -1.5,
+          10.0
         ],
         "target_shape": [
           2,
@@ -184,12 +184,12 @@
       },
       "expectedOutput": [
         [
-          1.2,
-          2.4
+          -0.5,
+          5.0
         ],
         [
-          3.6,
-          4.8
+          -1.5,
+          10.0
         ]
       ],
       "isPublic": false
@@ -199,10 +199,10 @@
       "name": "Case 7",
       "inputs": {
         "array_data": [
-          1.0,
-          2.0,
-          3.0,
-          4.0
+          2.5,
+          0.6,
+          7.5,
+          1.2
         ],
         "target_shape": [
           2,
@@ -211,12 +211,12 @@
       },
       "expectedOutput": [
         [
-          1.0,
-          2.0
+          2.5,
+          0.6
         ],
         [
-          3.0,
-          4.0
+          7.5,
+          1.2
         ]
       ],
       "isPublic": false

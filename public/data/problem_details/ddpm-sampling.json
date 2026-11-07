@@ -354,9 +354,9 @@
           ]
         ],
         "betas": [
-          -0.001,
-          -0.0105,
-          -0.02
+          0.001,
+          0.0105,
+          0.02
         ],
         "z_values": [
           [
@@ -375,28 +375,28 @@
         "epsilon_preds": [
           [
             [
-              0,
-              0
+              0.1,
+              -0.1
             ]
           ],
           [
             [
-              0,
-              0
+              0.05,
+              0.05
             ]
           ],
           [
             [
-              0,
-              0
+              -0.05,
+              0.1
             ]
           ]
         ]
       },
       "expectedOutput": [
         [
-          0.0,
-          0.0
+          -0.5678,
+          0.3264
         ]
       ],
       "isPublic": false
@@ -511,5 +511,6 @@
     "prev": "ddpm-loss",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "ddpm-sampling"
 }

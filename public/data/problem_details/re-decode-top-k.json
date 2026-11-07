@@ -62,7 +62,7 @@
         "k": 2
       },
       "expectedOutput": [
-        0.0,
+        "-inf",
         3.0,
         2.0
       ],
@@ -77,7 +77,7 @@
           6.0,
           4.0
         ],
-        "k": 4
+        "k": 3
       },
       "expectedOutput": [
         2.0,
@@ -98,9 +98,9 @@
         "k": 1
       },
       "expectedOutput": [
-        0.0,
+        "-inf",
         1.5,
-        0.0
+        "-inf"
       ],
       "isPublic": false
     },
@@ -111,14 +111,16 @@
         "logits": [
           3.0,
           9.0,
-          6.0
+          6.0,
+          1.0
         ],
-        "k": 6
+        "k": 2
       },
       "expectedOutput": [
-        3.0,
+        "-inf",
         9.0,
-        6.0
+        6.0,
+        "-inf"
       ],
       "isPublic": false
     },
@@ -129,14 +131,16 @@
         "logits": [
           2.0,
           3.0,
-          1.0
+          1.0,
+          5.0
         ],
-        "k": 2
+        "k": 3
       },
       "expectedOutput": [
         2.0,
         3.0,
-        0.0
+        "-inf",
+        5.0
       ],
       "isPublic": false
     },
@@ -145,16 +149,18 @@
       "name": "Case 6",
       "inputs": {
         "logits": [
-          10.0,
-          30.0,
-          20.0
+          -1.0,
+          -3.0,
+          -2.0,
+          0.0
         ],
-        "k": 20
+        "k": 2
       },
       "expectedOutput": [
-        10.0,
-        30.0,
-        20.0
+        -1.0,
+        "-inf",
+        "-inf",
+        0.0
       ],
       "isPublic": false
     },
@@ -163,16 +169,18 @@
       "name": "Case 7",
       "inputs": {
         "logits": [
-          6.0,
-          8.0,
-          7.0
+          4.0,
+          4.0,
+          2.0,
+          1.0
         ],
-        "k": 7.0
+        "k": 2
       },
       "expectedOutput": [
-        6.0,
-        8.0,
-        7.0
+        4.0,
+        4.0,
+        "-inf",
+        "-inf"
       ],
       "isPublic": false
     }

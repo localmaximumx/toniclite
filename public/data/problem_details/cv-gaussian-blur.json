@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef cv_gaussian_blur(image: list, kernel_size: int = 3, sigma: float = 1.0) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Gaussian Blur 2D** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_gaussian_blur(image: list, kernel_size: int = 3, sigma: float = 1.0) -> list:\n    img = np.array(image, dtype=float)\n    H, W = img.shape; k = kernel_size // 2\n    x, y = np.mgrid[-k:k+1, -k:k+1]\n    g = np.exp(-(x**2 + y**2) / (2.0 * sigma**2))\n    g = g / np.sum(g)\n    oh, ow = H - kernel_size + 1, W - kernel_size + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow): out[i, j] = np.sum(img[i:i+kernel_size, j:j+kernel_size] * g)\n    return np.round(out, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Gaussian Blur 2D** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_gaussian_blur(image: list, kernel_size: int = 3, sigma: float = 1.0) -> list:\n    img = np.array(image, dtype=float)\n    H, W = img.shape; k = kernel_size // 2\n    x, y = np.mgrid[-k:k+1, -k:k+1]\n    g = np.exp(-(x**2 + y**2) / (2.0 * sigma**2))\n    g = g / np.sum(g)\n    oh, ow = H - kernel_size + 1, W - kernel_size + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow): out[i, j] = np.sum(img[i:i+kernel_size, j:j+kernel_size] * g)\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-gaussian-blur-tc-1",
@@ -153,44 +153,17 @@
             2
           ]
         ],
-        "kernel_size": 0,
+        "kernel_size": 3,
         "sigma": 0.1
       },
       "expectedOutput": [
         [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          1.0,
+          1.0
         ],
         [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          1.0,
+          1.0
         ]
       ],
       "isPublic": false
@@ -323,28 +296,28 @@
       "inputs": {
         "image": [
           [
-            1,
-            2,
-            3,
-            4
-          ],
-          [
-            5,
-            6,
-            7,
-            8
-          ],
-          [
-            9,
+            8,
             10,
-            11,
+            10,
             12
           ],
           [
             13,
-            14,
             15,
-            16
+            15,
+            17
+          ],
+          [
+            16,
+            18,
+            18,
+            20
+          ],
+          [
+            21,
+            23,
+            23,
+            25
           ]
         ],
         "kernel_size": 3,
@@ -352,12 +325,12 @@
       },
       "expectedOutput": [
         [
-          6.0,
-          7.0
+          13.9037,
+          15.0
         ],
         [
-          10.0,
-          11.0
+          18.0,
+          19.0963
         ]
       ],
       "isPublic": false
@@ -368,41 +341,41 @@
       "inputs": {
         "image": [
           [
-            4,
-            3,
-            2,
-            1
-          ],
-          [
-            8,
-            7,
-            6,
-            5
-          ],
-          [
-            12,
+            9,
             11,
-            10,
-            9
+            11,
+            13
           ],
           [
-            16,
-            15,
             14,
-            13
+            16,
+            16,
+            18
+          ],
+          [
+            17,
+            19,
+            19,
+            21
+          ],
+          [
+            22,
+            24,
+            24,
+            26
           ]
         ],
         "kernel_size": 3,
-        "sigma": 1.0
+        "sigma": 0.5
       },
       "expectedOutput": [
         [
-          7.0,
-          6.0
+          15.574,
+          16.0
         ],
         [
-          11.0,
-          10.0
+          19.0,
+          19.426
         ]
       ],
       "isPublic": false

@@ -116,17 +116,17 @@
       "name": "Case 6",
       "inputs": {
         "ratings": [
-          -4,
-          -5,
-          -2
+          4.0,
+          5.0,
+          3.0
         ],
         "similarities": [
-          -0.9,
-          -0.8,
-          -0.3
+          0.8,
+          0.5,
+          -0.2
         ]
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 4.384615,
       "isPublic": false
     },
     {

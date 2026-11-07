@@ -30,7 +30,7 @@
   ],
   "constraints": "* Category: PYTHON\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, PYTHON\n",
   "starterCode": "import numpy as np\n\ndef alphago_l05_recent_replay_sampling(game_records: list, window_size: int = 100, batch_size: int = 4, seed: int = 42) -> list:\n    \"\"\"\n    Extract training samples from a sliding window of recent self-play games, maintaining a deterministic random sampling procedure to feed dual-head neural network training batches.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nExtract training samples from a sliding window of recent self-play games, maintaining a deterministic random sampling procedure to feed dual-head neural network training batches.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l05_recent_replay_sampling(game_records: list, window_size: int = 100, batch_size: int = 4, seed: int = 42) -> list:\n    all_pos = [pos for g in game_records for pos in g.get('positions', [])]\n    recent = all_pos[-window_size:] if len(all_pos) > window_size else all_pos\n    if not recent: return []\n    rng = np.random.RandomState(seed)\n    indices = sorted(rng.choice(len(recent), size=min(batch_size, len(recent)), replace=False))\n    return [recent[i] for i in indices]\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nExtract training samples from a sliding window of recent self-play games, maintaining a deterministic random sampling procedure to feed dual-head neural network training batches.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l05_recent_replay_sampling(game_records: list, window_size: int = 100, batch_size: int = 4, seed: int = 42) -> list:\n    all_pos = [pos for g in game_records for pos in g.get('positions', [])]\n    recent = all_pos[-window_size:] if len(all_pos) > window_size else all_pos\n    if not recent: return []\n    rng = np.random.RandomState(seed)\n    indices = sorted(rng.choice(len(recent), size=min(batch_size, len(recent)), replace=False))\n    return [recent[i] for i in indices]\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "alphago-l05-recent-replay-sampling-tc-1",
@@ -312,29 +312,42 @@
           {
             "positions": [
               {
-                "id": 1
+                "id": 9
               },
               {
-                "id": 2
+                "id": 11
               }
             ]
           },
           {
             "positions": [
               {
-                "id": 3
+                "id": 12
               },
               {
-                "id": 4
+                "id": 14
               }
             ]
           }
         ],
-        "window_size": 0,
-        "batch_size": 0,
+        "window_size": 5,
+        "batch_size": 4,
         "seed": 0
       },
-      "expectedOutput": [],
+      "expectedOutput": [
+        {
+          "id": 9
+        },
+        {
+          "id": 11
+        },
+        {
+          "id": 12
+        },
+        {
+          "id": 14
+        }
+      ],
       "isPublic": false
     }
   ],

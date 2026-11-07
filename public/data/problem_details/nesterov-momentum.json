@@ -19,7 +19,7 @@
   "starterCode": "import numpy as np\n\ndef nesterov_momentum_step(w: list, v: list, grad: list, lr: float = 0.01, momentum: float = 0.9) -> dict:\n    \"\"\"\n    Returns a dictionary with new_w and new_v.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-05T19:02:26.422Z",
   "updatedAt": "2026-03-05T20:21:07.087Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef nesterov_momentum_step(w: list, v: list, grad: list, lr: float = 0.01, momentum: float = 0.9) -> dict:\n    w_arr = np.array(w, dtype=float)\n    v_arr = np.array(v, dtype=float)\n    g_arr = np.array(grad, dtype=float)\n    new_v = momentum * v_arr + lr * g_arr\n    new_w = w_arr - new_v\n    return {'new_w': np.round(new_w, 6).tolist(), 'new_v': np.round(new_v, 6).tolist()}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef nesterov_momentum_step(w: list, v: list, grad: list, lr: float = 0.01, momentum: float = 0.9) -> dict:\n    w_arr = np.array(w, dtype=float)\n    v_arr = np.array(v, dtype=float)\n    g_arr = np.array(grad, dtype=float)\n    new_v = momentum * v_arr + lr * g_arr\n    new_w = w_arr - new_v\n    return {'new_w': np.round(new_w, 6).tolist(), 'new_v': np.round(new_v, 6).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "NesterovMomentumViz",
   "testCases": [
     {
@@ -127,7 +127,7 @@
           0.75,
           -0.375
         ],
-        "momentum": 1.35
+        "momentum": 0.9
       },
       "expectedOutput": {
         "new_w": [
@@ -189,7 +189,7 @@
           1.0,
           -0.5
         ],
-        "momentum": 1.8
+        "momentum": 0.9
       },
       "expectedOutput": {
         "new_w": [
@@ -220,7 +220,7 @@
           -0.5,
           0.25
         ],
-        "momentum": -0.9
+        "momentum": 0.9
       },
       "expectedOutput": {
         "new_w": [

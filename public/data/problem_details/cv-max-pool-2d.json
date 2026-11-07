@@ -30,7 +30,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef cv_max_pool_2d(image: list, kernel_size: int = 2, stride: int = 2) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Max Pool 2D** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_max_pool_2d(image: list, kernel_size: int = 2, stride: int = 2) -> list:\n    img = np.array(image, dtype=np.float64)\n    is_2d = (img.ndim == 2)\n    if is_2d: img = img[np.newaxis, :, :]\n    C, H, W = img.shape\n    k, s = int(kernel_size), int(stride)\n    oh, ow = (H - k)//s + 1, (W - k)//s + 1\n    out = np.zeros((C, oh, ow), dtype=np.float64)\n    for c in range(C):\n        for i in range(oh):\n            for j in range(ow):\n                out[c, i, j] = np.max(img[c, i*s:i*s+k, j*s:j*s+k])\n    res = out[0] if is_2d else out\n    return np.round(res, 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Max Pool 2D** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_max_pool_2d(image: list, kernel_size: int = 2, stride: int = 2) -> list:\n    img = np.array(image, dtype=np.float64)\n    is_2d = (img.ndim == 2)\n    if is_2d: img = img[np.newaxis, :, :]\n    C, H, W = img.shape\n    k, s = int(kernel_size), int(stride)\n    oh, ow = (H - k)//s + 1, (W - k)//s + 1\n    out = np.zeros((C, oh, ow), dtype=np.float64)\n    for c in range(C):\n        for i in range(oh):\n            for j in range(ow):\n                out[c, i, j] = np.max(img[c, i*s:i*s+k, j*s:j*s+k])\n    res = out[0] if is_2d else out\n    return np.round(res, 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "cv-max-pool-2d-tc-1",
@@ -244,12 +244,17 @@
             6.0
           ]
         ],
-        "kernel_size": 3.0,
-        "stride": 3.0
+        "kernel_size": 2,
+        "stride": 2
       },
       "expectedOutput": [
         [
-          8.0
+          7.0,
+          9.0
+        ],
+        [
+          10.0,
+          6.0
         ]
       ],
       "isPublic": false

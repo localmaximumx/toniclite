@@ -632,5 +632,6 @@
     "prev": null,
     "next": "vae-reparameterization"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vae-encoder"
 }

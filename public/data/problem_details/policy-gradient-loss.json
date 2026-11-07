@@ -18,7 +18,7 @@
   "starterCode": "def policy_gradient_loss(log_probs: list, rewards: list, gamma: float) -> float:\n    \"\"\"\n    Returns the REINFORCE loss with a mean-return baseline.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:14:54.694Z",
   "updatedAt": "2026-08-23T20:14:05.557Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef policy_gradient_loss(log_probs: list, rewards: list, gamma: float) -> float:\n    G = 0.0\n    returns = []\n    for r in reversed(rewards):\n        G = r + gamma * G\n        returns.insert(0, G)\n    returns = np.array(returns, dtype=float)\n    lps = np.array(log_probs, dtype=float)\n    advantages = returns - np.mean(returns)\n    loss = -np.mean(lps * advantages)\n    return float(round(loss, 6))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef policy_gradient_loss(log_probs: list, rewards: list, gamma: float) -> float:\n    G = 0.0\n    returns = []\n    for r in reversed(rewards):\n        G = r + gamma * G\n        returns.insert(0, G)\n    returns = np.array(returns, dtype=float)\n    lps = np.array(log_probs, dtype=float)\n    advantages = returns - np.mean(returns)\n    loss = -np.mean(lps * advantages)\n    return float(round(loss, 6))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "PolicyGradientLossViz",
   "testCases": [
     {
@@ -44,7 +44,7 @@
       "id": "policy-gradient-loss-tc-2",
       "name": "Case 2",
       "inputs": {
-        "gamma": 0,
+        "gamma": 1,
         "rewards": [
           0,
           10
@@ -55,7 +55,7 @@
         ]
       },
       "isPublic": true,
-      "expectedOutput": -1.25
+      "expectedOutput": -0.0
     },
     {
       "id": "policy-gradient-loss-tc-3",
@@ -80,7 +80,7 @@
       "id": "policy-gradient-loss-tc-4",
       "name": "Case 4",
       "inputs": {
-        "gamma": 0,
+        "gamma": 1,
         "rewards": [
           0,
           0,
@@ -118,7 +118,7 @@
       "id": "policy-gradient-loss-tc-6",
       "name": "Case 6",
       "inputs": {
-        "gamma": -1,
+        "gamma": 1,
         "rewards": [
           -1,
           -1,
@@ -130,7 +130,7 @@
           0.5
         ]
       },
-      "expectedOutput": -0.277778,
+      "expectedOutput": 0.166667,
       "isPublic": false
     },
     {

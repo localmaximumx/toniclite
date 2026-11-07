@@ -18,7 +18,7 @@
   "starterCode": "def winsorize(values: list, lower_pct: float, upper_pct: float) -> list:\n    \"\"\"\n    Returns values clipped to the interpolated percentile bounds.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-02-01T07:57:13.637Z",
   "updatedAt": "2026-08-23T21:21:00.873Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef winsorize(values: list, lower_pct: float, upper_pct: float) -> list:\n    arr = np.array(values, dtype=float)\n    low_val, high_val = np.percentile(arr, [lower_pct, upper_pct])\n    clipped = np.clip(arr, low_val, high_val)\n    return np.round(clipped, 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef winsorize(values: list, lower_pct: float, upper_pct: float) -> list:\n    arr = np.array(values, dtype=float)\n    low_val, high_val = np.percentile(arr, [lower_pct, upper_pct])\n    clipped = np.clip(arr, low_val, high_val)\n    return np.round(clipped, 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "WinzorizationViz",
   "testCases": [
     {
@@ -214,32 +214,32 @@
       "name": "Case 7",
       "inputs": {
         "values": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
           9,
-          10
+          11,
+          11,
+          13,
+          13,
+          15,
+          15,
+          17,
+          17,
+          19
         ],
-        "lower_pct": 10,
-        "upper_pct": 90
+        "lower_pct": 18,
+        "upper_pct": 98
       },
       "isPublic": false,
       "expectedOutput": [
-        1.9,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        9.1
+        11.0,
+        11.0,
+        11.0,
+        13.0,
+        13.0,
+        15.0,
+        15.0,
+        17.0,
+        17.0,
+        18.64
       ]
     }
   ],

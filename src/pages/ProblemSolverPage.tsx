@@ -68,6 +68,7 @@ import { AuthModal } from '../components/AuthModal';
 
 
 import { ReplShapeInspector } from '../components/ReplShapeInspector';
+import { ProblemVisualizer } from '../components/ProblemVisualizer';
 
 /* ======================================================== */
 /* LEETCODE-STYLE PERFORMANCE PERCENTILE CHART COMPONENT   */
@@ -1380,6 +1381,9 @@ export const ProblemSolverPage: React.FC = () => {
                   allowPureCode={false}
                 />
               </div>
+
+              {/* Interactive Problem Visualization & ML Math Simulator */}
+              <ProblemVisualizer problem={problem} isDarkTheme={isDarkTheme} />
 
               {/* Examples */}
               {problem.examples && problem.examples.length > 0 && (

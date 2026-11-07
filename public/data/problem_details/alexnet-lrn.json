@@ -22,7 +22,7 @@
   "topicId": "alexnet-lrn",
   "paperSnippet": "\"Response normalization reduces our top-1 and top-5 error rates by 1.4% and 1.2%, respectively.\"",
   "visualizationComponent": "LRNViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Local Response Normalization** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef local_response_normalization(x: np.ndarray, k: float, n: int, alpha: float, beta: float) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    k = float(k)\n    n = int(n)\n    alpha = float(alpha)\n    beta = float(beta)\n    \n    N, H, W, C = x_arr.shape\n    r = n // 2\n    out = np.zeros_like(x_arr)\n    \n    for c in range(C):\n        c_min = max(0, c - r)\n        c_max = min(C, c + r + 1)\n        sub_slice = x_arr[:, :, :, c_min:c_max]\n        sum_sq = np.sum(sub_slice ** 2, axis=-1)\n        denom = (k + (alpha / n) * sum_sq) ** beta\n        out[:, :, :, c] = x_arr[:, :, :, c] / denom\n    return np.round(out, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Local Response Normalization** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef local_response_normalization(x: np.ndarray, k: float, n: int, alpha: float, beta: float) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    k = float(k)\n    n = int(n)\n    alpha = float(alpha)\n    beta = float(beta)\n    \n    N, H, W, C = x_arr.shape\n    r = n // 2\n    out = np.zeros_like(x_arr)\n    \n    for c in range(C):\n        c_min = max(0, c - r)\n        c_max = min(C, c + r + 1)\n        sub_slice = x_arr[:, :, :, c_min:c_max]\n        sum_sq = np.sum(sub_slice ** 2, axis=-1)\n        denom = (k + (alpha / n) * sum_sq) ** beta\n        out[:, :, :, c] = x_arr[:, :, :, c] / denom\n    return np.round(out, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "alexnet-lrn-tc-1",
@@ -262,33 +262,33 @@
       "id": "alexnet-lrn-tc-6",
       "name": "Case 6",
       "inputs": {
-        "k": -2,
-        "n": -5,
+        "k": 2,
+        "n": 3,
         "x": [
           [
             [
               [
-                -1,
-                -2,
-                -3,
-                -0.5,
-                1
+                1.0,
+                2.0,
+                3.0,
+                0.5,
+                1.0
               ]
             ]
           ]
         ],
-        "beta": 0.9,
+        "beta": 0.75,
         "alpha": 0.0001
       },
       "expectedOutput": [
         [
           [
             [
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
+              0.594566,
+              1.188999,
+              1.783515,
+              0.297264,
+              0.594594
             ]
           ]
         ]
@@ -390,5 +390,6 @@
     "prev": "alexnet-dropout",
     "next": "alexnet-pooling"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "alexnet-lrn"
 }

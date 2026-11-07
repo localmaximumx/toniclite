@@ -220,5 +220,6 @@
     "prev": null,
     "next": "densenet-composite-layer"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "densenet-channels"
 }

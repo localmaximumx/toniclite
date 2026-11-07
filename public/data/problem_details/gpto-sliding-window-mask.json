@@ -83,8 +83,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# Sliding Window — reconstructed educational contract\nimport numpy as np\n\ndef solution(seq_len, window_size, include_current=True):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Sliding Window** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\ndef solution(seq_len, window_size, include_current=True):\n    if seq_len < 0 or window_size < 1: raise ValueError(\"invalid length/window\")\n    mask=np.zeros((seq_len,seq_len),dtype=bool)\n    for i in range(seq_len):\n        left=max(0,i-window_size+1) if include_current else max(0,i-window_size)\n        right=i+1 if include_current else i\n        mask[i,left:right]=True\n    return mask.tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# Sliding Window \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(seq_len, window_size, include_current=True):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Sliding Window** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\ndef solution(seq_len, window_size, include_current=True):\n    if seq_len < 0 or window_size < 1: raise ValueError(\"invalid length/window\")\n    mask=np.zeros((seq_len,seq_len),dtype=bool)\n    for i in range(seq_len):\n        left=max(0,i-window_size+1) if include_current else max(0,i-window_size)\n        right=i+1 if include_current else i\n        mask[i,left:right]=True\n    return mask.tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gpto-sliding-window-mask-tc-1",
@@ -148,7 +148,7 @@
       "inputs": {
         "seq_len": 8,
         "window_size": 4,
-        "include_current": 2
+        "include_current": true
       },
       "expectedOutput": [
         [
@@ -238,18 +238,109 @@
       "id": "gpto-sliding-window-mask-tc-4",
       "name": "Case 4",
       "inputs": {
-        "seq_len": 2,
-        "window_size": 1,
-        "include_current": 0
+        "seq_len": 9,
+        "window_size": 4,
+        "include_current": true
       },
       "expectedOutput": [
         [
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
           false,
           false
         ],
         [
           true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
           false
+        ],
+        [
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true
         ]
       ],
       "isPublic": false
@@ -260,7 +351,7 @@
       "inputs": {
         "seq_len": 12,
         "window_size": 6,
-        "include_current": 3
+        "include_current": true
       },
       "expectedOutput": [
         [
@@ -438,20 +529,47 @@
       "id": "gpto-sliding-window-mask-tc-6",
       "name": "Case 6",
       "inputs": {
-        "seq_len": 4,
-        "window_size": 2,
-        "include_current": 1
+        "seq_len": 11,
+        "window_size": 3,
+        "include_current": true
       },
       "expectedOutput": [
         [
           true,
           false,
           false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
           false
         ],
         [
           true,
           true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
           false,
           false
         ],
@@ -459,11 +577,103 @@
           false,
           true,
           true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
           false
         ],
         [
           false,
           false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
           true,
           true
         ]
@@ -476,7 +686,7 @@
       "inputs": {
         "seq_len": 40,
         "window_size": 20,
-        "include_current": 10
+        "include_current": true
       },
       "expectedOutput": [
         [

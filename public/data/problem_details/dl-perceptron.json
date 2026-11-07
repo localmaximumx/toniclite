@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef dl_perceptron(X: list, y: list, epochs: int = 5, lr: float = 0.1) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Perceptron** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_perceptron(X: list, y: list, epochs: int = 5, lr: float = 0.1) -> dict:\n    X_arr, y_arr = np.array(X, dtype=np.float64), np.array(y, dtype=np.int64)\n    w, b = np.zeros(X_arr.shape[1]), 0.0\n    for _ in range(int(epochs)):\n        for i in range(len(y_arr)):\n            p = 1 if (np.dot(w, X_arr[i]) + b) >= 0 else 0\n            err = y_arr[i] - p\n            w += float(lr) * err * X_arr[i]; b += float(lr) * err\n    return {'weights': np.round(w, 4).tolist(), 'bias': round(float(b), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Perceptron** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_perceptron(X: list, y: list, epochs: int = 5, lr: float = 0.1) -> dict:\n    X_arr, y_arr = np.array(X, dtype=np.float64), np.array(y, dtype=np.int64)\n    w, b = np.zeros(X_arr.shape[1]), 0.0\n    for _ in range(int(epochs)):\n        for i in range(len(y_arr)):\n            p = 1 if (np.dot(w, X_arr[i]) + b) >= 0 else 0\n            err = y_arr[i] - p\n            w += float(lr) * err * X_arr[i]; b += float(lr) * err\n    return {'weights': np.round(w, 4).tolist(), 'bias': round(float(b), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "dl-perceptron-tc-1",
@@ -261,15 +261,15 @@
           1.0,
           2.0
         ],
-        "epochs": 11.0,
+        "epochs": 10,
         "lr": 1.1
       },
       "expectedOutput": {
         "weights": [
-          24.2,
-          24.2
+          22.0,
+          22.0
         ],
-        "bias": 12.1
+        "bias": 11.0
       },
       "isPublic": false
     },
@@ -301,15 +301,15 @@
           -2.0,
           -1.0
         ],
-        "epochs": 8.0,
+        "epochs": 10,
         "lr": 1.9
       },
       "expectedOutput": {
         "weights": [
-          171.0,
-          171.0
+          212.8,
+          212.8
         ],
-        "bias": -108.3
+        "bias": -134.9
       },
       "isPublic": false
     }

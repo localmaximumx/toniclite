@@ -386,5 +386,6 @@
     "prev": "vit-encoder-block",
     "next": "vit-full-network"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "vit-mlp-head"
 }

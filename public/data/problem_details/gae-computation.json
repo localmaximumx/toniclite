@@ -18,7 +18,7 @@
   "starterCode": "def gae(rewards: list, values: list, gamma: float, lam: float) -> list:\n    \"\"\"\n    Returns the generalized advantage estimate at every timestep.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T17:15:03.972Z",
   "updatedAt": "2026-08-23T20:14:05.557Z",
-  "solution": "### 💡 Intuition & Approach\nGeneralized Advantage Estimation interpolates between TD(0) and Monte Carlo returns via parameter $\\lambda$.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef compute_gae(rewards: list, values: list, gamma: float, lam: float) -> list:\n    n = len(rewards)\n    adv = np.zeros(n)\n    last_gae = 0.0\n    for t in reversed(range(n)):\n        next_val = values[t + 1] if t + 1 < n else 0.0\n        delta = rewards[t] + gamma * next_val - values[t]\n        last_gae = delta + gamma * lam * last_gae\n        adv[t] = last_gae\n    return np.round(adv, 4).tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nGeneralized Advantage Estimation interpolates between TD(0) and Monte Carlo returns via parameter $\\lambda$.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef gae(rewards: list, values: list, gamma: float, lam: float) -> list:\n    n = len(rewards)\n    adv = np.zeros(n, dtype=float)\n    last_gae = 0.0\n    for t in reversed(range(n)):\n        next_val = float(values[t + 1]) if t + 1 < len(values) else 0.0\n        delta = float(rewards[t]) + float(gamma) * next_val - float(values[t])\n        last_gae = delta + float(gamma) * float(lam) * last_gae\n        adv[t] = last_gae\n    return np.round(adv, 4).tolist()\n\ncompute_gae = gae\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "GAEComputationViz",
   "testCases": [
     {
@@ -75,24 +75,24 @@
       "id": "gae-computation-tc-3",
       "name": "Case 3",
       "inputs": {
-        "lam": 2,
-        "gamma": 2,
+        "lam": 0.5,
+        "gamma": 0.9,
         "values": [
-          0,
-          0,
-          0,
-          0
+          0.5,
+          1.0,
+          1.5,
+          0.0
         ],
         "rewards": [
-          2,
-          2,
-          2
+          2.0,
+          1.0,
+          3.0
         ]
       },
       "expectedOutput": [
-        42.0,
-        10.0,
-        2.0
+        3.3112,
+        2.025,
+        1.5
       ],
       "isPublic": false
     },
@@ -101,7 +101,7 @@
       "name": "Case 4",
       "inputs": {
         "lam": 0,
-        "gamma": 0,
+        "gamma": 1,
         "values": [
           0,
           0,
@@ -126,7 +126,7 @@
       "name": "Case 5",
       "inputs": {
         "lam": -1,
-        "gamma": -1,
+        "gamma": 1,
         "values": [
           0,
           0,
@@ -140,8 +140,8 @@
         ]
       },
       "expectedOutput": [
-        -3.0,
-        -2.0,
+        -1.0,
+        0.0,
         -1.0
       ],
       "isPublic": false
@@ -190,9 +190,9 @@
         ]
       },
       "expectedOutput": [
-        31.0,
-        7.0,
-        1.0
+        63.0,
+        15.0,
+        3.0
       ],
       "isPublic": false
     }

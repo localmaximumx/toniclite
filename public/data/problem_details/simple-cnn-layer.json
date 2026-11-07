@@ -18,7 +18,7 @@
   "starterCode": "import numpy as np\n\ndef conv2d(x: list, W: list, b: list) -> np.ndarray:\n    \"\"\"\n    Returns the convolved batch as a floating-point NumPy array.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-10-21T18:37:14.708Z",
   "updatedAt": "2026-03-05T20:42:23.795Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef conv2d(x: list, W: list, b: list) -> np.ndarray:\n    x_arr = np.array(x, dtype=float)\n    w_arr = np.array(W, dtype=float)\n    b_arr = np.array(b, dtype=float)\n    N, C, H, W_in = x_arr.shape\n    out_c, in_c, kh, kw = w_arr.shape\n    out_h = H - kh + 1\n    out_w = W_in - kw + 1\n    out = np.zeros((N, out_c, out_h, out_w), dtype=float)\n    for n in range(N):\n        for oc in range(out_c):\n            for i in range(out_h):\n                for j in range(out_w):\n                    patch = x_arr[n, :, i:i+kh, j:j+kw]\n                    out[n, oc, i, j] = np.sum(patch * w_arr[oc]) + b_arr[oc]\n    return np.round(out, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef conv2d(x: list, W: list, b: list) -> np.ndarray:\n    x_arr = np.array(x, dtype=float)\n    w_arr = np.array(W, dtype=float)\n    b_arr = np.array(b, dtype=float)\n    N, C, H, W_in = x_arr.shape\n    out_c, in_c, kh, kw = w_arr.shape\n    out_h = H - kh + 1\n    out_w = W_in - kw + 1\n    out = np.zeros((N, out_c, out_h, out_w), dtype=float)\n    for n in range(N):\n        for oc in range(out_c):\n            for i in range(out_h):\n                for j in range(out_w):\n                    patch = x_arr[n, :, i:i+kh, j:j+kw]\n                    out[n, oc, i, j] = np.sum(patch * w_arr[oc]) + b_arr[oc]\n    return np.round(out, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "SimpleCnnViz",
   "testCases": [
     {
@@ -325,17 +325,17 @@
             [
               [
                 1,
-                1
+                0
               ],
               [
                 1,
-                1
+                0
               ]
             ]
           ]
         ],
         "b": [
-          0
+          7
         ],
         "x": [
           [
@@ -343,17 +343,17 @@
               [
                 1,
                 1,
+                0
+              ],
+              [
+                1,
+                0,
                 1
               ],
               [
                 1,
                 1,
-                1
-              ],
-              [
-                1,
-                1,
-                1
+                0
               ]
             ]
           ]
@@ -364,12 +364,12 @@
         [
           [
             [
-              4.0,
-              4.0
+              9.0,
+              8.0
             ],
             [
-              4.0,
-              4.0
+              9.0,
+              8.0
             ]
           ]
         ]
@@ -383,36 +383,36 @@
           [
             [
               [
-                2,
-                2
+                1,
+                0
               ],
               [
-                2,
-                2
+                0,
+                1
               ]
             ]
           ]
         ],
         "b": [
-          0
+          8
         ],
         "x": [
           [
             [
               [
-                2,
-                2,
-                2
+                1,
+                0,
+                1
               ],
               [
-                2,
-                2,
-                2
+                0,
+                1,
+                1
               ],
               [
-                2,
-                2,
-                2
+                1,
+                0,
+                1
               ]
             ]
           ]
@@ -422,12 +422,12 @@
         [
           [
             [
-              16.0,
-              16.0
+              10.0,
+              9.0
             ],
             [
-              16.0,
-              16.0
+              8.0,
+              10.0
             ]
           ]
         ]

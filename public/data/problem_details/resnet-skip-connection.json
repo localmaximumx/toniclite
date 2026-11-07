@@ -23,7 +23,7 @@
   "topicId": "resnet-skip-connection",
   "paperSnippet": "\"The shortcut connections introduce neither extra parameter nor computation complexity. This is not only attractive in practice but also important in our comparisons between plain and residual networks.\"",
   "visualizationComponent": "SkipConnectionViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Skip Connection Analysis** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef compute_gradient_without_skip(gradients_F: list, x: np.ndarray) -> np.ndarray:\n    \"\"\"\n    Returns the gradient propagated through plain Jacobians.\n    \"\"\"\n    g = np.asarray(x, dtype=np.float64)\n    for J in gradients_F:\n        g = g @ np.asarray(J, dtype=np.float64)\n    return np.round(g, 4).tolist()\n\ndef compute_gradient_with_skip(gradients_F: list, x: np.ndarray) -> np.ndarray:\n    \"\"\"\n    Returns the gradient propagated through residual Jacobians.\n    \"\"\"\n    g = np.asarray(x, dtype=np.float64)\n    for J in gradients_F:\n        J_arr = np.asarray(J, dtype=np.float64)\n        I = np.eye(J_arr.shape[0], dtype=np.float64)\n        g = g @ (I + J_arr)\n    return np.round(g, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Skip Connection Analysis** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef compute_gradient_with_skip(gradients_F: list, x: np.ndarray) -> np.ndarray:\n    \"\"\"\n    Returns the gradient propagated through residual Jacobians.\n    \"\"\"\n    g = np.asarray(x, dtype=np.float64)\n    for J in gradients_F:\n        J_arr = np.asarray(J, dtype=np.float64)\n        I = np.eye(J_arr.shape[0], dtype=np.float64)\n        g = g @ (I + J_arr)\n    return np.round(g, 4).tolist()\n\ndef compute_gradient_without_skip(gradients_F: list, x: np.ndarray) -> np.ndarray:\n    \"\"\"\n    Returns the gradient propagated through plain Jacobians.\n    \"\"\"\n    g = np.asarray(x, dtype=np.float64)\n    for J in gradients_F:\n        g = g @ np.asarray(J, dtype=np.float64)\n    return np.round(g, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "resnet-skip-connection-tc-1",
@@ -432,5 +432,6 @@
     "next": "resnet-batch-norm"
   },
   "isLocked": false,
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "resnet-skip-connection"
 }

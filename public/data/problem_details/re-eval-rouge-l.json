@@ -47,7 +47,7 @@
     "Unless otherwise stated, dimensions must be consistent."
   ],
   "starterCode": "def solve(reference,candidate):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(reference,candidate):\n    # LCS-based ROUGE-L F1\n    dp=[0]*(len(candidate)+1)\n    for r in reference:\n      prev=0\n      for j,c in enumerate(candidate,1):\n        old=dp[j]\n        dp[j]=prev+1 if r==c else max(dp[j],dp[j-1])\n        prev=old\n    lcs=dp[-1]\n    if not reference or not candidate or not lcs:return 0.0\n    p=lcs/len(candidate); r=lcs/len(reference)\n    return 2*p*r/(p+r)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(reference,candidate):\n    # LCS-based ROUGE-L F1\n    dp=[0]*(len(candidate)+1)\n    for r in reference:\n      prev=0\n      for j,c in enumerate(candidate,1):\n        old=dp[j]\n        dp[j]=prev+1 if r==c else max(dp[j],dp[j-1])\n        prev=old\n    lcs=dp[-1]\n    if not reference or not candidate or not lcs:return 0.0\n    p=lcs/len(candidate); r=lcs/len(reference)\n    return 2*p*r/(p+r)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "re-eval-rouge-l-tc-1",
@@ -88,13 +88,13 @@
       "name": "Case 3",
       "inputs": {
         "reference": [
-          "a",
-          "b",
-          "c"
+          "aing",
+          "bing",
+          "cing"
         ],
         "candidate": [
-          "a",
-          "c"
+          "aing",
+          "cing"
         ]
       },
       "expectedOutput": 0.8,
@@ -105,16 +105,18 @@
       "name": "Case 4",
       "inputs": {
         "reference": [
-          "c",
-          "b",
-          "a"
+          "aer",
+          "ber",
+          "cer",
+          "natural language processing"
         ],
         "candidate": [
-          "c",
-          "a"
+          "aer",
+          "cer",
+          "natural language processing"
         ]
       },
-      "expectedOutput": 0.8,
+      "expectedOutput": 0.8571428571428571,
       "isPublic": false
     },
     {
@@ -122,16 +124,16 @@
       "name": "Case 5",
       "inputs": {
         "reference": [
-          "a",
-          "b",
-          "c"
+          "ation",
+          "bment",
+          "cness"
         ],
         "candidate": [
-          "a",
-          "c"
+          "ation",
+          "cment"
         ]
       },
-      "expectedOutput": 0.8,
+      "expectedOutput": 0.4,
       "isPublic": false
     },
     {
@@ -139,13 +141,13 @@
       "name": "Case 6",
       "inputs": {
         "reference": [
-          "c",
-          "b",
-          "a"
+          "cs",
+          "bs",
+          "as"
         ],
         "candidate": [
-          "c",
-          "a"
+          "cs",
+          "as"
         ]
       },
       "expectedOutput": 0.8,
@@ -158,14 +160,16 @@
         "reference": [
           "a",
           "b",
-          "c"
+          "c",
+          "computer vision system"
         ],
         "candidate": [
           "a",
-          "c"
+          "c",
+          "computer vision system"
         ]
       },
-      "expectedOutput": 0.8,
+      "expectedOutput": 0.8571428571428571,
       "isPublic": false
     }
   ],

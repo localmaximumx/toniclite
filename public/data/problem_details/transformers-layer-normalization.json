@@ -322,5 +322,6 @@
     "prev": "transformers-feed-forward",
     "next": "transformers-encoder-block"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "transformers-layer-normalization"
 }

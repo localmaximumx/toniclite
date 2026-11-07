@@ -19,7 +19,7 @@
   "starterCode": "import math\n\ndef binomial_pmf_cdf(n: int, p: float, k: int) -> dict:\n    \"\"\"\n    Returns a dictionary with pmf and cdf.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2025-11-08T13:01:04.234Z",
   "updatedAt": "2026-03-05T17:00:47.037Z",
-  "solution": "### 💡 Intuition & Approach\nEvaluates probability of exactly $k$ successes $\\binom{n}{k} p^k (1-p)^{n-k}$ and cumulative probability $\\sum_{i=0}^k P(X=i)$.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef binomial_pmf_cdf(n: int, p: float, k: int) -> dict:\n    pmf = math.comb(n, k) * (p ** k) * ((1.0 - p) ** (n - k))\n    cdf = sum(math.comb(n, i) * (p ** i) * ((1.0 - p) ** (n - i)) for i in range(k + 1))\n    return {\n        \"pmf\": round(pmf, 4),\n        \"cdf\": round(cdf, 4)\n    }\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nEvaluates probability of exactly $k$ successes $\\binom{n}{k} p^k (1-p)^{n-k}$ and cumulative probability $\\sum_{i=0}^k P(X=i)$.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef binomial_pmf_cdf(n: int, p: float, k: int) -> dict:\n    pmf = math.comb(n, k) * (p ** k) * ((1.0 - p) ** (n - k))\n    cdf = sum(math.comb(n, i) * (p ** i) * ((1.0 - p) ** (n - i)) for i in range(k + 1))\n    return {\n        \"pmf\": round(pmf, 4),\n        \"cdf\": round(cdf, 4)\n    }\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "BinomialViz",
   "testCases": [
     {
@@ -40,14 +40,14 @@
       "id": "binomial-pmf-cdf-tc-2",
       "name": "Case 2",
       "inputs": {
-        "k": 0,
+        "k": 2,
         "n": 10,
         "p": 0.3
       },
       "isPublic": true,
       "expectedOutput": {
-        "pmf": 0.0282,
-        "cdf": 0.0282
+        "pmf": 0.2335,
+        "cdf": 0.3828
       }
     },
     {
@@ -98,11 +98,11 @@
       "inputs": {
         "k": 6,
         "n": 15,
-        "p": 1.5
+        "p": 0.5
       },
       "expectedOutput": {
-        "pmf": -111.3478,
-        "cdf": -92.105
+        "pmf": 0.1527,
+        "cdf": 0.3036
       },
       "isPublic": false
     },
@@ -112,11 +112,11 @@
       "inputs": {
         "k": 20,
         "n": 50,
-        "p": 5.0
+        "p": 0.5
       },
       "expectedOutput": {
-        "pmf": 5.181911687015705e+45,
-        "cdf": 3.384709541382291e+45
+        "pmf": 0.0419,
+        "cdf": 0.1013
       },
       "isPublic": false
     }
@@ -137,13 +137,13 @@
       {
         "name": "p",
         "type": "number",
-        "description": "Success probability (0 ≤ p ≤ 1)",
+        "description": "Success probability (0 \u2264 p \u2264 1)",
         "example": "0.5"
       },
       {
         "name": "k",
         "type": "number",
-        "description": "Number of successes (0 ≤ k ≤ n)",
+        "description": "Number of successes (0 \u2264 k \u2264 n)",
         "example": "2"
       }
     ]

@@ -39,7 +39,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(word):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(word):\n    # Deliberately simplified suffix stemmer, not the full Porter algorithm.\n    w=word.lower()\n    for suffix in (\"ingly\",\"edly\",\"ing\",\"ed\",\"ies\",\"s\"):\n        if w.endswith(suffix) and len(w)>len(suffix)+2:\n            w=w[:-len(suffix)]+(\"y\" if suffix==\"ies\" else \"\")\n            break\n    return w\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(word):\n    # Deliberately simplified suffix stemmer, not the full Porter algorithm.\n    w=word.lower()\n    for suffix in (\"ingly\",\"edly\",\"ing\",\"ed\",\"ies\",\"s\"):\n        if w.endswith(suffix) and len(w)>len(suffix)+2:\n            w=w[:-len(suffix)]+(\"y\" if suffix==\"ies\" else \"\")\n            break\n    return w\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds11-nlp-porter-stem-tc-1",
@@ -63,45 +63,45 @@
       "id": "ds11-nlp-porter-stem-tc-3",
       "name": "Case 3",
       "inputs": {
-        "word": "running"
+        "word": "runninger"
       },
-      "expectedOutput": "runn",
+      "expectedOutput": "runninger",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-porter-stem-tc-4",
       "name": "Case 4",
       "inputs": {
-        "word": "gninnur"
+        "word": "runningly"
       },
-      "expectedOutput": "gninnur",
+      "expectedOutput": "runn",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-porter-stem-tc-5",
       "name": "Case 5",
       "inputs": {
-        "word": "running"
+        "word": "runningtion"
       },
-      "expectedOutput": "runn",
+      "expectedOutput": "runningtion",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-porter-stem-tc-6",
       "name": "Case 6",
       "inputs": {
-        "word": "gninnur"
+        "word": "runningment"
       },
-      "expectedOutput": "gninnur",
+      "expectedOutput": "runningment",
       "isPublic": false
     },
     {
       "id": "ds11-nlp-porter-stem-tc-7",
       "name": "Case 7",
       "inputs": {
-        "word": "running"
+        "word": "runningness"
       },
-      "expectedOutput": "runn",
+      "expectedOutput": "runningnes",
       "isPublic": false
     }
   ],

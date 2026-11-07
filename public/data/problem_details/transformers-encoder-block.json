@@ -23,7 +23,7 @@
   "topicId": "transformer-encoder-block",
   "paperSnippet": "\"The encoder is composed of a stack of N = 6 identical layers. Each layer has two sub-layers. The first is a multi-head self-attention mechanism, and the second is a simple, position-wise fully connected feed-forward network. We employ a residual connection around each of the two sub-layers, followed by layer normalization. That is, the output of each sub-layer is LayerNorm(x + Sublayer(x)).\"",
   "visualizationComponent": "EncoderBlockViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Encoder Block** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef encoder_block(x, W_q, W_k, W_v, W_o, W1, b1, W2, b2, gamma1, beta1, gamma2, beta2, num_heads: int):\n    q = np.asarray(x, dtype=float)\n    k = np.asarray(x, dtype=float)\n    v = np.asarray(x, dtype=float)\n    w_q = np.asarray(W_q, dtype=float)\n    w_k = np.asarray(W_k, dtype=float)\n    w_v = np.asarray(W_v, dtype=float)\n    w_o = np.asarray(W_o, dtype=float)\n    \n    batch_size, q_len, d_model = q.shape\n    d_k = d_model // num_heads\n\n    Q_proj = np.matmul(q, w_q).reshape(batch_size, q_len, num_heads, d_k).swapaxes(1, 2)\n    K_proj = np.matmul(k, w_k).reshape(batch_size, q_len, num_heads, d_k).swapaxes(1, 2)\n    V_proj = np.matmul(v, w_v).reshape(batch_size, q_len, num_heads, d_k).swapaxes(1, 2)\n\n    scores = np.matmul(Q_proj, np.swapaxes(K_proj, -1, -2)) / np.sqrt(d_k)\n    scores_max = np.max(scores, axis=-1, keepdims=True)\n    exp_scores = np.exp(scores - scores_max)\n    weights = exp_scores / np.sum(exp_scores, axis=-1, keepdims=True)\n    head_outs = np.matmul(weights, V_proj)\n    concat = head_outs.swapaxes(1, 2).reshape(batch_size, q_len, d_model)\n    mha_out = np.matmul(concat, w_o)\n    \n    # Add & Norm\n    sub1 = q + mha_out\n    mean1 = np.mean(sub1, axis=-1, keepdims=True)\n    var1 = np.var(sub1, axis=-1, keepdims=True)\n    norm1 = (sub1 - mean1) / np.sqrt(var1 + 1e-6) * np.asarray(gamma1, dtype=float) + np.asarray(beta1, dtype=float)\n    \n    # FFN\n    hidden = np.maximum(0.0, np.matmul(norm1, np.asarray(W1, dtype=float)) + np.asarray(b1, dtype=float))\n    ffn_out = np.matmul(hidden, np.asarray(W2, dtype=float)) + np.asarray(b2, dtype=float)\n    \n    # Add & Norm\n    sub2 = norm1 + ffn_out\n    mean2 = np.mean(sub2, axis=-1, keepdims=True)\n    var2 = np.var(sub2, axis=-1, keepdims=True)\n    norm2 = (sub2 - mean2) / np.sqrt(var2 + 1e-6) * np.asarray(gamma2, dtype=float) + np.asarray(beta2, dtype=float)\n    return np.round(norm2, 4)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Encoder Block** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef encoder_block(x, W_q, W_k, W_v, W_o, W1, b1, W2, b2, gamma1, beta1, gamma2, beta2, num_heads: int):\n    q = np.asarray(x, dtype=float)\n    k = np.asarray(x, dtype=float)\n    v = np.asarray(x, dtype=float)\n    w_q = np.asarray(W_q, dtype=float)\n    w_k = np.asarray(W_k, dtype=float)\n    w_v = np.asarray(W_v, dtype=float)\n    w_o = np.asarray(W_o, dtype=float)\n    \n    batch_size, q_len, d_model = q.shape\n    d_k = d_model // num_heads\n\n    Q_proj = np.matmul(q, w_q).reshape(batch_size, q_len, num_heads, d_k).swapaxes(1, 2)\n    K_proj = np.matmul(k, w_k).reshape(batch_size, q_len, num_heads, d_k).swapaxes(1, 2)\n    V_proj = np.matmul(v, w_v).reshape(batch_size, q_len, num_heads, d_k).swapaxes(1, 2)\n\n    scores = np.matmul(Q_proj, np.swapaxes(K_proj, -1, -2)) / np.sqrt(d_k)\n    scores_max = np.max(scores, axis=-1, keepdims=True)\n    exp_scores = np.exp(scores - scores_max)\n    weights = exp_scores / np.sum(exp_scores, axis=-1, keepdims=True)\n    head_outs = np.matmul(weights, V_proj)\n    concat = head_outs.swapaxes(1, 2).reshape(batch_size, q_len, d_model)\n    mha_out = np.matmul(concat, w_o)\n    \n    # Add & Norm\n    sub1 = q + mha_out\n    mean1 = np.mean(sub1, axis=-1, keepdims=True)\n    var1 = np.var(sub1, axis=-1, keepdims=True)\n    norm1 = (sub1 - mean1) / np.sqrt(var1 + 1e-6) * np.asarray(gamma1, dtype=float) + np.asarray(beta1, dtype=float)\n    \n    # FFN\n    hidden = np.maximum(0.0, np.matmul(norm1, np.asarray(W1, dtype=float)) + np.asarray(b1, dtype=float))\n    ffn_out = np.matmul(hidden, np.asarray(W2, dtype=float)) + np.asarray(b2, dtype=float)\n    \n    # Add & Norm\n    sub2 = norm1 + ffn_out\n    mean2 = np.mean(sub2, axis=-1, keepdims=True)\n    var2 = np.var(sub2, axis=-1, keepdims=True)\n    norm2 = (sub2 - mean2) / np.sqrt(var2 + 1e-6) * np.asarray(gamma2, dtype=float) + np.asarray(beta2, dtype=float)\n    return np.round(norm2, 4)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "transformers-encoder-block-tc-1",
@@ -536,107 +536,107 @@
         "x": [
           [
             [
-              1,
+              0,
               0
             ]
           ]
         ],
         "W1": [
           [
-            1,
             0,
             0,
-            0
+            0,
+            1
           ],
           [
             0,
             1,
-            0,
+            1,
             0
           ]
         ],
         "W2": [
           [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
             1,
             0
           ],
           [
             0,
             1
-          ],
-          [
-            0,
-            0
-          ],
-          [
-            0,
-            0
           ]
         ],
         "b1": [
+          1,
           0,
           0,
-          0,
-          0
+          1
         ],
         "b2": [
-          0,
+          1,
           0
         ],
         "W_k": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W_o": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W_q": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W_v": [
           [
-            1,
+            0,
             0
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "beta1": [
-          0,
+          1,
           0
         ],
         "beta2": [
-          0,
+          1,
           0
         ],
         "gamma1": [
-          1,
+          0,
           1
         ],
         "gamma2": [
-          1,
+          0,
           1
         ],
         "num_heads": 1
@@ -646,7 +646,7 @@
         [
           [
             1.0,
-            -1.0
+            0.0
           ]
         ]
       ]
@@ -659,11 +659,7 @@
           [
             [
               1,
-              2
-            ],
-            [
-              3,
-              4
+              1
             ]
           ]
         ],
@@ -671,12 +667,12 @@
           [
             1,
             0,
-            0,
+            1,
             0
           ],
           [
             0,
-            1,
+            0,
             0,
             0
           ]
@@ -684,10 +680,6 @@
         "W2": [
           [
             1,
-            0
-          ],
-          [
-            0,
             1
           ],
           [
@@ -696,84 +688,84 @@
           ],
           [
             0,
-            0
+            1
+          ],
+          [
+            0,
+            1
           ]
         ],
         "b1": [
           0,
           0,
-          0,
+          1,
           0
         ],
         "b2": [
           0,
-          0
+          1
         ],
         "W_k": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W_o": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W_q": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "W_v": [
           [
             1,
-            0
+            1
           ],
           [
             0,
-            1
+            0
           ]
         ],
         "beta1": [
           0,
-          0
+          1
         ],
         "beta2": [
           0,
-          0
+          1
         ],
         "gamma1": [
           1,
-          1
+          0
         ],
         "gamma2": [
           1,
-          1
+          0
         ],
         "num_heads": 1
       },
       "isPublic": false,
       "expectedOutput": [
         [
-          [
-            -1.0,
-            1.0
-          ],
           [
             -1.0,
             1.0
@@ -788,24 +780,20 @@
         "x": [
           [
             [
-              0,
-              1
-            ],
-            [
               1,
-              0
+              1
             ]
           ]
         ],
         "W1": [
           [
             1,
-            0,
             1,
+            0,
             0
           ],
           [
-            0,
+            1,
             1,
             0,
             1
@@ -814,86 +802,86 @@
         "W2": [
           [
             1,
-            0
+            1
+          ],
+          [
+            1,
+            1
           ],
           [
             0,
             1
           ],
           [
-            0,
-            0
-          ],
-          [
-            0,
+            1,
             0
           ]
         ],
         "b1": [
           0,
-          0,
+          1,
           0,
           0
         ],
         "b2": [
           0,
-          0
+          1
         ],
         "W_k": [
           [
             1,
-            0
+            1
           ],
           [
-            0,
+            1,
             1
           ]
         ],
         "W_o": [
           [
             1,
-            0
+            1
           ],
           [
-            0,
+            1,
             1
           ]
         ],
         "W_q": [
           [
             1,
-            0
+            1
           ],
           [
-            0,
+            1,
             1
           ]
         ],
         "W_v": [
           [
             1,
-            0
+            1
           ],
           [
-            0,
+            1,
             1
           ]
         ],
         "beta1": [
           0,
-          0
+          1
         ],
         "beta2": [
           0,
-          0
+          1
         ],
         "gamma1": [
           1,
-          1
+          0
         ],
         "gamma2": [
           1,
-          1
+          0
         ],
         "num_heads": 1
       },
@@ -903,10 +891,6 @@
           [
             -1.0,
             1.0
-          ],
-          [
-            1.0,
-            -1.0
           ]
         ]
       ]
@@ -1023,5 +1007,6 @@
     "prev": "transformers-layer-normalization",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "transformers-encoder-block"
 }

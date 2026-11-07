@@ -459,5 +459,6 @@
     "prev": "unet-bottleneck",
     "next": "unet-full-network"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "unet-output-layer"
 }

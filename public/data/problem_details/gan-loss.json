@@ -206,5 +206,6 @@
     "prev": "gan-discriminator",
     "next": "gan-training-loop"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gan-loss"
 }

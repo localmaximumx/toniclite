@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_subword_tokenization(word: str, vocab: list, unk_token: str = '[UNK]') -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Subword Tokenization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_subword_tokenization(word: str, vocab: list, unk_token: str = '[UNK]') -> list:\n    vocab_set = set(vocab)\n    tokens = []\n    start, n = 0, len(word)\n    while start < n:\n        end = n\n        cur = None\n        while start < end:\n            sub = word[start:end] if start == 0 else '##' + word[start:end]\n            if sub in vocab_set:\n                cur = sub\n                break\n            end -= 1\n        if cur is None:\n            return [unk_token]\n        tokens.append(cur)\n        start = end\n    return tokens\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Subword Tokenization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_subword_tokenization(word: str, vocab: list, unk_token: str = '[UNK]') -> list:\n    vocab_set = set(vocab)\n    tokens = []\n    start, n = 0, len(word)\n    while start < n:\n        end = n\n        cur = None\n        while start < end:\n            sub = word[start:end] if start == 0 else '##' + word[start:end]\n            if sub in vocab_set:\n                cur = sub\n                break\n            end -= 1\n        if cur is None:\n            return [unk_token]\n        tokens.append(cur)\n        start = end\n    return tokens\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-subword-tokenization-tc-1",
@@ -57,19 +57,17 @@
       "id": "nlp-subword-tokenization-tc-2",
       "name": "Case 2",
       "inputs": {
-        "word": "unaffable",
+        "word": "unaffableing",
         "vocab": [
-          "un",
-          "##aff",
-          "##able",
-          "table"
+          "uned",
+          "##affed",
+          "##ableed",
+          "tableed"
         ],
-        "unk_token": "[UNK]"
+        "unk_token": "[UNK]ing"
       },
       "expectedOutput": [
-        "un",
-        "##aff",
-        "##able"
+        "[UNK]ing"
       ],
       "isPublic": true
     },
@@ -77,19 +75,17 @@
       "id": "nlp-subword-tokenization-tc-3",
       "name": "Case 3",
       "inputs": {
-        "word": "unaffable",
+        "word": "unaffableer",
         "vocab": [
-          "un",
-          "##aff",
-          "##able",
-          "table"
+          "uning",
+          "##affing",
+          "##ableing",
+          "tableing"
         ],
-        "unk_token": "[UNK]"
+        "unk_token": "[UNK]er"
       },
       "expectedOutput": [
-        "un",
-        "##aff",
-        "##able"
+        "[UNK]er"
       ],
       "isPublic": false
     },
@@ -97,19 +93,18 @@
       "id": "nlp-subword-tokenization-tc-4",
       "name": "Case 4",
       "inputs": {
-        "word": "unaffable",
+        "word": "unaffablely",
         "vocab": [
-          "un",
-          "##aff",
-          "##able",
-          "table"
+          "uner",
+          "##affer",
+          "##ableer",
+          "tableer",
+          "natural language processing"
         ],
-        "unk_token": "[UNK]"
+        "unk_token": "[UNK]ly"
       },
       "expectedOutput": [
-        "un",
-        "##aff",
-        "##able"
+        "[UNK]ly"
       ],
       "isPublic": false
     },
@@ -117,19 +112,17 @@
       "id": "nlp-subword-tokenization-tc-5",
       "name": "Case 5",
       "inputs": {
-        "word": "unaffable",
+        "word": "unaffabletion",
         "vocab": [
-          "un",
-          "##aff",
-          "##able",
-          "table"
+          "untion",
+          "##affment",
+          "##ableness",
+          "tableable"
         ],
-        "unk_token": "[UNK]"
+        "unk_token": "[UNK]tion"
       },
       "expectedOutput": [
-        "un",
-        "##aff",
-        "##able"
+        "[UNK]tion"
       ],
       "isPublic": false
     },
@@ -137,19 +130,17 @@
       "id": "nlp-subword-tokenization-tc-6",
       "name": "Case 6",
       "inputs": {
-        "word": "unaffable",
+        "word": "unaffablement",
         "vocab": [
-          "un",
-          "##aff",
-          "##able",
-          "table"
+          "tables",
+          "##ables",
+          "##affs",
+          "uns"
         ],
-        "unk_token": "[UNK]"
+        "unk_token": "[UNK]ment"
       },
       "expectedOutput": [
-        "un",
-        "##aff",
-        "##able"
+        "[UNK]ment"
       ],
       "isPublic": false
     },
@@ -157,19 +148,18 @@
       "id": "nlp-subword-tokenization-tc-7",
       "name": "Case 7",
       "inputs": {
-        "word": "unaffable",
+        "word": "unaffableness",
         "vocab": [
           "un",
           "##aff",
           "##able",
-          "table"
+          "table",
+          "computer vision system"
         ],
-        "unk_token": "[UNK]"
+        "unk_token": "[UNK]ness"
       },
       "expectedOutput": [
-        "un",
-        "##aff",
-        "##able"
+        "[UNK]ness"
       ],
       "isPublic": false
     }

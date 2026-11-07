@@ -29,7 +29,7 @@
     "Verify numerical stability for extreme values or empty inputs."
   ],
   "starterCode": "def find_kth_largest(nums, k):\n    \"\"\"\n    Find the kth largest element in an unsorted array.\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef find_kth_largest(nums, k):\n    \"\"\"\n    Find the kth largest element in an unsorted array.\n    \"\"\"\n    nums.sort(reverse=True)\n    return nums[k - 1]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef find_kth_largest(nums, k):\n    \"\"\"\n    Find the kth largest element in an unsorted array.\n    \"\"\"\n    nums.sort(reverse=True)\n    return nums[k - 1]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds-py-kth-largest-tc-1",
@@ -94,9 +94,9 @@
           -5,
           -6
         ],
-        "k": -2
+        "k": 2
       },
-      "expectedOutput": -4,
+      "expectedOutput": -2,
       "isPublic": false
     },
     {
@@ -128,7 +128,7 @@
           0,
           0
         ],
-        "k": 0
+        "k": 2
       },
       "expectedOutput": 0,
       "isPublic": false

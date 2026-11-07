@@ -62,7 +62,7 @@
         "p": 0.8
       },
       "expectedOutput": [
-        0.0,
+        "-inf",
         2.0,
         3.0
       ],
@@ -80,8 +80,8 @@
         "p": 0.4
       },
       "expectedOutput": [
-        0.0,
-        0.0,
+        "-inf",
+        "-inf",
         1.5
       ],
       "isPublic": true
@@ -100,7 +100,7 @@
       "expectedOutput": [
         3.0,
         2.0,
-        0.0
+        "-inf"
       ],
       "isPublic": false
     },
@@ -113,11 +113,11 @@
           0.2,
           0.3
         ],
-        "p": 0.08
+        "p": 0.35
       },
       "expectedOutput": [
-        0.0,
-        0.0,
+        "-inf",
+        "-inf",
         0.3
       ],
       "isPublic": false
@@ -127,16 +127,18 @@
       "name": "Case 5",
       "inputs": {
         "logits": [
-          0.25,
-          0.5,
-          0.75
+          0.0,
+          1.0,
+          2.0,
+          3.0
         ],
-        "p": 0.2
+        "p": 0.6
       },
       "expectedOutput": [
-        0.0,
-        0.0,
-        0.75
+        "-inf",
+        "-inf",
+        "-inf",
+        3.0
       ],
       "isPublic": false
     },
@@ -145,16 +147,16 @@
       "name": "Case 6",
       "inputs": {
         "logits": [
-          0.75,
-          1.5,
-          2.25
+          2.0,
+          2.0,
+          0.0
         ],
-        "p": 0.6
+        "p": 0.7
       },
       "expectedOutput": [
-        0.0,
-        1.5,
-        2.25
+        2.0,
+        2.0,
+        "-inf"
       ],
       "isPublic": false
     },
@@ -163,16 +165,16 @@
       "name": "Case 7",
       "inputs": {
         "logits": [
-          0.8,
-          1.6,
-          2.4
+          1.0,
+          2.0,
+          3.0
         ],
-        "p": 0.64
+        "p": 0.99
       },
       "expectedOutput": [
-        0.0,
-        1.6,
-        2.4
+        1.0,
+        2.0,
+        3.0
       ],
       "isPublic": false
     }

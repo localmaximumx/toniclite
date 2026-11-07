@@ -13,7 +13,7 @@
   "description": "Implement **Stochastic Gradient Descent with Classical Momentum**.\n\nAccumulate velocity $v_t = \\gamma v_{t-1} + \\eta g_t$ and update parameters $\\theta_t = \\theta_{t-1} - v_t$, smoothing noisy stochastic gradients across successive mini-batches.",
   "theory": "# Understanding SGD with Momentum Step\n\n## 1. What Is It?\n\nThe **SGD with Momentum Step** is a fundamental computational technique in Machine Learning. In machine learning workflows, it involves performing **Stochastic Gradient Descent with Classical Momentum**.\n\n### Key Terminology\n- **`w`**: The trainable weight vector or parameter tensor undergoing optimization.\n- **`grad`**: The computed gradient tensor pointing toward greatest loss increase.\n- **`lr`**: The learning rate $\\eta$, a positive step size scaling gradient updates.\n- **SGD with Momentum Step**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `sgd_step`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `sgd_step` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nw = [1.0, 2.0], grad = [0.5, -0.5], lr = 0.1\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n\n\n**Resulting Output:**\n```python\n[0.95, 2.05]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `sgd_step` must return:\n- **Primary Output:** `[0.95, 2.05]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `sgd_step`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `sgd_step`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `sgd_step`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**SGD with Momentum Step** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `sgd_step` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: w = [1.0, 2.0], grad = [0.5, -0.5], lr = 0.1\nOutput: [0.95, 2.05]"
+    "Input: w = [1.0, 2.0], grad = [0.5, -0.5], v = [0.0, 0.0], lr = 0.1, momentum = 0.9\n\nOutput: {\"w\": [0.95, 2.05], \"v\": [0.05, -0.05]}\n\nExplanation: Evaluated sgd_momentum_step under standard test conditions."
   ],
   "requirements": [
     "Implement the function `sgd_step`.",
@@ -28,12 +28,12 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef sgd_step(w, grad, lr=0.01):\n    \"\"\"\n    Perform one standard SGD step: w - lr * grad\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef sgd_step(w, grad, lr=0.01):\n    w_a = np.asarray(w, dtype=float)\n    g_a = np.asarray(grad, dtype=float)\n    return np.round(w_a - lr * g_a, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "import numpy as np\n\ndef sgd_momentum_step(w: list, grad: list, v: list, lr: float = 0.01, momentum: float = 0.9) -> dict:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **SGD with Momentum Step** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef sgd_momentum_step(w: list, grad: list, v: list, lr: float = 0.01, momentum: float = 0.9) -> dict:\n    w_arr = np.asarray(w, dtype=np.float64)\n    g_arr = np.asarray(grad, dtype=np.float64)\n    v_arr = np.asarray(v, dtype=np.float64)\n    v_new = float(momentum) * v_arr + float(lr) * g_arr\n    w_new = w_arr - v_new\n    return {\"w\": np.round(w_new, 4).tolist(), \"v\": np.round(v_new, 4).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-opt-sgd-momentum-tc-1",
-      "name": "Basic update",
+      "name": "Zero initial velocity",
       "inputs": {
         "w": [
           1.0,
@@ -43,57 +43,157 @@
           0.5,
           -0.5
         ],
-        "lr": 0.1
+        "v": [
+          0.0,
+          0.0
+        ],
+        "lr": 0.1,
+        "momentum": 0.9
       },
-      "expectedOutput": [
-        0.95,
-        2.05
-      ],
+      "expectedOutput": {
+        "w": [
+          0.95,
+          2.05
+        ],
+        "v": [
+          0.05,
+          -0.05
+        ]
+      },
       "isPublic": true
     },
     {
       "id": "ml-opt-sgd-momentum-tc-2",
-      "name": "Case 2",
+      "name": "Accumulated velocity",
       "inputs": {
         "w": [
-          2.0,
-          4.0
+          1.0,
+          2.0
         ],
         "grad": [
           1.0,
-          -1.0
+          1.0
         ],
-        "lr": 0.2
+        "v": [
+          0.1,
+          -0.1
+        ],
+        "lr": 0.1,
+        "momentum": 0.9
       },
-      "expectedOutput": [
-        1.8,
-        4.2
-      ],
+      "expectedOutput": {
+        "w": [
+          0.81,
+          1.99
+        ],
+        "v": [
+          0.19,
+          0.01
+        ]
+      },
       "isPublic": true
     },
     {
       "id": "ml-opt-sgd-momentum-tc-3",
-      "name": "Case 3",
+      "name": "Zero gradient",
       "inputs": {
         "w": [
-          0.5,
-          1.0
+          2.0,
+          3.0
         ],
         "grad": [
-          0.25,
-          -0.25
+          0.0,
+          0.0
         ],
-        "lr": 0.05
+        "v": [
+          0.2,
+          0.4
+        ],
+        "lr": 0.1,
+        "momentum": 0.5
       },
-      "expectedOutput": [
-        0.4875,
-        1.0125
-      ],
+      "expectedOutput": {
+        "w": [
+          1.9,
+          2.8
+        ],
+        "v": [
+          0.1,
+          0.2
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "ml-opt-sgd-momentum-tc-4",
-      "name": "Case 4",
+      "name": "Zero momentum",
+      "inputs": {
+        "w": [
+          1.0,
+          2.0
+        ],
+        "grad": [
+          1.0,
+          2.0
+        ],
+        "v": [
+          0.5,
+          0.5
+        ],
+        "lr": 0.1,
+        "momentum": 0.0
+      },
+      "expectedOutput": {
+        "w": [
+          0.9,
+          1.8
+        ],
+        "v": [
+          0.1,
+          0.2
+        ]
+      },
+      "isPublic": false
+    },
+    {
+      "id": "ml-opt-sgd-momentum-tc-5",
+      "name": "3D weights",
+      "inputs": {
+        "w": [
+          0.0,
+          1.0,
+          -1.0
+        ],
+        "grad": [
+          2.0,
+          -1.0,
+          0.5
+        ],
+        "v": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "lr": 0.05,
+        "momentum": 0.8
+      },
+      "expectedOutput": {
+        "w": [
+          -0.18,
+          0.97,
+          -1.105
+        ],
+        "v": [
+          0.18,
+          0.03,
+          0.105
+        ]
+      },
+      "isPublic": false
+    },
+    {
+      "id": "ml-opt-sgd-momentum-tc-6",
+      "name": "Negative parameters",
       "inputs": {
         "w": [
           -1.0,
@@ -103,77 +203,54 @@
           -0.5,
           0.5
         ],
-        "lr": 0.1
+        "v": [
+          -0.1,
+          0.1
+        ],
+        "lr": 0.1,
+        "momentum": 0.9
       },
-      "expectedOutput": [
-        -0.95,
-        -2.05
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "ml-opt-sgd-momentum-tc-5",
-      "name": "Case 5",
-      "inputs": {
+      "expectedOutput": {
         "w": [
-          3.0,
-          6.0
+          -0.86,
+          -2.14
         ],
-        "grad": [
-          1.5,
-          -1.5
-        ],
-        "lr": 0.3
+        "v": [
+          -0.14,
+          0.14
+        ]
       },
-      "expectedOutput": [
-        2.55,
-        6.45
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "ml-opt-sgd-momentum-tc-6",
-      "name": "Case 6",
-      "inputs": {
-        "w": [
-          2.0,
-          3.0
-        ],
-        "grad": [
-          1.5,
-          0.5
-        ],
-        "lr": 1.1
-      },
-      "expectedOutput": [
-        0.35,
-        2.45
-      ],
       "isPublic": false
     },
     {
       "id": "ml-opt-sgd-momentum-tc-7",
-      "name": "Case 7",
+      "name": "Single parameter",
       "inputs": {
         "w": [
-          -1.0,
-          0.0
+          5.0
         ],
         "grad": [
-          -1.5,
-          -2.5
+          2.0
         ],
-        "lr": 1.9
+        "v": [
+          0.5
+        ],
+        "lr": 0.2,
+        "momentum": 0.9
       },
-      "expectedOutput": [
-        1.85,
-        4.75
-      ],
+      "expectedOutput": {
+        "w": [
+          4.15
+        ],
+        "v": [
+          0.85
+        ]
+      },
       "isPublic": false
     }
   ],
   "functionMetadata": {
-    "name": "sgd_step",
+    "name": "sgd_momentum_step",
     "parameters": [
       {
         "name": "w",
@@ -190,6 +267,7 @@
         "type": "float",
         "description": "Learning rate"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

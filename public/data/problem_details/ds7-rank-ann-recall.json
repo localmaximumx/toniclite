@@ -59,7 +59,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(exact_neighbors, approximate_neighbors, k):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(exact_neighbors, approximate_neighbors, k):\n    vals=[]\n    for e,a in zip(exact_neighbors,approximate_neighbors):\n      denom=len(set(e[:k])); vals.append(len(set(e[:k])&set(a[:k]))/denom if denom else 0.0)\n    return sum(vals)/len(vals) if vals else 0.0\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(exact_neighbors, approximate_neighbors, k):\n    vals=[]\n    for e,a in zip(exact_neighbors,approximate_neighbors):\n      denom=len(set(e[:k])); vals.append(len(set(e[:k])&set(a[:k]))/denom if denom else 0.0)\n    return sum(vals)/len(vals) if vals else 0.0\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds7-rank-ann-recall-tc-1",
@@ -172,9 +172,9 @@
             -5
           ]
         ],
-        "k": -2
+        "k": 2
       },
-      "expectedOutput": 0.0,
+      "expectedOutput": 0.75,
       "isPublic": false
     },
     {

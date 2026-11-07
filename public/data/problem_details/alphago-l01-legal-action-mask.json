@@ -29,7 +29,7 @@
   ],
   "constraints": "* Category: NUMPY\n* Time Limit: 200 ms\n* Memory Limit: 128 MB\n* Allowed Libraries: Python standard library, NUMPY\n",
   "starterCode": "import numpy as np\n\ndef alphago_l01_legal_action_mask(board: list, player: int = 1) -> list:\n    \"\"\"\n    Construct a boolean binary mask of length N*N + 1 for an N*N Go board, indicating valid empty stone placement coordinates and enabling the final pass action.\n    \"\"\"\n    # Your implementation here\n    pass",
-  "solution": "### 💡 Intuition & Approach\nConstruct a boolean binary mask of length N*N + 1 for an N*N Go board, indicating valid empty stone placement coordinates and enabling the final pass action.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l01_legal_action_mask(board: list, player: int = 1) -> list:\n    b = np.array(board, dtype=int)\n    H, W = b.shape\n    mask = [0] * (H * W + 1)\n    for r in range(H):\n        for c in range(W):\n            if b[r, c] == 0:\n                mask[r * W + c] = 1\n    mask[H * W] = 1\n    return mask\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### 🔍 How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nConstruct a boolean binary mask of length N*N + 1 for an N*N Go board, indicating valid empty stone placement coordinates and enabling the final pass action.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef alphago_l01_legal_action_mask(board: list, player: int = 1) -> list:\n    b = np.array(board, dtype=int)\n    H, W = b.shape\n    mask = [0] * (H * W + 1)\n    for r in range(H):\n        for c in range(W):\n            if b[r, c] == 0:\n                mask[r * W + c] = 1\n    mask[H * W] = 1\n    return mask\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where operations scale linearly with input dimensions.\n- **Space Complexity:** $\\mathcal{O}(N)$ for output buffers and intermediate tensors.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization & Setup:** Validates data structures and initializes buffers.\n2. **Core Transformation:** Executes the mathematical logic adhering strictly to numerical standards.\n3. **Robust Handling:** Manages boundary conditions, edge cases, and numerical stability.\n",
   "testCases": [
     {
       "id": "alphago-l01-legal-action-mask-tc-1",
@@ -120,7 +120,7 @@
             1
           ]
         ],
-        "player": 0
+        "player": 1
       },
       "expectedOutput": [
         1,
@@ -145,7 +145,7 @@
             -2
           ]
         ],
-        "player": -1
+        "player": 1
       },
       "expectedOutput": [
         0,

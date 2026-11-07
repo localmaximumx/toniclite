@@ -29,7 +29,7 @@
     "Verify numerical stability for extreme values or empty inputs."
   ],
   "starterCode": "def is_valid(s):\n    \"\"\"\n    Return True if brackets are matched and closed in correct order.\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef is_valid(s):\n    \"\"\"\n    Bracket matching stack\n    \"\"\"\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in mapping:\n            top = stack.pop() if stack else '#'\n            if mapping[char] != top: return False\n        else:\n            stack.append(char)\n    return not stack\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef is_valid(s):\n    \"\"\"\n    Bracket matching stack\n    \"\"\"\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in mapping:\n            top = stack.pop() if stack else '#'\n            if mapping[char] != top: return False\n        else:\n            stack.append(char)\n    return not stack\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds-py-valid-parentheses-tc-1",
@@ -62,16 +62,16 @@
       "id": "ds-py-valid-parentheses-tc-4",
       "name": "Case 4",
       "inputs": {
-        "s": "()[]{}"
+        "s": "()[]{}ly"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     },
     {
       "id": "ds-py-valid-parentheses-tc-5",
       "name": "Case 5",
       "inputs": {
-        "s": "(]"
+        "s": "()[]{}tion"
       },
       "expectedOutput": false,
       "isPublic": false
@@ -80,7 +80,7 @@
       "id": "ds-py-valid-parentheses-tc-6",
       "name": "Case 6",
       "inputs": {
-        "s": "}{][)("
+        "s": "()[]{}ment"
       },
       "expectedOutput": false,
       "isPublic": false
@@ -89,9 +89,9 @@
       "id": "ds-py-valid-parentheses-tc-7",
       "name": "Case 7",
       "inputs": {
-        "s": "()[]{}"
+        "s": "()[]{}ness"
       },
-      "expectedOutput": true,
+      "expectedOutput": false,
       "isPublic": false
     }
   ],

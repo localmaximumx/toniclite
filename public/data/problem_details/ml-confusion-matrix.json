@@ -13,7 +13,7 @@
   "description": "Given ground truth binary labels $y_{\\text{true}}$ and model predictions $y_{\\text{pred}}$, compute the classification **Confusion Matrix** containing True Positives (TP), False Positives (FP), True Negatives (TN), and False Negatives (FN), along with overall accuracy.",
   "theory": "# Understanding Accuracy and Confusion Matrix\n\n## 1. What Is It?\n\nThe **Accuracy and Confusion Matrix** is a fundamental computational technique in Machine Learning. In machine learning workflows, Given ground truth binary labels $y_{\\text{true}}$ and model predictions $y_{\\text{pred}}$, compute the classification **Confusion Matrix** containing True Positives (TP), False Positives (FP), True Negatives (TN), and False Negatives (FN), along with overall accuracy.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Accuracy and Confusion Matrix**: Core domain concept contextualizing this task within Machine Learning workflows.\n\n## 2. How Does It Work?\n\n### Step 1: Input Validation and Array Standardization\n- **What happens:** Parses input parameters and standardizes data structures into contiguous NumPy arrays.\n- **Why it happens:** Machine learning algorithms require consistent data types to avoid unexpected type coercion or truncation.\n- **How it works:** Validates shapes, casts numerical buffers to `np.float64`, and confirms dimensional alignment.\n\n### Step 2: Algorithmic Transformation\n- **What happens:** Executes the core mathematical computation defined by `ml_confusion_matrix`.\n- **Why it happens:** Derives the desired parameters, features, or metrics deterministically from inputs.\n- **How it works:** Utilizes vectorized primitives across designated dimensions, avoiding costly Python loops.\n\n## 3. Walk Through an Example\n\nTo trace how `ml_confusion_matrix` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Standard evaluation for Accuracy and Confusion Matrix.\n\n**Resulting Output:**\n```python\n[1.0, 2.0, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ml_confusion_matrix` must return:\n- **Primary Output:** `[1.0, 2.0, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `['Implement the function `ml_confusion_matrix`.', 'Handle edge cases and invalid dimensions gracefully.', 'Ensure vectorized or optimal $O(N)$ computational complexity.']`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ml_confusion_matrix`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ml_confusion_matrix`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Accuracy and Confusion Matrix** provides an essential primitive within Machine Learning systems. By combining vectorized array computation with rigorous numerical safeguards, `ml_confusion_matrix` accurately and efficiently performs the required transformation.\n",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0]\nOutput: [1.0, 2.0, 3.0]\nExplanation: Standard evaluation for Accuracy and Confusion Matrix."
+    "Input: y_true = [1, 0, 1, 0], y_pred = [1, 1, 0, 0]\n\nOutput: {\"TP\": 1, \"FP\": 1, \"TN\": 1, \"FN\": 1, \"accuracy\": 0.5}\n\nExplanation: Evaluated ml_confusion_matrix under standard test conditions."
   ],
   "requirements": [
     "Implement the function `ml_confusion_matrix`.",
@@ -28,126 +28,191 @@
     "Consider vectorized array operations to avoid explicit loops.",
     "Verify numerical stability for extreme values or empty inputs."
   ],
-  "starterCode": "import numpy as np\n\ndef ml_confusion_matrix(x):\n    \"\"\"\n    Accuracy and Confusion Matrix\n    \"\"\"\n    # Implement Accuracy and Confusion Matrix here\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\nimport numpy as np\n\ndef ml_confusion_matrix(x):\n    \"\"\"\n    Accuracy and Confusion Matrix\n    \"\"\"\n    x_arr = np.asarray(x, dtype=float)\n    return np.round(x_arr, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "starterCode": "def ml_confusion_matrix(y_true: list, y_pred: list) -> dict:\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation solves **Accuracy and Confusion Matrix** directly following its mathematical and algorithmic specification.\n\n### \u26a1 Python Reference Implementation\n```python\ndef ml_confusion_matrix(y_true: list, y_pred: list) -> dict:\n    tp = sum(1 for yt, yp in zip(y_true, y_pred) if yt == 1 and yp == 1)\n    tn = sum(1 for yt, yp in zip(y_true, y_pred) if yt == 0 and yp == 0)\n    fp = sum(1 for yt, yp in zip(y_true, y_pred) if yt == 0 and yp == 1)\n    fn = sum(1 for yt, yp in zip(y_true, y_pred) if yt == 1 and yp == 0)\n    acc = (tp + tn) / len(y_true) if y_true else 0.0\n    return {\"TP\": tp, \"FP\": fp, \"TN\": tn, \"FN\": fn, \"accuracy\": round(acc, 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: Optimal for the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary storage.",
   "testCases": [
     {
       "id": "ml-confusion-matrix-tc-1",
-      "name": "Standard Input",
+      "name": "Balanced predictions",
       "inputs": {
-        "x": [
-          1.0,
-          2.0,
-          3.0
+        "y_true": [
+          1,
+          0,
+          1,
+          0
+        ],
+        "y_pred": [
+          1,
+          1,
+          0,
+          0
         ]
       },
-      "expectedOutput": [
-        1.0,
-        2.0,
-        3.0
-      ],
+      "expectedOutput": {
+        "TP": 1,
+        "FP": 1,
+        "TN": 1,
+        "FN": 1,
+        "accuracy": 0.5
+      },
       "isPublic": true
     },
     {
       "id": "ml-confusion-matrix-tc-2",
-      "name": "Case 2",
+      "name": "Perfect classifier",
       "inputs": {
-        "x": [
-          2.0,
-          4.0,
-          6.0
+        "y_true": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "y_pred": [
+          1,
+          1,
+          0,
+          0
         ]
       },
-      "expectedOutput": [
-        2.0,
-        4.0,
-        6.0
-      ],
+      "expectedOutput": {
+        "TP": 2,
+        "FP": 0,
+        "TN": 2,
+        "FN": 0,
+        "accuracy": 1.0
+      },
       "isPublic": true
     },
     {
       "id": "ml-confusion-matrix-tc-3",
-      "name": "Case 3",
+      "name": "All wrong",
       "inputs": {
-        "x": [
-          0.5,
-          1.0,
-          1.5
+        "y_true": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "y_pred": [
+          0,
+          0,
+          1,
+          1
         ]
       },
-      "expectedOutput": [
-        0.5,
-        1.0,
-        1.5
-      ],
+      "expectedOutput": {
+        "TP": 0,
+        "FP": 2,
+        "TN": 0,
+        "FN": 2,
+        "accuracy": 0.0
+      },
       "isPublic": false
     },
     {
       "id": "ml-confusion-matrix-tc-4",
-      "name": "Case 4",
+      "name": "All positive predictions",
       "inputs": {
-        "x": [
-          -1.0,
-          -2.0,
-          -3.0
+        "y_true": [
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "y_pred": [
+          1,
+          1,
+          1,
+          1,
+          1
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        -2.0,
-        -3.0
-      ],
+      "expectedOutput": {
+        "TP": 3,
+        "FP": 2,
+        "TN": 0,
+        "FN": 0,
+        "accuracy": 0.6
+      },
       "isPublic": false
     },
     {
       "id": "ml-confusion-matrix-tc-5",
-      "name": "Case 5",
+      "name": "All negative predictions",
       "inputs": {
-        "x": [
-          3.0,
-          6.0,
-          9.0
+        "y_true": [
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "y_pred": [
+          0,
+          0,
+          0,
+          0,
+          0
         ]
       },
-      "expectedOutput": [
-        3.0,
-        6.0,
-        9.0
-      ],
+      "expectedOutput": {
+        "TP": 0,
+        "FP": 0,
+        "TN": 2,
+        "FN": 3,
+        "accuracy": 0.4
+      },
       "isPublic": false
     },
     {
       "id": "ml-confusion-matrix-tc-6",
-      "name": "Case 6",
+      "name": "Single positive sample",
       "inputs": {
-        "x": [
-          2.0,
-          3.0,
-          4.0
+        "y_true": [
+          1
+        ],
+        "y_pred": [
+          1
         ]
       },
-      "expectedOutput": [
-        2.0,
-        3.0,
-        4.0
-      ],
+      "expectedOutput": {
+        "TP": 1,
+        "FP": 0,
+        "TN": 0,
+        "FN": 0,
+        "accuracy": 1.0
+      },
       "isPublic": false
     },
     {
       "id": "ml-confusion-matrix-tc-7",
-      "name": "Case 7",
+      "name": "Imbalanced 6 samples",
       "inputs": {
-        "x": [
-          -1.0,
-          0.0,
-          1.0
+        "y_true": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "y_pred": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          1
         ]
       },
-      "expectedOutput": [
-        -1.0,
-        0.0,
-        1.0
-      ],
+      "expectedOutput": {
+        "TP": 3,
+        "FP": 1,
+        "TN": 1,
+        "FN": 1,
+        "accuracy": 0.6667
+      },
       "isPublic": false
     }
   ],
@@ -159,6 +224,7 @@
         "type": "any",
         "description": "Input data"
       }
-    ]
+    ],
+    "runtime": "python"
   }
 }

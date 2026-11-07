@@ -70,8 +70,8 @@
     "Inputs are JSON-compatible lists or scalars.",
     "This is a simplified educational contract, not a drop-in implementation of a complete production model."
   ],
-  "starterCode": "# BPE Encode/Decode — reconstructed educational contract\nimport numpy as np\n\ndef solution(text, merges):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **BPE Encode/Decode** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef solution(text, merges):\n    tokens=list(text)\n    for left,right,merged in merges:\n        out=[]; i=0\n        while i<len(tokens):\n            if i+1<len(tokens) and tokens[i]==left and tokens[i+1]==right:\n                out.append(merged); i+=2\n            else: out.append(tokens[i]); i+=1\n        tokens=out\n    return {\"tokens\":tokens,\"decoded\":\"\".join(tokens)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "starterCode": "# BPE Encode/Decode \u2014 reconstructed educational contract\nimport numpy as np\n\ndef solution(text, merges):\n    # TODO: implement the operation described in the problem statement\n    pass\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **BPE Encode/Decode** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef solution(text, merges):\n    tokens=list(text)\n    for left,right,merged in merges:\n        out=[]; i=0\n        while i<len(tokens):\n            if i+1<len(tokens) and tokens[i]==left and tokens[i+1]==right:\n                out.append(merged); i+=2\n            else: out.append(tokens[i]); i+=1\n        tokens=out\n    return {\"tokens\":tokens,\"decoded\":\"\".join(tokens)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gpt2-bpe-encode-decode-tc-1",
@@ -149,25 +149,32 @@
       "id": "gpt2-bpe-encode-decode-tc-4",
       "name": "Case 4",
       "inputs": {
-        "text": "abab",
+        "text": "ababable",
         "merges": [
           [
-            "a",
-            "b",
-            "ab"
+            "aed",
+            "bed",
+            "abed"
           ],
           [
-            "ab",
-            "ab",
-            "abab"
+            "abing",
+            "abing",
+            "ababing"
           ]
         ]
       },
       "expectedOutput": {
         "tokens": [
-          "abab"
+          "a",
+          "b",
+          "a",
+          "b",
+          "a",
+          "b",
+          "l",
+          "e"
         ],
-        "decoded": "abab"
+        "decoded": "ababable"
       },
       "isPublic": false
     },
@@ -175,16 +182,32 @@
       "id": "gpt2-bpe-encode-decode-tc-5",
       "name": "Case 5",
       "inputs": {
-        "text": "aba",
-        "merges": []
+        "text": "ababtion",
+        "merges": [
+          [
+            "ation",
+            "bment",
+            "abness"
+          ],
+          [
+            "ababs",
+            "abs",
+            "abs"
+          ]
+        ]
       },
       "expectedOutput": {
         "tokens": [
           "a",
           "b",
-          "a"
+          "a",
+          "b",
+          "t",
+          "i",
+          "o",
+          "n"
         ],
-        "decoded": "aba"
+        "decoded": "ababtion"
       },
       "isPublic": false
     },
@@ -192,28 +215,30 @@
       "id": "gpt2-bpe-encode-decode-tc-6",
       "name": "Case 6",
       "inputs": {
-        "text": "baba",
+        "text": "abably",
         "merges": [
           [
-            "ab",
-            "b",
-            "a"
+            "aed",
+            "bed",
+            "abed"
           ],
           [
-            "abab",
-            "ab",
-            "ab"
+            "abing",
+            "abing",
+            "ababing"
           ]
         ]
       },
       "expectedOutput": {
         "tokens": [
+          "a",
           "b",
           "a",
           "b",
-          "a"
+          "l",
+          "y"
         ],
-        "decoded": "baba"
+        "decoded": "abably"
       },
       "isPublic": false
     },
@@ -221,25 +246,30 @@
       "id": "gpt2-bpe-encode-decode-tc-7",
       "name": "Case 7",
       "inputs": {
-        "text": "abab",
+        "text": "ababed",
         "merges": [
           [
-            "a",
-            "b",
-            "ab"
+            "aed",
+            "bing",
+            "aber"
           ],
           [
-            "ab",
-            "ab",
-            "abab"
+            "ababs",
+            "abs",
+            "abs"
           ]
         ]
       },
       "expectedOutput": {
         "tokens": [
-          "abab"
+          "a",
+          "b",
+          "a",
+          "b",
+          "e",
+          "d"
         ],
-        "decoded": "abab"
+        "decoded": "ababed"
       },
       "isPublic": false
     }

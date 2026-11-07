@@ -527,5 +527,6 @@
     "prev": "unet-skip-connection",
     "next": "unet-output-layer"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "unet-bottleneck"
 }

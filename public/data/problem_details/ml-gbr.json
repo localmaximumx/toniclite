@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef ml_gbr(X: list, y: list, n_estimators: int = 3, learning_rate: float = 0.1) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Gradient Boosted Regressor** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_gbr(X: list, y: list, n_estimators: int = 3, learning_rate: float = 0.1) -> list:\n    arr_X, arr_y = np.array(X, dtype=float), np.array(y, dtype=float)\n    y_pred = np.full(len(arr_y), np.mean(arr_y))\n    for _ in range(n_estimators):\n        res = arr_y - y_pred\n        best_loss, best_pred = float('inf'), np.zeros(len(arr_y))\n        for f in range(arr_X.shape[1]):\n            for thresh in np.unique(arr_X[:, f]):\n                l_m = arr_X[:, f] <= thresh\n                c_l = np.mean(res[l_m]) if np.any(l_m) else 0.0\n                c_r = np.mean(res[~l_m]) if np.any(~l_m) else 0.0\n                sp = np.where(l_m, c_l, c_r)\n                loss = np.sum((res - sp) ** 2)\n                if loss < best_loss: best_loss, best_pred = loss, sp\n        y_pred += learning_rate * best_pred\n    return np.round(y_pred, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Gradient Boosted Regressor** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_gbr(X: list, y: list, n_estimators: int = 3, learning_rate: float = 0.1) -> list:\n    arr_X, arr_y = np.array(X, dtype=float), np.array(y, dtype=float)\n    y_pred = np.full(len(arr_y), np.mean(arr_y))\n    for _ in range(n_estimators):\n        res = arr_y - y_pred\n        best_loss, best_pred = float('inf'), np.zeros(len(arr_y))\n        for f in range(arr_X.shape[1]):\n            for thresh in np.unique(arr_X[:, f]):\n                l_m = arr_X[:, f] <= thresh\n                c_l = np.mean(res[l_m]) if np.any(l_m) else 0.0\n                c_r = np.mean(res[~l_m]) if np.any(~l_m) else 0.0\n                sp = np.where(l_m, c_l, c_r)\n                loss = np.sum((res - sp) ** 2)\n                if loss < best_loss: best_loss, best_pred = loss, sp\n        y_pred += learning_rate * best_pred\n    return np.round(y_pred, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ml-gbr-tc-1",
@@ -198,14 +198,14 @@
           -6.0,
           -8.0
         ],
-        "n_estimators": -3,
+        "n_estimators": 3,
         "learning_rate": 0.5
       },
       "expectedOutput": [
-        -5.0,
-        -5.0,
-        -5.0,
-        -5.0
+        -2.8333,
+        -3.9444,
+        -5.9444,
+        -7.2778
       ],
       "isPublic": false
     },

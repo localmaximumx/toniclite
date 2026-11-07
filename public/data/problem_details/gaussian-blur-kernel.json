@@ -18,7 +18,7 @@
   "starterCode": "import math\n\ndef gaussian_kernel(size: int, sigma: float) -> list:\n    \"\"\"\n    Returns a square two-dimensional list.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-31T11:39:36.449Z",
   "updatedAt": "2026-08-23T18:55:49.113Z",
-  "solution": "### 💡 Intuition & Approach\nNormalized 2D Gaussian density function generating rotationally symmetric smoothing filters.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef gaussian_kernel(size: int, sigma: float) -> list:\n    k = size // 2\n    y, x = np.ogrid[-k:k+1, -k:k+1]\n    g = np.exp(-(x**2 + y**2) / (2.0 * sigma**2))\n    g /= g.sum()\n    return np.round(g, 6).tolist()\n```\n\n### 📊 Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### 🔍 How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nNormalized 2D Gaussian density function generating rotationally symmetric smoothing filters.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef gaussian_kernel(size: int, sigma: float) -> list:\n    k = size // 2\n    y, x = np.ogrid[-k:k+1, -k:k+1]\n    g = np.exp(-(x**2 + y**2) / (2.0 * sigma**2))\n    g /= g.sum()\n    return np.round(g, 6).tolist()\n```\n\n### \ud83d\udcca Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$\n- **Space Complexity:** $\\mathcal{O}(N)$\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Prepares parameters into optimized NumPy arrays or native data structures for uniform batch computation.\n2. **Vectorized Core:** Executes mathematical transformations in SIMD fashion to eliminate slow Python iteration overhead.\n3. **Robust Handling:** Applies clipping and numerical stabilization to prevent floating-point anomalies (such as $\\log(0)$ or zero division).\n",
   "visualizationComponent": "GaussianBlurKernelViz",
   "testCases": [
     {
@@ -139,24 +139,24 @@
       "id": "gaussian-blur-kernel-tc-4",
       "name": "Case 4",
       "inputs": {
-        "size": 2,
-        "sigma": 0
+        "size": 3,
+        "sigma": 0.8
       },
       "expectedOutput": [
         [
-          0.0,
-          0.0,
-          0.0
+          0.057118,
+          0.124758,
+          0.057118
         ],
         [
-          0.0,
-          0.0,
-          0.0
+          0.124758,
+          0.272496,
+          0.124758
         ],
         [
-          0.0,
-          0.0,
-          0.0
+          0.057118,
+          0.124758,
+          0.057118
         ]
       ],
       "isPublic": false
@@ -165,24 +165,108 @@
       "id": "gaussian-blur-kernel-tc-5",
       "name": "Case 5",
       "inputs": {
-        "size": 3,
-        "sigma": -1
+        "size": 9,
+        "sigma": 7
       },
       "expectedOutput": [
         [
-          0.075114,
-          0.123841,
-          0.075114
+          0.010169,
+          0.010922,
+          0.011493,
+          0.01185,
+          0.011972,
+          0.01185,
+          0.011493,
+          0.010922,
+          0.010169
         ],
         [
-          0.123841,
-          0.20418,
-          0.123841
+          0.010922,
+          0.01173,
+          0.012344,
+          0.012728,
+          0.012858,
+          0.012728,
+          0.012344,
+          0.01173,
+          0.010922
         ],
         [
-          0.075114,
-          0.123841,
-          0.075114
+          0.011493,
+          0.012344,
+          0.01299,
+          0.013394,
+          0.013531,
+          0.013394,
+          0.01299,
+          0.012344,
+          0.011493
+        ],
+        [
+          0.01185,
+          0.012728,
+          0.013394,
+          0.01381,
+          0.013952,
+          0.01381,
+          0.013394,
+          0.012728,
+          0.01185
+        ],
+        [
+          0.011972,
+          0.012858,
+          0.013531,
+          0.013952,
+          0.014095,
+          0.013952,
+          0.013531,
+          0.012858,
+          0.011972
+        ],
+        [
+          0.01185,
+          0.012728,
+          0.013394,
+          0.01381,
+          0.013952,
+          0.01381,
+          0.013394,
+          0.012728,
+          0.01185
+        ],
+        [
+          0.011493,
+          0.012344,
+          0.01299,
+          0.013394,
+          0.013531,
+          0.013394,
+          0.01299,
+          0.012344,
+          0.011493
+        ],
+        [
+          0.010922,
+          0.01173,
+          0.012344,
+          0.012728,
+          0.012858,
+          0.012728,
+          0.012344,
+          0.01173,
+          0.010922
+        ],
+        [
+          0.010169,
+          0.010922,
+          0.011493,
+          0.01185,
+          0.011972,
+          0.01185,
+          0.011493,
+          0.010922,
+          0.010169
         ]
       ],
       "isPublic": false

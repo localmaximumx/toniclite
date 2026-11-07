@@ -32,7 +32,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "def nlp_ngram_language_model(train_sentences: list, test_bigram: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **N-gram Language Model** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_ngram_language_model(train_sentences: list, test_bigram: list) -> dict:\n    uni, bi, words = {}, {}, set()\n    for s in train_sentences:\n        toks = s.lower().split()\n        for w in toks: uni[w] = uni.get(w, 0) + 1; words.add(w)\n        for i in range(len(toks)-1): bi[(toks[i], toks[i+1])] = bi.get((toks[i], toks[i+1]), 0) + 1\n    w1, w2 = test_bigram[0].lower(), test_bigram[1].lower()\n    c12, c1 = bi.get((w1, w2), 0), uni.get(w1, 0)\n    return {'bigram_count': c12, 'context_count': c1, 'vocab_size': len(words), 'smoothed_probability': round((c12 + 1.0) / (c1 + max(len(words), 1)), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **N-gram Language Model** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_ngram_language_model(train_sentences: list, test_bigram: list) -> dict:\n    uni, bi, words = {}, {}, set()\n    for s in train_sentences:\n        toks = s.lower().split()\n        for w in toks: uni[w] = uni.get(w, 0) + 1; words.add(w)\n        for i in range(len(toks)-1): bi[(toks[i], toks[i+1])] = bi.get((toks[i], toks[i+1]), 0) + 1\n    w1, w2 = test_bigram[0].lower(), test_bigram[1].lower()\n    c12, c1 = bi.get((w1, w2), 0), uni.get(w1, 0)\n    return {'bigram_count': c12, 'context_count': c1, 'vocab_size': len(words), 'smoothed_probability': round((c12 + 1.0) / (c1 + max(len(words), 1)), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "nlp-ngram-language-model-tc-1",
@@ -60,19 +60,19 @@
       "name": "Case 2",
       "inputs": {
         "train_sentences": [
-          "natural language processing",
-          "language modeling with ngrams"
+          "natural language processing gamma",
+          "language modeling with ngrams gamma"
         ],
         "test_bigram": [
-          "language",
-          "processing"
+          "languageed",
+          "processinged"
         ]
       },
       "expectedOutput": {
-        "bigram_count": 1,
-        "context_count": 2,
-        "vocab_size": 6,
-        "smoothed_probability": 0.25
+        "bigram_count": 0,
+        "context_count": 0,
+        "vocab_size": 7,
+        "smoothed_probability": 0.1429
       },
       "isPublic": true
     },
@@ -81,19 +81,19 @@
       "name": "Case 3",
       "inputs": {
         "train_sentences": [
-          "natural language processing",
-          "language modeling with ngrams"
+          "delta natural language processing",
+          "delta language modeling with ngrams"
         ],
         "test_bigram": [
-          "language",
-          "processing"
+          "languageing",
+          "processinging"
         ]
       },
       "expectedOutput": {
-        "bigram_count": 1,
-        "context_count": 2,
-        "vocab_size": 6,
-        "smoothed_probability": 0.25
+        "bigram_count": 0,
+        "context_count": 0,
+        "vocab_size": 7,
+        "smoothed_probability": 0.1429
       },
       "isPublic": false
     },
@@ -102,19 +102,21 @@
       "name": "Case 4",
       "inputs": {
         "train_sentences": [
-          "natural language processing",
-          "language modeling with ngrams"
+          "natural language processing natural",
+          "language modeling with ngrams language",
+          "natural language processing"
         ],
         "test_bigram": [
-          "language",
-          "processing"
+          "languageer",
+          "processinger",
+          "natural language processing"
         ]
       },
       "expectedOutput": {
-        "bigram_count": 1,
-        "context_count": 2,
+        "bigram_count": 0,
+        "context_count": 0,
         "vocab_size": 6,
-        "smoothed_probability": 0.25
+        "smoothed_probability": 0.1667
       },
       "isPublic": false
     },
@@ -123,19 +125,19 @@
       "name": "Case 5",
       "inputs": {
         "train_sentences": [
-          "natural language processing",
-          "language modeling with ngrams"
+          "neural processing language natural vector",
+          "ngrams with modeling language"
         ],
         "test_bigram": [
-          "language",
-          "processing"
+          "languagetion",
+          "processingment"
         ]
       },
       "expectedOutput": {
-        "bigram_count": 1,
-        "context_count": 2,
-        "vocab_size": 6,
-        "smoothed_probability": 0.25
+        "bigram_count": 0,
+        "context_count": 0,
+        "vocab_size": 8,
+        "smoothed_probability": 0.125
       },
       "isPublic": false
     },
@@ -144,19 +146,19 @@
       "name": "Case 6",
       "inputs": {
         "train_sentences": [
-          "natural language processing",
-          "language modeling with ngrams"
+          "ngrams with modeling language",
+          "processing language natural"
         ],
         "test_bigram": [
-          "language",
-          "processing"
+          "processings",
+          "languages"
         ]
       },
       "expectedOutput": {
-        "bigram_count": 1,
-        "context_count": 2,
+        "bigram_count": 0,
+        "context_count": 0,
         "vocab_size": 6,
-        "smoothed_probability": 0.25
+        "smoothed_probability": 0.1667
       },
       "isPublic": false
     },
@@ -166,18 +168,20 @@
       "inputs": {
         "train_sentences": [
           "natural language processing",
-          "language modeling with ngrams"
+          "language modeling with ngrams",
+          "computer vision system"
         ],
         "test_bigram": [
           "language",
-          "processing"
+          "processing",
+          "computer vision system"
         ]
       },
       "expectedOutput": {
         "bigram_count": 1,
         "context_count": 2,
-        "vocab_size": 6,
-        "smoothed_probability": 0.25
+        "vocab_size": 9,
+        "smoothed_probability": 0.1818
       },
       "isPublic": false
     }

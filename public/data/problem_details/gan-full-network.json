@@ -719,5 +719,6 @@
     "prev": "gan-mode-collapse",
     "next": null
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "gan-full-network"
 }

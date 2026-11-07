@@ -240,8 +240,7 @@ function instantiateModule(id: number): ModRecord {
 }
 
 export function initTurbopackRuntime() {
-  if (initialized) return;
-  initialized = true;
+  if (initialized && factories.size > 0) return;
 
   const tb = (globalThis as any).TURBOPACK || [];
   for (const chunk of tb) {
@@ -266,6 +265,14 @@ export function initTurbopackRuntime() {
   registerHostMod(504561, { __esModule: true, default: SmartLink });
   registerHostMod(307756, { __esModule: true, useTheme: useThemeHook });
   registerHostMod(950382, { env: { NODE_ENV: 'production' } });
+  if (factories.size > 0) {
+    initialized = true;
+  }
+}
+
+export function hasTurbopackModule(modId: number): boolean {
+  initTurbopackRuntime();
+  return factories.has(modId);
 }
 
 export function getTurbopackComponent(modId: number, exportName = 'default'): React.ComponentType<any> {

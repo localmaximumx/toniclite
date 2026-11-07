@@ -31,7 +31,7 @@
   ],
   "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
   "starterCode": "import numpy as np\n\ndef ml_averaged_perceptron(X: list, y: list, epochs: int = 1) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Averaged Perceptron** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_averaged_perceptron(X: list, y: list, epochs: int = 1) -> dict:\n    arr_X, arr_y = np.array(X, dtype=float), np.array(y, dtype=float)\n    w, w_sum, c = np.zeros(arr_X.shape[1]), np.zeros(arr_X.shape[1]), 0\n    for _ in range(epochs):\n        for i in range(len(arr_y)):\n            c += 1\n            if arr_y[i] * np.dot(w, arr_X[i]) <= 0:\n                w += arr_y[i] * arr_X[i]\n            w_sum += w\n    return {'final_weights': np.round(w, 4).tolist(), 'averaged_weights': np.round(w_sum / max(1, c), 4).tolist()}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Averaged Perceptron** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_averaged_perceptron(X: list, y: list, epochs: int = 1) -> dict:\n    arr_X, arr_y = np.array(X, dtype=float), np.array(y, dtype=float)\n    w, w_sum, c = np.zeros(arr_X.shape[1]), np.zeros(arr_X.shape[1]), 0\n    for _ in range(epochs):\n        for i in range(len(arr_y)):\n            c += 1\n            if arr_y[i] * np.dot(w, arr_X[i]) <= 0:\n                w += arr_y[i] * arr_X[i]\n            w_sum += w\n    return {'final_weights': np.round(w, 4).tolist(), 'averaged_weights': np.round(w_sum / max(1, c), 4).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ml-averaged-perceptron-tc-1",
@@ -313,7 +313,7 @@
           0,
           0
         ],
-        "epochs": 0
+        "epochs": 2
       },
       "expectedOutput": {
         "final_weights": [

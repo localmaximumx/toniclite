@@ -84,15 +84,15 @@
       "inputs": {
         "alpha": 0.75,
         "counts": [
-          -100,
-          -10,
-          -1
+          50,
+          20,
+          5
         ]
       },
       "expectedOutput": [
-        0.0,
-        0.0,
-        0.0
+        0.594954,
+        0.299246,
+        0.105799
       ],
       "isPublic": false
     },
@@ -136,18 +136,20 @@
       "id": "word2vec-noise-dist-tc-7",
       "name": "Case 7",
       "inputs": {
-        "alpha": 1,
+        "alpha": 0.5,
         "counts": [
           100,
-          10,
-          1
+          25,
+          9,
+          4
         ]
       },
       "isPublic": false,
       "expectedOutput": [
-        0.900901,
-        0.09009,
-        0.009009
+        0.5,
+        0.25,
+        0.15,
+        0.1
       ]
     }
   ],
@@ -195,5 +197,6 @@
     "prev": "word2vec-skipgram-pairs",
     "next": "word2vec-sgns-loss"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "word2vec-noise-dist"
 }

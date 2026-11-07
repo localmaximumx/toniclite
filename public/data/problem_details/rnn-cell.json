@@ -401,5 +401,6 @@
     "prev": null,
     "next": "rnn-hidden-state"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "rnn-cell"
 }

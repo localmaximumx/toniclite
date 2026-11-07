@@ -1189,5 +1189,6 @@
     "prev": "k3-quantile-balancing",
     "next": "k3-mxfp4-expert-linear"
   },
-  "cleanTitle": ""
+  "cleanTitle": "",
+  "slug": "k3-stable-latent-moe"
 }

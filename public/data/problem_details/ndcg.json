@@ -18,7 +18,7 @@
   "starterCode": "import math\n\ndef ndcg(relevance_scores: list, k: int) -> float:\n    \"\"\"\n    Returns NDCG as a float.\n    \"\"\"\n    # Write code here\n    pass",
   "createdAt": "2026-01-30T22:45:43.323Z",
   "updatedAt": "2026-08-23T18:55:49.113Z",
-  "solution": "### 💡 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### 💻 Reference Implementation\n```python\nimport numpy as np\n\ndef ndcg(relevance_scores: list, k: int) -> float:\n    r = np.array(relevance_scores[:k], dtype=float)\n    if len(r) == 0 or np.all(r == 0):\n        return 0.0\n    discounts = np.log2(np.arange(len(r)) + 2)\n    dcg = np.sum((2.0 ** r - 1.0) / discounts)\n    ideal_r = np.sort(relevance_scores)[::-1][:k]\n    idcg = np.sum((2.0 ** ideal_r - 1.0) / np.log2(np.arange(len(ideal_r)) + 2))\n    return float(round(dcg / idcg if idcg > 0 else 0.0, 6))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, numerically stable reference implementation following exact specifications.\n\n### \ud83d\udcbb Reference Implementation\n```python\nimport numpy as np\n\ndef ndcg(relevance_scores: list, k: int) -> float:\n    r = np.array(relevance_scores[:k], dtype=float)\n    if len(r) == 0 or np.all(r == 0):\n        return 0.0\n    discounts = np.log2(np.arange(len(r)) + 2)\n    dcg = np.sum((2.0 ** r - 1.0) / discounts)\n    ideal_r = np.sort(relevance_scores)[::-1][:k]\n    idcg = np.sum((2.0 ** ideal_r - 1.0) / np.log2(np.arange(len(ideal_r)) + 2))\n    return float(round(dcg / idcg if idcg > 0 else 0.0, 6))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the input dimensions.\n- **Space Complexity**: $\\mathcal{O}(N)$ for memory buffers.\n",
   "visualizationComponent": "NdcgViz",
   "testCases": [
     {
@@ -100,7 +100,7 @@
       "id": "ndcg-tc-6",
       "name": "Case 6",
       "inputs": {
-        "k": -4,
+        "k": 4,
         "relevance_scores": [
           0,
           -1,

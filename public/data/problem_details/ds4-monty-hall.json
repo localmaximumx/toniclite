@@ -41,7 +41,7 @@
     "Floating-point comparisons should use a tolerance such as 1e-6."
   ],
   "starterCode": "def solve(n_doors, n_opened, switch=True):\n    pass",
-  "solution": "### 💡 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### ⚡ Implementation\n```python\ndef solve(n_doors, n_opened, switch=True):\n    # One prize; host opens n_opened goat doors after the initial pick.\n    if n_doors < 2 or n_opened < 0 or n_opened > n_doors-2: raise ValueError(\"invalid door counts\")\n    return (n_doors-1)/(n_doors*(n_doors-n_opened-1)) if switch else 1/n_doors\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nVectorized, mathematically sound implementation.\n\n### \u26a1 Implementation\n```python\ndef solve(n_doors, n_opened, switch=True):\n    # One prize; host opens n_opened goat doors after the initial pick.\n    if n_doors < 2 or n_opened < 0 or n_opened > n_doors-2: raise ValueError(\"invalid door counts\")\n    return (n_doors-1)/(n_doors*(n_doors-n_opened-1)) if switch else 1/n_doors\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$\n- **Space Complexity**: $\\mathcal{O}(N)$",
   "testCases": [
     {
       "id": "ds4-monty-hall-tc-1",
@@ -60,9 +60,9 @@
       "inputs": {
         "n_doors": 6,
         "n_opened": 2,
-        "switch": 2
+        "switch": true
       },
-      "expectedOutput": 0.277778,
+      "expectedOutput": 0.2777777777777778,
       "isPublic": true
     },
     {
@@ -71,7 +71,7 @@
       "inputs": {
         "n_doors": 2,
         "n_opened": 0,
-        "switch": 0
+        "switch": true
       },
       "expectedOutput": 0.5,
       "isPublic": false
@@ -82,9 +82,9 @@
       "inputs": {
         "n_doors": 9,
         "n_opened": 3,
-        "switch": 3
+        "switch": true
       },
-      "expectedOutput": 0.177778,
+      "expectedOutput": 0.17777777777777778,
       "isPublic": false
     },
     {
@@ -93,7 +93,7 @@
       "inputs": {
         "n_doors": 4.0,
         "n_opened": 2.0,
-        "switch": 2.0
+        "switch": true
       },
       "expectedOutput": 0.75,
       "isPublic": false
@@ -102,11 +102,11 @@
       "id": "ds4-monty-hall-tc-6",
       "name": "Case 6",
       "inputs": {
-        "n_doors": 3,
-        "n_opened": 1,
-        "switch": 1
+        "n_doors": 10,
+        "n_opened": 8,
+        "switch": true
       },
-      "expectedOutput": 0.666667,
+      "expectedOutput": 0.9,
       "isPublic": false
     },
     {
@@ -115,9 +115,9 @@
       "inputs": {
         "n_doors": 30,
         "n_opened": 10,
-        "switch": 10
+        "switch": true
       },
-      "expectedOutput": 0.050877,
+      "expectedOutput": 0.05087719298245614,
       "isPublic": false
     }
   ],
