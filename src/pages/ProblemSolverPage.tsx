@@ -10,6 +10,7 @@ import {
   Check, 
   ChevronLeft, 
   ChevronRight, 
+  ChevronDown, 
   BookOpen, 
   FileText, 
   Lightbulb, 
@@ -66,7 +67,6 @@ import { AuthModal } from '../components/AuthModal';
 
 
 
-import { ProgressiveHintLadder } from '../components/ProgressiveHintLadder';
 import { ReplShapeInspector } from '../components/ReplShapeInspector';
 
 /* ======================================================== */
@@ -1101,7 +1101,7 @@ export const ProblemSolverPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-background">
+      <div className="flex items-center justify-center h-full w-full bg-background">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-[#93C572] border-t-transparent rounded-full animate-spin" />
           <div className="text-sm text-muted-foreground font-mono">Loading problem specification...</div>
@@ -1112,7 +1112,7 @@ export const ProblemSolverPage: React.FC = () => {
 
   if (!problem) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] bg-background gap-4">
+      <div className="flex flex-col items-center justify-center h-full w-full bg-background gap-4">
         <h2 className="text-xl font-bold">Problem not found</h2>
         <Link 
           to={paperId ? `/research?paper=${paperId}` : "/problems"} 
@@ -1140,7 +1140,7 @@ export const ProblemSolverPage: React.FC = () => {
         currentAssessment={currentAssessment}
       />
 
-      <div className="h-[calc(100vh-64px)] flex flex-col md:flex-row overflow-hidden bg-background relative">
+      <div className="h-full w-full flex flex-col md:flex-row overflow-hidden bg-background relative">
         {(isDraggingH || isDraggingV) && (
           <div
             className={`fixed inset-0 z-50 select-none ${
@@ -1320,8 +1320,8 @@ export const ProblemSolverPage: React.FC = () => {
           {/* Tab Content */}
           <div className={`flex-1 overflow-y-auto problem-scrollbar ${
             activeTab === 'notes'
-              ? 'p-2.5 sm:p-3.5 md:p-4 pb-2.5 sm:pb-3 md:pb-3 flex flex-col'
-              : 'p-3 sm:p-4 md:p-5 pb-6 sm:pb-5 md:pb-4'
+              ? 'p-2.5 sm:p-3.5 md:p-4 pb-20 sm:pb-3 md:pb-3 flex flex-col'
+              : 'p-3 sm:p-4 md:p-5 pb-24 sm:pb-6 md:pb-4'
           }`}>
             {activeTab === 'description' && (
               <div className="space-y-4 sm:space-y-6">
@@ -1425,24 +1425,45 @@ export const ProblemSolverPage: React.FC = () => {
                 </div>
               )}
 
-              {/* 3-Stage Progressive Hint Ladder */}
-              <div className="pt-3 border-t border-border/60">
-                <ProgressiveHintLadder
-                  slug={problem.id || slug || 'problem'}
-                  hints={problem.hints}
-                  theory={problem.theory}
-                  requirements={Array.isArray(problem.requirements) ? problem.requirements.join('\n') : problem.requirements}
-                />
-              </div>
+              {/* Hints */}
+              {problem.hints && problem.hints.length > 0 && (
+                <div className="space-y-2.5 pt-3 border-t border-border/60">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb className="w-4 h-4 text-amber-400" />
+                    <h3 className="font-semibold text-foreground text-sm">Hints</h3>
+                    <span className="text-xs text-muted-foreground font-mono">({problem.hints.length})</span>
+                  </div>
+                  <div className="space-y-2">
+                    {problem.hints.map((hint, i) => {
+                      const hintText = typeof hint === 'string' ? hint : hint?.content || JSON.stringify(hint);
+                      return (
+                        <details 
+                          key={i} 
+                          className="group border border-border/70 hover:border-border rounded-xl p-3 bg-secondary/20 dark:bg-card/40 transition-colors"
+                        >
+                          <summary className="cursor-pointer text-xs font-semibold text-foreground hover:text-[#93C572] transition-colors select-none flex items-center justify-between list-none">
+                            <span className="flex items-center gap-2">
+                              <span className="w-5 h-5 rounded-md bg-[#93C572]/15 text-[#93C572] flex items-center justify-center text-[10px] font-bold font-mono">
+                                {i + 1}
+                              </span>
+                              <span>Hint {i + 1}</span>
+                            </span>
+                            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground group-open:rotate-180 transition-transform duration-200" />
+                          </summary>
+                          <div className="mt-2.5 pt-2.5 border-t border-border/40 text-xs text-muted-foreground leading-relaxed pl-1">
+                            <MathView content={hintText} allowPureCode={false} />
+                          </div>
+                        </details>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
           {activeTab === 'theory' && (
             <div className="space-y-4">
-              <div className="flex items-center gap-2 pb-2 border-b border-border/60">
-                <BookOpen className="w-4 h-4 text-[#93C572]" />
-                <h2 className="text-base font-bold text-foreground">Theory & Mathematical Derivation</h2>
-              </div>
               {problem.theory ? (
                 <MathView content={problem.theory} allowPureCode={false} />
               ) : (
@@ -1453,18 +1474,6 @@ export const ProblemSolverPage: React.FC = () => {
 
           {activeTab === 'solution' && (
             <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/60">
-                <div className="flex items-center gap-2">
-                  <div className="p-1.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400">
-                    <Lightbulb className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h2 className="text-base font-bold text-foreground">Reference Solution & Walkthrough</h2>
-                    <p className="text-[11px] text-muted-foreground">Optimal vectorized Python & NumPy implementation</p>
-                  </div>
-                </div>
-              </div>
-
               {problem.solution ? (
                 <SolutionViewer
                   solution={problem.solution}
@@ -1755,7 +1764,7 @@ export const ProblemSolverPage: React.FC = () => {
 
           {/* Bottom Panel Content */}
           <div className={`flex-1 overflow-y-auto problem-scrollbar font-mono text-xs ${
-            bottomTab === 'repl' ? 'p-1.5 sm:p-2 pb-1.5' : 'p-2.5 sm:p-3 pb-3 md:pb-3'
+            bottomTab === 'repl' ? 'p-1.5 sm:p-2 pb-1.5' : 'p-2.5 sm:p-3 pb-20 sm:pb-3 md:pb-3'
           }`}>
             {bottomTab === 'testcase' && (() => {
               const currentCases = activeTestCases.length > 0 ? activeTestCases : defaultSampleCases;

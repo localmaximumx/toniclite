@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   X, 
@@ -99,10 +99,39 @@ export const ProblemDrawer: React.FC<ProblemDrawerProps> = ({
   // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredProblems.length / pageSize));
   
-  // Reset page when filter changes
+  const currentItemRef = useRef<HTMLButtonElement>(null);
+
+  // Sync page to current problem's page when drawer opens or currentSlug changes
   useEffect(() => {
+    if (!isOpen || !currentSlug || filteredProblems.length === 0) return;
+    const idx = filteredProblems.findIndex(p => p.slug === currentSlug);
+    if (idx !== -1) {
+      const targetPage = Math.floor(idx / pageSize) + 1;
+      setCurrentPage(targetPage);
+    }
+  }, [isOpen, currentSlug, filteredProblems, pageSize]);
+
+  // When filters or search change, if currentSlug is still in filtered results, jump to its page; otherwise reset to 1
+  useEffect(() => {
+    if (currentSlug && filteredProblems.length > 0) {
+      const idx = filteredProblems.findIndex(p => p.slug === currentSlug);
+      if (idx !== -1) {
+        const targetPage = Math.floor(idx / pageSize) + 1;
+        setCurrentPage(targetPage);
+        return;
+      }
+    }
     setCurrentPage(1);
   }, [searchQuery, selectedTag, selectedDifficulty, selectedStatus]);
+
+  // Auto-scroll to current active problem when page or drawer opens
+  useEffect(() => {
+    if (isOpen && currentItemRef.current) {
+      setTimeout(() => {
+        currentItemRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }, 50);
+    }
+  }, [isOpen, currentPage]);
 
   // Current page items
   const paginatedProblems = useMemo(() => {
@@ -398,6 +427,7 @@ export const ProblemDrawer: React.FC<ProblemDrawerProps> = ({
                   return (
                     <button
                       key={p.slug}
+                      ref={isCurrent ? currentItemRef : undefined}
                       onClick={() => {
                         navigate(`/problems/${p.slug}`);
                         onClose();
