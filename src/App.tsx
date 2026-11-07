@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { HomePage } from './pages/HomePage';
 import { ProblemsPage } from './pages/ProblemsPage';
@@ -14,12 +14,9 @@ import { ProfilePage } from './pages/ProfilePage';
 import { MLMathPage } from './pages/MLMathPage';
 
 const AppContent: React.FC = () => {
-  const location = useLocation();
-  const isMLMath = location.pathname.startsWith('/ml-math');
-
   return (
     <div className="min-h-screen h-[100dvh] bg-background text-foreground flex flex-col overflow-hidden">
-      {!isMLMath && <Navbar />}
+      <Navbar />
       <main className="flex-1 min-h-0 overflow-hidden relative">
         <Routes>
           <Route path="/" element={<HomePage />} />
