@@ -1038,56 +1038,7 @@ export const ProblemSolverPage: React.FC = () => {
           />
         )}
 
-        {/* Mobile View Selector & Action Bar (< md) */}
-        <div className="md:hidden flex items-center justify-between px-3 sm:px-4 py-2 bg-card border-b border-border/80 text-xs shrink-0 z-20">
-          <div className="flex items-center gap-1 bg-secondary/80 p-0.5 rounded-lg border border-border/60">
-            <button
-              onClick={() => setMobileActivePanel('problem')}
-              className={`px-3 py-1 rounded-md font-semibold transition-all ${
-                mobileActivePanel === 'problem'
-                  ? 'bg-background text-[#93C572] shadow-xs'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              Description
-            </button>
-            <button
-              onClick={() => setMobileActivePanel('code')}
-              className={`px-3 py-1 rounded-md font-semibold transition-all ${
-                mobileActivePanel === 'code'
-                  ? 'bg-background text-[#38BDF8] shadow-xs'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              Code
-            </button>
-          </div>
-
-          {mobileActivePanel === 'code' && (
-            <div className="flex items-center gap-2 pr-1.5">
-              <button
-                onClick={handleRun}
-                disabled={isRunning}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-secondary hover:bg-accent border border-border text-foreground text-xs font-medium disabled:opacity-50"
-                title="Run code (Ctrl + Enter)"
-              >
-                <Play className="w-3 h-3 fill-current text-[#93C572]" />
-                <span>Run</span>
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={isRunning}
-                className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-md bg-[#93C572] hover:bg-[#85b964] text-black text-xs font-bold disabled:opacity-50 shadow-xs mr-1"
-                title="Submit code (Ctrl + Alt + Enter)"
-              >
-                <Send className="w-3 h-3" />
-                <span>Submit</span>
-              </button>
-            </div>
-          )}
-        </div>
-        
-        {/* LEFT PANEL: Problem Info, Theory, Solution */}
+        {/* LEFT PANEL: Problem Info, Theory, Solution (and Code on mobile when selected) */}
         <div
           className={`${
             mobileActivePanel === 'problem' ? 'flex' : 'hidden md:flex'
@@ -1096,12 +1047,13 @@ export const ProblemSolverPage: React.FC = () => {
         >
           
           {/* Navigation / Tab bar */}
-          <nav className="flex items-center justify-between px-3 md:px-4 h-12 border-b border-border text-xs sm:text-sm bg-secondary/30 flex-shrink-0">
-            <div className="flex items-center gap-1.5 sm:gap-3 h-full">
+          <nav className="flex items-center justify-between px-2.5 sm:px-3 md:px-4 h-12 border-b border-border text-xs sm:text-sm bg-secondary/30 flex-shrink-0">
+            {/* Horizontally scrollable tabs area */}
+            <div className="flex items-center gap-1.5 sm:gap-2.5 h-full overflow-x-auto no-scrollbar py-1 min-w-0 pr-2">
               {/* Browse Problems Sidebar Button (Handles Assessment, Research paper, and Problems catalog) */}
               <button
                 onClick={() => setIsDrawerOpen(true)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/80 bg-background/80 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors text-xs font-medium shadow-xs"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/80 bg-background/80 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors text-xs font-medium shadow-xs shrink-0"
                 title={
                   currentAssessment
                     ? `Assessment: ${currentAssessment.name}`
@@ -1125,12 +1077,15 @@ export const ProblemSolverPage: React.FC = () => {
                 )}
               </button>
 
-              <div className="h-4 w-px bg-border/60" />
+              <div className="h-4 w-px bg-border/60 shrink-0" />
 
               <button
-                onClick={() => setActiveTab('description')}
-                className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 ${
-                  activeTab === 'description'
+                onClick={() => {
+                  setActiveTab('description');
+                  setMobileActivePanel('problem');
+                }}
+                className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+                  activeTab === 'description' && mobileActivePanel === 'problem'
                     ? 'border-[#93C572] text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
@@ -1139,9 +1094,12 @@ export const ProblemSolverPage: React.FC = () => {
                 <span>Description</span>
               </button>
               <button
-                onClick={() => setActiveTab('theory')}
-                className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 ${
-                  activeTab === 'theory'
+                onClick={() => {
+                  setActiveTab('theory');
+                  setMobileActivePanel('problem');
+                }}
+                className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+                  activeTab === 'theory' && mobileActivePanel === 'problem'
                     ? 'border-[#93C572] text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
@@ -1150,9 +1108,12 @@ export const ProblemSolverPage: React.FC = () => {
                 <span>Theory</span>
               </button>
               <button
-                onClick={() => setActiveTab('solution')}
-                className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 ${
-                  activeTab === 'solution'
+                onClick={() => {
+                  setActiveTab('solution');
+                  setMobileActivePanel('problem');
+                }}
+                className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+                  activeTab === 'solution' && mobileActivePanel === 'problem'
                     ? 'border-[#93C572] text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
@@ -1160,9 +1121,23 @@ export const ProblemSolverPage: React.FC = () => {
                 <Lightbulb className="w-3.5 h-3.5" />
                 <span>Solution</span>
               </button>
+              
+              {/* 4th Tab on Mobile: Code */}
+              <button
+                onClick={() => setMobileActivePanel('code')}
+                className={`md:hidden h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+                  mobileActivePanel === 'code'
+                    ? 'border-[#38BDF8] text-[#38BDF8] font-semibold'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Code2 className="w-3.5 h-3.5" />
+                <span>Code</span>
+              </button>
+
               <button
                 onClick={() => setActiveTab('notes')}
-                className={`hidden md:flex h-full border-b-2 font-medium transition-colors items-center gap-1 sm:gap-1.5 px-2 sm:px-1 relative ${
+                className={`hidden md:flex h-full border-b-2 font-medium transition-colors items-center gap-1 sm:gap-1.5 px-2 sm:px-1 relative shrink-0 whitespace-nowrap ${
                   activeTab === 'notes'
                     ? 'border-[#93C572] text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
@@ -1177,12 +1152,15 @@ export const ProblemSolverPage: React.FC = () => {
               </button>
             </div>
 
-            {/* Prev / Next controls in side panel */}
-            <div className="flex items-center gap-1">
+            {/* Prev / Next controls in side panel (pinned on the right) */}
+            <div className="flex items-center gap-1 shrink-0 pl-1 border-l border-border/40">
               {prevSlug ? (
                 <Link
                   to={prevSlug.startsWith('/') ? prevSlug : `/problems/${prevSlug}`}
-                  onClick={() => setActiveTab('description')}
+                  onClick={() => {
+                    setActiveTab('description');
+                    setMobileActivePanel('problem');
+                  }}
                   className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                   title="Previous problem (Alt + Left)"
                 >
@@ -1195,7 +1173,10 @@ export const ProblemSolverPage: React.FC = () => {
               {nextSlug ? (
                 <Link
                   to={nextSlug.startsWith('/') ? nextSlug : `/problems/${nextSlug}`}
-                  onClick={() => setActiveTab('description')}
+                  onClick={() => {
+                    setActiveTab('description');
+                    setMobileActivePanel('problem');
+                  }}
                   className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                   title="Next problem (Alt + Right)"
                 >
@@ -1553,13 +1534,13 @@ export const ProblemSolverPage: React.FC = () => {
           </div>
 
 
-          {/* Run & Submit (Hidden on mobile < md because the top mobile bar has them!) */}
-          <div className="hidden md:flex items-center gap-2">
+          {/* Run & Submit (Visible on mobile Code view & desktop) */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Run Button */}
             <button
               onClick={handleRun}
               disabled={isRunning}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border border-input bg-card hover:bg-accent text-foreground transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-semibold border border-input bg-card hover:bg-accent text-foreground transition-colors disabled:opacity-50"
               title="Run code (Ctrl + Enter)"
             >
               <Play className="w-3.5 h-3.5 text-[#93C572] fill-current" />
@@ -1570,7 +1551,7 @@ export const ProblemSolverPage: React.FC = () => {
             <button
               onClick={handleSubmit}
               disabled={isRunning}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#93C572] hover:bg-[#A4D287] text-black transition-colors shadow-sm disabled:opacity-50"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#93C572] hover:bg-[#A4D287] text-black transition-colors shadow-sm disabled:opacity-50"
               title="Submit code (Ctrl + Alt + Enter)"
             >
               <Send className="w-3.5 h-3.5" />
