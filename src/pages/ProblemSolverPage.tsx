@@ -226,6 +226,20 @@ export const ProblemSolverPage: React.FC = () => {
   const [isDraggingH, setIsDraggingH] = useState<boolean>(false); // Vertical splitter (left vs right)
   const [isDraggingV, setIsDraggingV] = useState<boolean>(false); // Horizontal splitter (editor vs testcase)
 
+  // Track desktop viewport (>= 768px) to safely assign resizable percentage width only on desktop
+  const [isDesktop, setIsDesktop] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    return window.matchMedia('(min-width: 768px)').matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mql = window.matchMedia('(min-width: 768px)');
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
   // Vertical splitter (resizing left vs right panels horizontally)
   const handleMouseDownH = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -1014,6 +1028,149 @@ export const ProblemSolverPage: React.FC = () => {
 
   const testCases = problem.testCases || [{ id: 'case-1', name: 'Case 1', inputs: { x: [0, 2, -2] } }];
 
+  const renderNavBar = (isCodeView = false) => (
+    <nav className={`flex ${isCodeView ? 'md:hidden' : ''} items-center justify-between px-2.5 sm:px-3 md:px-4 h-12 border-b border-border text-xs sm:text-sm bg-secondary/30 flex-shrink-0 z-30`}>
+      {/* Horizontally scrollable tabs area */}
+      <div className="flex items-center gap-1.5 sm:gap-2.5 h-full overflow-x-auto no-scrollbar py-1 min-w-0 pr-2">
+        {/* Browse Problems Sidebar Button (Handles Assessment, Research paper, and Problems catalog) */}
+        <button
+          onClick={() => setIsDrawerOpen(true)}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/80 bg-background/80 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors text-xs font-medium shadow-xs shrink-0"
+          title={
+            currentAssessment
+              ? `Assessment: ${currentAssessment.name}`
+              : paperId
+              ? (currentPaper?.title || "Paper Syllabus")
+              : "Browse problems catalog"
+          }
+        >
+          {currentAssessment ? (
+            <ShieldCheck className="w-3.5 h-3.5 text-[#93C572]" />
+          ) : (
+            <PanelLeft className="w-3.5 h-3.5 text-[#93C572]" />
+          )}
+          <span className="hidden sm:inline font-semibold truncate max-w-[170px]">
+            {currentAssessment ? currentAssessment.name : paperId ? (currentPaper?.title || 'Paper') : 'Problems'}
+          </span>
+          {currentIndex !== -1 && (
+            <span className="hidden sm:inline-block text-[10px] font-mono text-muted-foreground bg-secondary px-1.5 py-0.5 rounded border border-border/40">
+              #{currentIndex + 1}/{totalItems || (paperId || currentAssessment ? '' : catalogProblems.length || 790)}
+            </span>
+          )}
+        </button>
+
+        <div className="h-4 w-px bg-border/60 shrink-0" />
+
+        <button
+          onClick={() => {
+            setActiveTab('description');
+            setMobileActivePanel('problem');
+          }}
+          className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+            activeTab === 'description' && mobileActivePanel === 'problem'
+              ? 'border-[#93C572] text-foreground font-semibold'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <FileText className="w-3.5 h-3.5" />
+          <span>Description</span>
+        </button>
+        <button
+          onClick={() => {
+            setActiveTab('theory');
+            setMobileActivePanel('problem');
+          }}
+          className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+            activeTab === 'theory' && mobileActivePanel === 'problem'
+              ? 'border-[#93C572] text-foreground font-semibold'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <BookOpen className="w-3.5 h-3.5" />
+          <span>Theory</span>
+        </button>
+        <button
+          onClick={() => {
+            setActiveTab('solution');
+            setMobileActivePanel('problem');
+          }}
+          className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+            activeTab === 'solution' && mobileActivePanel === 'problem'
+              ? 'border-[#93C572] text-foreground font-semibold'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <Lightbulb className="w-3.5 h-3.5" />
+          <span>Solution</span>
+        </button>
+        
+        {/* 4th Tab on Mobile: Code */}
+        <button
+          onClick={() => setMobileActivePanel('code')}
+          className={`md:hidden h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
+            mobileActivePanel === 'code'
+              ? 'border-[#93C572] text-foreground font-semibold'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <Code2 className="w-3.5 h-3.5" />
+          <span>Code</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('notes')}
+          className={`hidden md:flex h-full border-b-2 font-medium transition-colors items-center gap-1 sm:gap-1.5 px-2 sm:px-1 relative shrink-0 whitespace-nowrap ${
+            activeTab === 'notes'
+              ? 'border-[#93C572] text-foreground font-semibold'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+          title="Personal Notes"
+        >
+          <NotebookPen className="w-3.5 h-3.5" />
+          <span>Notes</span>
+          {notes.trim().length > 0 && (
+            <span className="w-1.5 h-1.5 rounded-full bg-[#93C572] ml-0.5" title="Has notes" />
+          )}
+        </button>
+      </div>
+
+      {/* Prev / Next controls in side panel (pinned on the right) */}
+      <div className="flex items-center gap-1 shrink-0 pl-1 border-l border-border/40">
+        {prevSlug ? (
+          <Link
+            to={prevSlug.startsWith('/') ? prevSlug : `/problems/${prevSlug}`}
+            onClick={() => {
+              setActiveTab('description');
+              setMobileActivePanel('problem');
+            }}
+            className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            title="Previous problem (Alt + Left)"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </Link>
+        ) : (
+          <span className="p-1 text-muted-foreground/30"><ChevronLeft className="w-4 h-4" /></span>
+        )}
+
+        {nextSlug ? (
+          <Link
+            to={nextSlug.startsWith('/') ? nextSlug : `/problems/${nextSlug}`}
+            onClick={() => {
+              setActiveTab('description');
+              setMobileActivePanel('problem');
+            }}
+            className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            title="Next problem (Alt + Right)"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        ) : (
+          <span className="p-1 text-muted-foreground/30"><ChevronRight className="w-4 h-4" /></span>
+        )}
+      </div>
+    </nav>
+  );
+
   return (
     <>
       {/* Problem Quick-Navigation Sidebar Drawer */}
@@ -1038,163 +1195,21 @@ export const ProblemSolverPage: React.FC = () => {
           />
         )}
 
-        {/* Pinned Top Navigation Tabs Bar across all views on mobile & desktop */}
-        <nav className="flex items-center justify-between px-2.5 sm:px-3 md:px-4 h-12 border-b border-border text-xs sm:text-sm bg-secondary/30 flex-shrink-0 z-30">
-          {/* Horizontally scrollable tabs area */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 h-full overflow-x-auto no-scrollbar py-1 min-w-0 pr-2">
-            {/* Browse Problems Sidebar Button (Handles Assessment, Research paper, and Problems catalog) */}
-            <button
-              onClick={() => setIsDrawerOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-border/80 bg-background/80 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors text-xs font-medium shadow-xs shrink-0"
-              title={
-                currentAssessment
-                  ? `Assessment: ${currentAssessment.name}`
-                  : paperId
-                  ? (currentPaper?.title || "Paper Syllabus")
-                  : "Browse problems catalog"
-              }
-            >
-              {currentAssessment ? (
-                <ShieldCheck className="w-3.5 h-3.5 text-[#93C572]" />
-              ) : (
-                <PanelLeft className="w-3.5 h-3.5 text-[#93C572]" />
-              )}
-              <span className="hidden sm:inline font-semibold truncate max-w-[170px]">
-                {currentAssessment ? currentAssessment.name : paperId ? (currentPaper?.title || 'Paper') : 'Problems'}
-              </span>
-              {currentIndex !== -1 && (
-                <span className="hidden sm:inline-block text-[10px] font-mono text-muted-foreground bg-secondary px-1.5 py-0.5 rounded border border-border/40">
-                  #{currentIndex + 1}/{totalItems || (paperId || currentAssessment ? '' : catalogProblems.length || 790)}
-                </span>
-              )}
-            </button>
+        {/* LEFT PANEL: Problem Info, Theory, Solution (and Code on mobile when selected) */}
+        <div
+          className={`${
+            mobileActivePanel === 'problem' ? 'flex' : 'hidden md:flex'
+          } w-full md:w-auto h-full flex-col border-r border-border bg-card flex-shrink-0 overflow-hidden`}
+          style={{ width: isDesktop ? `${leftWidthPct}%` : undefined }}
+        >
+          {renderNavBar(false)}
 
-            <div className="h-4 w-px bg-border/60 shrink-0" />
-
-            <button
-              onClick={() => {
-                setActiveTab('description');
-                setMobileActivePanel('problem');
-              }}
-              className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
-                activeTab === 'description' && mobileActivePanel === 'problem'
-                  ? 'border-[#93C572] text-foreground font-semibold'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>Description</span>
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab('theory');
-                setMobileActivePanel('problem');
-              }}
-              className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
-                activeTab === 'theory' && mobileActivePanel === 'problem'
-                  ? 'border-[#93C572] text-foreground font-semibold'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Theory</span>
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab('solution');
-                setMobileActivePanel('problem');
-              }}
-              className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
-                activeTab === 'solution' && mobileActivePanel === 'problem'
-                  ? 'border-[#93C572] text-foreground font-semibold'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <Lightbulb className="w-3.5 h-3.5" />
-              <span>Solution</span>
-            </button>
-            
-            {/* 4th Tab on Mobile: Code */}
-            <button
-              onClick={() => setMobileActivePanel('code')}
-              className={`md:hidden h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 shrink-0 whitespace-nowrap ${
-                mobileActivePanel === 'code'
-                  ? 'border-[#38BDF8] text-[#38BDF8] font-semibold'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <Code2 className="w-3.5 h-3.5" />
-              <span>Code</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('notes')}
-              className={`hidden md:flex h-full border-b-2 font-medium transition-colors items-center gap-1 sm:gap-1.5 px-2 sm:px-1 relative shrink-0 whitespace-nowrap ${
-                activeTab === 'notes'
-                  ? 'border-[#93C572] text-foreground font-semibold'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              }`}
-              title="Personal Notes"
-            >
-              <NotebookPen className="w-3.5 h-3.5" />
-              <span>Notes</span>
-              {notes.trim().length > 0 && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[#93C572] ml-0.5" title="Has notes" />
-              )}
-            </button>
-          </div>
-
-          {/* Prev / Next controls in side panel (pinned on the right) */}
-          <div className="flex items-center gap-1 shrink-0 pl-1 border-l border-border/40">
-            {prevSlug ? (
-              <Link
-                to={prevSlug.startsWith('/') ? prevSlug : `/problems/${prevSlug}`}
-                onClick={() => {
-                  setActiveTab('description');
-                  setMobileActivePanel('problem');
-                }}
-                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                title="Previous problem (Alt + Left)"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </Link>
-            ) : (
-              <span className="p-1 text-muted-foreground/30"><ChevronLeft className="w-4 h-4" /></span>
-            )}
-
-            {nextSlug ? (
-              <Link
-                to={nextSlug.startsWith('/') ? nextSlug : `/problems/${nextSlug}`}
-                onClick={() => {
-                  setActiveTab('description');
-                  setMobileActivePanel('problem');
-                }}
-                className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                title="Next problem (Alt + Right)"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </Link>
-            ) : (
-              <span className="p-1 text-muted-foreground/30"><ChevronRight className="w-4 h-4" /></span>
-            )}
-          </div>
-        </nav>
-
-        {/* PANELS SPLIT CONTAINER */}
-        <div className="flex-1 w-full min-h-0 flex flex-col md:flex-row overflow-hidden relative">
-          {/* LEFT PANEL: Problem Info, Theory, Solution */}
-          <div
-            className={`${
-              mobileActivePanel === 'problem' ? 'flex' : 'hidden md:flex'
-            } w-full md:w-auto h-full flex-col border-r border-border bg-card flex-shrink-0 overflow-hidden`}
-            style={{ width: typeof window !== 'undefined' && window.innerWidth >= 768 ? `${leftWidthPct}%` : undefined }}
-          >
-            {/* Tab Content */}
-            <div className={`flex-1 overflow-y-auto problem-scrollbar ${
-              activeTab === 'notes'
-                ? 'p-2.5 sm:p-3.5 md:p-4 pb-20 sm:pb-3 md:pb-3 flex flex-col'
-                : 'p-3 sm:p-4 md:p-5 pb-24 sm:pb-6 md:pb-4'
-            }`}>
+          {/* Tab Content */}
+          <div className={`flex-1 overflow-y-auto problem-scrollbar ${
+            activeTab === 'notes'
+              ? 'p-2.5 sm:p-3.5 md:p-4 pb-20 sm:pb-3 md:pb-3 flex flex-col'
+              : 'p-3 sm:p-4 md:p-5 pb-24 sm:pb-6 md:pb-4'
+          }`}>
             {activeTab === 'description' && (
               <div className="space-y-4 sm:space-y-6">
                 
@@ -1484,10 +1499,11 @@ export const ProblemSolverPage: React.FC = () => {
       {/* RIGHT PANEL: Code Editor & Test Cases */}
       <div
         className={`${
-          mobileActivePanel !== 'problem' ? 'flex' : 'hidden md:flex'
+          mobileActivePanel === 'code' ? 'flex' : 'hidden md:flex'
         } w-full md:w-auto flex-1 h-full flex-col bg-[#1e1e1e] overflow-hidden min-w-0`}
-        style={{ width: typeof window !== 'undefined' && window.innerWidth >= 768 ? `${100 - leftWidthPct}%` : undefined }}
+        style={{ width: isDesktop ? `${100 - leftWidthPct}%` : undefined }}
       >
+        {renderNavBar(true)}
         
         {/* Editor Toolbar */}
         <div className="flex items-center justify-between px-3 sm:px-4 py-1.5 sm:py-2 border-b border-border/80 bg-card flex-shrink-0">
@@ -1948,7 +1964,6 @@ export const ProblemSolverPage: React.FC = () => {
 
         </div>
 
-        </div>
       </div>
 
     </div>
