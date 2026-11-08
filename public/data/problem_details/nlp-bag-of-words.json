@@ -19,19 +19,21 @@
   "seoDescription": "Build an alphabetical vocabulary and document-term count matrix from a corpus of tokenized documents.",
   "solved": false,
   "isLocked": true,
-  "description": "Transform a corpus of text documents into a sorted vocabulary dictionary and frequency count vectors.\n\nBag of Words converts unconstrained textual sequences into fixed-dimensional vectors for downstream linear and gradient-boosted classification algorithms.\n\n### Mathematical Formulation\n$$\n\\mathbf{v}_i = [\\text{count}(w_1, d_i), \\text{count}(w_2, d_i), \\dots, \\text{count}(w_{|V|}, d_i)]\n$$\n\n### Step-by-Step Implementation\n1. Extract alphanumeric tokens converted to lowercase from each document\n2. Construct sorted unique vocabulary list across all documents\n3. Count word frequencies per document and format into integer row vectors\n\n### Returns\nDictionary with 'vocabulary' (sorted list of strings) and 'vectors' (list of integer frequency lists).",
-  "theory": "# Understanding Bag of Words\n\n## 1. What Is It?\n\nThe **Bag of Words** is a fundamental computational technique in Python. In machine learning workflows, Transform a corpus of text documents into a sorted vocabulary dictionary and frequency count vectors.\n\n### Key Terminology\n- **NLP**: Core domain concept contextualizing this task within Python workflows.\n- **Feature Engineering**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{v}_i = [\\text{count}(w_1, d_i), \\text{count}(w_2, d_i), \\dots, \\text{count}(w_{|V|}, d_i)]\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `nlp_bag_of_words` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ncorpus = [\"The cat sat on the mat\", \"The dog sat on the log\"]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated nlp_bag_of_words under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"vocabulary\": [\"cat\", \"dog\", \"log\", \"mat\", \"on\", \"sat\", \"the\"], \"vectors\": [[1, 0, 0, 1, 1, 1, 2], [0, 1, 1, 0, 1, 1, 2]]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `nlp_bag_of_words` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`vocabulary`**: Represents `vocabulary` (e.g. `['cat', 'dog', 'log', 'mat', 'on', 'sat', 'the']`), reflecting the updated state or component.\n  - **`vectors`**: Represents `vectors` (e.g. `[[1, 0, 0, 1, 1, 1, 2], [0, 1, 1, 0, 1, 1, 2]]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `nlp_bag_of_words`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `nlp_bag_of_words`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `nlp_bag_of_words`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Bag of Words** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `nlp_bag_of_words` accurately and efficiently performs the required transformation.\n",
+  "description": "Transform a corpus of text documents into a sorted vocabulary dictionary and frequency count vectors.\n\n$$\n\\mathbf{v}_i = [\\text{count}(w_1, d_i), \\text{count}(w_2, d_i), \\dots, \\text{count}(w_{|V|}, d_i)]\n$$\n\nGiven input parameters `corpus`, return dictionary with 'vocabulary' (sorted list of strings) and 'vectors' (list of integer frequency lists).",
+  "theory": "## What Is Bag of Words?\n\nIn natural language processing, tokenization, subword hashing, and distributional embeddings map discrete text symbols into continuous geometric spaces.\n\n$$\n\\mathbf{v}_i = [\\text{count}(w_1, d_i), \\text{count}(w_2, d_i), \\dots, \\text{count}(w_{|V|}, d_i)]\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Beam Search Decoding**, **Byte Pair Encoding**, **Greedy Sequence Tagging**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: corpus = [\"The cat sat on the mat\", \"The dog sat on the log\"]\n\nOutput: {\"vocabulary\": [\"cat\", \"dog\", \"log\", \"mat\", \"on\", \"sat\", \"the\"], \"vectors\": [[1, 0, 0, 1, 1, 1, 2], [0, 1, 1, 0, 1, 1, 2]]}\n\nExplanation: Evaluated nlp_bag_of_words under standard test conditions."
+    "Input: corpus = [\"The cat sat on the mat\", \"The dog sat on the log\"]\n\nOutput: {\"vocabulary\": [\"cat\", \"dog\", \"log\", \"mat\", \"on\", \"sat\", \"the\"], \"vectors\": [[1, 0, 0, 1, 1, 1, 2], [0, 1, 1, 0, 1, 1, 2]]}",
+    "Input: corpus = [\"The cat sat on the mat gamma\", \"The dog sat on the log gamma\"]\n\nOutput: {\"vocabulary\": [\"cat\", \"dog\", \"gamma\", \"log\", \"mat\", \"on\", \"sat\", \"the\"], \"vectors\": [[1, 0, 1, 0, 1, 1, 1, 2], [0, 1, 1, 1, 0, 1, 1, 2]]}"
   ],
-  "requirements": "* Function must be named `nlp_bag_of_words`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `nlp_bag_of_words` accepting `corpus`\n* Build an alphabetical vocabulary and document-term count matrix from a corpus of tokenized documents.\n* Return a `dict` containing the exact keys `'vocabulary'`, `'vectors'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `nlp_bag_of_words`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`corpus`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `nlp_bag_of_words` into clear stages: validate/reshape `corpus`, evaluate the Bag of Words equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('vocabulary', 'vectors') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import re\n\ndef nlp_bag_of_words(corpus: list) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Bag of Words** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_bag_of_words(corpus: list) -> dict:\n    tokens_per_doc = [re.findall(r'\\b[a-zA-Z0-9]+\\b', d.lower()) for d in corpus]\n    vocab = sorted(list({t for doc in tokens_per_doc for t in doc}))\n    w2i = {w: i for i, w in enumerate(vocab)}\n    vecs = []\n    for doc in tokens_per_doc:\n        v = [0] * len(vocab)\n        for t in doc: v[w2i[t]] += 1\n        vecs.append(v)\n    return {'vocabulary': vocab, 'vectors': vecs}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import re\n\ndef nlp_bag_of_words(corpus: list) -> dict:\n    \"\"\"\n    Build an alphabetical vocabulary and document-term count matrix from a corpus of tokenized documents.\n\n    Args:\n        corpus (list): Input parameter `corpus` (list) for Bag of Words.\n\n    Returns:\n        dict: Computed Bag of Words result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Bag of Words** (NLP, Feature Engineering): Build an alphabetical vocabulary and document-term count matrix from a corpus of tokenized documents.\n\nTo implement `nlp_bag_of_words` cleanly and accurately:\n1. Parse and normalize the inputs (`corpus`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_bag_of_words(corpus: list) -> dict:\n    tokens_per_doc = [re.findall(r'\\b[a-zA-Z0-9]+\\b', d.lower()) for d in corpus]\n    vocab = sorted(list({t for doc in tokens_per_doc for t in doc}))\n    w2i = {w: i for i, w in enumerate(vocab)}\n    vecs = []\n    for doc in tokens_per_doc:\n        v = [0] * len(vocab)\n        for t in doc: v[w2i[t]] += 1\n        vecs.append(v)\n    return {'vocabulary': vocab, 'vectors': vecs}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Bag of Words** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "nlp-bag-of-words-tc-1",
@@ -77,7 +79,7 @@
     },
     {
       "id": "nlp-bag-of-words-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "corpus": [
           "The cat sat on the mat gamma",
@@ -122,7 +124,7 @@
     },
     {
       "id": "nlp-bag-of-words-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "corpus": [
           "delta The cat sat on the mat",
@@ -163,11 +165,11 @@
           ]
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "nlp-bag-of-words-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "corpus": [
           "The cat sat on the mat The",
@@ -231,7 +233,7 @@
     },
     {
       "id": "nlp-bag-of-words-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "corpus": [
           "neural mat the on sat cat The vector",
@@ -279,7 +281,7 @@
     },
     {
       "id": "nlp-bag-of-words-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "corpus": [
           "log the on sat dog The",
@@ -321,7 +323,7 @@
     },
     {
       "id": "nlp-bag-of-words-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "corpus": [
           "The cat sat on the mat",
@@ -386,7 +388,14 @@
   ],
   "functionMetadata": {
     "name": "nlp_bag_of_words",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "corpus",
+        "type": "array",
+        "example": "[\"The cat sat on the mat\", \"The dog sat on the log\"]",
+        "description": "Input parameter `corpus` (list) for Bag of Words"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -395,11 +404,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Bag of Words",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/nlp-bag-of-words",
+  "localUrl": "http://localhost:3000/problems/nlp-bag-of-words"
 }

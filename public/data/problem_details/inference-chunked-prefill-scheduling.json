@@ -19,19 +19,21 @@
   "seoDescription": "Simulate chunked prefill scheduling with strict decode priority, bounded token budgets, and request arrival order.",
   "solved": false,
   "isLocked": true,
-  "description": "Simulate request token scheduling by interleaving single-token generation decodes with chunked prompt prefills under token batch limits.\n\nUnchunked prefills monopolize computational engines for hundreds of milliseconds. Chunking prompts into uniform token budgets bounds iteration latency while sustaining decode throughput.\n\n### Mathematical Formulation\n$$\nB_{\\text{step}} = N_{\\text{decode}} + \\min(B - N_{\\text{decode}}, L_{\\text{prompt\\_rem}})\n$$\n\n### Step-by-Step Implementation\n1. Allocate 1 decode token to active requests with 0 prompt tokens and positive decode tokens remaining\n2. Allocate remaining token budget to slice prompt tokens of arriving or ongoing prefill requests\n3. Record executed operations per scheduling cycle until all requests finish\n\n### Returns\nList of step execution lists containing request id, prefill_tokens, and decode_tokens.",
-  "theory": "# Understanding Simulate Chunked Prefill Scheduling\n\n## 1. What Is It?\n\nThe **Simulate Chunked Prefill Scheduling** is a fundamental computational technique in Pytorch. In machine learning workflows, Simulate request token scheduling by interleaving single-token generation decodes with chunked prompt prefills under token batch limits.\n\n### Key Terminology\n- **Inference**: Core domain concept contextualizing this task within Pytorch workflows.\n- **MLOps**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nB_{\\text{step}} = N_{\\text{decode}} + \\min(B - N_{\\text{decode}}, L_{\\text{prompt\\_rem}})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `inference_chunked_prefill_scheduling` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nrequests = [{\"id\": 1, \"prompt_tokens_remaining\": 5, \"decode_tokens_remaining\": 2}, {\"id\": 2, \"prompt_tokens_remaining\": 2, \"decode_tokens_remaining\": 1}], max_tokens_per_batch = 4\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated inference_chunked_prefill_scheduling under standard test conditions.\n\n**Resulting Output:**\n```python\n[[{\"id\": 1, \"prefill_tokens\": 4, \"decode_tokens\": 0}], [{\"id\": 1, \"prefill_tokens\": 1, \"decode_tokens\": 0}, {\"id\": 2, \"prefill_tokens\": 2, \"decode_tokens\": 0}], [{\"id\": 1, \"prefill_tokens\": 0, \"decode_tokens\": 1}, {\"id\": 2, \"prefill_tokens\": 0, \"decode_tokens\": 1}], [{\"id\": 1, \"prefill_tokens\": 0, \"decode_tokens\": 1}]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `inference_chunked_prefill_scheduling` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[{'id': 1, 'prefill_tokens': 4, 'decode_tokens': 0}]`.\n  - **Element 2**: Evaluated output component `[{'id': 1, 'prefill_tokens': 1, 'decode_tokens': 0}, {'id': 2, 'prefill_tokens': 2, 'decode_tokens': 0}]`.\n  - **Element 3**: Evaluated output component `[{'id': 1, 'prefill_tokens': 0, 'decode_tokens': 1}, {'id': 2, 'prefill_tokens': 0, 'decode_tokens': 1}]`.\n  - **Element 4**: Evaluated output component `[{'id': 1, 'prefill_tokens': 0, 'decode_tokens': 1}]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `inference_chunked_prefill_scheduling`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `inference_chunked_prefill_scheduling`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Simulate Chunked Prefill Scheduling** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `inference_chunked_prefill_scheduling` accurately and efficiently performs the required transformation.\n",
+  "description": "Simulate request token scheduling by interleaving single-token generation decodes with chunked prompt prefills under token batch limits.\n\n$$\nB_{\\text{step}} = N_{\\text{decode}} + \\min(B - N_{\\text{decode}}, L_{\\text{prompt\\_rem}})\n$$\n\nGiven input parameters `requests`, `max_tokens_per_batch`, return list of step execution lists containing request id, prefill_tokens, and decode_tokens.",
+  "theory": "## What Is Chunked Prefill Scheduling?\n\nIn LLM and deep learning inference systems, algorithmic optimizations reduce memory footprint, KV-cache bandwidth, and token generation latency.\n\n$$\nB_{\\text{step}} = N_{\\text{decode}} + \\min(B - N_{\\text{decode}}, L_{\\text{prompt\\_rem}})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Implement Autoregressive Decoding with a KV Cache**, **Implement Block-Wise FP8 Quantization**, **Simulate Continuous Batching**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: requests = [{\"id\": 1, \"prompt_tokens_remaining\": 5, \"decode_tokens_remaining\": 2}, {\"id\": 2, \"prompt_tokens_remaining\": 2, \"decode_tokens_remaining\": 1}], max_tokens_per_batch = 4\n\nOutput: [[{\"id\": 1, \"prefill_tokens\": 4, \"decode_tokens\": 0}], [{\"id\": 1, \"prefill_tokens\": 1, \"decode_tokens\": 0}, {\"id\": 2, \"prefill_tokens\": 2, \"decode_tokens\": 0}], [{\"id\": 1, \"prefill_tokens\": 0, \"decode_tokens\": 1}, {\"id\": 2, \"prefill_tokens\": 0, \"decode_tokens\": 1}], [{\"id\": 1, \"prefill_tokens\": 0, \"decode_tokens\": 1}]]\n\nExplanation: Evaluated inference_chunked_prefill_scheduling under standard test conditions."
+    "Input: requests = [{\"id\": 1, \"prompt_tokens_remaining\": 5, \"decode_tokens_remaining\": 2}, {\"id\": 2, \"prompt_tokens_remaining\": 2, \"decode_tokens_remaining\": 1}], max_tokens_per_batch = 4\n\nOutput: [[{\"id\": 1, \"prefill_tokens\": 4, \"decode_tokens\": 0}], [{\"id\": 1, \"prefill_tokens\": 1, \"decode_tokens\": 0}, {\"id\": 2, \"prefill_tokens\": 2, \"decode_tokens\": 0}], [{\"id\": 1, \"prefill_tokens\": 0, \"decode_tokens\": 1}, {\"id\": 2, \"prefill_tokens\": 0, \"decode_tokens\": 1}], [{\"id\": 1, \"prefill_tokens\": 0, \"decode_tokens\": 1}]]",
+    "Input: requests = [{\"id\": 2, \"prompt_tokens_remaining\": 10, \"decode_tokens_remaining\": 4}, {\"id\": 4, \"prompt_tokens_remaining\": 4, \"decode_tokens_remaining\": 2}], max_tokens_per_batch = 8\n\nOutput: [[{\"id\": 2, \"prefill_tokens\": 8, \"decode_tokens\": 0}], [{\"id\": 2, \"prefill_tokens\": 2, \"decode_tokens\": 0}, {\"id\": 4, \"prefill_tokens\": 4, \"decode_tokens\": 0}], [{\"id\": 2, \"prefill_tokens\": 0, \"decode_tokens\": 1}, {\"id\": 4, \"prefill_tokens\": 0, \"decode_tokens\": 1}], [{\"id\": 2, \"prefill_tokens\": 0, \"decode_tokens\": 1}, {\"id\": 4, \"prefill_tokens\": 0, \"decode_tokens\": 1}], [{\"id\": 2, \"prefill_tokens\": 0, \"decode_tokens\": 1}], [{\"id\": 2, \"prefill_tokens\": 0, \"decode_tokens\": 1}]]"
   ],
-  "requirements": "* Function must be named `inference_chunked_prefill_scheduling`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `inference_chunked_prefill_scheduling` accepting `requests`, `max_tokens_per_batch`\n* Simulate chunked prefill scheduling with strict decode priority, bounded token budgets, and request arrival order.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `inference_chunked_prefill_scheduling`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`requests`, `max_tokens_per_batch`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $B_{\\text{step}} = N_{\\text{decode}} + \\min(B - N_{\\text{decode}}, L_{\\text{prompt\\_rem}})$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def inference_chunked_prefill_scheduling(requests: list, max_tokens_per_batch: int = 4) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Simulate Chunked Prefill Scheduling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef inference_chunked_prefill_scheduling(requests: list, max_tokens_per_batch: int = 4) -> list:\n    reqs = [{'id': r['id'], 'p': r['prompt_tokens_remaining'], 'd': r['decode_tokens_remaining']} for r in requests]\n    history = []\n    while any(r['p'] > 0 or r['d'] > 0 for r in reqs):\n        budget = max_tokens_per_batch\n        ops = []\n        for r in reqs:\n            if r['p'] == 0 and r['d'] > 0 and budget > 0:\n                r['d'] -= 1; budget -= 1\n                ops.append({'id': r['id'], 'prefill_tokens': 0, 'decode_tokens': 1})\n        for r in reqs:\n            if budget <= 0: break\n            if r['p'] > 0:\n                chunk = min(budget, r['p'])\n                r['p'] -= chunk; budget -= chunk\n                ops.append({'id': r['id'], 'prefill_tokens': chunk, 'decode_tokens': 0})\n        history.append(ops)\n    return history\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef inference_chunked_prefill_scheduling(requests: list, max_tokens_per_batch: int = 4) -> list:\n    \"\"\"\n    Simulate chunked prefill scheduling with strict decode priority, bounded token budgets, and request arrival order.\n\n    Args:\n        requests (list): Input parameter `requests` (list) for Simulate Chunked Prefill Scheduling.\n        max_tokens_per_batch (int): Input parameter `max_tokens_per_batch` (int) for Simulate Chunked Prefill Scheduling.\n\n    Returns:\n        list: Computed Simulate Chunked Prefill Scheduling result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Simulate Chunked Prefill Scheduling** (Inference, MLOps): Simulate chunked prefill scheduling with strict decode priority, bounded token budgets, and request arrival order.\n\nTo implement `inference_chunked_prefill_scheduling` cleanly and accurately:\n1. Parse and normalize the inputs (`requests`, `max_tokens_per_batch`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef inference_chunked_prefill_scheduling(requests: list, max_tokens_per_batch: int = 4) -> list:\n    reqs = [{'id': r['id'], 'p': r['prompt_tokens_remaining'], 'd': r['decode_tokens_remaining']} for r in requests]\n    history = []\n    while any(r['p'] > 0 or r['d'] > 0 for r in reqs):\n        budget = max_tokens_per_batch\n        ops = []\n        for r in reqs:\n            if r['p'] == 0 and r['d'] > 0 and budget > 0:\n                r['d'] -= 1; budget -= 1\n                ops.append({'id': r['id'], 'prefill_tokens': 0, 'decode_tokens': 1})\n        for r in reqs:\n            if budget <= 0: break\n            if r['p'] > 0:\n                chunk = min(budget, r['p'])\n                r['p'] -= chunk; budget -= chunk\n                ops.append({'id': r['id'], 'prefill_tokens': chunk, 'decode_tokens': 0})\n        history.append(ops)\n    return history\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Simulate Chunked Prefill Scheduling** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "inference-chunked-prefill-scheduling-tc-1",
@@ -95,7 +97,7 @@
     },
     {
       "id": "inference-chunked-prefill-scheduling-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (max_tokens_per_batch=8)",
       "inputs": {
         "requests": [
           {
@@ -174,7 +176,7 @@
     },
     {
       "id": "inference-chunked-prefill-scheduling-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (max_tokens_per_batch=2)",
       "inputs": {
         "requests": [
           {
@@ -218,11 +220,11 @@
           }
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "inference-chunked-prefill-scheduling-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (max_tokens_per_batch=6)",
       "inputs": {
         "requests": [
           {
@@ -294,7 +296,7 @@
     },
     {
       "id": "inference-chunked-prefill-scheduling-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (max_tokens_per_batch=12)",
       "inputs": {
         "requests": [
           {
@@ -392,7 +394,7 @@
     },
     {
       "id": "inference-chunked-prefill-scheduling-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (max_tokens_per_batch=1)",
       "inputs": {
         "requests": [
           {
@@ -442,7 +444,7 @@
     },
     {
       "id": "inference-chunked-prefill-scheduling-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (max_tokens_per_batch=16)",
       "inputs": {
         "requests": [
           {
@@ -560,7 +562,20 @@
   ],
   "functionMetadata": {
     "name": "inference_chunked_prefill_scheduling",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "requests",
+        "type": "array",
+        "example": "[{\"id\": 1, \"prompt_tokens_remaining\": 5, \"decode_tokens_remaining\": 2}, {\"id\": 2, \"prompt_tokens_remaining\": 2, \"decode_tokens_remaining\": 1}]",
+        "description": "Input parameter `requests` (list) for Simulate Chunked Prefill Scheduling"
+      },
+      {
+        "name": "max_tokens_per_batch",
+        "type": "number",
+        "example": "4",
+        "description": "Input parameter `max_tokens_per_batch` (int) for Simulate Chunked Prefill Scheduling"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -569,11 +584,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Simulate Chunked Prefill Scheduling",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/inference-chunked-prefill-scheduling",
+  "localUrl": "http://localhost:3000/problems/inference-chunked-prefill-scheduling"
 }

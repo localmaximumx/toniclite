@@ -4,7 +4,7 @@
   "description": "Implement VGG max pooling on an NHWC tensor using non-overlapping 2 by 2 windows and stride two.\n\n$$\nY_{b,i,j,c} = \\max_{r,s\\in\\{0,1\\}} X_{b,2i+r,2j+s,c}\n$$\n\nHere, $b$ indexes the batch, $i$ and $j$ index output position, and $c$ indexes channels. Return $Y$ as a float64 NumPy array with shape $(B,H/2,W/2,C)$.",
   "seoDescription": "Implement VGG 2x2 max pooling with stride two while preserving the input batch and channel dimensions.",
   "examples": [
-    "Input: x = [[[[1],[3],[2],[4]],[[5],[6],[7],[8]],[[9],[10],[11],[12]],[[13],[14],[15],[16]]]]\n\nOutput: [[[[6],[8]],[[14],[16]]]]\n\nExplanation: Each output value is the maximum from its corresponding 2 by 2 spatial window.",
+    "Input: x = [[[[1],[3],[2],[4]],[[5],[6],[7],[8]],[[9],[10],[11],[12]],[[13],[14],[15],[16]]]]\n\nOutput: [[[[6],[8]],[[14],[16]]]]",
     "Input: x = [[[[1,8],[3,2]],[[5,4],[0,7]]]]\n\nOutput: [[[[5,8]]]]",
     "Input: x = [[[[-1],[-3]],[[-2],[-4]]],[[[-5],[-2]],[[-7],[-6]]]]\n\nOutput: [[[[-1]]],[[[-2]]]]"
   ],
@@ -20,9 +20,9 @@
   "createdAt": "2026-01-03T21:31:07.736Z",
   "updatedAt": "2026-04-16T19:21:40.365Z",
   "topicId": "vgg-maxpool",
-  "paperSnippet": "\"Max-pooling is performed over a 2Ã2 pixel window, with stride 2. All hidden layers are equipped with ReLU non-linearity.\"",
+  "paperSnippet": "\"Max-pooling is performed over a 2\u00c3\u00972 pixel window, with stride 2. All hidden layers are equipped with ReLU non-linearity.\"",
   "visualizationComponent": "VGGMaxPoolViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **VGG Max Pooling** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef vgg_maxpool(x: np.ndarray) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    N, H, W, C = x_arr.shape\n    out_h = H // 2\n    out_w = W // 2\n    out = np.zeros((N, out_h, out_w, C), dtype=float)\n    for n in range(N):\n        for h in range(out_h):\n            for w in range(out_w):\n                patch = x_arr[n, 2*h:2*h+2, 2*w:2*w+2, :]\n                out[n, h, w, :] = np.max(patch, axis=(0, 1))\n    return np.round(out, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **VGG Max Pooling** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef vgg_maxpool(x: np.ndarray) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    N, H, W, C = x_arr.shape\n    out_h = H // 2\n    out_w = W // 2\n    out = np.zeros((N, out_h, out_w, C), dtype=float)\n    for n in range(N):\n        for h in range(out_h):\n            for w in range(out_w):\n                patch = x_arr[n, 2*h:2*h+2, 2*w:2*w+2, :]\n                out[n, h, w, :] = np.max(patch, axis=(0, 1))\n    return np.round(out, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "vgg-maxpool-tc-1",
@@ -638,7 +638,7 @@
   "topic": {
     "id": "vgg-maxpool",
     "name": "VGG Max Pooling",
-    "description": "2Ã2 max pooling with stride 2",
+    "description": "2\u00c3\u00972 max pooling with stride 2",
     "color": "#8b5cf6"
   },
   "paper": {

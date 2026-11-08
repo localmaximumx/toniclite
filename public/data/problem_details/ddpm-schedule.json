@@ -4,7 +4,7 @@
   "description": "Implement the linear variance schedule used in the original DDPM experiments. For $T$ diffusion steps, create equally spaced values from $\\beta_1$ through $\\beta_T$, including both endpoints.\n\n$$\n\\beta_t = \\beta_1 + \\frac{t-1}{T-1}(\\beta_T-\\beta_1), \\qquad t=1,\\ldots,T.\n$$\n\nHere, $T$ is the number of diffusion steps and $\\beta_t$ is the variance added at step $t$. When $T=1$, return $[\\beta_1]$. Return the schedule as a list of Python floats rounded to six decimals.",
   "seoDescription": "Generate a DDPM noise schedule with beta values and cumulative alpha products used across diffusion timesteps.",
   "examples": [
-    "Input: T=5, beta_1=0.0001, beta_T=0.02\n\nOutput: [0.0001,0.005075,0.01005,0.015025,0.02]\n\nExplanation: Five equally spaced variance values include both supplied endpoints.",
+    "Input: T=5, beta_1=0.0001, beta_T=0.02\n\nOutput: [0.0001,0.005075,0.01005,0.015025,0.02]",
     "Input: T=4, beta_1=0.001, beta_T=0.01\n\nOutput: [0.001,0.004,0.007,0.01]",
     "Input: T=1, beta_1=0.005, beta_T=0.005\n\nOutput: [0.005]"
   ],

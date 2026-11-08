@@ -68,6 +68,8 @@ import { AuthModal } from '../components/AuthModal';
 
 
 import { ReplShapeInspector } from '../components/ReplShapeInspector';
+import { CrackedLockIcon } from '../components/CrackedLockIcon';
+import { ProblemVisualization } from '../components/ProblemVisualization';
 
 
 
@@ -1215,9 +1217,12 @@ export const ProblemSolverPage: React.FC = () => {
                 {/* Header: Title, Tags, Difficulty */}
                 <div className="flex items-start justify-between gap-2 sm:gap-3">
                   <div className="min-w-0 flex-1">
-                    <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
-                      {problem.title.replace(/^#\s*/, '').replace(/<[^>]+>/g, '')}
-                    </h1>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">
+                        {problem.title.replace(/^#\s*/, '').replace(/<[^>]+>/g, '')}
+                      </h1>
+                      {problem.isFree === false && <CrackedLockIcon />}
+                    </div>
                     <div className="mt-2 sm:mt-2.5 flex flex-wrap gap-1.5 items-center">
                       {(problem.tags || []).map(t => (
                         <span key={t} className="inline-flex items-center gap-1 rounded-full border border-border/80 bg-secondary/50 px-2 sm:px-2.5 py-0.5 text-xs text-muted-foreground">
@@ -1267,6 +1272,11 @@ export const ProblemSolverPage: React.FC = () => {
                 />
               </div>
 
+              {/* Interactive Visualization (for problems that have one) */}
+              {problem.visualizationComponent && (
+                <ProblemVisualization componentName={problem.visualizationComponent} />
+              )}
+
               {/* Examples */}
               {problem.examples && problem.examples.length > 0 && (
                 <div>
@@ -1275,15 +1285,14 @@ export const ProblemSolverPage: React.FC = () => {
                     {problem.examples.map((ex, i) => {
                       let formattedEx = '';
                       if (typeof ex === 'string') {
-                        formattedEx = ex;
+                        formattedEx = ex.replace(/\n+\s*Explanation:[\s\S]*$/i, '').trim();
                       } else if (ex && typeof ex === 'object') {
                         const parts: string[] = [];
                         if (ex.input !== undefined) parts.push(`Input: ${typeof ex.input === 'object' ? JSON.stringify(ex.input) : ex.input}`);
                         if (ex.output !== undefined) parts.push(`Output: ${typeof ex.output === 'object' ? JSON.stringify(ex.output) : ex.output}`);
-                        if (ex.explanation) parts.push(`Explanation: ${ex.explanation}`);
-                        formattedEx = parts.length > 0 ? parts.join('\n') : JSON.stringify(ex, null, 2);
+                        formattedEx = parts.length > 0 ? parts.join('\n\n') : JSON.stringify(ex, null, 2);
                       } else {
-                        formattedEx = String(ex);
+                        formattedEx = String(ex).replace(/\n+\s*Explanation:[\s\S]*$/i, '').trim();
                       }
                       return (
                         <div key={i} className="bg-muted/40 border border-border/80 rounded-lg p-3 font-mono text-xs">

@@ -20,19 +20,21 @@
   "seoDescription": "Implement scaled dot-product attention, the fundamental building block of all Transformer architectures.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute canonical scaled dot-product attention mapping query, key, and value matrices to contextualized representations.\n\nDividing by sqrt(d_k) prevents dot products from growing excessively large for large dimensions, which would push softmax gradients into regions of vanishingly small derivatives.\n\n### Mathematical Formulation\n$$\n\\text{Attention}(\\mathbf{Q}, \\mathbf{K}, \\mathbf{V}) = \\text{Softmax}\\left(\\frac{\\mathbf{Q} \\mathbf{K}^T}{\\sqrt{d_k}}\\right) \\mathbf{V}\n$$\n\n### Step-by-Step Implementation\n1. Compute pairwise similarity scores Q K^T divided by scaling factor sqrt(d_k)\n2. Apply numerically stable row-wise softmax normalization\n3. Multiply attention probability distribution by value matrix V and round to 4 decimal places\n\n### Returns\nNested 2D list of shape (N, d) representing attended context vectors.",
-  "theory": "# Understanding Scaled Dot-Product Attention\n\n## 1. What Is It?\n\nThe **Scaled Dot-Product Attention** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing canonical scaled dot-product attention mapping query, key, and value matrices to contextualized representations.\n\n### Key Terminology\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n- **Transformers**: Core domain concept contextualizing this task within Numpy workflows.\n- **Linear Algebra**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{Attention}(\\mathbf{Q}, \\mathbf{K}, \\mathbf{V}) = \\text{Softmax}\\left(\\frac{\\mathbf{Q} \\mathbf{K}^T}{\\sqrt{d_k}}\\right) \\mathbf{V}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_scaled_dot_product_attention` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nQ = [[1.0, 0.0], [0.0, 1.0]], K = [[1.0, 0.0], [0.0, 1.0]], V = [[2.0, 3.0], [4.0, 5.0]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_scaled_dot_product_attention under standard test conditions.\n\n**Resulting Output:**\n```python\n[[2.6605, 3.6605], [3.3395, 4.3395]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_scaled_dot_product_attention` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[2.6605, 3.6605]`.\n  - **Element 2**: Evaluated output component `[3.3395, 4.3395]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_scaled_dot_product_attention`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_scaled_dot_product_attention`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Scaled Dot-Product Attention** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_scaled_dot_product_attention` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute canonical scaled dot-product attention mapping query, key, and value matrices to contextualized representations.\n\n$$\n\\text{Attention}(\\mathbf{Q}, \\mathbf{K}, \\mathbf{V}) = \\text{Softmax}\\left(\\frac{\\mathbf{Q} \\mathbf{K}^T}{\\sqrt{d_k}}\\right) \\mathbf{V}\n$$\n\nGiven input parameters `Q`, `K`, `V`, return nested 2D list of shape (N, d) representing attended context vectors.",
+  "theory": "## What Is Scaled Dot-Product Attention?\n\nScaled Dot-Product and Multi-Head Attention (Vaswani et al., 2017) compute context-aware token representations by routing information across positions according to pairwise query-key compatibility scores.\n\n$$\n\\text{Attention}(\\mathbf{Q}, \\mathbf{K}, \\mathbf{V}) = \\text{Softmax}\\left(\\frac{\\mathbf{Q} \\mathbf{K}^T}{\\sqrt{d_k}}\\right) \\mathbf{V}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: Q = [[1.0, 0.0], [0.0, 1.0]], K = [[1.0, 0.0], [0.0, 1.0]], V = [[2.0, 3.0], [4.0, 5.0]]\n\nOutput: [[2.6605, 3.6605], [3.3395, 4.3395]]\n\nExplanation: Evaluated dl_scaled_dot_product_attention under standard test conditions."
+    "Input: Q = [[1.0, 0.0], [0.0, 1.0]], K = [[1.0, 0.0], [0.0, 1.0]], V = [[2.0, 3.0], [4.0, 5.0]]\n\nOutput: [[2.6605, 3.6605], [3.3395, 4.3395]]",
+    "Input: Q = [[2.0, 0.0], [0.0, 2.0]], K = [[2.0, 0.0], [0.0, 2.0]], V = [[4.0, 6.0], [8.0, 10.0]]\n\nOutput: [[4.2232, 6.2232], [7.7768, 9.7768]]"
   ],
-  "requirements": "* Function must be named `dl_scaled_dot_product_attention`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_scaled_dot_product_attention` accepting `Q`, `K`, `V`\n* Implement scaled dot-product attention, the fundamental building block of all Transformer architectures.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_scaled_dot_product_attention`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`Q`, `K`, `V`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `dl_scaled_dot_product_attention` into clear stages: validate/reshape `Q`, `K`, `V`, evaluate the Scaled Dot-Product Attention equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np, math\n\ndef dl_scaled_dot_product_attention(Q: list, K: list, V: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Scaled Dot-Product Attention** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_scaled_dot_product_attention(Q: list, K: list, V: list) -> list:\n    q, k, v = np.array(Q, dtype=float), np.array(K, dtype=float), np.array(V, dtype=float)\n    s = (q @ k.T) / math.sqrt(q.shape[-1])\n    e = np.exp(s - np.max(s, axis=-1, keepdims=True))\n    return np.round((e / np.sum(e, axis=-1, keepdims=True)) @ v, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np, math\n\ndef dl_scaled_dot_product_attention(Q: list, K: list, V: list) -> list:\n    \"\"\"\n    Implement scaled dot-product attention, the fundamental building block of all Transformer architectures.\n\n    Args:\n        Q (list): Query tensor of shape (N, d_k).\n        K (list): Key tensor of shape (M, d_k).\n        V (list): Value tensor of shape (M, d_v).\n\n    Returns:\n        list: Computed Scaled Dot-Product Attention result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Scaled Dot-Product Attention** (Neural Networks, Transformers, Linear Algebra): Implement scaled dot-product attention, the fundamental building block of all Transformer architectures.\n\nTo implement `dl_scaled_dot_product_attention` cleanly and accurately:\n1. Parse and normalize the inputs (`Q`, `K`, `V`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_scaled_dot_product_attention(Q: list, K: list, V: list) -> list:\n    q, k, v = np.array(Q, dtype=float), np.array(K, dtype=float), np.array(V, dtype=float)\n    s = (q @ k.T) / math.sqrt(q.shape[-1])\n    e = np.exp(s - np.max(s, axis=-1, keepdims=True))\n    return np.round((e / np.sum(e, axis=-1, keepdims=True)) @ v, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^2 \\cdot d)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Scaled Dot-Product Attention** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-scaled-dot-product-attention-tc-1",
@@ -83,7 +85,7 @@
     },
     {
       "id": "dl-scaled-dot-product-attention-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "Q": [
           [
@@ -130,7 +132,7 @@
     },
     {
       "id": "dl-scaled-dot-product-attention-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "Q": [
           [
@@ -173,11 +175,11 @@
           2.0441
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "dl-scaled-dot-product-attention-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "Q": [
           [
@@ -224,7 +226,7 @@
     },
     {
       "id": "dl-scaled-dot-product-attention-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "Q": [
           [
@@ -271,7 +273,7 @@
     },
     {
       "id": "dl-scaled-dot-product-attention-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "Q": [
           [
@@ -318,7 +320,7 @@
     },
     {
       "id": "dl-scaled-dot-product-attention-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "Q": [
           [
@@ -366,7 +368,26 @@
   ],
   "functionMetadata": {
     "name": "dl_scaled_dot_product_attention",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "Q",
+        "type": "array",
+        "example": "[[1.0, 0.0], [0.0, 1.0]]",
+        "description": "Query tensor of shape (N, d_k)"
+      },
+      {
+        "name": "K",
+        "type": "array",
+        "example": "[[1.0, 0.0], [0.0, 1.0]]",
+        "description": "Key tensor of shape (M, d_k)"
+      },
+      {
+        "name": "V",
+        "type": "array",
+        "example": "[[2.0, 3.0], [4.0, 5.0]]",
+        "description": "Value tensor of shape (M, d_v)"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -375,11 +396,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Scaled Dot-Product Attention",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-scaled-dot-product-attention",
+  "localUrl": "http://localhost:3000/problems/dl-scaled-dot-product-attention"
 }

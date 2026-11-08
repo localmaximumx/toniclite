@@ -4,7 +4,7 @@
   "description": "Implement AlexNet local response normalization across neighboring channels:\n\n$$\ny_{b,h,w,c}=\\frac{x_{b,h,w,c}}{\\left(k+\\frac{\\alpha}{n}\\sum_{j=\\max(0,c-r)}^{\\min(C-1,c+r)}x_{b,h,w,j}^{2}\\right)^{\\beta}},\\qquad r=\\left\\lfloor\\frac{n}{2}\\right\\rfloor.\n$$\n\nHere, $B,H,W,C$ are the batch, height, width, and channel dimensions. The positive odd integer n gives the full channel-window width away from boundaries. Return a float64 NumPy array with the same shape as x.",
   "seoDescription": "Implement AlexNet local response normalization across neighboring channels using the paper's scaling equation.",
   "examples": [
-    "Input: x = [[[[1,2,3,0.5,-1]]]], k = 2, n = 5, alpha = 0.0001, beta = 0.75\n\nOutput: [[[[0.594541,1.18908,1.783607,0.29727,-0.594558]]]]\n\nExplanation: Each channel uses the squared values inside its clipped five-channel neighborhood.",
+    "Input: x = [[[[1,2,3,0.5,-1]]]], k = 2, n = 5, alpha = 0.0001, beta = 0.75\n\nOutput: [[[[0.594541,1.18908,1.783607,0.29727,-0.594558]]]]",
     "Input: x = [[[[1,-2,3]]]], k = 1, n = 1, alpha = 0.1, beta = 0.5\n\nOutput: [[[[0.953463,-1.690309,2.176429]]]]",
     "Input: x = [[[[1,2,3]],[[3,2,1]]]], k = 2, n = 3, alpha = 0.01, beta = 0.75\n\nOutput: [[[[0.590914,1.168812,1.755363]],[[1.755363,1.168812,0.590914]]]]"
   ],

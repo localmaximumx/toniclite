@@ -4,7 +4,7 @@
   "description": "Update the LSTM cell state by combining retained memory with the gated candidate.\n\n$$\nC_t=f_t\\odot C_{t-1}+i_t\\odot\\widetilde{C}_t.\n$$\n\nHere, f_t is the forget gate, i_t is the input gate, C_prev is the previous cell state, c_tilde is the proposed content, and the multiplication is elementwise. Return C_t as a float64 NumPy array with the same shape.",
   "seoDescription": "Implement the LSTM cell-state update by combining retained memory with input-gated candidate information.",
   "examples": [
-    "Input: C_prev = [1,-0.5], f_t = [0.8,0.2], i_t = [0.5,0.9], c_tilde = [0.3,-0.7]\n\nOutput: [0.95,-0.73]\n\nExplanation: Each feature independently combines its retained memory and gated candidate contribution.",
+    "Input: C_prev = [1,-0.5], f_t = [0.8,0.2], i_t = [0.5,0.9], c_tilde = [0.3,-0.7]\n\nOutput: [0.95,-0.73]",
     "Input: C_prev = [2,-3], f_t = [0,0], i_t = [1,1], c_tilde = [0.4,-0.2]\n\nOutput: [0.4,-0.2]",
     "Input: C_prev = [[1,2],[-1,0.5]], f_t = [[0.5,0.25],[1,0]], i_t = [[0.5,0.75],[0,1]], c_tilde = [[0.2,0.4],[0.8,-0.6]]\n\nOutput: [[0.6,0.8],[-1,-0.6]]"
   ],
@@ -21,7 +21,7 @@
   "topicId": "lstm-cell-state",
   "paperSnippet": "\"The constant error carousel: the cell's linear self-connection (with weight 1.0) ensures that the error can flow back through arbitrary time steps without vanishing or exploding.\"",
   "visualizationComponent": "LSTMCellStateViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Cell State Update** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef update_cell_state(C_prev: np.ndarray, f_t: np.ndarray,\n                      i_t: np.ndarray, c_tilde: np.ndarray) -> np.ndarray:\n    cp = np.asarray(C_prev, dtype=float)\n    f = np.asarray(f_t, dtype=float)\n    i = np.asarray(i_t, dtype=float)\n    c = np.asarray(c_tilde, dtype=float)\n    return np.round(f * cp + i * c, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Cell State Update** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef update_cell_state(C_prev: np.ndarray, f_t: np.ndarray,\n                      i_t: np.ndarray, c_tilde: np.ndarray) -> np.ndarray:\n    cp = np.asarray(C_prev, dtype=float)\n    f = np.asarray(f_t, dtype=float)\n    i = np.asarray(i_t, dtype=float)\n    c = np.asarray(c_tilde, dtype=float)\n    return np.round(f * cp + i * c, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "lstm-cell-state-tc-1",

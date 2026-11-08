@@ -18,19 +18,21 @@
   "seoDescription": "Generate every segment and metric combination with a SQL CROSS JOIN for a complete reporting grid.",
   "solved": false,
   "isLocked": true,
-  "description": "Generate every pairwise Cartesian product combination of segments and metrics using a SQL CROSS JOIN.\n\nCROSS JOIN generates complete baseline reporting grids to guarantee zero-valued entries are preserved during subsequent outer joins.\n\n### Query Logic & Formulation\n$$\n\\text{Segments} \\times \\text{Metrics}\n$$\n\n### Relational Execution Steps\n1. Form Cartesian product across segments and metrics tables\n2. Pair every segment entity with every available reporting metric\n3. Sort output rows deterministically by segment_name and metric_name\n\n### Expected Query Output\nList of records containing segment_name and metric_name.",
-  "theory": "# Understanding Cross Join\n\n## 1. What Is It?\n\nThe **Cross Join** is a fundamental computational technique in Sql. In machine learning workflows, Generate every pairwise Cartesian product combination of segments and metrics using a SQL CROSS JOIN.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Sql workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{Segments} \\times \\text{Metrics}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `solution` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nsegments = [{\"segment_name\": \"Enterprise\"}, {\"segment_name\": \"SMB\"}], metrics = [{\"metric_name\": \"Churn\"}, {\"metric_name\": \"LTV\"}]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated sql_cross_join under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"segment_name\": \"Enterprise\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"Enterprise\", \"metric_name\": \"LTV\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"LTV\"}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `solution` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'segment_name': 'Enterprise', 'metric_name': 'Churn'}`.\n  - **Element 2**: Evaluated output component `{'segment_name': 'Enterprise', 'metric_name': 'LTV'}`.\n  - **Element 3**: Evaluated output component `{'segment_name': 'SMB', 'metric_name': 'Churn'}`.\n  - **Element 4**: Evaluated output component `{'segment_name': 'SMB', 'metric_name': 'LTV'}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `solution`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `solution`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Cross Join** provides an essential primitive within Sql systems. By combining vectorized array computation with rigorous numerical safeguards, `solution` accurately and efficiently performs the required transformation.\n",
+  "description": "Generate every pairwise Cartesian product combination of segments and metrics using a SQL CROSS JOIN.\n\n$$\n\\text{Segments} \\times \\text{Metrics}\n$$\n\nGiven input parameters `segments`, `metrics`, return list of records containing segment_name and metric_name.",
+  "theory": "## What Is Cross Join?\n\nIn relational database querying (SQL), declarative set operations\u2014selection ($\\sigma$), projection ($\\pi$), joins ($\\bowtie$), aggregation, and window functions\u2014transform structured tables.\n\n$$\n\\text{Segments} \\times \\text{Metrics}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Basic SELECT**, **CASE Statements**, **Conditional Aggregation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: segments = [{\"segment_name\": \"Enterprise\"}, {\"segment_name\": \"SMB\"}], metrics = [{\"metric_name\": \"Churn\"}, {\"metric_name\": \"LTV\"}]\n\nOutput: [{\"segment_name\": \"Enterprise\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"Enterprise\", \"metric_name\": \"LTV\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"LTV\"}]\n\nExplanation: Evaluated sql_cross_join under standard test conditions."
+    "Input: segments = [{\"segment_name\": \"Enterprise\"}, {\"segment_name\": \"SMB\"}], metrics = [{\"metric_name\": \"Churn\"}, {\"metric_name\": \"LTV\"}]\n\nOutput: [{\"segment_name\": \"Enterprise\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"Enterprise\", \"metric_name\": \"LTV\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"LTV\"}]",
+    "Input: segments = [{\"segment_name\": \"Enterprise\"}, {\"segment_name\": \"SMB\"}], metrics = [{\"metric_name\": \"Churn\"}, {\"metric_name\": \"LTV\"}]\n\nOutput: [{\"segment_name\": \"Enterprise\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"Enterprise\", \"metric_name\": \"LTV\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"Churn\"}, {\"segment_name\": \"SMB\", \"metric_name\": \"LTV\"}]"
   ],
-  "requirements": "* Function must be named `sql_cross_join`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `sql_cross_join` accepting `segments`, `metrics`\n* Generate every segment and metric combination with a SQL CROSS JOIN for a complete reporting grid.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `sql_cross_join`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`segments`, `metrics`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\text{Segments} \\times \\text{Metrics}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def sql_cross_join(segments: list, metrics: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL Cross Join\n    SELECT s.segment_name, m.metric_name\n    FROM segments s\n    CROSS JOIN metrics m\n    ORDER BY s.segment_name, m.metric_name;\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Cross Join** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_cross_join(segments: list, metrics: list) -> list:\n    res = [{'segment_name': s['segment_name'], 'metric_name': m['metric_name']} for s in segments for m in metrics]\n    res.sort(key=lambda x: (x['segment_name'], x['metric_name']))\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: SQLite3 / Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef sql_cross_join(segments: list, metrics: list) -> list:\n    \"\"\"\n    Generate every segment and metric combination with a SQL CROSS JOIN for a complete reporting grid.\n\n    Args:\n        segments (list): Input parameter `segments` (list) for Cross Join.\n        metrics (list): Input parameter `metrics` (list) for Cross Join.\n\n    Returns:\n        list: Computed Cross Join result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Cross Join** (Data Processing): Generate every segment and metric combination with a SQL CROSS JOIN for a complete reporting grid.\n\nTo implement `sql_cross_join` cleanly and accurately:\n1. Parse and normalize the inputs (`segments`, `metrics`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef sql_cross_join(segments: list, metrics: list) -> list:\n    res = [{'segment_name': s['segment_name'], 'metric_name': m['metric_name']} for s in segments for m in metrics]\n    res.sort(key=lambda x: (x['segment_name'], x['metric_name']))\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Cross Join** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "sql-cross-join-tc-1",
@@ -75,7 +77,7 @@
     },
     {
       "id": "sql-cross-join-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "segments": [
           {
@@ -116,7 +118,7 @@
     },
     {
       "id": "sql-cross-join-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "segments": [
           {
@@ -153,11 +155,11 @@
           "metric_name": "LTV"
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "sql-cross-join-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "segments": [
           {
@@ -198,7 +200,7 @@
     },
     {
       "id": "sql-cross-join-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "segments": [
           {
@@ -239,7 +241,7 @@
     },
     {
       "id": "sql-cross-join-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "segments": [
           {
@@ -280,7 +282,7 @@
     },
     {
       "id": "sql-cross-join-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "segments": [
           {
@@ -322,7 +324,20 @@
   ],
   "functionMetadata": {
     "name": "sql_cross_join",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "segments",
+        "type": "array",
+        "example": "[{\"segment_name\": \"Enterprise\"}, {\"segment_name\": \"SMB\"}]",
+        "description": "Input parameter `segments` (list) for Cross Join"
+      },
+      {
+        "name": "metrics",
+        "type": "array",
+        "example": "[{\"metric_name\": \"Churn\"}, {\"metric_name\": \"LTV\"}]",
+        "description": "Input parameter `metrics` (list) for Cross Join"
+      }
+    ]
   },
   "relatedProblems": [
     "sql-multiple-joins",
@@ -331,11 +346,7 @@
     "sql-row-number",
     "sql-inner-join"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "sql",
-    "placeholderType": "sql_dummy_select (SELECT * FROM main_table)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Cross Join",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/sql-cross-join",
+  "localUrl": "http://localhost:3000/problems/sql-cross-join"
 }

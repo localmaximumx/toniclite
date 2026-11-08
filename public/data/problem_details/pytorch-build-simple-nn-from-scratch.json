@@ -18,19 +18,21 @@
   "seoDescription": "Implement a class SimpleNet subclassing nn.Module with two linear layers and ReLU between them.",
   "solved": false,
   "isLocked": true,
-  "description": "Implement forward propagation through a two-layer dense neural network with intermediate ReLU non-linearity.\n\nCybenko's theorem proves a two-layer feedforward network with non-linear activations can approximate any continuous function on compact subsets.\n\n### Mathematical Formulation\n$$\n\\mathbf{y} = \\mathbf{W}_2 \\operatorname{ReLU}(\\mathbf{W}_1 \\mathbf{x} + \\mathbf{b}_1) + \\mathbf{b}_2\n$$\n\n### Step-by-Step Implementation\n1. Compute first linear layer affine transformation W1 x + b1\n2. Apply element-wise Rectified Linear Unit (ReLU) activation\n3. Project hidden activations through second linear layer to generate output logits\n\n### Returns\nNested list representing output logits.",
-  "theory": "# Understanding Simple Neural Network\n\n## 1. What Is It?\n\nThe **Simple Neural Network** is a fundamental computational technique in Pytorch. In machine learning workflows, it involves performing forward propagation through a two-layer dense neural network with intermediate ReLU non-linearity.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Neural Networks**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{y} = \\mathbf{W}_2 \\operatorname{ReLU}(\\mathbf{W}_1 \\mathbf{x} + \\mathbf{b}_1) + \\mathbf{b}_2\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pytorch_build_simple_nn_from_scratch` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [[1.0, 2.0], [-1.0, 0.5]], W1 = [[0.5, -0.5, 0.2], [0.1, 0.3, -0.1]], b1 = [0.0, 0.0, 0.0], W2 = [[1.0], [0.5], [-1.0]], b2 = [0.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pytorch_build_simple_nn_from_scratch under standard test conditions.\n\n**Resulting Output:**\n```python\n[[0.75], [0.325]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pytorch_build_simple_nn_from_scratch` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[0.75]`.\n  - **Element 2**: Evaluated output component `[0.325]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pytorch_build_simple_nn_from_scratch`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pytorch_build_simple_nn_from_scratch`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Simple Neural Network** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `pytorch_build_simple_nn_from_scratch` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement forward propagation through a two-layer dense neural network with intermediate ReLU non-linearity.\n\n$$\n\\mathbf{y} = \\mathbf{W}_2 \\operatorname{ReLU}(\\mathbf{W}_1 \\mathbf{x} + \\mathbf{b}_1) + \\mathbf{b}_2\n$$\n\nGiven input parameters `x`, `W1`, `b1`, `W2`, `b2`, return nested list representing output logits.",
+  "theory": "## What Is Simple Neural Network?\n\nIn PyTorch tensor computing, modular forward passes and optimizer routines manipulate multi-dimensional tensors with explicit shape and device discipline.\n\n$$\n\\mathbf{y} = \\mathbf{W}_2 \\operatorname{ReLU}(\\mathbf{W}_1 \\mathbf{x} + \\mathbf{b}_1) + \\mathbf{b}_2\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Attention Mechanism from Scratch**, **Balanced DataLoader**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x = [[1.0, 2.0], [-1.0, 0.5]], W1 = [[0.5, -0.5, 0.2], [0.1, 0.3, -0.1]], b1 = [0.0, 0.0, 0.0], W2 = [[1.0], [0.5], [-1.0]], b2 = [0.0]\n\nOutput: [[0.75], [0.325]]\n\nExplanation: Evaluated pytorch_build_simple_nn_from_scratch under standard test conditions."
+    "Input: x = [[1.0, 2.0], [-1.0, 0.5]], W1 = [[0.5, -0.5, 0.2], [0.1, 0.3, -0.1]], b1 = [0.0, 0.0, 0.0], W2 = [[1.0], [0.5], [-1.0]], b2 = [0.0]\n\nOutput: [[0.75], [0.325]]",
+    "Input: x = [[1.5, 3.0], [-1.5, 0.75]], W1 = [[0.75, -0.75, 0.3], [0.15, 0.45, -0.15]], b1 = [0.0, 0.0, 0.0], W2 = [[1.5], [0.75], [-1.5]], b2 = [0.0]\n\nOutput: [[2.5312], [1.0969]]"
   ],
-  "requirements": "* Function must be named `pytorch_build_simple_nn_from_scratch`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pytorch_build_simple_nn_from_scratch` accepting `x`, `W1`, `b1`, `W2`, `b2`\n* Implement a class SimpleNet subclassing nn.Module with two linear layers and ReLU between them.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pytorch_build_simple_nn_from_scratch`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `W1`, `b1`, `W2`, `b2`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `pytorch_build_simple_nn_from_scratch` into clear stages: validate/reshape `x`, `W1`, `b1`, `W2`, `b2`, evaluate the Simple Neural Network equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import torch\n\ndef pytorch_build_simple_nn_from_scratch(x: list, W1: list, b1: list, W2: list, b2: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Simple Neural Network** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch, numpy as np\n\ndef pytorch_build_simple_nn_from_scratch(x: list, W1: list, b1: list, W2: list, b2: list) -> list:\n    h = torch.relu(torch.matmul(torch.tensor(x, dtype=torch.float32), torch.tensor(W1, dtype=torch.float32)) + torch.tensor(b1, dtype=torch.float32))\n    out = torch.matmul(h, torch.tensor(W2, dtype=torch.float32)) + torch.tensor(b2, dtype=torch.float32)\n    return np.round(out.numpy(), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import torch\n\ndef pytorch_build_simple_nn_from_scratch(x: list, W1: list, b1: list, W2: list, b2: list) -> list:\n    \"\"\"\n    Implement a class SimpleNet subclassing nn.Module with two linear layers and ReLU between them.\n\n    Args:\n        x (list): Input feature vector, array, or scalar evaluation point.\n        W1 (list): First-layer weight matrix.\n        b1 (list): First-layer bias vector.\n        W2 (list): Second-layer weight matrix.\n        b2 (list): Second-layer bias vector.\n\n    Returns:\n        list: Computed Simple Neural Network result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Simple Neural Network** (Neural Networks): Implement a class SimpleNet subclassing nn.Module with two linear layers and ReLU between them.\n\nTo implement `pytorch_build_simple_nn_from_scratch` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `W1`, `b1`, `W2`, `b2`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch, numpy as np\n\ndef pytorch_build_simple_nn_from_scratch(x: list, W1: list, b1: list, W2: list, b2: list) -> list:\n    h = torch.relu(torch.matmul(torch.tensor(x, dtype=torch.float32), torch.tensor(W1, dtype=torch.float32)) + torch.tensor(b1, dtype=torch.float32))\n    out = torch.matmul(h, torch.tensor(W2, dtype=torch.float32)) + torch.tensor(b2, dtype=torch.float32)\n    return np.round(out.numpy(), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^2 \\cdot d)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Simple Neural Network** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pytorch-build-simple-nn-from-scratch-tc-1",
@@ -90,7 +92,7 @@
     },
     {
       "id": "pytorch-build-simple-nn-from-scratch-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (b1=[0.0, 0.0, 0.0])",
       "inputs": {
         "x": [
           [
@@ -146,7 +148,7 @@
     },
     {
       "id": "pytorch-build-simple-nn-from-scratch-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (b1=[0.0, 0.0, 0.0])",
       "inputs": {
         "x": [
           [
@@ -198,11 +200,11 @@
           0.0406
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pytorch-build-simple-nn-from-scratch-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (b1=[0.0, 0.0, 0.0])",
       "inputs": {
         "x": [
           [
@@ -258,7 +260,7 @@
     },
     {
       "id": "pytorch-build-simple-nn-from-scratch-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (b1=[-0.0, -0.0, -0.0])",
       "inputs": {
         "x": [
           [
@@ -314,7 +316,7 @@
     },
     {
       "id": "pytorch-build-simple-nn-from-scratch-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (b1=[0.0, 0.0, 0.0])",
       "inputs": {
         "x": [
           [
@@ -370,7 +372,7 @@
     },
     {
       "id": "pytorch-build-simple-nn-from-scratch-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (b1=[0.0, 0.0, 0.0])",
       "inputs": {
         "x": [
           [
@@ -427,7 +429,38 @@
   ],
   "functionMetadata": {
     "name": "pytorch_build_simple_nn_from_scratch",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[[1.0, 2.0], [-1.0, 0.5]]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "W1",
+        "type": "array",
+        "example": "[[0.5, -0.5, 0.2], [0.1, 0.3, -0.1]]",
+        "description": "First-layer weight matrix"
+      },
+      {
+        "name": "b1",
+        "type": "array",
+        "example": "[0.0, 0.0, 0.0]",
+        "description": "First-layer bias vector"
+      },
+      {
+        "name": "W2",
+        "type": "array",
+        "example": "[[1.0], [0.5], [-1.0]]",
+        "description": "Second-layer weight matrix"
+      },
+      {
+        "name": "b2",
+        "type": "array",
+        "example": "[0.0]",
+        "description": "Second-layer bias vector"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -436,11 +469,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Simple Neural Network",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pytorch-build-simple-nn-from-scratch",
+  "localUrl": "http://localhost:3000/problems/pytorch-build-simple-nn-from-scratch"
 }

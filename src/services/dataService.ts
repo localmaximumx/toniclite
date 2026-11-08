@@ -12,10 +12,9 @@ export async function getProblemCatalog(): Promise<{ total: number; topics: { na
     const res = await fetch('/data/problems_catalog.json');
     if (!res.ok) throw new Error('Failed to load problems catalog');
     const data = await res.json();
-    // Unlock all problems so user has 100% free access without subscription
+    // Unlock all problems so user has 100% free access while preserving original Pro (isFree: false) metadata
     data.problems = data.problems.map((p: ProblemSummary) => ({
       ...p,
-      isFree: true,
       isLocked: false
     }));
     cachedCatalog = data;

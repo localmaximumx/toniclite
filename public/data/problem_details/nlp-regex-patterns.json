@@ -19,19 +19,21 @@
   "seoDescription": "Implement Regex Patterns for NLP, and return the list of matched strings in order of appearance.",
   "solved": false,
   "isLocked": true,
-  "description": "Extract structured textual entities (emails, phone numbers, numeric literals) from unstructured text using regular expression pattern matching.\n\nRegular expressions provide high-precision heuristic rule matching for entity recognition and text normalization.\n\n### Mathematical Formulation\n$$\n\\operatorname{Matches} = \\operatorname{re.findall}(\\text{pattern}, \\text{text})\n$$\n\n### Step-by-Step Implementation\n1. Compile appropriate regular expression pattern for target entity category\n2. Scan text sequentially to identify all conforming substrings\n3. Return ordered list of extracted matches\n\n### Returns\nList of extracted string matches.",
-  "theory": "# Understanding Regex Patterns for NLP\n\n## 1. What Is It?\n\nThe **Regex Patterns for NLP** is a fundamental computational technique in Python. In machine learning workflows, Extract structured textual entities (emails, phone numbers, numeric literals) from unstructured text using regular expression pattern matching.\n\n### Key Terminology\n- **NLP**: Core domain concept contextualizing this task within Python workflows.\n- **Data Processing**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\operatorname{Matches} = \\operatorname{re.findall}(\\text{pattern}, \\text{text})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `nlp_regex_patterns` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ntext = \"Contact us at support@example.com or sales@test.org for inquiries.\", pattern_type = \"email\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated nlp_regex_patterns under standard test conditions.\n\n**Resulting Output:**\n```python\n[\"support@example.com\", \"sales@test.org\"]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `nlp_regex_patterns` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `support@example.com`.\n  - **Element 2**: Evaluated output component `sales@test.org`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `nlp_regex_patterns`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `nlp_regex_patterns`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Regex Patterns for NLP** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `nlp_regex_patterns` accurately and efficiently performs the required transformation.\n",
+  "description": "Extract structured textual entities (emails, phone numbers, numeric literals) from unstructured text using regular expression pattern matching.\n\n$$\n\\operatorname{Matches} = \\operatorname{re.findall}(\\text{pattern}, \\text{text})\n$$\n\nGiven input parameters `text`, `pattern_type`, return list of extracted string matches.",
+  "theory": "## What Is Regex Patterns for NLP?\n\nIn natural language processing, tokenization, subword hashing, and distributional embeddings map discrete text symbols into continuous geometric spaces.\n\n$$\n\\operatorname{Matches} = \\operatorname{re.findall}(\\text{pattern}, \\text{text})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Bag of Words**, **Beam Search Decoding**, **Byte Pair Encoding**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: text = \"Contact us at support@example.com or sales@test.org for inquiries.\", pattern_type = \"email\"\n\nOutput: [\"support@example.com\", \"sales@test.org\"]\n\nExplanation: Evaluated nlp_regex_patterns under standard test conditions."
+    "Input: text = \"Contact us at support@example.com or sales@test.org for inquiries.\", pattern_type = \"email\"\n\nOutput: [\"support@example.com\", \"sales@test.org\"]",
+    "Input: text = \"delta Contact us at support@example.com or sales@test.org for inquiries.\", pattern_type = \"emailing\"\n\nOutput: []"
   ],
-  "requirements": "* Function must be named `nlp_regex_patterns`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `nlp_regex_patterns` accepting `text`, `pattern_type`\n* Implement Regex Patterns for NLP, and return the list of matched strings in order of appearance.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `nlp_regex_patterns`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`text`, `pattern_type`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\operatorname{Matches} = \\operatorname{re.findall}(\\text{pattern}, \\text{text})$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import re\n\ndef nlp_regex_patterns(text: str, pattern_type: str = 'email') -> list:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Regex Patterns for NLP** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_regex_patterns(text: str, pattern_type: str = 'email') -> list:\n    p = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+' if pattern_type == 'email' else (r'\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b' if pattern_type == 'phone' else r'\\b\\d+\\b')\n    return re.findall(p, text)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import re\n\ndef nlp_regex_patterns(text: str, pattern_type: str = 'email') -> list:\n    \"\"\"\n    Implement Regex Patterns for NLP, and return the list of matched strings in order of appearance.\n\n    Args:\n        text (str): Raw input text string to process.\n        pattern_type (str): Input parameter `pattern_type` (str) for Regex Patterns for NLP.\n\n    Returns:\n        list: Computed Regex Patterns for NLP result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Regex Patterns for NLP** (NLP, Data Processing): Implement Regex Patterns for NLP, and return the list of matched strings in order of appearance.\n\nTo implement `nlp_regex_patterns` cleanly and accurately:\n1. Parse and normalize the inputs (`text`, `pattern_type`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport re\n\ndef nlp_regex_patterns(text: str, pattern_type: str = 'email') -> list:\n    p = r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+' if pattern_type == 'email' else (r'\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b' if pattern_type == 'phone' else r'\\b\\d+\\b')\n    return re.findall(p, text)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^2 \\cdot d)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Regex Patterns for NLP** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "nlp-regex-patterns-tc-1",
@@ -48,7 +50,7 @@
     },
     {
       "id": "nlp-regex-patterns-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (text=delta Contact us at support@example.com or sales@test.org for inquiries.)",
       "inputs": {
         "text": "delta Contact us at support@example.com or sales@test.org for inquiries.",
         "pattern_type": "emailing"
@@ -58,17 +60,17 @@
     },
     {
       "id": "nlp-regex-patterns-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (text=Contact us at support@example.com or sales@test.org for inquiries. Contact)",
       "inputs": {
         "text": "Contact us at support@example.com or sales@test.org for inquiries. Contact",
         "pattern_type": "emailer"
       },
       "expectedOutput": [],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "nlp-regex-patterns-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (text=Contact us at support@example.com or sales@test.org for model)",
       "inputs": {
         "text": "Contact us at support@example.com or sales@test.org for model",
         "pattern_type": "emailly"
@@ -78,7 +80,7 @@
     },
     {
       "id": "nlp-regex-patterns-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (text=neural inquiries. for sales@test.org or support@example.com at us Contact vector)",
       "inputs": {
         "text": "neural inquiries. for sales@test.org or support@example.com at us Contact vector",
         "pattern_type": "emailtion"
@@ -88,7 +90,7 @@
     },
     {
       "id": "nlp-regex-patterns-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (text=inquiries. for sales@test.org or support@example.com at us Contact)",
       "inputs": {
         "text": "inquiries. for sales@test.org or support@example.com at us Contact",
         "pattern_type": "emailment"
@@ -98,7 +100,7 @@
     },
     {
       "id": "nlp-regex-patterns-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (text=Contact us at support@example.com or sales@test.org for inquiries. matrix)",
       "inputs": {
         "text": "Contact us at support@example.com or sales@test.org for inquiries. matrix",
         "pattern_type": "emailness"
@@ -109,7 +111,20 @@
   ],
   "functionMetadata": {
     "name": "nlp_regex_patterns",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "text",
+        "type": "string",
+        "example": "\"Contact us at support@example.com or sales@test.org for inquiries.\"",
+        "description": "Raw input text string to process"
+      },
+      {
+        "name": "pattern_type",
+        "type": "string",
+        "example": "\"email\"",
+        "description": "Input parameter `pattern_type` (str) for Regex Patterns for NLP"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -118,11 +133,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Regex Patterns for NLP",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/nlp-regex-patterns",
+  "localUrl": "http://localhost:3000/problems/nlp-regex-patterns"
 }

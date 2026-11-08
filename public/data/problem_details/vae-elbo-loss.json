@@ -4,7 +4,7 @@
   "description": "Compute the negative evidence lower bound used to train a variational autoencoder. Use a summed squared reconstruction error per sample and the diagonal-Gaussian KL regularizer.\n\n$$\nL_{\\mathrm{reconstruction}} = \\frac{1}{B}\\sum_{i=1}^{B}\\sum_{d=1}^{D}(x_{id}-\\widehat{x}_{id})^2\n$$\n\n$$\nL_{\\mathrm{KL}} = -\\frac{1}{2B}\\sum_{i=1}^{B}\\sum_{j=1}^{L}\n\\left(1 + \\log \\sigma_{ij}^2 - \\mu_{ij}^2 - \\exp(\\log \\sigma_{ij}^2)\\right)\n$$\n\n$$\nL_{\\mathrm{total}} = L_{\\mathrm{reconstruction}} + L_{\\mathrm{KL}}\n$$\n\nHere, $B$ is batch size, $D$ is data width, and $L$ is latent width. Return a Python dictionary with exactly total_loss, reconstruction_loss, and kl_loss, each stored as a Python float.",
   "seoDescription": "Implement the VAE evidence lower bound from reconstruction loss and KL divergence with configurable weighting.",
   "examples": [
-    "Input: x = [[0,0]], reconstruction = [[0,0]], mu = [[0,0]], log_var = [[0,0]]\n\nOutput: {\"total_loss\":0,\"reconstruction_loss\":0,\"kl_loss\":0}\n\nExplanation: Exact reconstruction and a standard-normal posterior make both loss terms zero.",
+    "Input: x = [[0,0]], reconstruction = [[0,0]], mu = [[0,0]], log_var = [[0,0]]\n\nOutput: {\"total_loss\":0,\"reconstruction_loss\":0,\"kl_loss\":0}",
     "Input: x = [[1,1]], reconstruction = [[0,0]], mu = [[0,0]], log_var = [[0,0]]\n\nOutput: {\"total_loss\":2,\"reconstruction_loss\":2,\"kl_loss\":0}",
     "Input: x = [[1,0],[0.5,0.5]], reconstruction = [[0,0.5],[0.25,0.75]], mu = [[0.5,-0.5],[0.2,0.1]], log_var = [[-1,0.5],[0.2,-0.3]]\n\nOutput: {\"total_loss\":0.969705,\"reconstruction_loss\":0.6875,\"kl_loss\":0.282205}"
   ],

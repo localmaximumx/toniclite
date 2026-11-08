@@ -18,19 +18,21 @@
   "seoDescription": "Aggregate sales by category with SQL COUNT, SUM, and AVG while handling NULL discounts and deterministic ordering.",
   "solved": false,
   "isLocked": true,
-  "description": "Aggregate sales transactions by category, calculating COUNT, SUM(revenue), and AVG(discount) with NULL coalescing and revenue sorting.\n\nAggregating metrics across business dimensions provides executive summary metrics for revenue reporting.\n\n### Query Logic & Formulation\n$$\n\\operatorname{COUNT}(*), \\quad \\sum \\text{revenue}, \\quad \\operatorname{AVG}(\\operatorname{COALESCE}(\\text{discount}, 0)) \\quad \\text{GROUP BY category}\n$$\n\n### Relational Execution Steps\n1. Group sales transactions by category\n2. Calculate total transaction count and aggregate gross revenue\n3. Compute average discount treating NULLs as zero and sort by revenue descending\n\n### Expected Query Output\nList of records containing summary metrics per category.",
-  "theory": "# Understanding COUNT, SUM, AVG\n\n## 1. What Is It?\n\nThe **COUNT, SUM, AVG** is a fundamental computational technique in Sql. In machine learning workflows, Aggregate sales transactions by category, calculating COUNT, SUM(revenue), and AVG(discount) with NULL coalescing and revenue sorting.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Sql workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\operatorname{COUNT}(*), \\quad \\sum \\text{revenue}, \\quad \\operatorname{AVG}(\\operatorname{COALESCE}(\\text{discount}, 0)) \\quad \\text{GROUP BY category}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `solution` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nsales = [{\"category\": \"Electronics\", \"revenue\": 500.0, \"discount\": 50.0}, {\"category\": \"Electronics\", \"revenue\": 300.0, \"discount\": null}, {\"category\": \"Clothing\", \"revenue\": 150.0, \"discount\": 10.0}]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated sql_count_sum_avg under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"category\": \"Electronics\", \"total_sales\": 2, \"total_revenue\": 800.0, \"avg_discount\": 25.0}, {\"category\": \"Clothing\", \"total_sales\": 1, \"total_revenue\": 150.0, \"avg_discount\": 10.0}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `solution` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'category': 'Electronics', 'total_sales': 2, 'total_revenue': 800.0, 'avg_discount': 25.0}`.\n  - **Element 2**: Evaluated output component `{'category': 'Clothing', 'total_sales': 1, 'total_revenue': 150.0, 'avg_discount': 10.0}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `solution`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `solution`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**COUNT, SUM, AVG** provides an essential primitive within Sql systems. By combining vectorized array computation with rigorous numerical safeguards, `solution` accurately and efficiently performs the required transformation.\n",
+  "description": "Aggregate sales transactions by category, calculating COUNT, SUM(revenue), and AVG(discount) with NULL coalescing and revenue sorting.\n\n$$\n\\operatorname{COUNT}(*), \\quad \\sum \\text{revenue}, \\quad \\operatorname{AVG}(\\operatorname{COALESCE}(\\text{discount}, 0)) \\quad \\text{GROUP BY category}\n$$\n\nGiven input parameters `sales`, return list of records containing summary metrics per category.",
+  "theory": "## What Is COUNT, SUM, AVG?\n\nIn relational database querying (SQL), declarative set operations\u2014selection ($\\sigma$), projection ($\\pi$), joins ($\\bowtie$), aggregation, and window functions\u2014transform structured tables.\n\n$$\n\\operatorname{COUNT}(*), \\quad \\sum \\text{revenue}, \\quad \\operatorname{AVG}(\\operatorname{COALESCE}(\\text{discount}, 0)) \\quad \\text{GROUP BY category}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\operatorname{COUNT}(*)\n$$\n\n$$\n\\sum \\text{revenue}\n$$\n\n$$\n\\operatorname{AVG}(\\operatorname{COALESCE}(\\text{discount}, 0))\n$$\n\n$$\n\\text{GROUP BY category}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Basic SELECT**, **CASE Statements**, **Conditional Aggregation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: sales = [{\"category\": \"Electronics\", \"revenue\": 500.0, \"discount\": 50.0}, {\"category\": \"Electronics\", \"revenue\": 300.0, \"discount\": null}, {\"category\": \"Clothing\", \"revenue\": 150.0, \"discount\": 10.0}]\n\nOutput: [{\"category\": \"Electronics\", \"total_sales\": 2, \"total_revenue\": 800.0, \"avg_discount\": 25.0}, {\"category\": \"Clothing\", \"total_sales\": 1, \"total_revenue\": 150.0, \"avg_discount\": 10.0}]\n\nExplanation: Evaluated sql_count_sum_avg under standard test conditions."
+    "Input: sales = [{\"category\": \"Electronics\", \"revenue\": 500.0, \"discount\": 50.0}, {\"category\": \"Electronics\", \"revenue\": 300.0, \"discount\": null}, {\"category\": \"Clothing\", \"revenue\": 150.0, \"discount\": 10.0}]\n\nOutput: [{\"category\": \"Electronics\", \"total_sales\": 2, \"total_revenue\": 800.0, \"avg_discount\": 25.0}, {\"category\": \"Clothing\", \"total_sales\": 1, \"total_revenue\": 150.0, \"avg_discount\": 10.0}]",
+    "Input: sales = [{\"category\": \"Electronics\", \"revenue\": 750.0, \"discount\": 75.0}, {\"category\": \"Electronics\", \"revenue\": 450.0, \"discount\": null}, {\"category\": \"Clothing\", \"revenue\": 225.0, \"discount\": 15.0}]\n\nOutput: [{\"category\": \"Electronics\", \"total_sales\": 2, \"total_revenue\": 1200.0, \"avg_discount\": 37.5}, {\"category\": \"Clothing\", \"total_sales\": 1, \"total_revenue\": 225.0, \"avg_discount\": 15.0}]"
   ],
-  "requirements": "* Function must be named `sql_count_sum_avg`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `sql_count_sum_avg` accepting `sales`\n* Aggregate sales by category with SQL COUNT, SUM, and AVG while handling NULL discounts and deterministic ordering.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `sql_count_sum_avg`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`sales`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `sql_count_sum_avg` into clear stages: validate/reshape `sales`, evaluate the COUNT, SUM, AVG equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def sql_count_sum_avg(sales: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL COUNT, SUM, AVG\n    SELECT category,\n           COUNT(*) AS total_sales,\n           ROUND(SUM(revenue), 2) AS total_revenue,\n           ROUND(AVG(COALESCE(discount, 0.0)), 2) AS avg_discount\n    FROM sales\n    GROUP BY category\n    ORDER BY total_revenue DESC;\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **COUNT, SUM, AVG** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_count_sum_avg(sales: list) -> list:\n    g = {}\n    for s in sales:\n        c = s['category']\n        if c not in g: g[c] = {'cnt': 0, 'rev': 0.0, 'discs': []}\n        g[c]['cnt'] += 1; g[c]['rev'] += float(s['revenue']); g[c]['discs'].append(float(s.get('discount') or 0.0))\n    res = [{'category': c, 'total_sales': d['cnt'], 'total_revenue': round(d['rev'], 2), 'avg_discount': round(sum(d['discs'])/len(d['discs']), 2)} for c, d in g.items()]\n    res.sort(key=lambda x: -x['total_revenue'])\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: SQLite3 / Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef sql_count_sum_avg(sales: list) -> list:\n    \"\"\"\n    Aggregate sales by category with SQL COUNT, SUM, and AVG while handling NULL discounts and deterministic ordering.\n\n    Args:\n        sales (list): Input parameter `sales` (list) for COUNT, SUM, AVG.\n\n    Returns:\n        list: Computed COUNT, SUM, AVG result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**COUNT, SUM, AVG** (Data Processing): Aggregate sales by category with SQL COUNT, SUM, and AVG while handling NULL discounts and deterministic ordering.\n\nTo implement `sql_count_sum_avg` cleanly and accurately:\n1. Parse and normalize the inputs (`sales`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef sql_count_sum_avg(sales: list) -> list:\n    g = {}\n    for s in sales:\n        c = s['category']\n        if c not in g: g[c] = {'cnt': 0, 'rev': 0.0, 'discs': []}\n        g[c]['cnt'] += 1; g[c]['rev'] += float(s['revenue']); g[c]['discs'].append(float(s.get('discount') or 0.0))\n    res = [{'category': c, 'total_sales': d['cnt'], 'total_revenue': round(d['rev'], 2), 'avg_discount': round(sum(d['discs'])/len(d['discs']), 2)} for c, d in g.items()]\n    res.sort(key=lambda x: -x['total_revenue'])\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **COUNT, SUM, AVG** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "sql-count-sum-avg-tc-1",
@@ -72,7 +74,7 @@
     },
     {
       "id": "sql-count-sum-avg-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "sales": [
           {
@@ -110,7 +112,7 @@
     },
     {
       "id": "sql-count-sum-avg-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "sales": [
           {
@@ -144,11 +146,11 @@
           "avg_discount": 5.0
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "sql-count-sum-avg-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "sales": [
           {
@@ -186,7 +188,7 @@
     },
     {
       "id": "sql-count-sum-avg-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "sales": [
           {
@@ -224,7 +226,7 @@
     },
     {
       "id": "sql-count-sum-avg-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "sales": [
           {
@@ -262,7 +264,7 @@
     },
     {
       "id": "sql-count-sum-avg-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "sales": [
           {
@@ -301,7 +303,14 @@
   ],
   "functionMetadata": {
     "name": "sql_count_sum_avg",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "sales",
+        "type": "array",
+        "example": "[{\"category\": \"Electronics\", \"revenue\": 500.0, \"discount\": 50.0}, {\"category\": \"Electronics\", \"revenue\": 300.0, \"discount\": null}, {\"category\": \"Clothing\", \"revenue\": 150.0, \"discount\": 10.0}]",
+        "description": "Input parameter `sales` (list) for COUNT, SUM, AVG"
+      }
+    ]
   },
   "relatedProblems": [
     "sql-multiple-joins",
@@ -310,11 +319,7 @@
     "sql-row-number",
     "sql-inner-join"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "sql",
-    "placeholderType": "sql_dummy_select (SELECT * FROM main_table)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "COUNT, SUM, AVG",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/sql-count-sum-avg",
+  "localUrl": "http://localhost:3000/problems/sql-count-sum-avg"
 }

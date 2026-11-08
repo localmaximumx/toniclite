@@ -19,19 +19,21 @@
   "seoDescription": "Analyze the prefill and decode phases of transformer inference using the roofline performance model.",
   "solved": false,
   "isLocked": true,
-  "description": "Determine whether operational intensity places execution in memory-bandwidth-bound or compute-bound roofline regime.\n\nPrefill phase enjoys high operational intensity (compute-bound matrix multiplication), whereas autoregressive decoding processes tokens one-by-one (memory-bound).\n\n### Mathematical Formulation\n$$\nI = \\frac{\\text{FLOPs}}{\\text{Bytes}}, \\quad I_{\\text{ridge}} = \\frac{\\Pi_{\\text{peak}}}{\\beta_{\\text{mem}}}, \\quad P = \\min\\left(\\Pi_{\\text{peak}}, I \\cdot \\beta_{\\text{mem}}\\right)\n$$\n\n### Step-by-Step Implementation\n1. Compute arithmetic operational intensity FLOPs / Byte\n2. Determine hardware ridge point knee = peak_tflops / peak_bandwidth\n3. Classify bottleneck regime and evaluate maximum achievable TFLOPs\n\n### Returns\nDictionary with 'operational_intensity_flops_per_byte', 'ridge_point', 'is_compute_bound', and 'achievable_tflops'.",
-  "theory": "# Understanding Analyze Prefill and Decode with the Roofline Model\n\n## 1. What Is It?\n\nThe **Analyze Prefill and Decode with the Roofline Model** is a fundamental computational technique in Pytorch. In machine learning workflows, Determine whether operational intensity places execution in memory-bandwidth-bound or compute-bound roofline regime.\n\n### Key Terminology\n- **Inference**: Core domain concept contextualizing this task within Pytorch workflows.\n- **GPU Programming**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nI = \\frac{\\text{FLOPs}}{\\text{Bytes}}, \\quad I_{\\text{ridge}} = \\frac{\\Pi_{\\text{peak}}}{\\beta_{\\text{mem}}}, \\quad P = \\min\\left(\\Pi_{\\text{peak}}, I \\cdot \\beta_{\\text{mem}}\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `inference_prefill_decode_roofline` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nflops = 1000000000000.0, memory_bytes = 1000000000.0, peak_tflops = 312.0, peak_mem_bandwidth_gb_s = 2039.0\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated inference_prefill_decode_roofline under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"operational_intensity_flops_per_byte\": 1000.0, \"ridge_point\": 153.02, \"is_compute_bound\": 1, \"achievable_tflops\": 312.0}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `inference_prefill_decode_roofline` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`operational_intensity_flops_per_byte`**: Represents `operational_intensity_flops_per_byte` (e.g. `1000.0`), reflecting the updated state or component.\n  - **`ridge_point`**: Represents `ridge_point` (e.g. `153.02`), reflecting the updated state or component.\n  - **`is_compute_bound`**: Represents `is_compute_bound` (e.g. `1`), reflecting the updated state or component.\n  - **`achievable_tflops`**: Represents `achievable_tflops` (e.g. `312.0`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `inference_prefill_decode_roofline`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `inference_prefill_decode_roofline`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `inference_prefill_decode_roofline`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Analyze Prefill and Decode with the Roofline Model** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `inference_prefill_decode_roofline` accurately and efficiently performs the required transformation.\n",
+  "description": "Determine whether operational intensity places execution in memory-bandwidth-bound or compute-bound roofline regime.\n\n$$\nI = \\frac{\\text{FLOPs}}{\\text{Bytes}}, \\quad I_{\\text{ridge}} = \\frac{\\Pi_{\\text{peak}}}{\\beta_{\\text{mem}}}, \\quad P = \\min\\left(\\Pi_{\\text{peak}}, I \\cdot \\beta_{\\text{mem}}\\right)\n$$\n\nGiven input parameters `flops`, `memory_bytes`, `peak_tflops`, `peak_mem_bandwidth_gb_s`, return dictionary with 'operational_intensity_flops_per_byte', 'ridge_point', 'is_compute_bound', and 'achievable_tflops'.",
+  "theory": "## What Is Analyze Prefill and Decode with the Roofline Model?\n\nIn LLM and deep learning inference systems, algorithmic optimizations reduce memory footprint, KV-cache bandwidth, and token generation latency.\n\n$$\nI = \\frac{\\text{FLOPs}}{\\text{Bytes}}, \\quad I_{\\text{ridge}} = \\frac{\\Pi_{\\text{peak}}}{\\beta_{\\text{mem}}}, \\quad P = \\min\\left(\\Pi_{\\text{peak}}, I \\cdot \\beta_{\\text{mem}}\\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nI = \\frac{\\text{FLOPs}}{\\text{Bytes}}\n$$\n\n$$\nI_{\\text{ridge}} = \\frac{\\Pi_{\\text{peak}}}{\\beta_{\\text{mem}}}\n$$\n\n$$\nP = \\min\\left(\\Pi_{\\text{peak}}, I \\cdot \\beta_{\\text{mem}}\\right)\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Implement Autoregressive Decoding with a KV Cache**, **Implement Block-Wise FP8 Quantization**, **Simulate Chunked Prefill Scheduling**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: flops = 1000000000000.0, memory_bytes = 1000000000.0, peak_tflops = 312.0, peak_mem_bandwidth_gb_s = 2039.0\n\nOutput: {\"operational_intensity_flops_per_byte\": 1000.0, \"ridge_point\": 153.02, \"is_compute_bound\": 1, \"achievable_tflops\": 312.0}\n\nExplanation: Evaluated inference_prefill_decode_roofline under standard test conditions."
+    "Input: flops = 1000000000000.0, memory_bytes = 1000000000.0, peak_tflops = 312.0, peak_mem_bandwidth_gb_s = 2039.0\n\nOutput: {\"operational_intensity_flops_per_byte\": 1000.0, \"ridge_point\": 153.02, \"is_compute_bound\": 1, \"achievable_tflops\": 312.0}",
+    "Input: flops = 2000000000000.0, memory_bytes = 2000000000.0, peak_tflops = 624.0, peak_mem_bandwidth_gb_s = 4078.0\n\nOutput: {\"operational_intensity_flops_per_byte\": 1000.0, \"ridge_point\": 153.02, \"is_compute_bound\": true, \"achievable_tflops\": 624.0}"
   ],
-  "requirements": "* Function must be named `inference_prefill_decode_roofline`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `inference_prefill_decode_roofline` accepting `flops`, `memory_bytes`, `peak_tflops`, `peak_mem_bandwidth_gb_s`\n* Analyze the prefill and decode phases of transformer inference using the roofline performance model.\n* Return a `dict` containing the exact keys `'operational_intensity_flops_per_byte'`, `'ridge_point'`, `'is_compute_bound'`, `'achievable_tflops'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `inference_prefill_decode_roofline`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`flops`, `memory_bytes`, `peak_tflops`, `peak_mem_bandwidth_gb_s`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `inference_prefill_decode_roofline` into clear stages: validate/reshape `flops`, `memory_bytes`, `peak_tflops`, `peak_mem_bandwidth_gb_s`, evaluate the Analyze Prefill and Decode with the Roofline Model equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('operational_intensity_flops_per_byte', 'ridge_point', 'is_compute_bound', 'achievable_tflops') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def inference_prefill_decode_roofline(flops: float, memory_bytes: float, peak_tflops: float = 312.0, peak_mem_bandwidth_gb_s: float = 2039.0) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Analyze Prefill and Decode with the Roofline Model** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef inference_prefill_decode_roofline(flops: float, memory_bytes: float, peak_tflops: float = 312.0, peak_mem_bandwidth_gb_s: float = 2039.0) -> dict:\n    oi = flops / max(1e-12, memory_bytes)\n    ridge = (peak_tflops * 1e12) / (peak_mem_bandwidth_gb_s * 1e9)\n    comp_bound = oi >= ridge\n    achiev = min(peak_tflops, (oi * peak_mem_bandwidth_gb_s * 1e9) / 1e12)\n    return {'operational_intensity_flops_per_byte': round(float(oi), 2), 'ridge_point': round(float(ridge), 2), 'is_compute_bound': comp_bound, 'achievable_tflops': round(float(achiev), 2)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef inference_prefill_decode_roofline(flops: float, memory_bytes: float, peak_tflops: float = 312.0, peak_mem_bandwidth_gb_s: float = 2039.0) -> dict:\n    \"\"\"\n    Analyze the prefill and decode phases of transformer inference using the roofline performance model.\n\n    Args:\n        flops (float): Input parameter `flops` (float) for Analyze Prefill and Decode with the Roofline Model.\n        memory_bytes (float): Input parameter `memory_bytes` (float) for Analyze Prefill and Decode with the Roofline Model.\n        peak_tflops (float): Input parameter `peak_tflops` (float) for Analyze Prefill and Decode with the Roofline Model.\n        peak_mem_bandwidth_gb_s (float): Input parameter `peak_mem_bandwidth_gb_s` (float) for Analyze Prefill and Decode with the Roofline Model.\n\n    Returns:\n        dict: Computed Analyze Prefill and Decode with the Roofline Model result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Analyze Prefill and Decode with the Roofline Model** (Inference, GPU Programming): Analyze the prefill and decode phases of transformer inference using the roofline performance model.\n\nTo implement `inference_prefill_decode_roofline` cleanly and accurately:\n1. Parse and normalize the inputs (`flops`, `memory_bytes`, `peak_tflops`, `peak_mem_bandwidth_gb_s`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef inference_prefill_decode_roofline(flops: float, memory_bytes: float, peak_tflops: float = 312.0, peak_mem_bandwidth_gb_s: float = 2039.0) -> dict:\n    oi = flops / max(1e-12, memory_bytes)\n    ridge = (peak_tflops * 1e12) / (peak_mem_bandwidth_gb_s * 1e9)\n    comp_bound = oi >= ridge\n    achiev = min(peak_tflops, (oi * peak_mem_bandwidth_gb_s * 1e9) / 1e12)\n    return {'operational_intensity_flops_per_byte': round(float(oi), 2), 'ridge_point': round(float(ridge), 2), 'is_compute_bound': comp_bound, 'achievable_tflops': round(float(achiev), 2)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Analyze Prefill and Decode with the Roofline Model** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "inference-prefill-decode-roofline-tc-1",
@@ -52,7 +54,7 @@
     },
     {
       "id": "inference-prefill-decode-roofline-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (flops=2000000000000.0)",
       "inputs": {
         "flops": 2000000000000.0,
         "memory_bytes": 2000000000.0,
@@ -69,7 +71,7 @@
     },
     {
       "id": "inference-prefill-decode-roofline-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (flops=500000000000.0)",
       "inputs": {
         "flops": 500000000000.0,
         "memory_bytes": 500000000.0,
@@ -82,11 +84,11 @@
         "is_compute_bound": true,
         "achievable_tflops": 156.0
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "inference-prefill-decode-roofline-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (flops=1000000000001.0)",
       "inputs": {
         "flops": 1000000000001.0,
         "memory_bytes": 1000000001.0,
@@ -103,7 +105,7 @@
     },
     {
       "id": "inference-prefill-decode-roofline-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (flops=1500000000000.0)",
       "inputs": {
         "flops": 1500000000000.0,
         "memory_bytes": 1500000000.0,
@@ -120,7 +122,7 @@
     },
     {
       "id": "inference-prefill-decode-roofline-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (flops=3000000000000.0)",
       "inputs": {
         "flops": 3000000000000.0,
         "memory_bytes": 3000000000.0,
@@ -137,7 +139,7 @@
     },
     {
       "id": "inference-prefill-decode-roofline-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (flops=250000000000.0)",
       "inputs": {
         "flops": 250000000000.0,
         "memory_bytes": 250000000.0,
@@ -155,7 +157,32 @@
   ],
   "functionMetadata": {
     "name": "inference_prefill_decode_roofline",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "flops",
+        "type": "number",
+        "example": "1000000000000.0",
+        "description": "Input parameter `flops` (float) for Analyze Prefill and Decode with the Roofline Model"
+      },
+      {
+        "name": "memory_bytes",
+        "type": "number",
+        "example": "1000000000.0",
+        "description": "Input parameter `memory_bytes` (float) for Analyze Prefill and Decode with the Roofline Model"
+      },
+      {
+        "name": "peak_tflops",
+        "type": "number",
+        "example": "312.0",
+        "description": "Input parameter `peak_tflops` (float) for Analyze Prefill and Decode with the Roofline Model"
+      },
+      {
+        "name": "peak_mem_bandwidth_gb_s",
+        "type": "number",
+        "example": "2039.0",
+        "description": "Input parameter `peak_mem_bandwidth_gb_s` (float) for Analyze Prefill and Decode with the Roofline Model"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -164,11 +191,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Analyze Prefill and Decode with the Roofline Model",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/inference-prefill-decode-roofline",
+  "localUrl": "http://localhost:3000/problems/inference-prefill-decode-roofline"
 }

@@ -20,19 +20,21 @@
   "seoDescription": "Implement a NumPy variational autoencoder forward pass with mean, log variance, reparameterization, and reconstruction.",
   "solved": false,
   "isLocked": true,
-  "description": "Sample latent representations z using reparameterization trick and compute closed-form Gaussian KL divergence.\n\nBy isolating stochasticity into independent standard Gaussian noise eps, backpropagation gradients can flow directly through latent sample z to encoder parameters.\n\n### Mathematical Formulation\n$$\n\\mathbf{z} = \\boldsymbol{\\mu} + \\boldsymbol{\\sigma} \\odot \\boldsymbol{\\epsilon}, \\quad D_{\\text{KL}} = -\\frac{1}{2} \\sum_{j=1}^d \\left( 1 + \\ln(\\sigma_j^2) - \\mu_j^2 - \\sigma_j^2 \\right)\n$$\n\n### Step-by-Step Implementation\n1. Compute standard deviation std = exp(0.5 * logvar)\n2. Evaluate differentiable latent sample z = mu + std * eps\n3. Evaluate analytical KL divergence against standard normal prior N(0, I) and round to 4 decimal places\n\n### Returns\nDictionary with 'z' and 'kl_loss'.",
-  "theory": "# Understanding Variational Autoencoder Forward Pass\n\n## 1. What Is It?\n\nThe **Variational Autoencoder Forward Pass** is a fundamental computational technique in Numpy. In machine learning workflows, Sample latent representations z using reparameterization trick and compute closed-form Gaussian KL divergence.\n\n### Key Terminology\n- **`eps`**: The smoothing term $\\varepsilon > 0$, added to denominators for numerical stability.\n- **Generative Models**: Core domain concept contextualizing this task within Numpy workflows.\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n- **Probability and Statistics**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{z} = \\boldsymbol{\\mu} + \\boldsymbol{\\sigma} \\odot \\boldsymbol{\\epsilon}, \\quad D_{\\text{KL}} = -\\frac{1}{2} \\sum_{j=1}^d \\left( 1 + \\ln(\\sigma_j^2) - \\mu_j^2 - \\sigma_j^2 \\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_vae` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nmu = [0.5, -0.2], logvar = [0.0, -0.5], eps = [0.1, -0.4]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_vae under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"z\": [0.6, -0.5115], \"kl_loss\": 0.1983}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_vae` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`z`**: Represents `z` (e.g. `[0.6, -0.5115]`), reflecting the updated state or component.\n  - **`kl_loss`**: Represents `kl_loss` (e.g. `0.1983`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `dl_vae`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_vae`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_vae`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Variational Autoencoder Forward Pass** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_vae` accurately and efficiently performs the required transformation.\n",
+  "description": "Sample latent representations z using reparameterization trick and compute closed-form Gaussian KL divergence.\n\n$$\n\\mathbf{z} = \\boldsymbol{\\mu} + \\boldsymbol{\\sigma} \\odot \\boldsymbol{\\epsilon}, \\quad D_{\\text{KL}} = -\\frac{1}{2} \\sum_{j=1}^d \\left( 1 + \\ln(\\sigma_j^2) - \\mu_j^2 - \\sigma_j^2 \\right)\n$$\n\nGiven input parameters `mu`, `logvar`, `eps`, return dictionary with 'z' and 'kl_loss'.",
+  "theory": "## What Is Variational Autoencoder Forward Pass?\n\nIn deep learning architectures, composable differentiable modules transform representations across layers while preserving stable activation and gradient norms.\n\n$$\n\\mathbf{z} = \\boldsymbol{\\mu} + \\boldsymbol{\\sigma} \\odot \\boldsymbol{\\epsilon}, \\quad D_{\\text{KL}} = -\\frac{1}{2} \\sum_{j=1}^d \\left( 1 + \\ln(\\sigma_j^2) - \\mu_j^2 - \\sigma_j^2 \\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\mathbf{z} = \\boldsymbol{\\mu} + \\boldsymbol{\\sigma} \\odot \\boldsymbol{\\epsilon}\n$$\n\n$$\nD_{\\text{KL}} = -\\frac{1}{2} \\sum_{j=1}^d \\left( 1 + \\ln(\\sigma_j^2) - \\mu_j^2 - \\sigma_j^2 \\right)\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\tilde{p} = \\max(p, \\varepsilon), \\qquad \\varepsilon = 10^{-12}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: mu = [0.5, -0.2], logvar = [0.0, -0.5], eps = [0.1, -0.4]\n\nOutput: {\"z\": [0.6, -0.5115], \"kl_loss\": 0.1983}\n\nExplanation: Evaluated dl_vae under standard test conditions."
+    "Input: mu = [0.5, -0.2], logvar = [0.0, -0.5], eps = [0.1, -0.4]\n\nOutput: {\"z\": [0.6, -0.5115], \"kl_loss\": 0.1983}",
+    "Input: mu = [1.0, -0.4], logvar = [0.0, -1.0], eps = [0.2, -0.8]\n\nOutput: {\"z\": [1.2, -0.8852], \"kl_loss\": 0.7639}"
   ],
-  "requirements": "* Function must be named `dl_vae`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_vae` accepting `mu`, `logvar`, `eps`\n* Implement a NumPy variational autoencoder forward pass with mean, log variance, reparameterization, and reconstruction.\n* Return a `dict` containing the exact keys `'z'`, `'kl_loss'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_vae`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`mu`, `logvar`, `eps`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `dl_vae` into clear stages: validate/reshape `mu`, `logvar`, `eps`, evaluate the Variational Autoencoder Forward Pass equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('z', 'kl_loss') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef dl_vae(mu: list, logvar: list, eps: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Variational Autoencoder Forward Pass** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_vae(mu: list, logvar: list, eps: list) -> dict:\n    m, lv, ep = np.array(mu, dtype=float), np.array(logvar, dtype=float), np.array(eps, dtype=float)\n    z = m + np.exp(0.5 * lv) * ep\n    kl = -0.5 * np.sum(1.0 + lv - (m**2) - np.exp(lv))\n    return {'z': np.round(z, 4).tolist(), 'kl_loss': round(float(kl), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef dl_vae(mu: list, logvar: list, eps: list) -> dict:\n    \"\"\"\n    Implement a NumPy variational autoencoder forward pass with mean, log variance, reparameterization, and reconstruction.\n\n    Args:\n        mu (list): Input parameter `mu` (list) for Variational Autoencoder Forward Pass.\n        logvar (list): Log-space quantity for logvar.\n        eps (list): Small positive constant for numerical stability (preventing division by zero).\n\n    Returns:\n        dict: Computed Variational Autoencoder Forward Pass result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Variational Autoencoder Forward Pass** (Generative Models, Neural Networks, Probability and Statistics): Implement a NumPy variational autoencoder forward pass with mean, log variance, reparameterization, and reconstruction.\n\nTo implement `dl_vae` cleanly and accurately:\n1. Parse and normalize the inputs (`mu`, `logvar`, `eps`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_vae(mu: list, logvar: list, eps: list) -> dict:\n    m, lv, ep = np.array(mu, dtype=float), np.array(logvar, dtype=float), np.array(eps, dtype=float)\n    z = m + np.exp(0.5 * lv) * ep\n    kl = -0.5 * np.sum(1.0 + lv - (m**2) - np.exp(lv))\n    return {'z': np.round(z, 4).tolist(), 'kl_loss': round(float(kl), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Variational Autoencoder Forward Pass** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-vae-tc-1",
@@ -62,7 +64,7 @@
     },
     {
       "id": "dl-vae-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (mu=[1.0, -0.4])",
       "inputs": {
         "mu": [
           1.0,
@@ -88,7 +90,7 @@
     },
     {
       "id": "dl-vae-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (mu=[0.25, -0.1])",
       "inputs": {
         "mu": [
           0.25,
@@ -110,11 +112,11 @@
         ],
         "kl_loss": 0.0507
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "dl-vae-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (mu=[-0.5, 0.2])",
       "inputs": {
         "mu": [
           -0.5,
@@ -140,7 +142,7 @@
     },
     {
       "id": "dl-vae-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (mu=[1.5, -0.6])",
       "inputs": {
         "mu": [
           1.5,
@@ -166,7 +168,7 @@
     },
     {
       "id": "dl-vae-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (mu=[1.5, 0.8])",
       "inputs": {
         "mu": [
           1.5,
@@ -192,7 +194,7 @@
     },
     {
       "id": "dl-vae-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (mu=[-1.5, -2.2])",
       "inputs": {
         "mu": [
           -1.5,
@@ -219,7 +221,26 @@
   ],
   "functionMetadata": {
     "name": "dl_vae",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "mu",
+        "type": "array",
+        "example": "[0.5, -0.2]",
+        "description": "Input parameter `mu` (list) for Variational Autoencoder Forward Pass"
+      },
+      {
+        "name": "logvar",
+        "type": "array",
+        "example": "[0.0, -0.5]",
+        "description": "Log-space quantity for logvar"
+      },
+      {
+        "name": "eps",
+        "type": "array",
+        "example": "[0.1, -0.4]",
+        "description": "Small positive constant for numerical stability (preventing division by zero)"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -228,11 +249,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Variational Autoencoder Forward Pass",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-vae",
+  "localUrl": "http://localhost:3000/problems/dl-vae"
 }

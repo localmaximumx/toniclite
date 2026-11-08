@@ -18,19 +18,21 @@
   "seoDescription": "Implement the Adam optimizer to train a linear regression model using mean squared error (MSE) loss with full-batch gradient descent.",
   "solved": false,
   "isLocked": true,
-  "description": "Perform single parameter update of Adam algorithm tracking first and second moments with bias corrections.\n\nAdam maintains running averages of both gradients and squared gradients, combining advantages of AdaGrad (frequent feature handling) and RMSProp (non-stationary objectives).\n\n### Mathematical Formulation\n$$\nm_t = \\beta_1 m_{t-1} + (1-\\beta_1) g_t, \\quad v_t = \\beta_2 v_{t-1} + (1-\\beta_2) g_t^2, \\quad \\theta_t = \\theta_{t-1} - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t\n$$\n\n### Step-by-Step Implementation\n1. Update biased first moment m and second moment v\n2. Compute bias-corrected moments m_hat and v_hat dividing by (1 - beta^t)\n3. Update parameter and format updated state dictionary rounded to 6 decimal places\n\n### Returns\nDictionary with 'updated_weight', 'm', and 'v'.",
-  "theory": "# Understanding Adam Optimizer\n\n## 1. What Is It?\n\nThe **Adam Optimizer** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing single parameter update of Adam algorithm tracking first and second moments with bias corrections.\n\n### Key Terminology\n- **`w`**: The trainable weight vector or parameter tensor undergoing optimization.\n- **`grad`**: The computed gradient tensor pointing toward greatest loss increase.\n- **`m`**: The first moment running average vector tracking gradient momentum.\n- **`v`**: The uncentered second moment vector tracking squared gradient magnitudes.\n- **`lr`**: The learning rate $\\eta$, a positive step size scaling gradient updates.\n- **`beta1`**: Exponential decay rate $\\beta_1$ for first moment (momentum) estimation.\n- **`beta2`**: Exponential decay rate $\\beta_2$ for second moment (variance) estimation.\n- **`eps`**: The smoothing term $\\varepsilon > 0$, added to denominators for numerical stability.\n- **Optimization**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nm_t = \\beta_1 m_{t-1} + (1-\\beta_1) g_t, \\quad v_t = \\beta_2 v_{t-1} + (1-\\beta_2) g_t^2, \\quad \\theta_t = \\theta_{t-1} - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `optim_adam` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nw = 1.0, grad = 0.2, m = 0.0, v = 0.0, t = 1, lr = 0.01\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated optim_adam under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"updated_weight\": 0.99, \"m\": 0.02, \"v\": 4e-05}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `optim_adam` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`updated_weight`**: Represents `updated_weight` (e.g. `0.99`), reflecting the updated state or component.\n  - **`m`**: Represents `m` (e.g. `0.02`), reflecting the updated state or component.\n  - **`v`**: Represents `v` (e.g. `4e-05`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `optim_adam`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `optim_adam`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `optim_adam`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Adam Optimizer** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `optim_adam` accurately and efficiently performs the required transformation.\n",
+  "description": "Perform single parameter update of Adam algorithm tracking first and second moments with bias corrections.\n\n$$\nm_t = \\beta_1 m_{t-1} + (1-\\beta_1) g_t, \\quad v_t = \\beta_2 v_{t-1} + (1-\\beta_2) g_t^2, \\quad \\theta_t = \\theta_{t-1} - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t\n$$\n\nGiven input parameters `w`, `grad`, `m`, `v`, `t`, `lr`, `beta1`, `beta2`, `eps`, return dictionary with 'updated_weight', 'm', and 'v'.",
+  "theory": "## What Is Adam Optimizer?\n\nAdam (Adaptive Moment Estimation, Kingma & Ba, 2015) combines momentum (first-order exponential moving average of gradients $m_t$) with RMSProp (second-order exponential moving average of squared gradients $v_t$) and explicit bias correction.\n\n$$\nm_t = \\beta_1 m_{t-1} + (1-\\beta_1) g_t, \\quad v_t = \\beta_2 v_{t-1} + (1-\\beta_2) g_t^2, \\quad \\theta_t = \\theta_{t-1} - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nm_t = \\beta_1 m_{t-1} + (1-\\beta_1) g_t\n$$\n\n$$\nv_t = \\beta_2 v_{t-1} + (1-\\beta_2) g_t^2\n$$\n\n$$\n\\theta_t = \\theta_{t-1} - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **AdaGrad**, **AdamW (Decoupled Weight Decay)**, **Batch vs Stochastic vs Mini-Batch GD**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: w = 1.0, grad = 0.2, m = 0.0, v = 0.0, t = 1, lr = 0.01\n\nOutput: {\"updated_weight\": 0.99, \"m\": 0.02, \"v\": 4e-05}\n\nExplanation: Evaluated optim_adam under standard test conditions."
+    "Input: w = 1.0, grad = 0.2, m = 0.0, v = 0.0, t = 1, lr = 0.01\n\nOutput: {\"updated_weight\": 0.99, \"m\": 0.02, \"v\": 4e-05}",
+    "Input: w = 1.5, grad = 0.3, m = 0.0, v = 0.0, t = 2, lr = 0.015\n\nOutput: {\"updated_weight\": 1.488838, \"m\": 0.03, \"v\": 9e-05}"
   ],
-  "requirements": "* Function must be named `optim_adam`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `optim_adam` accepting `w`, `grad`, `m`, `v`, `t`, `lr`, `beta1`, `beta2`, `eps`\n* Implement the Adam optimizer to train a linear regression model using mean squared error (MSE) loss with full-batch gradient descent.\n* Return a `dict` containing the exact keys `'updated_weight'`, `'m'`, `'v'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `optim_adam`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`w`, `grad`, `m`, `v`, `t`, `lr`, `beta1`, `beta2`, `eps`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `optim_adam` into clear stages: validate/reshape `w`, `grad`, `m`, `v`, `t`, `lr`, `beta1`, `beta2`, `eps`, evaluate the Adam Optimizer equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('updated_weight', 'm', 'v') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math\n\ndef optim_adam(w: float, grad: float, m: float, v: float, t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Adam Optimizer** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef optim_adam(w: float, grad: float, m: float, v: float, t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict:\n    mn = beta1 * m + (1.0 - beta1) * grad\n    vn = beta2 * v + (1.0 - beta2) * (grad**2)\n    mh = mn / (1.0 - beta1**t)\n    vh = vn / (1.0 - beta2**t)\n    return {'updated_weight': round(float(w - (lr / (math.sqrt(vh) + eps)) * mh), 6), 'm': round(float(mn), 6), 'v': round(float(vn), 6)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import math\n\ndef optim_adam(w: float, grad: float, m: float, v: float, t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict:\n    \"\"\"\n    Implement the Adam optimizer to train a linear regression model using mean squared error (MSE) loss with full-batch gradient descent.\n\n    Args:\n        w (float): Input parameter `w` (float) for Adam Optimizer.\n        grad (float): Gradient tensor/vector for grad.\n        m (float): Input parameter `m` (float) for Adam Optimizer.\n        v (float): Input parameter `v` (float) for Adam Optimizer.\n        t (int): Input parameter `t` (int) for Adam Optimizer.\n        lr (float): Positive learning rate step size (eta).\n        beta1 (float): Input parameter `beta1` (float) for Adam Optimizer.\n        beta2 (float): Input parameter `beta2` (float) for Adam Optimizer.\n        eps (float): Small positive constant for numerical stability (preventing division by zero).\n\n    Returns:\n        dict: Computed Adam Optimizer result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Adam Optimizer** (Optimization): Implement the Adam optimizer to train a linear regression model using mean squared error (MSE) loss with full-batch gradient descent.\n\nTo implement `optim_adam` cleanly and accurately:\n1. Parse and normalize the inputs (`w`, `grad`, `m`, `v`, `t`, `lr`, `beta1`, `beta2`, `eps`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef optim_adam(w: float, grad: float, m: float, v: float, t: int, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict:\n    mn = beta1 * m + (1.0 - beta1) * grad\n    vn = beta2 * v + (1.0 - beta2) * (grad**2)\n    mh = mn / (1.0 - beta1**t)\n    vh = vn / (1.0 - beta2**t)\n    return {'updated_weight': round(float(w - (lr / (math.sqrt(vh) + eps)) * mh), 6), 'm': round(float(mn), 6), 'v': round(float(vn), 6)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Adam Optimizer** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "optim-adam-tc-1",
@@ -52,7 +54,7 @@
     },
     {
       "id": "optim-adam-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (w=1.5)",
       "inputs": {
         "w": 1.5,
         "grad": 0.3,
@@ -70,7 +72,7 @@
     },
     {
       "id": "optim-adam-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (w=2.0)",
       "inputs": {
         "w": 2.0,
         "grad": 0.4,
@@ -84,11 +86,11 @@
         "m": 0.04,
         "v": 0.00016
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "optim-adam-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (w=0.8)",
       "inputs": {
         "w": 0.8,
         "grad": 0.16,
@@ -106,7 +108,7 @@
     },
     {
       "id": "optim-adam-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (w=3.0)",
       "inputs": {
         "w": 3.0,
         "grad": 0.6,
@@ -124,7 +126,7 @@
     },
     {
       "id": "optim-adam-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (w=1.2)",
       "inputs": {
         "w": 1.2,
         "grad": 0.24,
@@ -142,7 +144,7 @@
     },
     {
       "id": "optim-adam-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (w=1.5)",
       "inputs": {
         "w": 1.5,
         "grad": 0.3,
@@ -161,7 +163,62 @@
   ],
   "functionMetadata": {
     "name": "optim_adam",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "w",
+        "type": "number",
+        "example": "1.0",
+        "description": "Input parameter `w` (float) for Adam Optimizer"
+      },
+      {
+        "name": "grad",
+        "type": "number",
+        "example": "0.2",
+        "description": "Gradient tensor/vector for grad"
+      },
+      {
+        "name": "m",
+        "type": "number",
+        "example": "0.0",
+        "description": "Input parameter `m` (float) for Adam Optimizer"
+      },
+      {
+        "name": "v",
+        "type": "number",
+        "example": "0.0",
+        "description": "Input parameter `v` (float) for Adam Optimizer"
+      },
+      {
+        "name": "t",
+        "type": "number",
+        "example": "1",
+        "description": "Input parameter `t` (int) for Adam Optimizer"
+      },
+      {
+        "name": "lr",
+        "type": "number",
+        "example": "0.01",
+        "description": "Positive learning rate step size (eta)"
+      },
+      {
+        "name": "beta1",
+        "type": "number",
+        "example": "0.9",
+        "description": "Input parameter `beta1` (float) for Adam Optimizer"
+      },
+      {
+        "name": "beta2",
+        "type": "number",
+        "example": "0.999",
+        "description": "Input parameter `beta2` (float) for Adam Optimizer"
+      },
+      {
+        "name": "eps",
+        "type": "number",
+        "example": "1e-08",
+        "description": "Small positive constant for numerical stability (preventing division by zero)"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -170,11 +227,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Adam Optimizer",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/optim-adam",
+  "localUrl": "http://localhost:3000/problems/optim-adam"
 }

@@ -19,19 +19,21 @@
   "seoDescription": "Beam search is a heuristic search algorithm used in sequence generation tasks such as machine translation, text generation, and speech recognition.",
   "solved": false,
   "isLocked": true,
-  "description": "Decode highest-scoring token sequences tracking top beam_width hypotheses under cumulative log-likelihoods.\n\nBeam search avoids greedy short-sightedness by maintaining B parallel hypotheses, approximating exact intractable Viterbi decoding over infinite vocabularies.\n\n### Mathematical Formulation\n$$\n\\mathcal{B}_t = \\arg\\text{top-}B \\left\\{ (y_{1:t-1} \\circ v, \\text{score} + \\ln P(v)) \\mid y_{1:t-1} \\in \\mathcal{B}_{t-1}, v \\in \\mathcal{V} \\right\\}\n$$\n\n### Step-by-Step Implementation\n1. Expand each active beam candidate across all candidate tokens in vocabulary\n2. Accumulate cumulative log-likelihood score for expanded candidates\n3. Prune search space retaining top beam_width candidates at each timestep\n\n### Returns\nList of dictionaries containing 'tokens' and 'score' for top beams.",
-  "theory": "# Understanding Beam Search Decoding\n\n## 1. What Is It?\n\nThe **Beam Search Decoding** is a fundamental computational technique in Python. In machine learning workflows, Decode highest-scoring token sequences tracking top beam_width hypotheses under cumulative log-likelihoods.\n\n### Key Terminology\n- **Inference**: Core domain concept contextualizing this task within Python workflows.\n- **Language Models**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathcal{B}_t = \\arg\\text{top-}B \\left\\{ (y_{1:t-1} \\circ v, \\text{score} + \\ln P(v)) \\mid y_{1:t-1} \\in \\mathcal{B}_{t-1}, v \\in \\mathcal{V} \\right\\}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pytorch_beam_search` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ntransition_log_probs = [[-0.5, -1.0, -2.0], [-0.1, -1.5, -0.8]], beam_width = 2\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pytorch_beam_search under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"tokens\": [0, 0], \"score\": -0.6}, {\"tokens\": [1, 0], \"score\": -1.1}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pytorch_beam_search` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'tokens': [0, 0], 'score': -0.6}`.\n  - **Element 2**: Evaluated output component `{'tokens': [1, 0], 'score': -1.1}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pytorch_beam_search`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pytorch_beam_search`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Beam Search Decoding** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `pytorch_beam_search` accurately and efficiently performs the required transformation.\n",
+  "description": "Decode highest-scoring token sequences tracking top `beam_width` hypotheses under cumulative log-likelihoods.\n\n$$\n\\mathcal{B}_t = \\arg\\text{top-}B \\left\\{ (y_{1:t-1} \\circ v, \\text{score} + \\ln P(v)) \\mid y_{1:t-1} \\in \\mathcal{B}_{t-1}, v \\in \\mathcal{V} \\right\\}\n$$\n\nGiven input parameters `transition_log_probs`, `beam_width`, return list of dictionaries containing 'tokens' and 'score' for top beams.",
+  "theory": "## What Is Beam Search Decoding?\n\nIn PyTorch tensor computing, modular forward passes and optimizer routines manipulate multi-dimensional tensors with explicit shape and device discipline.\n\n$$\n\\mathcal{B}_t = \\arg\\text{top-}B \\left\\{ (y_{1:t-1} \\circ v, \\text{score} + \\ln P(v)) \\mid y_{1:t-1} \\in \\mathcal{B}_{t-1}, v \\in \\mathcal{V} \\right\\}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\tilde{p} = \\max(p, \\varepsilon), \\qquad \\varepsilon = 10^{-12}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Attention Mechanism from Scratch**, **Balanced DataLoader**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: transition_log_probs = [[-0.5, -1.0, -2.0], [-0.1, -1.5, -0.8]], beam_width = 2\n\nOutput: [{\"tokens\": [0, 0], \"score\": -0.6}, {\"tokens\": [1, 0], \"score\": -1.1}]\n\nExplanation: Evaluated pytorch_beam_search under standard test conditions."
+    "Input: transition_log_probs = [[-0.5, -1.0, -2.0], [-0.1, -1.5, -0.8]], beam_width = 2\n\nOutput: [{\"tokens\": [0, 0], \"score\": -0.6}, {\"tokens\": [1, 0], \"score\": -1.1}]",
+    "Input: transition_log_probs = [[-0.75, -1.5, -3.0], [-0.15, -2.25, -1.2]], beam_width = 3\n\nOutput: [{\"tokens\": [0, 0], \"score\": -0.9}, {\"tokens\": [1, 0], \"score\": -1.65}, {\"tokens\": [0, 2], \"score\": -1.95}]"
   ],
-  "requirements": "* Function must be named `pytorch_beam_search`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pytorch_beam_search` accepting `transition_log_probs`, `beam_width`\n* Beam search is a heuristic search algorithm used in sequence generation tasks such as machine translation, text generation, and speech recognition.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pytorch_beam_search`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`transition_log_probs`, `beam_width`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `pytorch_beam_search` into clear stages: validate/reshape `transition_log_probs`, `beam_width`, evaluate the Beam Search Decoding equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def pytorch_beam_search(transition_log_probs: list, beam_width: int = 2) -> list:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Beam Search Decoding** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef pytorch_beam_search(transition_log_probs: list, beam_width: int = 2) -> list:\n    beams = [([], 0.0)]\n    for probs in transition_log_probs:\n        cand = []\n        for s, sc in beams:\n            for tid, lp in enumerate(probs): cand.append((s + [tid], sc + lp))\n        cand.sort(key=lambda x: x[1], reverse=True)\n        beams = cand[:beam_width]\n    return [{'tokens': b[0], 'score': round(float(b[1]), 4)} for b in beams]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef pytorch_beam_search(transition_log_probs: list, beam_width: int = 2) -> list:\n    \"\"\"\n    Beam search is a heuristic search algorithm used in sequence generation tasks such as machine translation, text generation, and speech recognition.\n\n    Args:\n        transition_log_probs (list): Probability value(s) for transition log probs.\n        beam_width (int): Input parameter `beam_width` (int) for Beam Search Decoding.\n\n    Returns:\n        list: Computed Beam Search Decoding result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Beam Search Decoding** (Inference, Language Models): Beam search is a heuristic search algorithm used in sequence generation tasks such as machine translation, text generation, and speech recognition.\n\nTo implement `pytorch_beam_search` cleanly and accurately:\n1. Parse and normalize the inputs (`transition_log_probs`, `beam_width`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef pytorch_beam_search(transition_log_probs: list, beam_width: int = 2) -> list:\n    beams = [([], 0.0)]\n    for probs in transition_log_probs:\n        cand = []\n        for s, sc in beams:\n            for tid, lp in enumerate(probs): cand.append((s + [tid], sc + lp))\n        cand.sort(key=lambda x: x[1], reverse=True)\n        beams = cand[:beam_width]\n    return [{'tokens': b[0], 'score': round(float(b[1]), 4)} for b in beams]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Beam Search Decoding** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pytorch-beam-search-tc-1",
@@ -71,7 +73,7 @@
     },
     {
       "id": "pytorch-beam-search-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (beam_width=3)",
       "inputs": {
         "transition_log_probs": [
           [
@@ -114,7 +116,7 @@
     },
     {
       "id": "pytorch-beam-search-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (beam_width=1)",
       "inputs": {
         "transition_log_probs": [
           [
@@ -139,11 +141,11 @@
           "score": -0.3
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pytorch-beam-search-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (beam_width=4)",
       "inputs": {
         "transition_log_probs": [
           [
@@ -193,7 +195,7 @@
     },
     {
       "id": "pytorch-beam-search-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (beam_width=2)",
       "inputs": {
         "transition_log_probs": [
           [
@@ -229,7 +231,7 @@
     },
     {
       "id": "pytorch-beam-search-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (beam_width=2)",
       "inputs": {
         "transition_log_probs": [
           [
@@ -265,7 +267,7 @@
     },
     {
       "id": "pytorch-beam-search-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (beam_width=6)",
       "inputs": {
         "transition_log_probs": [
           [
@@ -330,7 +332,20 @@
   ],
   "functionMetadata": {
     "name": "pytorch_beam_search",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "transition_log_probs",
+        "type": "array",
+        "example": "[[-0.5, -1.0, -2.0], [-0.1, -1.5, -0.8]]",
+        "description": "Probability value(s) for transition log probs"
+      },
+      {
+        "name": "beam_width",
+        "type": "number",
+        "example": "2",
+        "description": "Input parameter `beam_width` (int) for Beam Search Decoding"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -339,11 +354,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Beam Search Decoding",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pytorch-beam-search",
+  "localUrl": "http://localhost:3000/problems/pytorch-beam-search"
 }

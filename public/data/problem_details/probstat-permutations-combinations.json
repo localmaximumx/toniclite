@@ -18,19 +18,21 @@
   "seoDescription": "Compute factorial, permutation, and combination counts for supplied nonnegative integers.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute exact factorial, permutation P(n, k), and combination C(n, k) integer counts for nonnegative arguments.\n\nPermutations count ordered arrangements whereas combinations count unordered subset selections from n distinct items.\n\n### Mathematical Formulation\n$$\nP(n, k) = \\frac{n!}{(n-k)!}, \\quad C(n, k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}\n$$\n\n### Step-by-Step Implementation\n1. Compute factorial n!\n2. Calculate ordered permutation count P(n, k)\n3. Calculate unordered combination binomial coefficient C(n, k)\n\n### Returns\nDictionary containing exact integer counts for 'factorial_n', 'permutations_n_k', and 'combinations_n_k'.",
-  "theory": "# Understanding Permutations and Combinations\n\n## 1. What Is It?\n\nThe **Permutations and Combinations** is a fundamental computational technique in Python. In machine learning workflows, it involves performing exact factorial, permutation P(n, k), and combination C(n, k) integer counts for nonnegative arguments.\n\n### Key Terminology\n- **`k`**: The target rank, number of clusters, or number of top components.\n- **Probability and Statistics**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nP(n, k) = \\frac{n!}{(n-k)!}, \\quad C(n, k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `probstat_permutations_combinations` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nn = 5, k = 2\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated probstat_permutations_combinations under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"factorial_n\": 120, \"permutations_n_k\": 20, \"combinations_n_k\": 10}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `probstat_permutations_combinations` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`factorial_n`**: Represents `factorial_n` (e.g. `120`), reflecting the updated state or component.\n  - **`permutations_n_k`**: Represents `permutations_n_k` (e.g. `20`), reflecting the updated state or component.\n  - **`combinations_n_k`**: Represents `combinations_n_k` (e.g. `10`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `probstat_permutations_combinations`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `probstat_permutations_combinations`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `probstat_permutations_combinations`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Permutations and Combinations** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `probstat_permutations_combinations` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute exact factorial, permutation $P(n, k)$, and combination $C(n, k)$ integer counts for nonnegative arguments.\n\n$$\nP(n, k) = \\frac{n!}{(n-k)!}, \\quad C(n, k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}\n$$\n\nGiven input parameters `n`, `k`, return dictionary containing exact integer counts for 'factorial_n', 'permutations_n_k', and 'combinations_n_k'.",
+  "theory": "## What Is Permutations and Combinations?\n\nIn probability and mathematical statistics, distributions and estimators quantify uncertainty and allow principled inference from finite empirical samples.\n\n$$\nP(n, k) = \\frac{n!}{(n-k)!}, \\quad C(n, k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nP(n, k) = \\frac{n!}{(n-k)!}\n$$\n\n$$\nC(n, k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **A/B Test Significance**, **ANOVA F-Statistic**, **Basic Probability Rules**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: n = 5, k = 2\n\nOutput: {\"factorial_n\": 120, \"permutations_n_k\": 20, \"combinations_n_k\": 10}\n\nExplanation: Evaluated probstat_permutations_combinations under standard test conditions."
+    "Input: n = 5, k = 2\n\nOutput: {\"factorial_n\": 120, \"permutations_n_k\": 20, \"combinations_n_k\": 10}",
+    "Input: n = 8, k = 3\n\nOutput: {\"factorial_n\": 40320, \"permutations_n_k\": 336, \"combinations_n_k\": 56}"
   ],
-  "requirements": "* Function must be named `probstat_permutations_combinations`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `probstat_permutations_combinations` accepting `n`, `k`\n* Compute factorial, permutation, and combination counts for supplied nonnegative integers.\n* Return a `dict` containing the exact keys `'factorial_n'`, `'permutations_n_k'`, `'combinations_n_k'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `probstat_permutations_combinations`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`n`, `k`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $P(n, k) = \\frac{n!}{(n-k)!}, \\quad C(n, k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('factorial_n', 'permutations_n_k', 'combinations_n_k') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math\n\ndef probstat_permutations_combinations(n: int, k: int) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Permutations and Combinations** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef probstat_permutations_combinations(n: int, k: int) -> dict:\n    n, k = int(n), int(k)\n    fn = math.factorial(n)\n    p = math.factorial(n) // math.factorial(n - k) if 0 <= k <= n else 0\n    c = math.factorial(n) // (math.factorial(k) * math.factorial(n - k)) if 0 <= k <= n else 0\n    return {'factorial_n': fn, 'permutations_n_k': p, 'combinations_n_k': c}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import math\n\ndef probstat_permutations_combinations(n: int, k: int) -> dict:\n    \"\"\"\n    Compute factorial, permutation, and combination counts for supplied nonnegative integers.\n\n    Args:\n        n (int): Input parameter `n` (int) for Permutations and Combinations.\n        k (int): Input parameter `k` (int) for Permutations and Combinations.\n\n    Returns:\n        dict: Computed Permutations and Combinations result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Permutations and Combinations** (Probability and Statistics): Compute factorial, permutation, and combination counts for supplied nonnegative integers.\n\nTo implement `probstat_permutations_combinations` cleanly and accurately:\n1. Parse and normalize the inputs (`n`, `k`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef probstat_permutations_combinations(n: int, k: int) -> dict:\n    n, k = int(n), int(k)\n    fn = math.factorial(n)\n    p = math.factorial(n) // math.factorial(n - k) if 0 <= k <= n else 0\n    c = math.factorial(n) // (math.factorial(k) * math.factorial(n - k)) if 0 <= k <= n else 0\n    return {'factorial_n': fn, 'permutations_n_k': p, 'combinations_n_k': c}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Permutations and Combinations** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "probstat-permutations-combinations-tc-1",
@@ -48,7 +50,7 @@
     },
     {
       "id": "probstat-permutations-combinations-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (n=8)",
       "inputs": {
         "n": 8,
         "k": 3
@@ -62,7 +64,7 @@
     },
     {
       "id": "probstat-permutations-combinations-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (n=2)",
       "inputs": {
         "n": 2,
         "k": 1
@@ -72,11 +74,11 @@
         "permutations_n_k": 2,
         "combinations_n_k": 2
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "probstat-permutations-combinations-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (n=10)",
       "inputs": {
         "n": 10,
         "k": 4
@@ -90,7 +92,7 @@
     },
     {
       "id": "probstat-permutations-combinations-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (n=4)",
       "inputs": {
         "n": 4,
         "k": 2
@@ -104,7 +106,7 @@
     },
     {
       "id": "probstat-permutations-combinations-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (n=15)",
       "inputs": {
         "n": 15,
         "k": 6
@@ -118,7 +120,7 @@
     },
     {
       "id": "probstat-permutations-combinations-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (n=1)",
       "inputs": {
         "n": 1,
         "k": 2
@@ -133,7 +135,20 @@
   ],
   "functionMetadata": {
     "name": "probstat_permutations_combinations",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "n",
+        "type": "number",
+        "example": "5",
+        "description": "Input parameter `n` (int) for Permutations and Combinations"
+      },
+      {
+        "name": "k",
+        "type": "number",
+        "example": "2",
+        "description": "Input parameter `k` (int) for Permutations and Combinations"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -142,11 +157,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Permutations and Combinations",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/probstat-permutations-combinations",
+  "localUrl": "http://localhost:3000/problems/probstat-permutations-combinations"
 }

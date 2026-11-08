@@ -18,23 +18,25 @@
   "seoDescription": "Build a vocabulary V sorted alphabetically, and construct a co-occurrence matrix X with 1/d distance weighting within window size w.",
   "solved": false,
   "isLocked": true,
-  "description": "Calculate the weighted least squares objective for a single word pair in GloVe embedding model.\n\nGloVe combines global co-occurrence statistics with local context window benefits by linearizing log-probabilities of word co-occurrence ratios.\n\n### Mathematical Formulation\n$$\nJ = f(X_{ij}) \\left( \\mathbf{w}_i^T \\tilde{\\mathbf{w}}_j + b_i + \\tilde{b}_j - \\ln X_{ij} \\right)^2, \\quad f(x) = \\min\\left(1, \\left(\\frac{x}{x_{\\max}}\\right)^\\alpha\\right)\n$$\n\n### Step-by-Step Implementation\n1. Compute weighting factor f(X_ij) bounded by 1.0\n2. Evaluate dot product w_i^T w_j plus word and context biases b_i and b_j\n3. Subtract log co-occurrence count ln(X_ij), square difference, and scale by f(X_ij)\n\n### Returns\nFloat representing pair loss rounded to 6 decimal places.",
-  "theory": "# Understanding GloVe\n\n## 1. What Is It?\n\nThe **GloVe** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing the weighted least squares objective for a single word pair in GloVe embedding model.\n\n### Key Terminology\n- **NLP**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nJ = f(X_{ij}) \\left( \\mathbf{w}_i^T \\tilde{\\mathbf{w}}_j + b_i + \\tilde{b}_j - \\ln X_{ij} \\right)^2, \\quad f(x) = \\min\\left(1, \\left(\\frac{x}{x_{\\max}}\\right)^\\alpha\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `nlp_glove` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nX_ij = 50.0, w_i = [0.5, -0.2], w_j = [0.4, 0.1], b_i = 0.1, b_j = -0.05, x_max = 100.0, alpha = 0.75\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated nlp_glove under standard test conditions.\n\n**Resulting Output:**\n```python\n8.061215\n```\n\n## 4. Understanding the Expected Output\n\nThe function `nlp_glove` must return:\n- **Primary Output:** `8.061215`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `nlp_glove`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `nlp_glove`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `nlp_glove`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**GloVe** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `nlp_glove` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement the GloVe pairwise weighted least-squares objective and analytical parameter gradients for a word pair with co-occurrence count `X_ij`, weighting parameters `x_max` and `alpha`, word vectors `w_i` and `w_j`, and scalar biases `b_i` and `b_j`:\n\n$$\nf(X_{ij}) = \\begin{cases} \\left(\\dfrac{X_{ij}}{x_{\\max}}\\right)^\\alpha & \\text{if } X_{ij} < x_{\\max} \\\\[8pt] 1 & \\text{if } X_{ij} \\ge x_{\\max} \\end{cases}, \\qquad \\Delta_{ij} = \\mathbf{w}_i^T \\tilde{\\mathbf{w}}_j + b_i + \\tilde{b}_j - \\ln(X_{ij})\n$$\n\n$$\nJ_{ij} = f(X_{ij}) \\Delta_{ij}^2\n$$\n\n$$\n\\nabla_{\\mathbf{w}_i} J_{ij} = 2 f(X_{ij}) \\Delta_{ij} \\tilde{\\mathbf{w}}_j, \\qquad \\nabla_{\\tilde{\\mathbf{w}}_j} J_{ij} = 2 f(X_{ij}) \\Delta_{ij} \\mathbf{w}_i, \\qquad \\frac{\\partial J_{ij}}{\\partial b_i} = 2 f(X_{ij}) \\Delta_{ij}\n$$\n\nReturn a dictionary with keys `'weight'`, `'loss'`, `'grad_w_i'`, `'grad_w_j'`, and `'grad_b_i'`, all rounded to 6 decimal places.",
+  "theory": "## What Is GloVe?\n\nIn natural language processing, tokenization, subword hashing, and distributional embeddings map discrete text symbols into continuous geometric spaces.\n\n$$\nf(X_{ij}) = \\begin{cases} \\left(\\dfrac{X_{ij}}{x_{\\max}}\\right)^\\alpha & \\text{if } X_{ij} < x_{\\max} \\\\[8pt] 1 & \\text{if } X_{ij} \\ge x_{\\max} \\end{cases}, \\qquad \\Delta_{ij} = \\mathbf{w}_i^T \\tilde{\\mathbf{w}}_j + b_i + \\tilde{b}_j - \\ln(X_{ij})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nJ_{ij} = f(X_{ij}) \\Delta_{ij}^2\n$$\n\n$$\n\\nabla_{\\mathbf{w}_i} J_{ij} = 2 f(X_{ij}) \\Delta_{ij} \\tilde{\\mathbf{w}}_j\n$$\n\n$$\n\\nabla_{\\tilde{\\mathbf{w}}_j} J_{ij} = 2 f(X_{ij}) \\Delta_{ij} \\mathbf{w}_i\n$$\n\n$$\n\\frac{\\partial J_{ij}}{\\partial b_i} = 2 f(X_{ij}) \\Delta_{ij}\n$$\n\n$$\n\\tilde{p} = \\max(p, \\varepsilon), \\qquad \\varepsilon = 10^{-12}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Bag of Words**, **Beam Search Decoding**, **Byte Pair Encoding**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: X_ij = 50.0, w_i = [0.5, -0.2], w_j = [0.4, 0.1], b_i = 0.1, b_j = -0.05, x_max = 100.0, alpha = 0.75\n\nOutput: 8.061215\n\nExplanation: Evaluated nlp_glove under standard test conditions."
+    "Input: X_ij = 50.0, w_i = [0.5, -0.2], w_j = [0.4, 0.1], b_i = 0.1, b_j = -0.05, x_max = 100.0, alpha = 0.75\n\nOutput: {\"weight\": 0.594604, \"loss\": 8.061215, \"grad_w_i\": [-1.751475, -0.437869], \"grad_w_j\": [-2.189344, 0.875738], \"grad_b_i\": -4.378688}",
+    "Input: X_ij = 150.0, w_i = [1.0, 0.5], w_j = [0.5, 1.0], b_i = 0.2, b_j = 0.3, x_max = 100.0, alpha = 0.75\n\nOutput: {\"weight\": 1.0, \"loss\": 12.32456, \"grad_w_i\": [-3.510635, -7.021271], \"grad_w_j\": [-7.021271, -3.510635], \"grad_b_i\": -7.021271}"
   ],
-  "requirements": "* Function must be named `nlp_glove`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `nlp_glove` accepting `X_ij`, `w_i`, `w_j`, `b_i`, `b_j`, `x_max`, `alpha`\n* Build a vocabulary V sorted alphabetically, and construct a co-occurrence matrix X with 1/d distance weighting within window size w.\n* Return a `dict` containing the exact keys `'weight'`, `'loss'`, `'grad_w_i'`, `'grad_w_j'`, `'grad_b_i'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `nlp_glove`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`X_ij`, `w_i`, `w_j`, `b_i`, `b_j`, `x_max`, `alpha`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `nlp_glove` into clear stages: validate/reshape `X_ij`, `w_i`, `w_j`, `b_i`, `b_j`, `x_max`, `alpha`, evaluate the GloVe equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('weight', 'loss', 'grad_w_i', 'grad_w_j', 'grad_b_i') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math, numpy as np\n\ndef nlp_glove(X_ij: float, w_i: list, w_j: list, b_i: float, b_j: float, x_max: float = 100.0, alpha: float = 0.75) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **GloVe** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math, numpy as np\n\ndef nlp_glove(X_ij: float, w_i: list, w_j: list, b_i: float, b_j: float, x_max: float = 100.0, alpha: float = 0.75) -> float:\n    fx = (X_ij / x_max)**alpha if X_ij < x_max else 1.0\n    diff = np.dot(np.array(w_i, dtype=float), np.array(w_j, dtype=float)) + b_i + b_j - math.log(X_ij)\n    return round(float(fx * (diff**2)), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\nimport math\n\ndef nlp_glove(X_ij: float, w_i: list, w_j: list, b_i: float, b_j: float, x_max: float = 100.0, alpha: float = 0.75) -> dict:\n    \"\"\"\n    Computes the GloVe weighting factor f(X_ij), pairwise weighted squared-error loss J_ij,\n    and analytical gradients with respect to w_i, w_j, b_i, and b_j.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**GloVe** (NLP): Build a vocabulary V sorted alphabetically, and construct a co-occurrence matrix X with 1/d distance weighting within window size w.\n\nTo implement `nlp_glove` cleanly and accurately:\n1. Parse and normalize the inputs (`X_ij`, `w_i`, `w_j`, `b_i`, `b_j`, `x_max`, `alpha`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\nimport math\n\ndef nlp_glove(X_ij: float, w_i: list, w_j: list, b_i: float, b_j: float, x_max: float = 100.0, alpha: float = 0.75) -> dict:\n    x_val = float(X_ij)\n    wi = np.asarray(w_i, dtype=float)\n    wj = np.asarray(w_j, dtype=float)\n    bi, bj = float(b_i), float(b_j)\n    if x_val <= 0.0:\n        return {\"weight\": 0.0, \"loss\": 0.0, \"grad_w_i\": [0.0] * len(wi), \"grad_w_j\": [0.0] * len(wj), \"grad_b_i\": 0.0}\n    fx = (x_val / float(x_max)) ** float(alpha) if x_val < float(x_max) else 1.0\n    diff = float(np.dot(wi, wj)) + bi + bj - math.log(x_val)\n    loss = fx * (diff ** 2)\n    # Note: standard GloVe pairwise term is f(X_ij) * (w_i^T w_j + b_i + b_j - log X_ij)^2\n    scale = 2.0 * fx * diff\n    grad_wi = scale * wj\n    grad_wj = scale * wi\n    return {\n        \"weight\": round(float(fx), 6),\n        \"loss\": round(float(loss), 6),\n        \"grad_w_i\": np.round(grad_wi, 6).tolist(),\n        \"grad_w_j\": np.round(grad_wj, 6).tolist(),\n        \"grad_b_i\": round(float(scale), 6)\n    }\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **GloVe** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "nlp-glove-tc-1",
-      "name": "Co-occurrence count 50",
+      "name": "Sub-threshold count X_ij=50 (f < 1)",
       "inputs": {
         "X_ij": 50.0,
         "w_i": [
@@ -50,139 +52,270 @@
         "x_max": 100.0,
         "alpha": 0.75
       },
-      "expectedOutput": 8.061215,
+      "expectedOutput": {
+        "weight": 0.594604,
+        "loss": 8.061215,
+        "grad_w_i": [
+          -1.751475,
+          -0.437869
+        ],
+        "grad_w_j": [
+          -2.189344,
+          0.875738
+        ],
+        "grad_b_i": -4.378688
+      },
       "isPublic": true
     },
     {
       "id": "nlp-glove-tc-2",
-      "name": "Case 2",
+      "name": "Capped count X_ij=150 >= x_max (f = 1)",
       "inputs": {
-        "X_ij": 75.0,
+        "X_ij": 150.0,
         "w_i": [
-          0.75,
-          -0.3
+          1.0,
+          0.5
         ],
         "w_j": [
-          0.6,
-          0.15
+          0.5,
+          1.0
         ],
-        "b_i": 0.15,
-        "b_j": -0.075,
-        "x_max": 150.0,
-        "alpha": 1.125
+        "b_i": 0.2,
+        "b_j": 0.3,
+        "x_max": 100.0,
+        "alpha": 0.75
       },
-      "expectedOutput": 6.752045,
+      "expectedOutput": {
+        "weight": 1.0,
+        "loss": 12.32456,
+        "grad_w_i": [
+          -3.510635,
+          -7.021271
+        ],
+        "grad_w_j": [
+          -7.021271,
+          -3.510635
+        ],
+        "grad_b_i": -7.021271
+      },
       "isPublic": true
     },
     {
       "id": "nlp-glove-tc-3",
-      "name": "Case 3",
+      "name": "Rare co-occurrence X_ij=1 (log(1)=0)",
       "inputs": {
-        "X_ij": 25.0,
+        "X_ij": 1.0,
         "w_i": [
-          0.25,
-          -0.1
+          0.2,
+          0.3
         ],
         "w_j": [
-          0.2,
-          0.05
+          0.5,
+          -0.1
         ],
-        "b_i": 0.05,
-        "b_j": -0.025,
-        "x_max": 50.0,
-        "alpha": 0.375
+        "b_i": 0.0,
+        "b_j": 0.0,
+        "x_max": 100.0,
+        "alpha": 0.75
       },
-      "expectedOutput": 7.645833,
-      "isPublic": false
+      "expectedOutput": {
+        "weight": 0.031623,
+        "loss": 0.000155,
+        "grad_w_i": [
+          0.002214,
+          -0.000443
+        ],
+        "grad_w_j": [
+          0.000885,
+          0.001328
+        ],
+        "grad_b_i": 0.004427
+      },
+      "isPublic": true
     },
     {
       "id": "nlp-glove-tc-4",
-      "name": "Case 4",
+      "name": "3D word vectors",
       "inputs": {
-        "X_ij": 100.0,
+        "X_ij": 25.0,
         "w_i": [
-          1.0,
-          -0.4
+          0.5,
+          0.2,
+          -0.1
         ],
         "w_j": [
-          0.8,
-          0.2
+          0.3,
+          -0.4,
+          0.6
         ],
-        "b_i": 0.2,
-        "b_j": -0.1,
-        "x_max": 200.0,
-        "alpha": 1.5
+        "b_i": 0.5,
+        "b_j": 0.2,
+        "x_max": 50.0,
+        "alpha": 0.75
       },
-      "expectedOutput": 5.065541,
+      "expectedOutput": {
+        "weight": 0.594604,
+        "loss": 3.742707,
+        "grad_w_i": [
+          -0.895072,
+          1.193429,
+          -1.790144
+        ],
+        "grad_w_j": [
+          -1.491786,
+          -0.596715,
+          0.298357
+        ],
+        "grad_b_i": -2.983573
+      },
       "isPublic": false
     },
     {
       "id": "nlp-glove-tc-5",
-      "name": "Case 5",
+      "name": "Zero count X_ij=0 edge case",
       "inputs": {
-        "X_ij": 40.0,
+        "X_ij": 0.0,
         "w_i": [
-          0.4,
-          -0.16
+          0.5,
+          0.5
         ],
         "w_j": [
-          0.32,
-          0.08
+          0.5,
+          0.5
         ],
-        "b_i": 0.08,
-        "b_j": -0.04,
-        "x_max": 80.0,
-        "alpha": 0.6
+        "b_i": 0.1,
+        "b_j": 0.1,
+        "x_max": 100.0,
+        "alpha": 0.75
       },
-      "expectedOutput": 8.238275,
+      "expectedOutput": {
+        "weight": 0.0,
+        "loss": 0.0,
+        "grad_w_i": [
+          0.0,
+          0.0
+        ],
+        "grad_w_j": [
+          0.0,
+          0.0
+        ],
+        "grad_b_i": 0.0
+      },
       "isPublic": false
     },
     {
       "id": "nlp-glove-tc-6",
-      "name": "Case 6",
+      "name": "Linear weighting alpha=1.0",
       "inputs": {
-        "X_ij": 150.0,
+        "X_ij": 40.0,
         "w_i": [
-          1.5,
-          -0.6
+          -0.3,
+          0.7
         ],
         "w_j": [
-          1.2,
-          0.3
+          0.6,
+          0.2
         ],
-        "b_i": 0.3,
-        "b_j": -0.15,
-        "x_max": 300.0,
-        "alpha": 2.25
+        "b_i": -0.1,
+        "b_j": 0.4,
+        "x_max": 80.0,
+        "alpha": 1.0
       },
-      "expectedOutput": 2.207714,
+      "expectedOutput": {
+        "weight": 0.5,
+        "loss": 5.878607,
+        "grad_w_i": [
+          -2.057328,
+          -0.685776
+        ],
+        "grad_w_j": [
+          1.028664,
+          -2.400216
+        ],
+        "grad_b_i": -3.428879
+      },
       "isPublic": false
     },
     {
       "id": "nlp-glove-tc-7",
-      "name": "Case 7",
+      "name": "Exact threshold X_ij=x_max",
       "inputs": {
-        "X_ij": 12.5,
+        "X_ij": 100.0,
         "w_i": [
-          0.125,
-          -0.05
+          0.8,
+          0.4
         ],
         "w_j": [
-          0.1,
-          0.025
+          0.5,
+          0.5
         ],
-        "b_i": 0.025,
-        "b_j": -0.0125,
-        "x_max": 25.0,
-        "alpha": 0.1875
+        "b_i": 1.0,
+        "b_j": 1.0,
+        "x_max": 100.0,
+        "alpha": 0.75
       },
-      "expectedOutput": 5.496979,
+      "expectedOutput": {
+        "weight": 1.0,
+        "loss": 4.020707,
+        "grad_w_i": [
+          -2.00517,
+          -2.00517
+        ],
+        "grad_w_j": [
+          -3.208272,
+          -1.604136
+        ],
+        "grad_b_i": -4.01034
+      },
       "isPublic": false
     }
   ],
   "functionMetadata": {
     "name": "nlp_glove",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "X_ij",
+        "type": "number",
+        "example": "50.0",
+        "description": "Input parameter `X_ij` (float) for GloVe"
+      },
+      {
+        "name": "w_i",
+        "type": "array",
+        "example": "[0.5, -0.2]",
+        "description": "Input parameter `w_i` (list) for GloVe"
+      },
+      {
+        "name": "w_j",
+        "type": "array",
+        "example": "[0.4, 0.1]",
+        "description": "Input parameter `w_j` (list) for GloVe"
+      },
+      {
+        "name": "b_i",
+        "type": "number",
+        "example": "0.1",
+        "description": "Input parameter `b_i` (float) for GloVe"
+      },
+      {
+        "name": "b_j",
+        "type": "number",
+        "example": "-0.05",
+        "description": "Input parameter `b_j` (float) for GloVe"
+      },
+      {
+        "name": "x_max",
+        "type": "number",
+        "example": "100.0",
+        "description": "Input parameter `x_max` (float) for GloVe"
+      },
+      {
+        "name": "alpha",
+        "type": "number",
+        "example": "0.75",
+        "description": "Smoothing parameter, leaky slope, or weighting exponent"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -191,11 +324,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "GloVe",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/nlp-glove",
+  "localUrl": "http://localhost:3000/problems/nlp-glove"
 }

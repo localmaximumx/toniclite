@@ -19,19 +19,21 @@
   "seoDescription": "Convert an RGB image to grayscale with luminance-weighted color channels for classical computer vision preprocessing.",
   "solved": false,
   "isLocked": true,
-  "description": "Convert 3-channel color image (H, W, 3) to single-channel 2D grayscale intensity matrix using ITU-R BT.601 perceptual weights.\n\nHuman trichromatic vision possesses maximal retinal sensitivity to green wavelengths, necessitating non-uniform channel weighting in grayscale luminance conversion.\n\n### Mathematical Formulation\n$$\nY = 0.2989 R + 0.5870 G + 0.1140 B\n$$\n\n### Step-by-Step Implementation\n1. Extract red, green, and blue channel intensity matrices\n2. Evaluate weighted sum reflecting human photopic spectral sensitivity\n3. Return 2D grayscale intensity matrix rounded to 4 decimal places\n\n### Returns\nNested 2D list of shape (H, W) representing grayscale pixel values.",
-  "theory": "# Understanding RGB to Grayscale\n\n## 1. What Is It?\n\nThe **RGB to Grayscale** is a fundamental computational technique in Python. In machine learning workflows, Convert 3-channel color image (H, W, 3) to single-channel 2D grayscale intensity matrix using ITU-R BT.601 perceptual weights.\n\n### Key Terminology\n- **Computer Vision**: Core domain concept contextualizing this task within Python workflows.\n- **Data Processing**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nY = 0.2989 R + 0.5870 G + 0.1140 B\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_rgb_to_grayscale` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nimage = [[[255, 0, 0], [0, 255, 0]], [[0, 0, 255], [255, 255, 255]]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_rgb_to_grayscale under standard test conditions.\n\n**Resulting Output:**\n```python\n[[76.2195, 149.685], [29.07, 254.9745]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_rgb_to_grayscale` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[76.2195, 149.685]`.\n  - **Element 2**: Evaluated output component `[29.07, 254.9745]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_rgb_to_grayscale`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_rgb_to_grayscale`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**RGB to Grayscale** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_rgb_to_grayscale` accurately and efficiently performs the required transformation.\n",
+  "description": "Convert 3-channel color image (H, W, 3) to single-channel 2D grayscale intensity matrix using ITU-R BT.601 perceptual weights.\n\n$$\nY = 0.2989 R + 0.5870 G + 0.1140 B\n$$\n\nGiven input parameters `image`, return nested 2D list of shape (H, W) representing grayscale pixel values.",
+  "theory": "## What Is RGB to Grayscale?\n\nIn computer vision, spatial tensor operators and geometric bounding-box algorithms extract translation- and scale-aware structure from image grids.\n\n$$\nY = 0.2989 R + 0.5870 G + 0.1140 B\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: image = [[[255, 0, 0], [0, 255, 0]], [[0, 0, 255], [255, 255, 255]]]\n\nOutput: [[76.2195, 149.685], [29.07, 254.9745]]\n\nExplanation: Evaluated cv_rgb_to_grayscale under standard test conditions."
+    "Input: image = [[[255, 0, 0], [0, 255, 0]], [[0, 0, 255], [255, 255, 255]]]\n\nOutput: [[76.2195, 149.685], [29.07, 254.9745]]",
+    "Input: image = [[[510, 0, 0], [0, 510, 0]], [[0, 0, 510], [510, 510, 510]]]\n\nOutput: [[152.439, 299.37], [58.14, 509.949]]"
   ],
-  "requirements": "* Function must be named `cv_rgb_to_grayscale`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_rgb_to_grayscale` accepting `image`\n* Convert an RGB image to grayscale with luminance-weighted color channels for classical computer vision preprocessing.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_rgb_to_grayscale`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`image`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $Y = 0.2989 R + 0.5870 G + 0.1140 B$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef cv_rgb_to_grayscale(image: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **RGB to Grayscale** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_rgb_to_grayscale(image: list) -> list:\n    arr = np.array(image, dtype=float)\n    return np.round(0.2989 * arr[:, :, 0] + 0.5870 * arr[:, :, 1] + 0.1140 * arr[:, :, 2], 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef cv_rgb_to_grayscale(image: list) -> list:\n    \"\"\"\n    Convert an RGB image to grayscale with luminance-weighted color channels for classical computer vision preprocessing.\n\n    Args:\n        image (list): 2D spatial image array of pixel intensities.\n\n    Returns:\n        list: Computed RGB to Grayscale result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**RGB to Grayscale** (Computer Vision, Data Processing): Convert an RGB image to grayscale with luminance-weighted color channels for classical computer vision preprocessing.\n\nTo implement `cv_rgb_to_grayscale` cleanly and accurately:\n1. Parse and normalize the inputs (`image`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_rgb_to_grayscale(image: list) -> list:\n    arr = np.array(image, dtype=float)\n    return np.round(0.2989 * arr[:, :, 0] + 0.5870 * arr[:, :, 1] + 0.1140 * arr[:, :, 2], 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **RGB to Grayscale** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-rgb-to-grayscale-tc-1",
@@ -78,7 +80,7 @@
     },
     {
       "id": "cv-rgb-to-grayscale-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "image": [
           [
@@ -121,7 +123,7 @@
     },
     {
       "id": "cv-rgb-to-grayscale-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "image": [
           [
@@ -160,11 +162,11 @@
           127.9872
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-rgb-to-grayscale-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "image": [
           [
@@ -207,7 +209,7 @@
     },
     {
       "id": "cv-rgb-to-grayscale-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "image": [
           [
@@ -250,7 +252,7 @@
     },
     {
       "id": "cv-rgb-to-grayscale-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "image": [
           [
@@ -293,7 +295,7 @@
     },
     {
       "id": "cv-rgb-to-grayscale-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "image": [
           [
@@ -337,7 +339,14 @@
   ],
   "functionMetadata": {
     "name": "cv_rgb_to_grayscale",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "image",
+        "type": "array",
+        "example": "[[[255, 0, 0], [0, 255, 0]], [[0, 0, 255], [255, 255, 255]]]",
+        "description": "2D spatial image array of pixel intensities"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -346,11 +355,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "RGB to Grayscale",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-rgb-to-grayscale",
+  "localUrl": "http://localhost:3000/problems/cv-rgb-to-grayscale"
 }

@@ -4,7 +4,7 @@
   "description": "Add one learned position vector to every token position. The supplied position embedding has a batch dimension of one, so the same position vectors are broadcast across every sequence.\n\n$$\nz_{b,n,d} = x_{b,n,d} + e_{n,d}.\n$$\n\nHere, $b$ indexes the batch, $n$ indexes token position, $d$ indexes the embedding coordinate, $x$ is patches, and $e$ is pos_embed. Return the result as a float64 NumPy array with the same shape as patches.",
   "seoDescription": "Add learned positional embeddings to Vision Transformer patch-token sequences while preserving batch dimensions.",
   "examples": [
-    "Input: patches = [[[1,2],[3,4]]], pos_embed = [[[0.1,0.2],[0.3,0.4]]]\n\nOutput: [[[1.1,2.2],[3.3,4.4]]]\n\nExplanation: The position array broadcasts across the batch while preserving token and embedding axes.",
+    "Input: patches = [[[1,2],[3,4]]], pos_embed = [[[0.1,0.2],[0.3,0.4]]]\n\nOutput: [[[1.1,2.2],[3.3,4.4]]]",
     "Input: patches = [[[1,0],[0,1]],[[2,1],[1,2]]], pos_embed = [[[0.5,-0.5],[1,-1]]]\n\nOutput: [[[1.5,-0.5],[1,0]],[[2.5,0.5],[2,1]]]",
     "Input: patches = [[[0,1,2]]], pos_embed = [[[-1,-2,-3]]]\n\nOutput: [[[-1,-1,-1]]]"
   ],
@@ -22,7 +22,7 @@
   "topicId": "vit-position-embedding",
   "paperSnippet": "\"Position embeddings are added to the patch embeddings to retain positional information. We use standard learnable 1D position embeddings.\"",
   "visualizationComponent": "PositionEmbeddingViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Position Embedding** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef add_position_embedding(patches: np.ndarray,\n                           pos_embed: np.ndarray) -> np.ndarray:\n    p = np.asarray(patches, dtype=float)\n    pe = np.asarray(pos_embed, dtype=float)\n    return np.round(p + pe, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Position Embedding** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef add_position_embedding(patches: np.ndarray,\n                           pos_embed: np.ndarray) -> np.ndarray:\n    p = np.asarray(patches, dtype=float)\n    pe = np.asarray(pos_embed, dtype=float)\n    return np.round(p + pe, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "vit-position-embedding-tc-1",

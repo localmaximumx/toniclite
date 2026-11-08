@@ -19,41 +19,47 @@
   "seoDescription": "Implement a NumPy Transformer decoder block with masked self-attention, cross-attention, and feed-forward layers.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute forward pass of transformer decoder layer featuring autoregressive causal masking and encoder-decoder cross-attention.\n\nCausal masking sets attention scores of future positions to -inf, ensuring position i cannot attend to positions j > i during autoregressive generation.\n\n### Mathematical Formulation\n$$\n\\mathbf{h}_1 = \\mathbf{x} + \\text{CausalSelfAttn}(\\mathbf{x}), \\quad \\mathbf{h}_2 = \\mathbf{h}_1 + \\text{CrossAttn}(\\mathbf{h}_1, \\mathbf{M})\n$$\n\n### Step-by-Step Implementation\n1. Apply causally masked self-attention to input sequence x and add residual connection\n2. Apply cross-attention attending to encoder memory M and add residual connection\n3. Return activated representation matrix rounded to 4 decimal places\n\n### Returns\nNested 2D list of shape (N, D) representing decoder block activations.",
-  "theory": "# Understanding Transformer Decoder Block\n\n## 1. What Is It?\n\nThe **Transformer Decoder Block** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing forward pass of transformer decoder layer featuring autoregressive causal masking and encoder-decoder cross-attention.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n- **Transformers**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{h}_1 = \\mathbf{x} + \\text{CausalSelfAttn}(\\mathbf{x}), \\quad \\mathbf{h}_2 = \\mathbf{h}_1 + \\text{CrossAttn}(\\mathbf{h}_1, \\mathbf{M})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_decoder_block` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [[1.0, 0.0], [0.5, 0.5]], memory = [[1.0, 1.0], [0.0, 2.0]], W_mask_qkv = null, W_cross_qkv = null\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_decoder_block under standard test conditions.\n\n**Resulting Output:**\n```python\n[[2.8044, 1.1956], [1.8375, 2.1625]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_decoder_block` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[2.8044, 1.1956]`.\n  - **Element 2**: Evaluated output component `[1.8375, 2.1625]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_decoder_block`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_decoder_block`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Transformer Decoder Block** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_decoder_block` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement a Transformer Decoder Block combining causal masked self-attention, encoder-decoder cross-attention, residual connections, and layer normalization ($\\epsilon = 10^{-5}$).\n\nFirst, project the decoder input `x` using `W_mask_qkv` (defaulting to the identity matrix when `None`), apply an upper-triangular causal mask ($j > i \\implies -10^9$), and apply residual layer normalization:\n\n$$\n\\operatorname{Attn}_1(\\mathbf{X}) = \\operatorname{softmax}\\!\\left(\\frac{\\mathbf{Q}_1 \\mathbf{K}_1^T}{\\sqrt{d}} + \\mathbf{M}_{\\text{causal}}\\right)\\mathbf{V}_1, \\qquad \\mathbf{H}_1 = \\operatorname{LayerNorm}\\big(\\mathbf{X} + \\operatorname{Attn}_1(\\mathbf{X})\\big)\n$$\n\nSecond, attend to the encoder `memory` using queries projected from $\\mathbf{H}_1$ and keys/values projected from `memory` via `W_cross_qkv`, followed by a second residual layer normalization:\n\n$$\n\\operatorname{Attn}_2(\\mathbf{H}_1, \\mathbf{M}) = \\operatorname{softmax}\\!\\left(\\frac{\\mathbf{Q}_2 \\mathbf{K}_2^T}{\\sqrt{d}}\\right)\\mathbf{V}_2, \\qquad \\mathbf{Y} = \\operatorname{LayerNorm}\\big(\\mathbf{H}_1 + \\operatorname{Attn}_2(\\mathbf{H}_1, \\mathbf{M})\\big)\n$$\n\nReturn the output sequence tensor as a 2D list of floats rounded to 4 decimal places.",
+  "theory": "## What Is Transformer Decoder Block?\n\nIn deep learning architectures, composable differentiable modules transform representations across layers while preserving stable activation and gradient norms.\n\n$$\n\\operatorname{Attn}_1(\\mathbf{X}) = \\operatorname{softmax}\\!\\left(\\frac{\\mathbf{Q}_1 \\mathbf{K}_1^T}{\\sqrt{d}} + \\mathbf{M}_{\\text{causal}}\\right)\\mathbf{V}_1, \\qquad \\mathbf{H}_1 = \\operatorname{LayerNorm}\\big(\\mathbf{X} + \\operatorname{Attn}_1(\\mathbf{X})\\big)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\operatorname{Attn}_1(\\mathbf{X}) = \\operatorname{softmax}\\!\\left(\\frac{\\mathbf{Q}_1 \\mathbf{K}_1^T}{\\sqrt{d}} + \\mathbf{M}_{\\text{causal}}\\right)\\mathbf{V}_1\n$$\n\n$$\n\\mathbf{H}_1 = \\operatorname{LayerNorm}\\big(\\mathbf{X} + \\operatorname{Attn}_1(\\mathbf{X})\\big)\n$$\n\n$$\n\\operatorname{Attn}_2(\\mathbf{H}_1, \\mathbf{M}) = \\operatorname{softmax}\\!\\left(\\frac{\\mathbf{Q}_2 \\mathbf{K}_2^T}{\\sqrt{d}}\\right)\\mathbf{V}_2\n$$\n\n$$\n\\mathbf{Y} = \\operatorname{LayerNorm}\\big(\\mathbf{H}_1 + \\operatorname{Attn}_2(\\mathbf{H}_1, \\mathbf{M})\\big)\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: x = [[1.0, 0.0], [0.5, 0.5]], memory = [[1.0, 1.0], [0.0, 2.0]], W_mask_qkv = null, W_cross_qkv = null\n\nOutput: [[2.8044, 1.1956], [1.8375, 2.1625]]\n\nExplanation: Evaluated dl_decoder_block under standard test conditions."
+    "Input: x = [[1.0, 0.0, 2.0], [0.5, 1.5, 0.0]], memory = [[1.0, 2.0, 0.0], [0.0, 1.0, 2.0]], W_mask_qkv = null, W_cross_qkv = null\n\nOutput: [[-0.6268, -0.7845, 1.4113], [-0.2837, 1.3417, -1.058]]",
+    "Input: x = [[2.0, 1.0], [1.0, 3.0]], memory = [[1.0, 0.0], [0.0, 2.0]], W_mask_qkv = [[1.0, 0.5], [0.0, 1.0]], W_cross_qkv = [[0.5, 0.0], [0.5, 1.0]]\n\nOutput: [[1.0, -1.0], [-1.0, 1.0]]"
   ],
-  "requirements": "* Function must be named `dl_decoder_block`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_decoder_block` accepting `x`, `memory`, `W_mask_qkv`, `W_cross_qkv`\n* Implement a NumPy Transformer decoder block with masked self-attention, cross-attention, and feed-forward layers.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_decoder_block`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `memory`, `W_mask_qkv`, `W_cross_qkv`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\mathbf{H}_1 = \\text{LayerNorm}(\\mathbf{X} + \\text{Attn}_1)$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import torch, math\n\ndef dl_decoder_block(x: list, memory: list, W_mask_qkv: list = None, W_cross_qkv: list = None) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Transformer Decoder Block** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch, math\n\ndef dl_decoder_block(x: list, memory: list, W_mask_qkv: list = None, W_cross_qkv: list = None) -> list:\n    t_x, t_mem = torch.tensor(x, dtype=torch.float32), torch.tensor(memory, dtype=torch.float32)\n    N, D = t_x.shape\n    i = torch.arange(N).unsqueeze(1)\n    j = torch.arange(N).unsqueeze(0)\n    mask = torch.where(j > i, float('-inf'), 0.0)\n    h1 = t_x + torch.matmul(torch.softmax(torch.matmul(t_x, t_x.transpose(-2, -1)) / math.sqrt(D) + mask, dim=-1), t_x)\n    h2 = h1 + torch.matmul(torch.softmax(torch.matmul(h1, t_mem.transpose(-2, -1)) / math.sqrt(D), dim=-1), t_mem)\n    return torch.round(h2, decimals=4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef dl_decoder_block(x: list, memory: list, W_mask_qkv: list = None, W_cross_qkv: list = None) -> list:\n    \"\"\"\n    Executes a Transformer Decoder block with causal masked self-attention, encoder-decoder\n    cross-attention against memory, residual connections, and layer normalization.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Transformer Decoder Block** (Neural Networks, Transformers): Implement a NumPy Transformer decoder block with masked self-attention, cross-attention, and feed-forward layers.\n\nTo implement `dl_decoder_block` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `memory`, `W_mask_qkv`, `W_cross_qkv`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_decoder_block(x: list, memory: list, W_mask_qkv: list = None, W_cross_qkv: list = None) -> list:\n    X = np.asarray(x, dtype=float)\n    M = np.asarray(memory, dtype=float)\n    T, d = X.shape\n    w_self = np.eye(d) if W_mask_qkv is None else np.asarray(W_mask_qkv, dtype=float)\n    w_cross = np.eye(d) if W_cross_qkv is None else np.asarray(W_cross_qkv, dtype=float)\n    # 1. Causal Masked Self-Attention\n    Q1, K1, V1 = X @ w_self, X @ w_self, X @ w_self\n    scores1 = (Q1 @ K1.T) / np.sqrt(float(d))\n    causal_mask = np.tril(np.ones((T, T)))\n    scores1 = np.where(causal_mask == 0, -1e9, scores1)\n    s1 = scores1 - np.max(scores1, axis=-1, keepdims=True)\n    attn1 = (np.exp(s1) / np.sum(np.exp(s1), axis=-1, keepdims=True)) @ V1\n    h1 = X + attn1\n    h1 = (h1 - np.mean(h1, axis=-1, keepdims=True)) / np.sqrt(np.var(h1, axis=-1, keepdims=True) + 1e-5)\n    # 2. Cross-Attention with encoder memory\n    Q2, K2, V2 = h1 @ w_cross, M @ w_cross, M @ w_cross\n    scores2 = (Q2 @ K2.T) / np.sqrt(float(d))\n    s2 = scores2 - np.max(scores2, axis=-1, keepdims=True)\n    attn2 = (np.exp(s2) / np.sum(np.exp(s2), axis=-1, keepdims=True)) @ V2\n    h2 = h1 + attn2\n    out = (h2 - np.mean(h2, axis=-1, keepdims=True)) / np.sqrt(np.var(h2, axis=-1, keepdims=True) + 1e-5)\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^2 \\cdot d)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Transformer Decoder Block** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-decoder-block-tc-1",
-      "name": "2 decoder tokens, 2 encoder tokens",
+      "name": "2-token decoder with 2-token encoder memory",
       "inputs": {
         "x": [
           [
             1.0,
-            0.0
+            0.0,
+            2.0
           ],
           [
             0.5,
-            0.5
+            1.5,
+            0.0
           ]
         ],
         "memory": [
           [
             1.0,
-            1.0
+            2.0,
+            0.0
           ],
           [
             0.0,
+            1.0,
             2.0
           ]
         ],
@@ -62,72 +68,45 @@
       },
       "expectedOutput": [
         [
-          2.8044,
-          1.1956
+          -0.6268,
+          -0.7845,
+          1.4113
         ],
         [
-          1.8375,
-          2.1625
+          -0.2837,
+          1.3417,
+          -1.058
         ]
       ],
       "isPublic": true
     },
     {
       "id": "dl-decoder-block-tc-2",
-      "name": "Case 2",
+      "name": "Custom self and cross projection matrices",
       "inputs": {
         "x": [
           [
             2.0,
-            0.0
+            1.0
           ],
           [
             1.0,
-            1.0
+            3.0
           ]
         ],
         "memory": [
           [
-            2.0,
-            2.0
-          ],
-          [
-            0.0,
-            4.0
-          ]
-        ],
-        "W_mask_qkv": null,
-        "W_cross_qkv": null
-      },
-      "expectedOutput": [
-        [
-          5.993,
-          2.007
-        ],
-        [
-          4.1089,
-          3.8911
-        ]
-      ],
-      "isPublic": true
-    },
-    {
-      "id": "dl-decoder-block-tc-3",
-      "name": "Case 3",
-      "inputs": {
-        "x": [
-          [
-            0.5,
+            1.0,
             0.0
           ],
           [
-            0.25,
-            0.25
+            0.0,
+            2.0
           ]
         ],
-        "memory": [
+        "W_mask_qkv": [
           [
-            0.5,
+            1.0,
             0.5
           ],
           [
@@ -135,43 +114,60 @@
             1.0
           ]
         ],
-        "W_mask_qkv": null,
-        "W_cross_qkv": null
+        "W_cross_qkv": [
+          [
+            0.5,
+            0.0
+          ],
+          [
+            0.5,
+            1.0
+          ]
+        ]
       },
       "expectedOutput": [
         [
-          1.2937,
-          0.7063
+          1.0,
+          -1.0
         ],
         [
-          0.886,
-          1.114
+          -1.0,
+          1.0
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
-      "id": "dl-decoder-block-tc-4",
-      "name": "Case 4",
+      "id": "dl-decoder-block-tc-3",
+      "name": "3-token causal sequence",
       "inputs": {
         "x": [
           [
-            -1.0,
-            -0.0
+            1.0,
+            0.0,
+            -1.0
           ],
           [
-            -0.5,
-            -0.5
+            0.0,
+            2.0,
+            1.0
+          ],
+          [
+            -1.0,
+            1.0,
+            2.0
           ]
         ],
         "memory": [
           [
-            -1.0,
-            -1.0
+            2.0,
+            0.0,
+            1.0
           ],
           [
-            -0.0,
-            -2.0
+            0.0,
+            1.0,
+            -1.0
           ]
         ],
         "W_mask_qkv": null,
@@ -179,38 +175,80 @@
       },
       "expectedOutput": [
         [
-          -2.8044,
-          -1.1956
+          1.2247,
+          0.0,
+          -1.2247
         ],
         [
-          -1.8375,
-          -2.1625
+          -0.7744,
+          1.412,
+          -0.6376
+        ],
+        [
+          -1.3946,
+          0.9004,
+          0.4942
+        ]
+      ],
+      "isPublic": true
+    },
+    {
+      "id": "dl-decoder-block-tc-4",
+      "name": "Single decoder query token",
+      "inputs": {
+        "x": [
+          [
+            1.0,
+            2.0,
+            4.0
+          ]
+        ],
+        "memory": [
+          [
+            1.0,
+            0.0,
+            2.0
+          ],
+          [
+            3.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "W_mask_qkv": null,
+        "W_cross_qkv": null
+      },
+      "expectedOutput": [
+        [
+          -0.6265,
+          -0.7848,
+          1.4113
         ]
       ],
       "isPublic": false
     },
     {
       "id": "dl-decoder-block-tc-5",
-      "name": "Case 5",
+      "name": "Negative input embeddings",
       "inputs": {
         "x": [
           [
-            3.0,
-            0.0
+            -1.0,
+            2.0
           ],
           [
-            1.5,
-            1.5
+            3.0,
+            -2.0
           ]
         ],
         "memory": [
           [
-            3.0,
-            3.0
+            -2.0,
+            1.0
           ],
           [
-            0.0,
-            6.0
+            1.0,
+            -3.0
           ]
         ],
         "W_mask_qkv": null,
@@ -218,77 +256,103 @@
       },
       "expectedOutput": [
         [
-          9.0,
-          3.0
+          -1.0,
+          1.0
         ],
         [
-          6.6305,
-          5.3695
+          1.0,
+          -1.0
         ]
       ],
       "isPublic": false
     },
     {
       "id": "dl-decoder-block-tc-6",
-      "name": "Case 6",
+      "name": "Scaled identity projections",
       "inputs": {
         "x": [
           [
-            2.0,
-            1.0
+            1.0,
+            3.0
           ],
           [
-            1.5,
-            1.5
+            4.0,
+            2.0
           ]
         ],
         "memory": [
           [
             2.0,
-            2.0
+            1.0
           ],
           [
             1.0,
-            3.0
+            4.0
           ]
         ],
-        "W_mask_qkv": null,
-        "W_cross_qkv": null
+        "W_mask_qkv": [
+          [
+            0.5,
+            0.0
+          ],
+          [
+            0.0,
+            0.5
+          ]
+        ],
+        "W_cross_qkv": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ]
       },
       "expectedOutput": [
         [
-          5.8044,
-          4.1956
+          -1.0,
+          1.0
         ],
         [
-          4.8375,
-          5.1625
+          1.0,
+          -1.0
         ]
       ],
       "isPublic": false
     },
     {
       "id": "dl-decoder-block-tc-7",
-      "name": "Case 7",
+      "name": "4D feature embeddings",
       "inputs": {
         "x": [
           [
-            -1.0,
-            -2.0
+            1.0,
+            2.0,
+            0.0,
+            -1.0
           ],
           [
-            -1.5,
-            -1.5
+            0.0,
+            -1.0,
+            2.0,
+            1.0
           ]
         ],
         "memory": [
           [
+            2.0,
+            1.0,
             -1.0,
-            -1.0
+            0.0
           ],
           [
-            -2.0,
-            0.0
+            -1.0,
+            0.0,
+            1.0,
+            2.0
           ]
         ],
         "W_mask_qkv": null,
@@ -296,12 +360,16 @@
       },
       "expectedOutput": [
         [
-          -3.1956,
-          -4.8044
+          1.0058,
+          0.9937,
+          -1.0289,
+          -0.9706
         ],
         [
-          -4.1625,
-          -3.8375
+          -1.006,
+          -0.9936,
+          0.9731,
+          1.0265
         ]
       ],
       "isPublic": false
@@ -309,7 +377,32 @@
   ],
   "functionMetadata": {
     "name": "dl_decoder_block",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[[1.0, 0.0, 2.0], [0.5, 1.5, 0.0]]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "memory",
+        "type": "array",
+        "example": "[[1.0, 2.0, 0.0], [0.0, 1.0, 2.0]]",
+        "description": "Input parameter `memory` (list) for Transformer Decoder Block"
+      },
+      {
+        "name": "W_mask_qkv",
+        "type": "array",
+        "example": "None",
+        "description": "Weight matrix/vector for W mask qkv"
+      },
+      {
+        "name": "W_cross_qkv",
+        "type": "array",
+        "example": "None",
+        "description": "Weight matrix/vector for W cross qkv"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -318,11 +411,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Transformer Decoder Block",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-decoder-block",
+  "localUrl": "http://localhost:3000/problems/dl-decoder-block"
 }

@@ -4,7 +4,7 @@
   "description": "Compute the noise distribution used by Word2Vec negative sampling. Raise each corpus count to a supplied power and normalize the results.\n\n$$\nP_n(w)=\\frac{f(w)^{\\alpha}}{\\sum_{u=1}^{V}f(u)^{\\alpha}}\n$$\n\nHere, $f(w)$ is the corpus count of word w, $V$ is the vocabulary size, and alpha is $\\alpha$. The Word2Vec negative-sampling experiments use $\\alpha=3/4$. Return the probabilities as a float64 PyTorch tensor with shape $(V)$.",
   "seoDescription": "Build the Word2Vec negative-sampling distribution from unigram counts raised to the three-quarter power.",
   "examples": [
-    "Input: counts = [100,10,1], alpha = 0.75\n\nOutput: [0.826822,0.147032,0.026146]\n\nExplanation: The three-quarter power flattens the count ratios before normalization.",
+    "Input: counts = [100,10,1], alpha = 0.75\n\nOutput: [0.826822,0.147032,0.026146]",
     "Input: counts = [5,5,5,5], alpha = 0.75\n\nOutput: [0.25,0.25,0.25,0.25]",
     "Input: counts = [100,10,1], alpha = 1\n\nOutput: [0.900901,0.09009,0.009009]"
   ],
@@ -22,7 +22,7 @@
   "topicId": "word2vec-noise-dist",
   "paperSnippet": "\"the unigram distribution U(w) raised to the 3/4rd power (i.e., U(w)^{3/4}/Z) outperformed significantly the unigram and the uniform distributions\"",
   "visualizationComponent": "Word2VecNoiseDistViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Negative Sampling Distribution** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch\n\ndef noise_distribution(counts: torch.Tensor,\n                       alpha: float = 0.75) -> torch.Tensor:\n    c = counts.to(torch.float64) if isinstance(counts, torch.Tensor) else torch.tensor(counts, dtype=torch.float64)\n    a = float(alpha)\n    p = c ** a\n    dist = p / torch.sum(p)\n    return torch.round(dist * 1e6) / 1e6\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Negative Sampling Distribution** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef noise_distribution(counts: torch.Tensor,\n                       alpha: float = 0.75) -> torch.Tensor:\n    c = counts.to(torch.float64) if isinstance(counts, torch.Tensor) else torch.tensor(counts, dtype=torch.float64)\n    a = float(alpha)\n    p = c ** a\n    dist = p / torch.sum(p)\n    return torch.round(dist * 1e6) / 1e6\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "word2vec-noise-dist-tc-1",

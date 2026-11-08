@@ -18,19 +18,21 @@
   "seoDescription": "Implement PyTorch inverted dropout from a supplied mask during training while returning inputs unchanged in evaluation mode.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute inverted dropout retention scaling factor and forward scaling transformation.\n\nScaling during training removes the need to alter weights or multiply by (1 - p) during high-throughput inference deployment.\n\n### Mathematical Formulation\n$$\ns = \\frac{1}{1 - p}, \\quad \\mathbf{y} = s (\\mathbf{m} \\odot \\mathbf{x})\n$$\n\n### Step-by-Step Implementation\n1. Check training phase boolean flag\n2. Calculate inverted dropout scaling multiplier 1 / (1 - p)\n3. Return dictionary with scaled outputs and scale value rounded to 4 decimal places\n\n### Returns\nDictionary with 'output' and 'scale'.",
-  "theory": "# Understanding Dropout from Scratch\n\n## 1. What Is It?\n\nThe **Dropout from Scratch** is a fundamental computational technique in Pytorch. In machine learning workflows, it involves performing inverted dropout retention scaling factor and forward scaling transformation.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **`p`**: The probability distribution or dropout retention/drop probability.\n- **Neural Networks**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\ns = \\frac{1}{1 - p}, \\quad \\mathbf{y} = s (\\mathbf{m} \\odot \\mathbf{x})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pytorch_dropout_from_scratch` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [[1.0, 2.0], [3.0, 4.0]], p = 0.5, training = true\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pytorch_dropout_from_scratch under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"output\": [[2.0, 4.0], [6.0, 8.0]], \"scale\": 2.0}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pytorch_dropout_from_scratch` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`output`**: Represents `output` (e.g. `[[2.0, 4.0], [6.0, 8.0]]`), reflecting the updated state or component.\n  - **`scale`**: Represents `scale` (e.g. `2.0`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `pytorch_dropout_from_scratch`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pytorch_dropout_from_scratch`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pytorch_dropout_from_scratch`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Dropout from Scratch** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `pytorch_dropout_from_scratch` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute inverted dropout retention scaling factor and forward scaling transformation.\n\n$$\ns = \\frac{1}{1 - p}, \\quad \\mathbf{y} = s (\\mathbf{m} \\odot \\mathbf{x})\n$$\n\nGiven input parameters `x`, `p`, `training`, return dictionary with 'output' and 'scale'.",
+  "theory": "## What Is Dropout from Scratch?\n\nInverted Dropout (Srivastava et al., 2014) randomly zeroes out a fraction $p$ of activations during training and scales the surviving activations by $1 / (1 - p)$.\n\n$$\ns = \\frac{1}{1 - p}, \\quad \\mathbf{y} = s (\\mathbf{m} \\odot \\mathbf{x})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\ns = \\frac{1}{1 - p}\n$$\n\n$$\n\\mathbf{y} = s (\\mathbf{m} \\odot \\mathbf{x})\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Attention Mechanism from Scratch**, **Balanced DataLoader**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x = [[1.0, 2.0], [3.0, 4.0]], p = 0.5, training = true\n\nOutput: {\"output\": [[2.0, 4.0], [6.0, 8.0]], \"scale\": 2.0}\n\nExplanation: Evaluated pytorch_dropout_from_scratch under standard test conditions."
+    "Input: x = [[1.0, 2.0], [3.0, 4.0]], p = 0.5, training = true\n\nOutput: {\"output\": [[2.0, 4.0], [6.0, 8.0]], \"scale\": 2.0}",
+    "Input: x = [[1.5, 3.0], [4.5, 6.0]], p = 0.75, training = true\n\nOutput: {\"output\": [[6.0, 12.0], [18.0, 24.0]], \"scale\": 4.0}"
   ],
-  "requirements": "* Function must be named `pytorch_dropout_from_scratch`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pytorch_dropout_from_scratch` accepting `x`, `p`, `training`\n* Implement PyTorch inverted dropout from a supplied mask during training while returning inputs unchanged in evaluation mode.\n* Return a `dict` containing the exact keys `'output'`, `'scale'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pytorch_dropout_from_scratch`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `p`, `training`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $s = \\frac{1}{1 - p}, \\quad \\mathbf{y} = s (\\mathbf{m} \\odot \\mathbf{x})$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('output', 'scale') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import torch\n\ndef pytorch_dropout_from_scratch(x: list, p: float = 0.5, training: bool = True) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Dropout from Scratch** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_dropout_from_scratch(x: list, p: float = 0.5, training: bool = True) -> dict:\n    t = torch.tensor(x, dtype=torch.float32)\n    if not training or p >= 1.0: return {'output': t.tolist(), 'scale': 1.0}\n    sc = 1.0 / (1.0 - p)\n    return {'output': torch.round(t * sc, decimals=4).tolist(), 'scale': round(float(sc), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import torch\n\ndef pytorch_dropout_from_scratch(x: list, p: float = 0.5, training: bool = True) -> dict:\n    \"\"\"\n    Implement PyTorch inverted dropout from a supplied mask during training while returning inputs unchanged in evaluation mode.\n\n    Args:\n        x (list): Input feature vector, array, or scalar evaluation point.\n        p (float): Dropout probability or success probability in [0, 1].\n        training (bool): Boolean flag indicating training mode (True) vs evaluation mode (False).\n\n    Returns:\n        dict: Computed Dropout from Scratch result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Dropout from Scratch** (Neural Networks): Implement PyTorch inverted dropout from a supplied mask during training while returning inputs unchanged in evaluation mode.\n\nTo implement `pytorch_dropout_from_scratch` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `p`, `training`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_dropout_from_scratch(x: list, p: float = 0.5, training: bool = True) -> dict:\n    t = torch.tensor(x, dtype=torch.float32)\n    if not training or p >= 1.0: return {'output': t.tolist(), 'scale': 1.0}\n    sc = 1.0 / (1.0 - p)\n    return {'output': torch.round(t * sc, decimals=4).tolist(), 'scale': round(float(sc), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Dropout from Scratch** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pytorch-dropout-from-scratch-tc-1",
@@ -66,7 +68,7 @@
     },
     {
       "id": "pytorch-dropout-from-scratch-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (p=0.75)",
       "inputs": {
         "x": [
           [
@@ -98,7 +100,7 @@
     },
     {
       "id": "pytorch-dropout-from-scratch-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (p=0.25)",
       "inputs": {
         "x": [
           [
@@ -126,11 +128,11 @@
         ],
         "scale": 1.3333
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pytorch-dropout-from-scratch-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (p=1.0)",
       "inputs": {
         "x": [
           [
@@ -162,7 +164,7 @@
     },
     {
       "id": "pytorch-dropout-from-scratch-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (p=0.5)",
       "inputs": {
         "x": [
           [
@@ -194,7 +196,7 @@
     },
     {
       "id": "pytorch-dropout-from-scratch-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (p=0.4)",
       "inputs": {
         "x": [
           [
@@ -226,7 +228,7 @@
     },
     {
       "id": "pytorch-dropout-from-scratch-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (p=0.5)",
       "inputs": {
         "x": [
           [
@@ -259,7 +261,26 @@
   ],
   "functionMetadata": {
     "name": "pytorch_dropout_from_scratch",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[[1.0, 2.0], [3.0, 4.0]]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "p",
+        "type": "number",
+        "example": "0.5",
+        "description": "Dropout probability or success probability in [0, 1]"
+      },
+      {
+        "name": "training",
+        "type": "boolean",
+        "example": "true",
+        "description": "Boolean flag indicating training mode (True) vs evaluation mode (False)"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -268,11 +289,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Dropout from Scratch",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pytorch-dropout-from-scratch",
+  "localUrl": "http://localhost:3000/problems/pytorch-dropout-from-scratch"
 }

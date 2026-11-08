@@ -18,19 +18,21 @@
   "seoDescription": "Create a DataFrame and compute a cross-tabulation (frequency table) showing how often each combination of values co-occurs.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute a bivariate frequency distribution table showing co-occurrence frequencies between two categorical features.\n\nCross-tabulation reveals dependency structures and bivariate associations between categorical attributes.\n\n### Mathematical Formulation\n$$\nC_{i, j} = \\operatorname{count}(\\{ x \\mid \\text{row}(x)=i \\land \\text{col}(x)=j \\})\n$$\n\n### Step-by-Step Implementation\n1. Identify intersecting categorical attributes\n2. Compute co-occurrence frequency counts across all category combinations\n3. Return structured frequency matrix\n\n### Returns\nDictionary of column arrays representing the contingency table.",
-  "theory": "# Understanding Cross Tabulation\n\n## 1. What Is It?\n\nThe **Cross Tabulation** is a fundamental computational technique in Pandas. In machine learning workflows, it involves performing bivariate frequency distribution table showing co-occurrence frequencies between two categorical features.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Pandas workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nC_{i, j} = \\operatorname{count}(\\{ x \\mid \\text{row}(x)=i \\land \\text{col}(x)=j \\})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pandas_cross_tabulation` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nrecords = [{\"gender\": \"M\", \"device\": \"Mobile\"}, {\"gender\": \"M\", \"device\": \"Desktop\"}, {\"gender\": \"F\", \"device\": \"Mobile\"}], index_col = \"gender\", columns_col = \"device\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pandas_cross_tabulation under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"Desktop\": [0, 1], \"Mobile\": [1, 1], \"gender\": [\"F\", \"M\"]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pandas_cross_tabulation` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`Desktop`**: Represents `Desktop` (e.g. `[0, 1]`), reflecting the updated state or component.\n  - **`Mobile`**: Represents `Mobile` (e.g. `[1, 1]`), reflecting the updated state or component.\n  - **`gender`**: Represents `gender` (e.g. `['F', 'M']`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `pandas_cross_tabulation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pandas_cross_tabulation`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pandas_cross_tabulation`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Cross Tabulation** provides an essential primitive within Pandas systems. By combining vectorized array computation with rigorous numerical safeguards, `pandas_cross_tabulation` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute a bivariate frequency distribution table showing co-occurrence frequencies between two categorical features.\n\n$$\nC_{i, j} = \\operatorname{count}(\\{ x \\mid \\text{row}(x)=i \\land \\text{col}(x)=j \\})\n$$\n\nGiven input parameters `records`, `index_col`, `columns_col`, return dictionary of column arrays representing the contingency table.",
+  "theory": "## What Is Cross Tabulation?\n\nIn tabular data engineering with Pandas, vectorized filtering, grouping, joining, and windowing transform raw records into clean analytical features.\n\n$$\nC_{i, j} = \\operatorname{count}(\\{ x \\mid \\text{row}(x)=i \\land \\text{col}(x)=j \\})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Aggregation Functions**, **Apply Custom Transforms**, **Boolean Indexing**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: records = [{\"gender\": \"M\", \"device\": \"Mobile\"}, {\"gender\": \"M\", \"device\": \"Desktop\"}, {\"gender\": \"F\", \"device\": \"Mobile\"}], index_col = \"gender\", columns_col = \"device\"\n\nOutput: {\"Desktop\": [0, 1], \"Mobile\": [1, 1], \"gender\": [\"F\", \"M\"]}\n\nExplanation: Evaluated pandas_cross_tabulation under standard test conditions."
+    "Input: records = [{\"gender\": \"M\", \"device\": \"Mobile\"}, {\"gender\": \"M\", \"device\": \"Desktop\"}, {\"gender\": \"F\", \"device\": \"Mobile\"}], index_col = \"gender\", columns_col = \"device\"\n\nOutput: {\"Desktop\": [0, 1], \"Mobile\": [1, 1], \"gender\": [\"F\", \"M\"]}",
+    "Input: records = [{\"gender\": \"M\", \"device\": \"Mobile\"}, {\"gender\": \"M\", \"device\": \"Desktop\"}, {\"gender\": \"F\", \"device\": \"Mobile\"}], index_col = \"gender\", columns_col = \"device\"\n\nOutput: {\"Desktop\": [0, 1], \"Mobile\": [1, 1], \"gender\": [\"F\", \"M\"]}"
   ],
-  "requirements": "* Function must be named `pandas_cross_tabulation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pandas_cross_tabulation` accepting `records`, `index_col`, `columns_col`\n* Create a DataFrame and compute a cross-tabulation (frequency table) showing how often each combination of values co-occurs.\n* Return a `dict` containing the exact keys `'Desktop'`, `'Mobile'`, `'gender'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pandas_cross_tabulation`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`records`, `index_col`, `columns_col`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $C_{i, j} = \\operatorname{count}(\\{ x \\mid \\text{row}(x)=i \\land \\text{col}(x)=j \\})$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('Desktop', 'Mobile', 'gender') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import pandas as pd\n\ndef pandas_cross_tabulation(records: list, index_col: str, columns_col: str) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Cross Tabulation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport pandas as pd\n\ndef pandas_cross_tabulation(records: list, index_col: str, columns_col: str) -> dict:\n    df = pd.DataFrame(records)\n    ct = pd.crosstab(df[index_col], df[columns_col])\n    res = {str(c): [int(v) for v in ct[c].tolist()] for c in ct.columns}\n    res[index_col] = list(ct.index)\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: Pandas & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import pandas as pd\n\ndef pandas_cross_tabulation(records: list, index_col: str, columns_col: str) -> dict:\n    \"\"\"\n    Create a DataFrame and compute a cross-tabulation (frequency table) showing how often each combination of values co-occurs.\n\n    Args:\n        records (list): List of dictionaries representing tabular rows.\n        index_col (str): Column name to set or use as table index.\n        columns_col (str): Column name whose unique values become output pivot columns.\n\n    Returns:\n        dict: Computed Cross Tabulation result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Cross Tabulation** (Data Processing): Create a DataFrame and compute a cross-tabulation (frequency table) showing how often each combination of values co-occurs.\n\nTo implement `pandas_cross_tabulation` cleanly and accurately:\n1. Parse and normalize the inputs (`records`, `index_col`, `columns_col`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport pandas as pd\n\ndef pandas_cross_tabulation(records: list, index_col: str, columns_col: str) -> dict:\n    df = pd.DataFrame(records)\n    ct = pd.crosstab(df[index_col], df[columns_col])\n    res = {str(c): [int(v) for v in ct[c].tolist()] for c in ct.columns}\n    res[index_col] = list(ct.index)\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Cross Tabulation** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pandas-cross-tabulation-tc-1",
@@ -71,7 +73,7 @@
     },
     {
       "id": "pandas-cross-tabulation-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (index_col=gender)",
       "inputs": {
         "records": [
           {
@@ -108,7 +110,7 @@
     },
     {
       "id": "pandas-cross-tabulation-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (index_col=gender)",
       "inputs": {
         "records": [
           {
@@ -144,11 +146,11 @@
           "Ms"
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pandas-cross-tabulation-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (index_col=gender)",
       "inputs": {
         "records": [
           {
@@ -185,7 +187,7 @@
     },
     {
       "id": "pandas-cross-tabulation-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (index_col=gender)",
       "inputs": {
         "records": [
           {
@@ -222,7 +224,7 @@
     },
     {
       "id": "pandas-cross-tabulation-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (index_col=gender)",
       "inputs": {
         "records": [
           {
@@ -259,7 +261,7 @@
     },
     {
       "id": "pandas-cross-tabulation-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (index_col=gender)",
       "inputs": {
         "records": [
           {
@@ -297,7 +299,26 @@
   ],
   "functionMetadata": {
     "name": "pandas_cross_tabulation",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "records",
+        "type": "array",
+        "example": "[{\"gender\": \"M\", \"device\": \"Mobile\"}, {\"gender\": \"M\", \"device\": \"Desktop\"}, {\"gender\": \"F\", \"device\": \"Mobile\"}]",
+        "description": "List of dictionaries representing tabular rows"
+      },
+      {
+        "name": "index_col",
+        "type": "string",
+        "example": "\"gender\"",
+        "description": "Column name to set or use as table index"
+      },
+      {
+        "name": "columns_col",
+        "type": "string",
+        "example": "\"device\"",
+        "description": "Column name whose unique values become output pivot columns"
+      }
+    ]
   },
   "relatedProblems": [
     "pandas-drop-duplicates",
@@ -306,11 +327,7 @@
     "pandas-multi-column-selection",
     "pandas-inspect-shape"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pandas",
-    "placeholderType": "pandas_passthrough (return df)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Cross Tabulation",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pandas-cross-tabulation",
+  "localUrl": "http://localhost:3000/problems/pandas-cross-tabulation"
 }

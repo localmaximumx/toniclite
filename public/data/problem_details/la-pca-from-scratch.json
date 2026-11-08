@@ -20,19 +20,21 @@
   "seoDescription": "Implement PCA from scratch by centering data, decomposing covariance, and projecting onto leading components.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute Principal Component Analysis (PCA) by centering data, decomposing the sample covariance matrix, and projecting onto leading eigenvectors.\n\nPCA orthogonalizes feature axes such that the first principal component aligns with maximal data variance.\n\n### Mathematical Formulation\n$$\n\\Sigma = \\frac{1}{N-1} \\tilde{X}^T \\tilde{X}, \\quad Z = \\tilde{X} W_k\n$$\n\n### Step-by-Step Implementation\n1. Center data matrix by subtracting feature-wise sample means\n2. Compute sample covariance matrix and its eigendecomposition\n3. Project centered data onto top k eigenvectors with highest variance\n\n### Returns\nDictionary containing 'transformed' coordinates, 'components' matrix, and 'explained_variance_ratio'.",
-  "theory": "# Understanding PCA from Scratch\n\n## 1. What Is It?\n\nThe **PCA from Scratch** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing Principal Component Analysis (PCA) by centering data, decomposing the sample covariance matrix, and projecting onto leading eigenvectors.\n\n### Key Terminology\n- **`X`**: The input feature matrix containing samples as rows and features as columns.\n- **Linear Algebra**: Core domain concept contextualizing this task within Numpy workflows.\n- **Classic ML**: Core domain concept contextualizing this task within Numpy workflows.\n- **Feature Engineering**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\Sigma = \\frac{1}{N-1} \\tilde{X}^T \\tilde{X}, \\quad Z = \\tilde{X} W_k\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `la_pca_from_scratch` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nX = [[1.0, 2.0, 3.0], [2.0, 3.0, 5.0], [5.0, 8.0, 13.0], [8.0, 12.0, 20.0]], n_components = 2\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated la_pca_from_scratch under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"transformed\": [[8.922824, 0.090633], [6.487971, -0.176742], [-3.405812, 0.15952], [-12.004983, -0.073411]], \"components\": [[-0.328624, -0.482993, -0.811618], [-0.747444, 0.658319, -0.089125]], \"explained_variance_ratio\": [0.9997, 0.0003]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `la_pca_from_scratch` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`transformed`**: Represents `transformed` (e.g. `[[8.922824, 0.090633], [6.487971, -0.176742], [-3.405812, 0.15952], [-12.004983, -0.073411]]`), reflecting the updated state or component.\n  - **`components`**: Represents `components` (e.g. `[[-0.328624, -0.482993, -0.811618], [-0.747444, 0.658319, -0.089125]]`), reflecting the updated state or component.\n  - **`explained_variance_ratio`**: Represents `explained_variance_ratio` (e.g. `[0.9997, 0.0003]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `la_pca_from_scratch`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `la_pca_from_scratch`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `la_pca_from_scratch`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**PCA from Scratch** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `la_pca_from_scratch` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute Principal Component Analysis (PCA) by centering data, decomposing the sample covariance matrix, and projecting onto leading eigenvectors.\n\n$$\n\\Sigma = \\frac{1}{N-1} \\tilde{X}^T \\tilde{X}, \\quad Z = \\tilde{X} W_k\n$$\n\nGiven input parameters `X`, `n_components`, return dictionary containing 'transformed' coordinates, 'components' matrix, and 'explained_variance_ratio'.",
+  "theory": "## What Is PCA from Scratch?\n\nPrincipal Component Analysis (PCA) projects centered data onto the orthogonal directions of maximum empirical variance (the top eigenvectors of the sample covariance matrix).\n\n$$\n\\Sigma = \\frac{1}{N-1} \\tilde{X}^T \\tilde{X}, \\quad Z = \\tilde{X} W_k\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\Sigma = \\frac{1}{N-1} \\tilde{X}^T \\tilde{X}\n$$\n\n$$\nZ = \\tilde{X} W_k\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Cholesky Decomposition**, **Implement Cosine Similarity**, **Implement Dot Product**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d^2 + d^3)$ where $N$ is the number of samples and $d$ is the matrix/feature dimension (dominated by matrix factorization or system solve).\n- **Space Complexity:** $\\mathcal{O}(d^2)$ to store the matrix factors and intermediate linear algebra arrays.",
   "examples": [
-    "Input: X = [[1.0, 2.0, 3.0], [2.0, 3.0, 5.0], [5.0, 8.0, 13.0], [8.0, 12.0, 20.0]], n_components = 2\n\nOutput: {\"transformed\": [[8.922824, 0.090633], [6.487971, -0.176742], [-3.405812, 0.15952], [-12.004983, -0.073411]], \"components\": [[-0.328624, -0.482993, -0.811618], [-0.747444, 0.658319, -0.089125]], \"explained_variance_ratio\": [0.9997, 0.0003]}\n\nExplanation: Evaluated la_pca_from_scratch under standard test conditions."
+    "Input: X = [[1.0, 2.0, 3.0], [2.0, 3.0, 5.0], [5.0, 8.0, 13.0], [8.0, 12.0, 20.0]], n_components = 2\n\nOutput: {\"transformed\": [[8.922824, 0.090633], [6.487971, -0.176742], [-3.405812, 0.15952], [-12.004983, -0.073411]], \"components\": [[-0.328624, -0.482993, -0.811618], [-0.747444, 0.658319, -0.089125]], \"explained_variance_ratio\": [0.9997, 0.0003]}",
+    "Input: X = [[2.0, 4.0, 6.0], [4.0, 6.0, 10.0], [10.0, 16.0, 26.0], [16.0, 24.0, 40.0]], n_components = 4\n\nOutput: {\"transformed\": [[17.845648, 0.181265, 0.0], [12.975941, -0.353485, -0.0], [-6.811623, 0.319041, 0.0], [-24.009966, -0.146822, -0.0]], \"components\": [[-0.328624, -0.482993, -0.811618], [-0.747444, 0.658319, -0.089125], [-0.57735, -0.57735, 0.57735]], \"explained_variance_ratio\": [0.9997, 0.0003, -0.0]}"
   ],
-  "requirements": "* Function must be named `la_pca_from_scratch`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `la_pca_from_scratch` accepting `X`, `n_components`\n* Implement PCA from scratch by centering data, decomposing covariance, and projecting onto leading components.\n* Return a `dict` containing the exact keys `'transformed'`, `'components'`, `'explained_variance_ratio'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `la_pca_from_scratch`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`X`, `n_components`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\Sigma = \\frac{1}{N-1} \\tilde{X}^T \\tilde{X}, \\quad Z = \\tilde{X} W_k$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('transformed', 'components', 'explained_variance_ratio') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef la_pca_from_scratch(X: list, n_components: int = 2) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **PCA from Scratch** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef la_pca_from_scratch(X: list, n_components: int = 2) -> dict:\n    arr = np.array(X, dtype=np.float64)\n    N = arr.shape[0]\n    cen = arr - np.mean(arr, axis=0)\n    cov = np.dot(cen.T, cen) / max(N - 1, 1)\n    evals, evecs = np.linalg.eigh(cov)\n    idx = np.argsort(evals)[::-1]\n    evals, evecs = evals[idx], evecs[:, idx]\n    k = int(n_components)\n    top_vecs = evecs[:, :k]\n    return {'transformed': np.round(np.dot(cen, top_vecs), 6).tolist(), 'components': np.round(top_vecs.T, 6).tolist(), 'explained_variance_ratio': np.round(evals[:k]/np.sum(evals), 4).tolist()}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef la_pca_from_scratch(X: list, n_components: int = 2) -> dict:\n    \"\"\"\n    Implement PCA from scratch by centering data, decomposing covariance, and projecting onto leading components.\n\n    Args:\n        X (list): 2D input design matrix of shape (N, D) where rows are samples.\n        n_components (int): Input parameter `n_components` (int) for PCA from Scratch.\n\n    Returns:\n        dict: Computed PCA from Scratch result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**PCA from Scratch** (Linear Algebra, Classic ML, Feature Engineering): Implement PCA from scratch by centering data, decomposing covariance, and projecting onto leading components.\n\nTo implement `la_pca_from_scratch` cleanly and accurately:\n1. Parse and normalize the inputs (`X`, `n_components`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef la_pca_from_scratch(X: list, n_components: int = 2) -> dict:\n    arr = np.array(X, dtype=np.float64)\n    N = arr.shape[0]\n    cen = arr - np.mean(arr, axis=0)\n    cov = np.dot(cen.T, cen) / max(N - 1, 1)\n    evals, evecs = np.linalg.eigh(cov)\n    idx = np.argsort(evals)[::-1]\n    evals, evecs = evals[idx], evecs[:, idx]\n    k = int(n_components)\n    top_vecs = evecs[:, :k]\n    return {'transformed': np.round(np.dot(cen, top_vecs), 6).tolist(), 'components': np.round(top_vecs.T, 6).tolist(), 'explained_variance_ratio': np.round(evals[:k]/np.sum(evals), 4).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **PCA from Scratch** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "la-pca-from-scratch-tc-1",
@@ -102,7 +104,7 @@
     },
     {
       "id": "la-pca-from-scratch-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (n_components=4)",
       "inputs": {
         "X": [
           [
@@ -178,7 +180,7 @@
     },
     {
       "id": "la-pca-from-scratch-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (n_components=1)",
       "inputs": {
         "X": [
           [
@@ -230,11 +232,11 @@
           0.9997
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "la-pca-from-scratch-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (n_components=2)",
       "inputs": {
         "X": [
           [
@@ -300,7 +302,7 @@
     },
     {
       "id": "la-pca-from-scratch-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (n_components=3)",
       "inputs": {
         "X": [
           [
@@ -376,7 +378,7 @@
     },
     {
       "id": "la-pca-from-scratch-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (n_components=6)",
       "inputs": {
         "X": [
           [
@@ -452,7 +454,7 @@
     },
     {
       "id": "la-pca-from-scratch-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (n_components=1)",
       "inputs": {
         "X": [
           [
@@ -509,7 +511,20 @@
   ],
   "functionMetadata": {
     "name": "la_pca_from_scratch",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "X",
+        "type": "array",
+        "example": "[[1.0, 2.0, 3.0], [2.0, 3.0, 5.0], [5.0, 8.0, 13.0], [8.0, 12.0, 20.0]]",
+        "description": "2D input design matrix of shape (N, D) where rows are samples"
+      },
+      {
+        "name": "n_components",
+        "type": "number",
+        "example": "2",
+        "description": "Input parameter `n_components` (int) for PCA from Scratch"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -518,11 +533,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "PCA from Scratch",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/la-pca-from-scratch",
+  "localUrl": "http://localhost:3000/problems/la-pca-from-scratch"
 }

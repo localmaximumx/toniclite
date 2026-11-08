@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { 
   Sparkles, 
   Terminal, 
@@ -25,15 +25,24 @@ import {
 } from 'lucide-react';
 import { AuthModal } from '../components/AuthModal';
 import { MathView } from '../components/MathView';
-import { getCurrentUser } from '../services/authService';
+import { getCurrentUser, syncUserSession, UserAccount } from '../services/authService';
 import { getProblemCatalog } from '../services/dataService';
 import { ProblemSummary } from '../types';
 
 export const HomePage: React.FC = () => {
+  const navigate = useNavigate();
   const [featuredProblems, setFeaturedProblems] = useState<ProblemSummary[]>([]);
   const [totalProblemsCount, setTotalProblemsCount] = useState<number>(1170);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const currentUser = getCurrentUser();
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => getCurrentUser());
+
+  useEffect(() => {
+    const syncAuth = () => setCurrentUser(getCurrentUser());
+    syncAuth();
+    syncUserSession().then(syncAuth);
+    window.addEventListener('tensortonic_auth_change', syncAuth);
+    return () => window.removeEventListener('tensortonic_auth_change', syncAuth);
+  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -73,6 +82,10 @@ export const HomePage: React.FC = () => {
     { name: 'CUDA & Triton', count: '50+', icon: '🚀', desc: 'GPU kernels, thread blocks & memory tiling' },
     { name: 'SQL & Data', count: '60+', icon: '📊', desc: 'Window functions, cohorts & metrics aggregation' }
   ];
+
+  if (currentUser) {
+    return <Navigate to="/problems" replace />;
+  }
 
   return (
     <div className="h-full overflow-y-auto bg-background text-foreground custom-scrollbar">
@@ -403,6 +416,10 @@ export const HomePage: React.FC = () => {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
+        onSuccess={() => {
+          setCurrentUser(getCurrentUser());
+          navigate('/problems', { replace: true });
+        }}
         initialTab="register"
         promptMessage="Create an account to save your solved challenges and code drafts across sessions."
       />

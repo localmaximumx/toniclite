@@ -19,19 +19,21 @@
   "seoDescription": "Find the longest exactly-matching prefix, measured in whole blocks, among all candidates.",
   "solved": false,
   "isLocked": true,
-  "description": "Identify longest common prefix token blocks between incoming prompt and stored KV cache memory to eliminate prefill latency.\n\nPrefix caching avoids recomputing quadratic attention matrices for long system prompts and multi-turn chat history.\n\n### Mathematical Formulation\n$$\nL_{\\text{reuse}} = \\max \\{ B \\mid \\forall k < B, \\, \\text{Prompt}_{k} = \\text{Cache}_{k} \\}\n$$\n\n### Step-by-Step Implementation\n1. Segment incoming prompt into fixed-size sequence blocks\n2. Match prompt blocks sequentially against cached token blocks\n3. Compute reused token count and remaining tokens requiring forward computation\n\n### Returns\nDictionary with 'matched_blocks', 'reused_tokens', and 'new_tokens_to_compute'.",
-  "theory": "# Understanding Prefix Cache Matching and Reuse\n\n## 1. What Is It?\n\nThe **Prefix Cache Matching and Reuse** is a fundamental computational technique in Pytorch. In machine learning workflows, Identify longest common prefix token blocks between incoming prompt and stored KV cache memory to eliminate prefill latency.\n\n### Key Terminology\n- **Inference**: Core domain concept contextualizing this task within Pytorch workflows.\n- **Language Models**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nL_{\\text{reuse}} = \\max \\{ B \\mid \\forall k < B, \\, \\text{Prompt}_{k} = \\text{Cache}_{k} \\}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `inference_prefix_cache_reuse` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nprompt_tokens = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], cached_block_tokens = [[1, 2, 3, 4], [5, 6, 7, 8], [99, 99, 99, 99]], block_size = 4\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated inference_prefix_cache_reuse under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"matched_blocks\": 2, \"reused_tokens\": 8, \"new_tokens_to_compute\": 4}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `inference_prefix_cache_reuse` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`matched_blocks`**: Represents `matched_blocks` (e.g. `2`), reflecting the updated state or component.\n  - **`reused_tokens`**: Represents `reused_tokens` (e.g. `8`), reflecting the updated state or component.\n  - **`new_tokens_to_compute`**: Represents `new_tokens_to_compute` (e.g. `4`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `inference_prefix_cache_reuse`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `inference_prefix_cache_reuse`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `inference_prefix_cache_reuse`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Prefix Cache Matching and Reuse** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `inference_prefix_cache_reuse` accurately and efficiently performs the required transformation.\n",
+  "description": "Identify longest common prefix token blocks between incoming prompt and stored KV cache memory to eliminate prefill latency.\n\n$$\nL_{\\text{reuse}} = \\max \\{ B \\mid \\forall k < B, \\, \\text{Prompt}_{k} = \\text{Cache}_{k} \\}\n$$\n\nGiven input parameters `prompt_tokens`, `cached_block_tokens`, `block_size`, return dictionary with 'matched_blocks', 'reused_tokens', and 'new_tokens_to_compute'.",
+  "theory": "## What Is Prefix Cache Matching and Reuse?\n\nIn LLM and deep learning inference systems, algorithmic optimizations reduce memory footprint, KV-cache bandwidth, and token generation latency.\n\n$$\nL_{\\text{reuse}} = \\max \\{ B \\mid \\forall k < B, \\, \\text{Prompt}_{k} = \\text{Cache}_{k} \\}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Implement Autoregressive Decoding with a KV Cache**, **Implement Block-Wise FP8 Quantization**, **Simulate Chunked Prefill Scheduling**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: prompt_tokens = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], cached_block_tokens = [[1, 2, 3, 4], [5, 6, 7, 8], [99, 99, 99, 99]], block_size = 4\n\nOutput: {\"matched_blocks\": 2, \"reused_tokens\": 8, \"new_tokens_to_compute\": 4}\n\nExplanation: Evaluated inference_prefix_cache_reuse under standard test conditions."
+    "Input: prompt_tokens = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], cached_block_tokens = [[1, 2, 3, 4], [5, 6, 7, 8], [99, 99, 99, 99]], block_size = 4\n\nOutput: {\"matched_blocks\": 2, \"reused_tokens\": 8, \"new_tokens_to_compute\": 4}",
+    "Input: prompt_tokens = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24], cached_block_tokens = [[2, 4, 6, 8], [10, 12, 14, 16], [198, 198, 198, 198]], block_size = 8\n\nOutput: {\"matched_blocks\": 0, \"reused_tokens\": 0, \"new_tokens_to_compute\": 12}"
   ],
-  "requirements": "* Function must be named `inference_prefix_cache_reuse`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `inference_prefix_cache_reuse` accepting `prompt_tokens`, `cached_block_tokens`, `block_size`\n* Find the longest exactly-matching prefix, measured in whole blocks, among all candidates.\n* Return a `dict` containing the exact keys `'matched_blocks'`, `'reused_tokens'`, `'new_tokens_to_compute'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `inference_prefix_cache_reuse`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`prompt_tokens`, `cached_block_tokens`, `block_size`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $L_{\\text{reuse}} = \\max \\{ B \\mid \\forall k < B, \\, \\text{Prompt}_{k} = \\text{Cache}_{k} \\}$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('matched_blocks', 'reused_tokens', 'new_tokens_to_compute') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def inference_prefix_cache_reuse(prompt_tokens: list, cached_block_tokens: list, block_size: int = 4) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Implement Prefix Cache Matching and Reuse** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef inference_prefix_cache_reuse(prompt_tokens: list, cached_block_tokens: list, block_size: int = 4) -> dict:\n    p, bs = list(prompt_tokens), int(block_size)\n    m_blocks = 0\n    for i in range(len(p) // bs):\n        blk = p[i*bs:(i+1)*bs]\n        if i < len(cached_block_tokens) and cached_block_tokens[i] == blk: m_blocks += 1\n        else: break\n    reused = m_blocks * bs\n    return {'matched_blocks': m_blocks, 'reused_tokens': reused, 'new_tokens_to_compute': len(p) - reused}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef inference_prefix_cache_reuse(prompt_tokens: list, cached_block_tokens: list, block_size: int = 4) -> dict:\n    \"\"\"\n    Find the longest exactly-matching prefix, measured in whole blocks, among all candidates.\n\n    Args:\n        prompt_tokens (list): Input parameter `prompt_tokens` (list) for Implement Prefix Cache Matching and Reuse.\n        cached_block_tokens (list): Input parameter `cached_block_tokens` (list) for Implement Prefix Cache Matching and Reuse.\n        block_size (int): Tile or KV-cache page block size in tokens.\n\n    Returns:\n        dict: Computed Implement Prefix Cache Matching and Reuse result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Implement Prefix Cache Matching and Reuse** (Inference, Language Models): Find the longest exactly-matching prefix, measured in whole blocks, among all candidates.\n\nTo implement `inference_prefix_cache_reuse` cleanly and accurately:\n1. Parse and normalize the inputs (`prompt_tokens`, `cached_block_tokens`, `block_size`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef inference_prefix_cache_reuse(prompt_tokens: list, cached_block_tokens: list, block_size: int = 4) -> dict:\n    p, bs = list(prompt_tokens), int(block_size)\n    m_blocks = 0\n    for i in range(len(p) // bs):\n        blk = p[i*bs:(i+1)*bs]\n        if i < len(cached_block_tokens) and cached_block_tokens[i] == blk: m_blocks += 1\n        else: break\n    reused = m_blocks * bs\n    return {'matched_blocks': m_blocks, 'reused_tokens': reused, 'new_tokens_to_compute': len(p) - reused}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Implement Prefix Cache Matching and Reuse** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "inference-prefix-cache-reuse-tc-1",
@@ -82,7 +84,7 @@
     },
     {
       "id": "inference-prefix-cache-reuse-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (block_size=8)",
       "inputs": {
         "prompt_tokens": [
           2,
@@ -129,7 +131,7 @@
     },
     {
       "id": "inference-prefix-cache-reuse-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (block_size=2)",
       "inputs": {
         "prompt_tokens": [
           1,
@@ -172,11 +174,11 @@
         "reused_tokens": 0,
         "new_tokens_to_compute": 12
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "inference-prefix-cache-reuse-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (block_size=6)",
       "inputs": {
         "prompt_tokens": [
           2,
@@ -223,7 +225,7 @@
     },
     {
       "id": "inference-prefix-cache-reuse-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (block_size=12)",
       "inputs": {
         "prompt_tokens": [
           3,
@@ -270,7 +272,7 @@
     },
     {
       "id": "inference-prefix-cache-reuse-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (block_size=1)",
       "inputs": {
         "prompt_tokens": [
           1,
@@ -317,7 +319,7 @@
     },
     {
       "id": "inference-prefix-cache-reuse-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (block_size=16)",
       "inputs": {
         "prompt_tokens": [
           4,
@@ -365,7 +367,26 @@
   ],
   "functionMetadata": {
     "name": "inference_prefix_cache_reuse",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "prompt_tokens",
+        "type": "array",
+        "example": "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]",
+        "description": "Input parameter `prompt_tokens` (list) for Implement Prefix Cache Matching and Reuse"
+      },
+      {
+        "name": "cached_block_tokens",
+        "type": "array",
+        "example": "[[1, 2, 3, 4], [5, 6, 7, 8], [99, 99, 99, 99]]",
+        "description": "Input parameter `cached_block_tokens` (list) for Implement Prefix Cache Matching and Reuse"
+      },
+      {
+        "name": "block_size",
+        "type": "number",
+        "example": "4",
+        "description": "Tile or KV-cache page block size in tokens"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -374,11 +395,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Implement Prefix Cache Matching and Reuse",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/inference-prefix-cache-reuse",
+  "localUrl": "http://localhost:3000/problems/inference-prefix-cache-reuse"
 }

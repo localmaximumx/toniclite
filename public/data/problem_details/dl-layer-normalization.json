@@ -19,19 +19,21 @@
   "seoDescription": "Implement Layer Normalization (Ba et al, 2016), the standard normalization technique in Transformers.",
   "solved": false,
   "isLocked": true,
-  "description": "Normalize hidden activations independently per example across the feature channel dimension with affine scale and shift parameters.\n\nUnlike Batch Normalization, LayerNorm computes statistics along the feature dimension, making it invariant to batch size and ideal for sequential models.\n\n### Mathematical Formulation\n$$\n\\hat{x}_{i, j} = \\frac{x_{i, j} - \\mu_i}{\\sqrt{\\sigma_i^2 + \\varepsilon}}, \\quad y_{i, j} = \\gamma \\hat{x}_{i, j} + \\beta\n$$\n\n### Step-by-Step Implementation\n1. Compute sample mean and variance across feature dimension for each token independently\n2. Standardize feature coordinates with numerical epsilon protection\n3. Scale and translate with affine parameters gamma and beta\n\n### Returns\nNested list representing layer-normalized activations.",
-  "theory": "# Understanding Layer Normalization\n\n## 1. What Is It?\n\nThe **Layer Normalization** is a fundamental computational technique in Numpy. In machine learning workflows, Normalize hidden activations independently per example across the feature channel dimension with affine scale and shift parameters.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **`gamma`**: The learned affine scale parameter or discount factor.\n- **`beta`**: The moving average decay coefficient governing history retention.\n- **`eps`**: The smoothing term $\\varepsilon > 0$, added to denominators for numerical stability.\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n- **Transformers**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\hat{x}_{i, j} = \\frac{x_{i, j} - \\mu_i}{\\sqrt{\\sigma_i^2 + \\varepsilon}}, \\quad y_{i, j} = \\gamma \\hat{x}_{i, j} + \\beta\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_layer_normalization` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], gamma = 1.0, beta = 0.0, eps = 1e-05\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_layer_normalization under standard test conditions.\n\n**Resulting Output:**\n```python\n[[-1.2247, 0.0, 1.2247], [-1.2247, 0.0, 1.2247]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_layer_normalization` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[-1.2247, 0.0, 1.2247]`.\n  - **Element 2**: Evaluated output component `[-1.2247, 0.0, 1.2247]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_layer_normalization`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_layer_normalization`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Layer Normalization** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_layer_normalization` accurately and efficiently performs the required transformation.\n",
+  "description": "Normalize hidden activations independently per example across the feature channel dimension with affine scale and shift parameters.\n\n$$\n\\hat{x}_{i, j} = \\frac{x_{i, j} - \\mu_i}{\\sqrt{\\sigma_i^2 + \\varepsilon}}, \\quad y_{i, j} = \\gamma \\hat{x}_{i, j} + \\beta\n$$\n\nGiven input parameters `x`, `gamma`, `beta`, `eps`, return nested list representing layer-normalized activations.",
+  "theory": "## What Is Layer Normalization?\n\nLayer Normalization (Ba et al., 2016) normalizes activations across the feature dimension independently for each individual sample and token, rather than across the batch dimension.\n\n$$\n\\hat{x}_{i, j} = \\frac{x_{i, j} - \\mu_i}{\\sqrt{\\sigma_i^2 + \\varepsilon}}, \\quad y_{i, j} = \\gamma \\hat{x}_{i, j} + \\beta\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\hat{x}_{i, j} = \\frac{x_{i, j} - \\mu_i}{\\sqrt{\\sigma_i^2 + \\varepsilon}}\n$$\n\n$$\ny_{i, j} = \\gamma \\hat{x}_{i, j} + \\beta\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], gamma = 1.0, beta = 0.0, eps = 1e-05\n\nOutput: [[-1.2247, 0.0, 1.2247], [-1.2247, 0.0, 1.2247]]\n\nExplanation: Evaluated dl_layer_normalization under standard test conditions."
+    "Input: x = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], gamma = 1.0, beta = 0.0, eps = 1e-05\n\nOutput: [[-1.2247, 0.0, 1.2247], [-1.2247, 0.0, 1.2247]]",
+    "Input: x = [[2.0, 4.0, 6.0], [8.0, 10.0, 12.0]], gamma = 2.0, beta = 0.0, eps = 1e-05\n\nOutput: [[-2.4495, 0.0, 2.4495], [-2.4495, 0.0, 2.4495]]"
   ],
-  "requirements": "* Function must be named `dl_layer_normalization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_layer_normalization` accepting `x`, `gamma`, `beta`, `eps`\n* Implement Layer Normalization (Ba et al, 2016), the standard normalization technique in Transformers.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_layer_normalization`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `gamma`, `beta`, `eps`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `dl_layer_normalization` into clear stages: validate/reshape `x`, `gamma`, `beta`, `eps`, evaluate the Layer Normalization equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef dl_layer_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> list:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Layer Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_layer_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> list:\n    arr = np.array(x, dtype=np.float64)\n    m = np.mean(arr, axis=-1, keepdims=True); v = np.var(arr, axis=-1, keepdims=True)\n    return np.round(float(gamma) * ((arr - m) / np.sqrt(v + float(eps))) + float(beta), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef dl_layer_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> list:\n    \"\"\"\n    Implement Layer Normalization (Ba et al, 2016), the standard normalization technique in Transformers.\n\n    Args:\n        x (list): Input feature vector, array, or scalar evaluation point.\n        gamma (float): Discount factor in [0, 1] or scale parameter.\n        beta (float): Shift parameter, inverse temperature, or regularization coefficient.\n        eps (float): Small positive constant for numerical stability (preventing division by zero).\n\n    Returns:\n        list: Computed Layer Normalization result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Layer Normalization** (Neural Networks, Transformers): Implement Layer Normalization (Ba et al, 2016), the standard normalization technique in Transformers.\n\nTo implement `dl_layer_normalization` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `gamma`, `beta`, `eps`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_layer_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> list:\n    arr = np.array(x, dtype=np.float64)\n    m = np.mean(arr, axis=-1, keepdims=True); v = np.var(arr, axis=-1, keepdims=True)\n    return np.round(float(gamma) * ((arr - m) / np.sqrt(v + float(eps))) + float(beta), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Layer Normalization** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-layer-normalization-tc-1",
@@ -69,7 +71,7 @@
     },
     {
       "id": "dl-layer-normalization-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (gamma=2.0)",
       "inputs": {
         "x": [
           [
@@ -103,7 +105,7 @@
     },
     {
       "id": "dl-layer-normalization-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (gamma=0.5)",
       "inputs": {
         "x": [
           [
@@ -133,11 +135,11 @@
           0.6124
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "dl-layer-normalization-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (gamma=1.0)",
       "inputs": {
         "x": [
           [
@@ -171,7 +173,7 @@
     },
     {
       "id": "dl-layer-normalization-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (gamma=3.0)",
       "inputs": {
         "x": [
           [
@@ -205,7 +207,7 @@
     },
     {
       "id": "dl-layer-normalization-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (gamma=2.0)",
       "inputs": {
         "x": [
           [
@@ -239,7 +241,7 @@
     },
     {
       "id": "dl-layer-normalization-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (gamma=1.0)",
       "inputs": {
         "x": [
           [
@@ -274,7 +276,32 @@
   ],
   "functionMetadata": {
     "name": "dl_layer_normalization",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "gamma",
+        "type": "number",
+        "example": "1.0",
+        "description": "Discount factor in [0, 1] or scale parameter"
+      },
+      {
+        "name": "beta",
+        "type": "number",
+        "example": "0.0",
+        "description": "Shift parameter, inverse temperature, or regularization coefficient"
+      },
+      {
+        "name": "eps",
+        "type": "number",
+        "example": "1e-05",
+        "description": "Small positive constant for numerical stability (preventing division by zero)"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -283,11 +310,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Layer Normalization",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-layer-normalization",
+  "localUrl": "http://localhost:3000/problems/dl-layer-normalization"
 }

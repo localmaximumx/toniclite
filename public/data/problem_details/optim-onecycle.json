@@ -18,19 +18,21 @@
   "seoDescription": "Implement the one-cycle learning rate policy for full-batch MSE gradient descent, using zero-initialized weights.",
   "solved": false,
   "isLocked": true,
-  "description": "Generate dynamic cosine annealing learning rate schedule with warmup and cooldown phases.\n\nRamping learning rate to peak values while lowering momentum regularizes training, preventing premature convergence to sharp sub-optimal local minima.\n\n### Mathematical Formulation\n$$\n\\eta_t = \\begin{cases} \\eta_{\\max} + \\frac{\\eta_{\\text{init}} - \\eta_{\\max}}{2} (1 + \\cos(\\pi \\frac{t}{T_{\\text{up}}})) & t < T_{\\text{up}} \\\\ \\eta_{\\text{final}} + \\frac{\\eta_{\\max} - \\eta_{\\text{final}}}{2} (1 + \\cos(\\pi \\frac{t - T_{\\text{up}}}{T_{\\text{down}}})) & t \\ge T_{\\text{up}} \\end{cases}\n$$\n\n### Step-by-Step Implementation\n1. Determine warmup boundary step T_up = floor(total_steps * pct_start)\n2. Interpolate learning rate via cosine curve from initial_lr to max_lr during warmup\n3. Interpolate learning rate via cosine curve from max_lr down to final_lr during cooldown\n\n### Returns\nList of floats representing step-wise learning rates rounded to 6 decimal places.",
-  "theory": "# Understanding LR Range Test and One-Cycle Policy\n\n## 1. What Is It?\n\nThe **LR Range Test and One-Cycle Policy** is a fundamental computational technique in Numpy. In machine learning workflows, Generate dynamic cosine annealing learning rate schedule with warmup and cooldown phases.\n\n### Key Terminology\n- **Optimization**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\eta_t = \\begin{cases} \\eta_{\\max} + \\frac{\\eta_{\\text{init}} - \\eta_{\\max}}{2} (1 + \\cos(\\pi \\frac{t}{T_{\\text{up}}})) & t < T_{\\text{up}} \\\\ \\eta_{\\text{final}} + \\frac{\\eta_{\\max} - \\eta_{\\text{final}}}{2} (1 + \\cos(\\pi \\frac{t - T_{\\text{up}}}{T_{\\text{down}}})) & t \\ge T_{\\text{up}} \\end{cases}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `optim_onecycle` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ntotal_steps = 10, max_lr = 0.1, pct_start = 0.3, div_factor = 10.0, final_div_factor = 100.0\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated optim_onecycle under standard test conditions.\n\n**Resulting Output:**\n```python\n[0.01, 0.0325, 0.0775, 0.1, 0.095053, 0.081193, 0.061165, 0.038935, 0.018907, 0.005047]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `optim_onecycle` must return:\n- **Primary Output:** `[0.01, 0.0325, 0.0775, 0.1, 0.095053, 0.081193, 0.061165, 0.038935, 0.018907, 0.005047]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `optim_onecycle`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `optim_onecycle`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `optim_onecycle`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**LR Range Test and One-Cycle Policy** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `optim_onecycle` accurately and efficiently performs the required transformation.\n",
+  "description": "Generate dynamic cosine annealing learning rate schedule with warmup and cooldown phases.\n\n$$\n\\eta_t = \\begin{cases} \\eta_{\\max} + \\frac{\\eta_{\\text{init}} - \\eta_{\\max}}{2} (1 + \\cos(\\pi \\frac{t}{T_{\\text{up}}})) & t < T_{\\text{up}} \\\\ \\eta_{\\text{final}} + \\frac{\\eta_{\\max} - \\eta_{\\text{final}}}{2} (1 + \\cos(\\pi \\frac{t - T_{\\text{up}}}{T_{\\text{down}}})) & t \\ge T_{\\text{up}} \\end{cases}\n$$\n\nGiven input parameters `total_steps`, `max_lr`, `pct_start`, `div_factor`, `final_div_factor`, return list of floats representing step-wise learning rates rounded to 6 decimal places.",
+  "theory": "## What Is LR Range Test and One-Cycle Policy?\n\nIn mathematical optimization, first- and second-order update rules navigate high-dimensional loss landscapes toward local or global minima.\n\n$$\n\\eta_t = \\begin{cases} \\eta_{\\max} + \\frac{\\eta_{\\text{init}} - \\eta_{\\max}}{2} (1 + \\cos(\\pi \\frac{t}{T_{\\text{up}}})) & t < T_{\\text{up}} \\\\ \\eta_{\\text{final}} + \\frac{\\eta_{\\max} - \\eta_{\\text{final}}}{2} (1 + \\cos(\\pi \\frac{t - T_{\\text{up}}}{T_{\\text{down}}})) & t \\ge T_{\\text{up}} \\end{cases}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **AdaGrad**, **Adam Optimizer**, **AdamW (Decoupled Weight Decay)**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: total_steps = 10, max_lr = 0.1, pct_start = 0.3, div_factor = 10.0, final_div_factor = 100.0\n\nOutput: [0.01, 0.0325, 0.0775, 0.1, 0.095053, 0.081193, 0.061165, 0.038935, 0.018907, 0.005047]\n\nExplanation: Evaluated optim_onecycle under standard test conditions."
+    "Input: total_steps = 10, max_lr = 0.1, pct_start = 0.3, div_factor = 10.0, final_div_factor = 100.0\n\nOutput: [0.01, 0.0325, 0.0775, 0.1, 0.095053, 0.081193, 0.061165, 0.038935, 0.018907, 0.005047]",
+    "Input: total_steps = 15, max_lr = 0.15, pct_start = 0.45, div_factor = 15.0, final_div_factor = 150.0\n\nOutput: [0.01, 0.019378, 0.045, 0.08, 0.115, 0.140622, 0.15, 0.145479, 0.132461, 0.112517, 0.088051, 0.062016, 0.03755, 0.017606, 0.004588]"
   ],
-  "requirements": "* Function must be named `optim_onecycle`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `optim_onecycle` accepting `total_steps`, `max_lr`, `pct_start`, `div_factor`, `final_div_factor`\n* Implement the one-cycle learning rate policy for full-batch MSE gradient descent, using zero-initialized weights.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `optim_onecycle`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`total_steps`, `max_lr`, `pct_start`, `div_factor`, `final_div_factor`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `optim_onecycle` into clear stages: validate/reshape `total_steps`, `max_lr`, `pct_start`, `div_factor`, `final_div_factor`, evaluate the LR Range Test and One-Cycle Policy equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math\n\ndef optim_onecycle(total_steps: int, max_lr: float, pct_start: float = 0.3, div_factor: float = 25.0, final_div_factor: float = 1e4) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **LR Range Test and One-Cycle Policy** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef optim_onecycle(total_steps: int, max_lr: float, pct_start: float = 0.3, div_factor: float = 25.0, final_div_factor: float = 1e4) -> list:\n    init_lr, fin_lr = max_lr / div_factor, (max_lr / div_factor) / final_div_factor\n    s_up, s_dn = int(total_steps * pct_start), total_steps - int(total_steps * pct_start)\n    lrs = []\n    for t in range(total_steps):\n        if t < s_up:\n            p = t / s_up if s_up > 0 else 1.0\n            lr = max_lr + 0.5 * (init_lr - max_lr) * (1.0 + math.cos(math.pi * p))\n        else:\n            p = (t - s_up) / s_dn if s_dn > 0 else 1.0\n            lr = fin_lr + 0.5 * (max_lr - fin_lr) * (1.0 + math.cos(math.pi * p))\n        lrs.append(round(lr, 6))\n    return lrs\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import math\n\ndef optim_onecycle(total_steps: int, max_lr: float, pct_start: float = 0.3, div_factor: float = 25.0, final_div_factor: float = 1e4) -> list:\n    \"\"\"\n    Implement the one-cycle learning rate policy for full-batch MSE gradient descent, using zero-initialized weights.\n\n    Args:\n        total_steps (int): Total number of training schedule steps.\n        max_lr (float): Input parameter `max_lr` (float) for LR Range Test and One-Cycle Policy.\n        pct_start (float): Input parameter `pct_start` (float) for LR Range Test and One-Cycle Policy.\n        div_factor (float): Input parameter `div_factor` (float) for LR Range Test and One-Cycle Policy.\n        final_div_factor (float): Input parameter `final_div_factor` (float) for LR Range Test and One-Cycle Policy.\n\n    Returns:\n        list: Computed LR Range Test and One-Cycle Policy result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**LR Range Test and One-Cycle Policy** (Optimization): Implement the one-cycle learning rate policy for full-batch MSE gradient descent, using zero-initialized weights.\n\nTo implement `optim_onecycle` cleanly and accurately:\n1. Parse and normalize the inputs (`total_steps`, `max_lr`, `pct_start`, `div_factor`, `final_div_factor`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef optim_onecycle(total_steps: int, max_lr: float, pct_start: float = 0.3, div_factor: float = 25.0, final_div_factor: float = 1e4) -> list:\n    init_lr, fin_lr = max_lr / div_factor, (max_lr / div_factor) / final_div_factor\n    s_up, s_dn = int(total_steps * pct_start), total_steps - int(total_steps * pct_start)\n    lrs = []\n    for t in range(total_steps):\n        if t < s_up:\n            p = t / s_up if s_up > 0 else 1.0\n            lr = max_lr + 0.5 * (init_lr - max_lr) * (1.0 + math.cos(math.pi * p))\n        else:\n            p = (t - s_up) / s_dn if s_dn > 0 else 1.0\n            lr = fin_lr + 0.5 * (max_lr - fin_lr) * (1.0 + math.cos(math.pi * p))\n        lrs.append(round(lr, 6))\n    return lrs\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **LR Range Test and One-Cycle Policy** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "optim-onecycle-tc-1",
@@ -58,7 +60,7 @@
     },
     {
       "id": "optim-onecycle-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (total_steps=15)",
       "inputs": {
         "total_steps": 15,
         "max_lr": 0.15,
@@ -87,7 +89,7 @@
     },
     {
       "id": "optim-onecycle-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (total_steps=5)",
       "inputs": {
         "total_steps": 5,
         "max_lr": 0.05,
@@ -102,11 +104,11 @@
         0.017405,
         0.004955
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "optim-onecycle-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (total_steps=20)",
       "inputs": {
         "total_steps": 20,
         "max_lr": 0.2,
@@ -140,7 +142,7 @@
     },
     {
       "id": "optim-onecycle-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (total_steps=10)",
       "inputs": {
         "total_steps": 10,
         "max_lr": 0.1,
@@ -164,7 +166,7 @@
     },
     {
       "id": "optim-onecycle-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (total_steps=8)",
       "inputs": {
         "total_steps": 8,
         "max_lr": 0.08,
@@ -186,7 +188,7 @@
     },
     {
       "id": "optim-onecycle-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (total_steps=30)",
       "inputs": {
         "total_steps": 30,
         "max_lr": 0.3,
@@ -231,7 +233,38 @@
   ],
   "functionMetadata": {
     "name": "optim_onecycle",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "total_steps",
+        "type": "number",
+        "example": "10",
+        "description": "Total number of training schedule steps"
+      },
+      {
+        "name": "max_lr",
+        "type": "number",
+        "example": "0.1",
+        "description": "Input parameter `max_lr` (float) for LR Range Test and One-Cycle Policy"
+      },
+      {
+        "name": "pct_start",
+        "type": "number",
+        "example": "0.3",
+        "description": "Input parameter `pct_start` (float) for LR Range Test and One-Cycle Policy"
+      },
+      {
+        "name": "div_factor",
+        "type": "number",
+        "example": "10.0",
+        "description": "Input parameter `div_factor` (float) for LR Range Test and One-Cycle Policy"
+      },
+      {
+        "name": "final_div_factor",
+        "type": "number",
+        "example": "100.0",
+        "description": "Input parameter `final_div_factor` (float) for LR Range Test and One-Cycle Policy"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -240,11 +273,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "LR Range Test and One-Cycle Policy",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/optim-onecycle",
+  "localUrl": "http://localhost:3000/problems/optim-onecycle"
 }

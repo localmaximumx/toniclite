@@ -19,19 +19,21 @@
   "seoDescription": "Implement mini-batch SGD with and without gradient accumulation on a linear regression task, and compare the training dynamics.",
   "solved": false,
   "isLocked": true,
-  "description": "Simulate gradient accumulation over multiple sequential micro-batches, stepping optimizer only at accumulation boundaries.\n\nGradient accumulation permits scaling effective batch sizes arbitrarily large regardless of individual accelerator VRAM limitations.\n\n### Mathematical Formulation\n$$\n\\mathbf{g}_{\\text{accum}} = \\frac{1}{K}\\sum_{k=1}^K \\mathbf{g}_k, \\quad \\mathbf{w} \\leftarrow \\mathbf{w} - \\eta \\mathbf{g}_{\\text{accum}}\n$$\n\n### Step-by-Step Implementation\n1. Partition data into small micro-batches of size batch_size\n2. Accumulate unscaled gradients divided by accum_steps factor\n3. Update weights exclusively every accum_steps iterations\n\n### Returns\nDictionary with 'final_weights' and 'final_mse'.",
-  "theory": "# Understanding Gradient Accumulation\n\n## 1. What Is It?\n\nThe **Gradient Accumulation** is a fundamental computational technique in Numpy. In machine learning workflows, Simulate gradient accumulation over multiple sequential micro-batches, stepping optimizer only at accumulation boundaries.\n\n### Key Terminology\n- **`X`**: The input feature matrix containing samples as rows and features as columns.\n- **`y`**: The target labels or ground-truth values to predict.\n- **`lr`**: The learning rate $\\eta$, a positive step size scaling gradient updates.\n- **Optimization**: Core domain concept contextualizing this task within Numpy workflows.\n- **Classic ML**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{g}_{\\text{accum}} = \\frac{1}{K}\\sum_{k=1}^K \\mathbf{g}_k, \\quad \\mathbf{w} \\leftarrow \\mathbf{w} - \\eta \\mathbf{g}_{\\text{accum}}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `optim_grad_accum` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nX = [[1.0], [2.0], [3.0], [4.0]], y = [2.0, 4.0, 6.0, 8.0], batch_size = 2, accum_steps = 2, lr = 0.05\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated optim_grad_accum under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"final_weights\": [1.5], \"final_mse\": 1.875}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `optim_grad_accum` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`final_weights`**: Represents `final_weights` (e.g. `[1.5]`), reflecting the updated state or component.\n  - **`final_mse`**: Represents `final_mse` (e.g. `1.875`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `optim_grad_accum`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `optim_grad_accum`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `optim_grad_accum`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Gradient Accumulation** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `optim_grad_accum` accurately and efficiently performs the required transformation.\n",
+  "description": "Simulate gradient accumulation over multiple sequential micro-batches, stepping optimizer only at accumulation boundaries.\n\n$$\n\\mathbf{g}_{\\text{accum}} = \\frac{1}{K}\\sum_{k=1}^K \\mathbf{g}_k, \\quad \\mathbf{w} \\leftarrow \\mathbf{w} - \\eta \\mathbf{g}_{\\text{accum}}\n$$\n\nGiven input parameters `X`, `y`, `batch_size`, `accum_steps`, `lr`, return dictionary with 'final_weights' and 'final_mse'.",
+  "theory": "## What Is Gradient Accumulation?\n\nIn mathematical optimization, first- and second-order update rules navigate high-dimensional loss landscapes toward local or global minima.\n\n$$\n\\mathbf{g}_{\\text{accum}} = \\frac{1}{K}\\sum_{k=1}^K \\mathbf{g}_k, \\quad \\mathbf{w} \\leftarrow \\mathbf{w} - \\eta \\mathbf{g}_{\\text{accum}}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\mathbf{g}_{\\text{accum}} = \\frac{1}{K}\\sum_{k=1}^K \\mathbf{g}_k\n$$\n\n$$\n\\mathbf{w} \\leftarrow \\mathbf{w} - \\eta \\mathbf{g}_{\\text{accum}}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **AdaGrad**, **Adam Optimizer**, **AdamW (Decoupled Weight Decay)**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: X = [[1.0], [2.0], [3.0], [4.0]], y = [2.0, 4.0, 6.0, 8.0], batch_size = 2, accum_steps = 2, lr = 0.05\n\nOutput: {\"final_weights\": [1.5], \"final_mse\": 1.875}\n\nExplanation: Evaluated optim_grad_accum under standard test conditions."
+    "Input: X = [[1.0], [2.0], [3.0], [4.0]], y = [2.0, 4.0, 6.0, 8.0], batch_size = 2, accum_steps = 2, lr = 0.05\n\nOutput: {\"final_weights\": [1.5], \"final_mse\": 1.875}",
+    "Input: X = [[1.5], [3.0], [4.5], [6.0]], y = [3.0, 6.0, 9.0, 12.0], batch_size = 3, accum_steps = 3, lr = 0.075\n\nOutput: {\"final_weights\": [0.0], \"final_mse\": 67.5}"
   ],
-  "requirements": "* Function must be named `optim_grad_accum`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `optim_grad_accum` accepting `X`, `y`, `batch_size`, `accum_steps`, `lr`\n* Implement mini-batch SGD with and without gradient accumulation on a linear regression task, and compare the training dynamics.\n* Return a `dict` containing the exact keys `'final_weights'`, `'final_mse'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `optim_grad_accum`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`X`, `y`, `batch_size`, `accum_steps`, `lr`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `optim_grad_accum` into clear stages: validate/reshape `X`, `y`, `batch_size`, `accum_steps`, `lr`, evaluate the Gradient Accumulation equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('final_weights', 'final_mse') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef optim_grad_accum(X: list, y: list, batch_size: int = 2, accum_steps: int = 2, lr: float = 0.05) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Gradient Accumulation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef optim_grad_accum(X: list, y: list, batch_size: int = 2, accum_steps: int = 2, lr: float = 0.05) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    N, D, bs, k = Xa.shape[0], Xa.shape[1], int(batch_size), int(accum_steps)\n    w, ga = np.zeros(D), np.zeros(D)\n    for b in range(N // bs):\n        xb, yb = Xa[b*bs:(b+1)*bs], ya[b*bs:(b+1)*bs]\n        ga += (2.0 / bs) * np.dot(xb.T, np.dot(xb, w) - yb) / float(k)\n        if (b + 1) % k == 0:\n            w -= float(lr) * ga; ga = np.zeros(D)\n    return {'final_weights': np.round(w, 4).tolist(), 'final_mse': round(float(np.mean((np.dot(Xa, w) - ya)**2)), 6)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef optim_grad_accum(X: list, y: list, batch_size: int = 2, accum_steps: int = 2, lr: float = 0.05) -> dict:\n    \"\"\"\n    Implement mini-batch SGD with and without gradient accumulation on a linear regression task, and compare the training dynamics.\n\n    Args:\n        X (list): 2D input design matrix of shape (N, D) where rows are samples.\n        y (list): Target values, secondary coordinate, or comparison vector.\n        batch_size (int): Integer count or dimension size for batch size.\n        accum_steps (int): Input parameter `accum_steps` (int) for Gradient Accumulation.\n        lr (float): Positive learning rate step size (eta).\n\n    Returns:\n        dict: Computed Gradient Accumulation result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Gradient Accumulation** (Optimization, Classic ML): Implement mini-batch SGD with and without gradient accumulation on a linear regression task, and compare the training dynamics.\n\nTo implement `optim_grad_accum` cleanly and accurately:\n1. Parse and normalize the inputs (`X`, `y`, `batch_size`, `accum_steps`, `lr`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef optim_grad_accum(X: list, y: list, batch_size: int = 2, accum_steps: int = 2, lr: float = 0.05) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    N, D, bs, k = Xa.shape[0], Xa.shape[1], int(batch_size), int(accum_steps)\n    w, ga = np.zeros(D), np.zeros(D)\n    for b in range(N // bs):\n        xb, yb = Xa[b*bs:(b+1)*bs], ya[b*bs:(b+1)*bs]\n        ga += (2.0 / bs) * np.dot(xb.T, np.dot(xb, w) - yb) / float(k)\n        if (b + 1) % k == 0:\n            w -= float(lr) * ga; ga = np.zeros(D)\n    return {'final_weights': np.round(w, 4).tolist(), 'final_mse': round(float(np.mean((np.dot(Xa, w) - ya)**2)), 6)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Gradient Accumulation** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "optim-grad-accum-tc-1",
@@ -71,7 +73,7 @@
     },
     {
       "id": "optim-grad-accum-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (batch_size=3)",
       "inputs": {
         "X": [
           [
@@ -107,7 +109,7 @@
     },
     {
       "id": "optim-grad-accum-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (batch_size=1)",
       "inputs": {
         "X": [
           [
@@ -139,11 +141,11 @@
         ],
         "final_mse": 3.327357
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "optim-grad-accum-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (batch_size=4)",
       "inputs": {
         "X": [
           [
@@ -179,7 +181,7 @@
     },
     {
       "id": "optim-grad-accum-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (batch_size=2)",
       "inputs": {
         "X": [
           [
@@ -215,7 +217,7 @@
     },
     {
       "id": "optim-grad-accum-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (batch_size=2)",
       "inputs": {
         "X": [
           [
@@ -251,7 +253,7 @@
     },
     {
       "id": "optim-grad-accum-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (batch_size=6)",
       "inputs": {
         "X": [
           [
@@ -288,7 +290,38 @@
   ],
   "functionMetadata": {
     "name": "optim_grad_accum",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "X",
+        "type": "array",
+        "example": "[[1.0], [2.0], [3.0], [4.0]]",
+        "description": "2D input design matrix of shape (N, D) where rows are samples"
+      },
+      {
+        "name": "y",
+        "type": "array",
+        "example": "[2.0, 4.0, 6.0, 8.0]",
+        "description": "Target values, secondary coordinate, or comparison vector"
+      },
+      {
+        "name": "batch_size",
+        "type": "number",
+        "example": "2",
+        "description": "Integer count or dimension size for batch size"
+      },
+      {
+        "name": "accum_steps",
+        "type": "number",
+        "example": "2",
+        "description": "Input parameter `accum_steps` (int) for Gradient Accumulation"
+      },
+      {
+        "name": "lr",
+        "type": "number",
+        "example": "0.05",
+        "description": "Positive learning rate step size (eta)"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -297,11 +330,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Gradient Accumulation",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/optim-grad-accum",
+  "localUrl": "http://localhost:3000/problems/optim-grad-accum"
 }

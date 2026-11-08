@@ -18,19 +18,21 @@
   "seoDescription": "Implement three common loss functions from scratch using PyTorch tensor operations: mean squared error, cross-entropy, and Huber loss.",
   "solved": false,
   "isLocked": true,
-  "description": "Implement Mean Squared Error (MSE), Binary Cross-Entropy (BCE), and Huber Loss using pure PyTorch tensor operations.\n\nMSE penalizes large deviations quadratically, BCE measures information divergence, and Huber balances robustness with smoothness.\n\n### Mathematical Formulation\n$$\n\\mathcal{L}_{\\text{MSE}} = \\frac{1}{N}\\sum (\\hat{y} - y)^2, \\quad \\mathcal{L}_{\\text{Huber}} = \\begin{cases} \\frac{1}{2}e^2 & |e| \\le \\delta \\\\ \\delta(|e| - \\frac{1}{2}\\delta) & \\text{otherwise} \\end{cases}\n$$\n\n### Step-by-Step Implementation\n1. Compute element-wise squared error and average for MSE\n2. Calculate clamped logarithmic probability penalties for BCE\n3. Implement piecewise Huber penalty to maintain robustness to outliers\n\n### Returns\nDictionary containing 'mse', 'bce', and 'huber' loss values.",
-  "theory": "# Understanding Loss Functions\n\n## 1. What Is It?\n\nThe **Loss Functions** is a fundamental computational technique in Pytorch. In machine learning workflows, it involves performing Mean Squared Error (MSE), Binary Cross-Entropy (BCE), and Huber Loss using pure PyTorch tensor operations.\n\n### Key Terminology\n- **Loss Functions**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathcal{L}_{\\text{MSE}} = \\frac{1}{N}\\sum (\\hat{y} - y)^2, \\quad \\mathcal{L}_{\\text{Huber}} = \\begin{cases} \\frac{1}{2}e^2 & |e| \\le \\delta \\\\ \\delta(|e| - \\frac{1}{2}\\delta) & \\text{otherwise} \\end{cases}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pytorch_loss_functions` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\npred = [0.8, 0.2, 0.6], target = [1.0, 0.0, 1.0], delta = 0.5\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pytorch_loss_functions under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"mse\": 0.08, \"bce\": 0.319038, \"huber\": 0.04}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pytorch_loss_functions` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`mse`**: Represents `mse` (e.g. `0.08`), reflecting the updated state or component.\n  - **`bce`**: Represents `bce` (e.g. `0.319038`), reflecting the updated state or component.\n  - **`huber`**: Represents `huber` (e.g. `0.04`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `pytorch_loss_functions`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pytorch_loss_functions`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pytorch_loss_functions`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Loss Functions** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `pytorch_loss_functions` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement Mean Squared Error (MSE), Binary Cross-Entropy (BCE), and Huber Loss using pure PyTorch tensor operations.\n\n$$\n\\mathcal{L}_{\\text{MSE}} = \\frac{1}{N}\\sum (\\hat{y} - y)^2, \\quad \\mathcal{L}_{\\text{Huber}} = \\begin{cases} \\frac{1}{2}e^2 & |e| \\le \\delta \\\\ \\delta(|e| - \\frac{1}{2}\\delta) & \\text{otherwise} \\end{cases}\n$$\n\nGiven input parameters `pred`, `target`, `delta`, return dictionary containing 'mse', 'bce', and 'huber' loss values.",
+  "theory": "## What Is Loss Functions?\n\nIn PyTorch tensor computing, modular forward passes and optimizer routines manipulate multi-dimensional tensors with explicit shape and device discipline.\n\n$$\n\\mathcal{L}_{\\text{MSE}} = \\frac{1}{N}\\sum (\\hat{y} - y)^2, \\quad \\mathcal{L}_{\\text{Huber}} = \\begin{cases} \\frac{1}{2}e^2 & |e| \\le \\delta \\\\ \\delta(|e| - \\frac{1}{2}\\delta) & \\text{otherwise} \\end{cases}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\tilde{p} = \\max(p, \\varepsilon), \\qquad \\varepsilon = 10^{-12}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Attention Mechanism from Scratch**, **Balanced DataLoader**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: pred = [0.8, 0.2, 0.6], target = [1.0, 0.0, 1.0], delta = 0.5\n\nOutput: {\"mse\": 0.08, \"bce\": 0.319038, \"huber\": 0.04}\n\nExplanation: Evaluated pytorch_loss_functions under standard test conditions."
+    "Input: pred = [0.8, 0.2, 0.6], target = [1.0, 0.0, 1.0], delta = 0.5\n\nOutput: {\"mse\": 0.08, \"bce\": 0.319038, \"huber\": 0.04}",
+    "Input: pred = [1.2, 0.3, 0.9], target = [1.5, 0.0, 1.5], delta = 0.75\n\nOutput: {\"mse\": 0.18, \"bce\": -3.373466, \"huber\": 0.09}"
   ],
-  "requirements": "* Function must be named `pytorch_loss_functions`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pytorch_loss_functions` accepting `pred`, `target`, `delta`\n* Implement three common loss functions from scratch using PyTorch tensor operations: mean squared error, cross-entropy, and Huber loss.\n* Return a `dict` containing the exact keys `'mse'`, `'bce'`, `'huber'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pytorch_loss_functions`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`pred`, `target`, `delta`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `pytorch_loss_functions` into clear stages: validate/reshape `pred`, `target`, `delta`, evaluate the Loss Functions equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('mse', 'bce', 'huber') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import torch\n\ndef pytorch_loss_functions(pred: list, target: list, delta: float = 1.0) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Loss Functions** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_loss_functions(pred: list, target: list, delta: float = 1.0) -> dict:\n    p, t = torch.tensor(pred, dtype=torch.float32), torch.tensor(target, dtype=torch.float32)\n    mse = torch.mean((p - t) ** 2)\n    bce = -torch.mean(t * torch.log(torch.clamp(p, min=1e-8)) + (1.0 - t) * torch.log(torch.clamp(1.0 - p, min=1e-8)))\n    diff = torch.abs(p - t)\n    huber = torch.mean(torch.where(diff <= delta, 0.5 * (diff ** 2), delta * (diff - 0.5 * delta)))\n    return {'mse': round(float(mse.item()), 6), 'bce': round(float(bce.item()), 6), 'huber': round(float(huber.item()), 6)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import torch\n\ndef pytorch_loss_functions(pred: list, target: list, delta: float = 1.0) -> dict:\n    \"\"\"\n    Implement three common loss functions from scratch using PyTorch tensor operations: mean squared error, cross-entropy, and Huber loss.\n\n    Args:\n        pred (list): Input parameter `pred` (list) for Loss Functions.\n        target (list): Input parameter `target` (list) for Loss Functions.\n        delta (float): Input parameter `delta` (float) for Loss Functions.\n\n    Returns:\n        dict: Computed Loss Functions result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Loss Functions** (Loss Functions): Implement three common loss functions from scratch using PyTorch tensor operations: mean squared error, cross-entropy, and Huber loss.\n\nTo implement `pytorch_loss_functions` cleanly and accurately:\n1. Parse and normalize the inputs (`pred`, `target`, `delta`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_loss_functions(pred: list, target: list, delta: float = 1.0) -> dict:\n    p, t = torch.tensor(pred, dtype=torch.float32), torch.tensor(target, dtype=torch.float32)\n    mse = torch.mean((p - t) ** 2)\n    bce = -torch.mean(t * torch.log(torch.clamp(p, min=1e-8)) + (1.0 - t) * torch.log(torch.clamp(1.0 - p, min=1e-8)))\n    diff = torch.abs(p - t)\n    huber = torch.mean(torch.where(diff <= delta, 0.5 * (diff ** 2), delta * (diff - 0.5 * delta)))\n    return {'mse': round(float(mse.item()), 6), 'bce': round(float(bce.item()), 6), 'huber': round(float(huber.item()), 6)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Loss Functions** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pytorch-loss-functions-tc-1",
@@ -57,7 +59,7 @@
     },
     {
       "id": "pytorch-loss-functions-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (pred=[1.2, 0.3, 0.9])",
       "inputs": {
         "pred": [
           1.2,
@@ -80,7 +82,7 @@
     },
     {
       "id": "pytorch-loss-functions-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (pred=[0.4, 0.1, 0.3])",
       "inputs": {
         "pred": [
           0.4,
@@ -99,11 +101,11 @@
         "bce": 0.533081,
         "huber": 0.01
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pytorch-loss-functions-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (pred=[1.6, 0.4, 1.2])",
       "inputs": {
         "pred": [
           1.6,
@@ -126,7 +128,7 @@
     },
     {
       "id": "pytorch-loss-functions-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (pred=[-0.8, -0.2, -0.6])",
       "inputs": {
         "pred": [
           -0.8,
@@ -149,7 +151,7 @@
     },
     {
       "id": "pytorch-loss-functions-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (pred=[0.64, 0.16, 0.48])",
       "inputs": {
         "pred": [
           0.64,
@@ -172,7 +174,7 @@
     },
     {
       "id": "pytorch-loss-functions-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (pred=[2.4, 0.6, 1.8])",
       "inputs": {
         "pred": [
           2.4,
@@ -196,7 +198,26 @@
   ],
   "functionMetadata": {
     "name": "pytorch_loss_functions",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "pred",
+        "type": "array",
+        "example": "[0.8, 0.2, 0.6]",
+        "description": "Input parameter `pred` (list) for Loss Functions"
+      },
+      {
+        "name": "target",
+        "type": "array",
+        "example": "[1.0, 0.0, 1.0]",
+        "description": "Input parameter `target` (list) for Loss Functions"
+      },
+      {
+        "name": "delta",
+        "type": "number",
+        "example": "0.5",
+        "description": "Input parameter `delta` (float) for Loss Functions"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -205,11 +226,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Loss Functions",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pytorch-loss-functions",
+  "localUrl": "http://localhost:3000/problems/pytorch-loss-functions"
 }

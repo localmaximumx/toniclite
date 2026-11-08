@@ -4,7 +4,7 @@
   "description": "Create the zero initial hidden state used before processing a vanilla RNN sequence. Return a float64 NumPy array with batch_size rows and hidden_dim columns.",
   "seoDescription": "Initialize a vanilla RNN hidden state as a floating-point zero matrix for the requested batch and hidden dimensions.",
   "examples": [
-    "Input: batch_size = 1, hidden_dim = 2\n\nOutput: [[0,0]]\n\nExplanation: Each sample begins with an independent zero hidden vector.",
+    "Input: batch_size = 1, hidden_dim = 2\n\nOutput: [[0,0]]",
     "Input: batch_size = 2, hidden_dim = 3\n\nOutput: [[0,0,0],[0,0,0]]",
     "Input: batch_size = 4, hidden_dim = 1\n\nOutput: [[0],[0],[0],[0]]"
   ],

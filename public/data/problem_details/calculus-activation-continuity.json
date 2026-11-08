@@ -19,219 +19,298 @@
   "seoDescription": "Classify continuity and nondifferentiable points for common activation functions at supplied scalar inputs.",
   "solved": false,
   "isLocked": true,
-  "description": "Determine continuity and point-wise differentiability of piecewise activation functions such as ReLU at scalar coordinates.\n\nModern deep learning relies on subgradient methods to backpropagate through points of non-differentiability like ReLU's origin.\n\n### Mathematical Formulation\n$$\nf(x) = \\max(0, x), \\quad \\lim_{x \\to 0^-} f'(x) = 0 \\ne \\lim_{x \\to 0^+} f'(x) = 1\n$$\n\n### Step-by-Step Implementation\n1. Evaluate limits from left and right to verify continuity\n2. Check equality of one-sided derivatives to establish differentiability\n3. Identify non-differentiable singularity coordinates (e.g., x=0 for ReLU)\n\n### Returns\nList of dictionaries reporting continuity and differentiability booleans per test point.",
-  "theory": "# Understanding Continuity of Activation Functions\n\n## 1. What Is It?\n\nThe **Continuity of Activation Functions** is a fundamental computational technique in Numpy. In machine learning workflows, Determine continuity and point-wise differentiability of piecewise activation functions such as ReLU at scalar coordinates.\n\n### Key Terminology\n- **Calculus**: Core domain concept contextualizing this task within Numpy workflows.\n- **Activation Functions**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nf(x) = \\max(0, x), \\quad \\lim_{x \\to 0^-} f'(x) = 0 \\ne \\lim_{x \\to 0^+} f'(x) = 1\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `calculus_activation_continuity` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx_points = [-1.0, 0.0, 2.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated calculus_activation_continuity under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"point\": -1.0, \"is_continuous\": 1, \"is_differentiable\": 1}, {\"point\": 0.0, \"is_continuous\": 1, \"is_differentiable\": 0}, {\"point\": 2.0, \"is_continuous\": 1, \"is_differentiable\": 1}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `calculus_activation_continuity` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'point': -1.0, 'is_continuous': 1, 'is_differentiable': 1}`.\n  - **Element 2**: Evaluated output component `{'point': 0.0, 'is_continuous': 1, 'is_differentiable': 0}`.\n  - **Element 3**: Evaluated output component `{'point': 2.0, 'is_continuous': 1, 'is_differentiable': 1}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `calculus_activation_continuity`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `calculus_activation_continuity`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Continuity of Activation Functions** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `calculus_activation_continuity` accurately and efficiently performs the required transformation.\n",
+  "description": "Evaluate the function value, left-hand derivative, right-hand derivative, continuity, and differentiability of a neural network activation function at each scalar coordinate in `x_points`.\n\nDepending on `activation` (`'relu'`, `'leaky_relu'`, `'elu'`, or `'step'`), evaluate the corresponding piecewise function:\n\n$$\n\\operatorname{ReLU}(x) = \\max(0, x), \\qquad \\operatorname{LeakyReLU}(x) = \\begin{cases} x & \\text{if } x \\ge 0 \\\\ \\alpha x & \\text{if } x < 0 \\end{cases}\n$$\n\n$$\n\\operatorname{ELU}(x) = \\begin{cases} x & \\text{if } x \\ge 0 \\\\ \\alpha(e^x - 1) & \\text{if } x < 0 \\end{cases}, \\qquad \\operatorname{Step}(x) = \\begin{cases} 1 & \\text{if } x \\ge 0 \\\\ 0 & \\text{if } x < 0 \\end{cases}\n$$\n\nA function is continuous at $x$ when its left-hand and right-hand limits equal $f(x)$, and differentiable at $x$ when it is continuous and its one-sided derivatives agree:\n\n$$\nf'_{-}(x) = \\lim_{h \\to 0^{-}} \\frac{f(x + h) - f(x)}{h}, \\qquad f'_{+}(x) = \\lim_{h \\to 0^{+}} \\frac{f(x + h) - f(x)}{h}\n$$\n\nReturn a list of dictionaries (one for each point in `x_points`) containing `'x'`, `'value'`, `'left_derivative'`, `'right_derivative'`, `'continuous'`, and `'differentiable'`, with all numeric values rounded to 4 decimal places.",
+  "theory": "## What Is Continuity of Activation Functions?\n\nContinuity and differentiability determine whether an activation function produces well-defined gradients everywhere during backpropagation.\n\n$$\n\\operatorname{ReLU}(x) = \\max(0, x), \\qquad \\operatorname{LeakyReLU}(x) = \\begin{cases} x & \\text{if } x \\ge 0 \\\\ \\alpha x & \\text{if } x < 0 \\end{cases}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\operatorname{ELU}(x) = \\begin{cases} x & \\text{if } x \\ge 0 \\\\ \\alpha(e^x - 1) & \\text{if } x < 0 \\end{cases}, \\qquad \\operatorname{Step}(x) = \\begin{cases} 1 & \\text{if } x \\ge 0 \\\\ 0 & \\text{if } x < 0 \\end{cases}\n$$\n\n$$\nf'_{-}(x) = \\lim_{h \\to 0^{-}} \\frac{f(x + h) - f(x)}{h}\n$$\n\n$$\nf'_{+}(x) = \\lim_{h \\to 0^{+}} \\frac{f(x + h) - f(x)}{h}\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Derivatives of Common Activation Functions**, **Backpropagation Through a Computation Graph**, **Chain Rule Through a 3-Layer Network**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x_points = [-1.0, 0.0, 2.0]\n\nOutput: [{\"point\": -1.0, \"is_continuous\": 1, \"is_differentiable\": 1}, {\"point\": 0.0, \"is_continuous\": 1, \"is_differentiable\": 0}, {\"point\": 2.0, \"is_continuous\": 1, \"is_differentiable\": 1}]\n\nExplanation: Evaluated calculus_activation_continuity under standard test conditions."
+    "Input: x_points = [-1.0, 0.0, 2.0], activation = \"relu\", alpha = 0.1\n\nOutput: [{\"x\": -1.0, \"value\": 0.0, \"left_derivative\": 0.0, \"right_derivative\": 0.0, \"continuous\": true, \"differentiable\": true}, {\"x\": 0.0, \"value\": 0.0, \"left_derivative\": 0.0, \"right_derivative\": 1.0, \"continuous\": true, \"differentiable\": false}, {\"x\": 2.0, \"value\": 2.0, \"left_derivative\": 1.0, \"right_derivative\": 1.0, \"continuous\": true, \"differentiable\": true}]",
+    "Input: x_points = [-1.0, 0.0, 1.0], activation = \"elu\", alpha = 1.0\n\nOutput: [{\"x\": -1.0, \"value\": -0.6321, \"left_derivative\": 0.3679, \"right_derivative\": 0.3679, \"continuous\": true, \"differentiable\": true}, {\"x\": 0.0, \"value\": 0.0, \"left_derivative\": 1.0, \"right_derivative\": 1.0, \"continuous\": true, \"differentiable\": true}, {\"x\": 1.0, \"value\": 1.0, \"left_derivative\": 1.0, \"right_derivative\": 1.0, \"continuous\": true, \"differentiable\": true}]"
   ],
-  "requirements": "* Function must be named `calculus_activation_continuity`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `calculus_activation_continuity` accepting `x_points`, `activation`, `alpha`\n* Classify continuity and nondifferentiable points for common activation functions at supplied scalar inputs.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `calculus_activation_continuity`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x_points`, `activation`, `alpha`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `calculus_activation_continuity` into clear stages: validate/reshape `x_points`, `activation`, `alpha`, evaluate the Continuity of Activation Functions equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def calculus_activation_continuity(x_points: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Continuity of Activation Functions** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef calculus_activation_continuity(x_points: list) -> list:\n    return [{'point': round(float(x), 4), 'is_continuous': True, 'is_differentiable': abs(float(x)) > 1e-12} for x in x_points]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef calculus_activation_continuity(x_points: list, activation: str = \"relu\", alpha: float = 0.1) -> list:\n    \"\"\"\n    Evaluates continuity and differentiability of the specified activation function\n    ('relu', 'leaky_relu', 'elu', 'step') at each scalar point in x_points.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Continuity of Activation Functions** (Calculus, Activation Functions): Classify continuity and nondifferentiable points for common activation functions at supplied scalar inputs.\n\nTo implement `calculus_activation_continuity` cleanly and accurately:\n1. Parse and normalize the inputs (`x_points`, `activation`, `alpha`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_activation_continuity(x_points: list, activation: str = \"relu\", alpha: float = 0.1) -> list:\n    act = str(activation).strip().lower()\n    a = float(alpha)\n    results = []\n    for pt in x_points:\n        x = float(pt)\n        if act == \"relu\":\n            val = max(0.0, x)\n            left_d = 0.0 if x <= 0.0 else 1.0\n            right_d = 1.0 if x >= 0.0 else 0.0\n            cont = True\n            diff = abs(x) > 1e-9\n        elif act == \"leaky_relu\":\n            val = x if x >= 0.0 else a * x\n            left_d = a if x <= 0.0 else 1.0\n            right_d = 1.0 if x >= 0.0 else a\n            cont = True\n            diff = (abs(x) > 1e-9) or (abs(1.0 - a) <= 1e-9)\n        elif act == \"elu\":\n            val = x if x >= 0.0 else a * (float(np.exp(x)) - 1.0)\n            left_d = a * float(np.exp(x)) if x <= 0.0 else 1.0\n            right_d = 1.0 if x >= 0.0 else a * float(np.exp(x))\n            cont = True\n            diff = (abs(x) > 1e-9) or (abs(1.0 - a) <= 1e-9)\n        elif act == \"step\":\n            val = 1.0 if x >= 0.0 else 0.0\n            left_d = 0.0\n            right_d = 0.0\n            cont = abs(x) > 1e-9\n            diff = abs(x) > 1e-9\n        else:\n            val = 1.0 / (1.0 + float(np.exp(-x)))\n            left_d = val * (1.0 - val)\n            right_d = left_d\n            cont = True\n            diff = True\n        results.append({\n            \"x\": round(x, 4),\n            \"value\": round(float(val), 4),\n            \"left_derivative\": round(float(left_d), 4),\n            \"right_derivative\": round(float(right_d), 4),\n            \"continuous\": bool(cont),\n            \"differentiable\": bool(diff)\n        })\n    return results\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Continuity of Activation Functions** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "calculus-activation-continuity-tc-1",
-      "name": "Negative, zero, and positive points",
+      "name": "ReLU across origin",
       "inputs": {
         "x_points": [
           -1.0,
           0.0,
           2.0
-        ]
+        ],
+        "activation": "relu",
+        "alpha": 0.1
       },
       "expectedOutput": [
         {
-          "point": -1.0,
-          "is_continuous": 1,
-          "is_differentiable": 1
+          "x": -1.0,
+          "value": 0.0,
+          "left_derivative": 0.0,
+          "right_derivative": 0.0,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 0.0,
-          "is_continuous": 1,
-          "is_differentiable": 0
+          "x": 0.0,
+          "value": 0.0,
+          "left_derivative": 0.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": false
         },
         {
-          "point": 2.0,
-          "is_continuous": 1,
-          "is_differentiable": 1
+          "x": 2.0,
+          "value": 2.0,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         }
       ],
       "isPublic": true
     },
     {
       "id": "calculus-activation-continuity-tc-2",
-      "name": "Case 2",
+      "name": "ELU with alpha=1.0 (smooth at 0)",
       "inputs": {
         "x_points": [
-          -2.0,
+          -1.0,
           0.0,
-          4.0
-        ]
+          1.0
+        ],
+        "activation": "elu",
+        "alpha": 1.0
       },
       "expectedOutput": [
         {
-          "point": -2.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": -1.0,
+          "value": -0.6321,
+          "left_derivative": 0.3679,
+          "right_derivative": 0.3679,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 0.0,
-          "is_continuous": true,
-          "is_differentiable": false
+          "x": 0.0,
+          "value": 0.0,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 4.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": 1.0,
+          "value": 1.0,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         }
       ],
       "isPublic": true
     },
     {
       "id": "calculus-activation-continuity-tc-3",
-      "name": "Case 3",
+      "name": "ELU with alpha=0.5 (kink at 0)",
       "inputs": {
         "x_points": [
-          -0.5,
+          -1.0,
           0.0,
           1.0
-        ]
+        ],
+        "activation": "elu",
+        "alpha": 0.5
       },
       "expectedOutput": [
         {
-          "point": -0.5,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": -1.0,
+          "value": -0.3161,
+          "left_derivative": 0.1839,
+          "right_derivative": 0.1839,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 0.0,
-          "is_continuous": true,
-          "is_differentiable": false
+          "x": 0.0,
+          "value": 0.0,
+          "left_derivative": 0.5,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": false
         },
         {
-          "point": 1.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": 1.0,
+          "value": 1.0,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "calculus-activation-continuity-tc-4",
-      "name": "Case 4",
+      "name": "Leaky ReLU at origin",
       "inputs": {
         "x_points": [
-          1.0,
-          -0.0,
-          -2.0
-        ]
+          -2.0,
+          0.0,
+          3.0
+        ],
+        "activation": "leaky_relu",
+        "alpha": 0.2
       },
       "expectedOutput": [
         {
-          "point": 1.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": -2.0,
+          "value": -0.4,
+          "left_derivative": 0.2,
+          "right_derivative": 0.2,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": -0.0,
-          "is_continuous": true,
-          "is_differentiable": false
+          "x": 0.0,
+          "value": 0.0,
+          "left_derivative": 0.2,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": false
         },
         {
-          "point": -2.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": 3.0,
+          "value": 3.0,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         }
       ],
       "isPublic": false
     },
     {
       "id": "calculus-activation-continuity-tc-5",
-      "name": "Case 5",
+      "name": "Heaviside step discontinuity",
       "inputs": {
         "x_points": [
-          -3.0,
+          -0.5,
           0.0,
-          6.0
-        ]
+          0.5
+        ],
+        "activation": "step",
+        "alpha": 0.1
       },
       "expectedOutput": [
         {
-          "point": -3.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": -0.5,
+          "value": 0.0,
+          "left_derivative": 0.0,
+          "right_derivative": 0.0,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 0.0,
-          "is_continuous": true,
-          "is_differentiable": false
+          "x": 0.0,
+          "value": 1.0,
+          "left_derivative": 0.0,
+          "right_derivative": 0.0,
+          "continuous": false,
+          "differentiable": false
         },
         {
-          "point": 6.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": 0.5,
+          "value": 1.0,
+          "left_derivative": 0.0,
+          "right_derivative": 0.0,
+          "continuous": true,
+          "differentiable": true
         }
       ],
       "isPublic": false
     },
     {
       "id": "calculus-activation-continuity-tc-6",
-      "name": "Case 6",
+      "name": "Sigmoid smooth everywhere",
       "inputs": {
         "x_points": [
+          -1.0,
           0.0,
-          1.0,
-          3.0
-        ]
+          1.0
+        ],
+        "activation": "sigmoid",
+        "alpha": 0.1
       },
       "expectedOutput": [
         {
-          "point": 0.0,
-          "is_continuous": true,
-          "is_differentiable": false
+          "x": -1.0,
+          "value": 0.2689,
+          "left_derivative": 0.1966,
+          "right_derivative": 0.1966,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 1.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": 0.0,
+          "value": 0.5,
+          "left_derivative": 0.25,
+          "right_derivative": 0.25,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 3.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": 1.0,
+          "value": 0.7311,
+          "left_derivative": 0.1966,
+          "right_derivative": 0.1966,
+          "continuous": true,
+          "differentiable": true
         }
       ],
       "isPublic": false
     },
     {
       "id": "calculus-activation-continuity-tc-7",
-      "name": "Case 7",
+      "name": "Leaky ReLU with alpha=1.0",
       "inputs": {
         "x_points": [
-          -3.0,
-          -2.0,
-          0.0
-        ]
+          -1.5,
+          0.0,
+          1.5
+        ],
+        "activation": "leaky_relu",
+        "alpha": 1.0
       },
       "expectedOutput": [
         {
-          "point": -3.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": -1.5,
+          "value": -1.5,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": -2.0,
-          "is_continuous": true,
-          "is_differentiable": true
+          "x": 0.0,
+          "value": 0.0,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         },
         {
-          "point": 0.0,
-          "is_continuous": true,
-          "is_differentiable": false
+          "x": 1.5,
+          "value": 1.5,
+          "left_derivative": 1.0,
+          "right_derivative": 1.0,
+          "continuous": true,
+          "differentiable": true
         }
       ],
       "isPublic": false
@@ -239,7 +318,26 @@
   ],
   "functionMetadata": {
     "name": "calculus_activation_continuity",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "x_points",
+        "type": "array",
+        "example": "[-1.0, 0.0, 2.0]",
+        "description": "Input parameter `x_points` (list) for Continuity of Activation Functions"
+      },
+      {
+        "name": "activation",
+        "type": "string",
+        "example": "\"relu\"",
+        "description": "Input parameter `activation` (str) for Continuity of Activation Functions"
+      },
+      {
+        "name": "alpha",
+        "type": "number",
+        "example": "0.1",
+        "description": "Smoothing parameter, leaky slope, or weighting exponent"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -248,11 +346,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Continuity of Activation Functions",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/calculus-activation-continuity",
+  "localUrl": "http://localhost:3000/problems/calculus-activation-continuity"
 }

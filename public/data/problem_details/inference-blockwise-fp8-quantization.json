@@ -20,19 +20,21 @@
   "seoDescription": "Compute one scale per block from that block's own absolute maximum, and scale each block into the [-fp8 max, fp8 max] range with saturation.",
   "solved": false,
   "isLocked": true,
-  "description": "Quantize floating point tensors into 8-bit floating point range [-fp8_max, fp8_max] with local per-block absolute maximum scaling.\n\nBlock-wise FP8 scaling bounds outlier error propagation to small local groups, preserving LLM model accuracy.\n\n### Mathematical Formulation\n$$\ns_b = \\frac{\\max_{x \\in B} |x|}{x_{\\max}^{\\text{fp8}}}, \\quad q = \\operatorname{clip}\\left(\\operatorname{round}\\left(\\frac{x}{s_b}\\right), -x_{\\max}^{\\text{fp8}}, x_{\\max}^{\\text{fp8}}\\right)\n$$\n\n### Step-by-Step Implementation\n1. Partition tensor into localized blocks of size block_size\n2. Compute scale s_b from local absolute block maximum\n3. Scale each block into FP8 dynamic range with saturation clipping\n\n### Returns\nDictionary with 'quantized_tensor' and 'block_scales'.",
-  "theory": "# Understanding Block-Wise FP8 Quantization\n\n## 1. What Is It?\n\nThe **Block-Wise FP8 Quantization** is a fundamental computational technique in Pytorch. In machine learning workflows, Quantize floating point tensors into 8-bit floating point range [-fp8_max, fp8_max] with local per-block absolute maximum scaling.\n\n### Key Terminology\n- **Quantization**: Core domain concept contextualizing this task within Pytorch workflows.\n- **Inference**: Core domain concept contextualizing this task within Pytorch workflows.\n- **GPU Programming**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\ns_b = \\frac{\\max_{x \\in B} |x|}{x_{\\max}^{\\text{fp8}}}, \\quad q = \\operatorname{clip}\\left(\\operatorname{round}\\left(\\frac{x}{s_b}\\right), -x_{\\max}^{\\text{fp8}}, x_{\\max}^{\\text{fp8}}\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `inference_blockwise_fp8_quantization` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ntensor = [100.0, -200.0, 50.0, -448.0, 10.0, -20.0, 5.0, -40.0], block_size = 4, fp8_max = 448.0\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated inference_blockwise_fp8_quantization under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"quantized_tensor\": [100.0, -200.0, 50.0, -448.0, 112.0, -224.0, 56.0, -448.0], \"block_scales\": [1.0, 0.089286]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `inference_blockwise_fp8_quantization` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`quantized_tensor`**: Represents `quantized_tensor` (e.g. `[100.0, -200.0, 50.0, -448.0, 112.0, -224.0, 56.0, -448.0]`), reflecting the updated state or component.\n  - **`block_scales`**: Represents `block_scales` (e.g. `[1.0, 0.089286]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `inference_blockwise_fp8_quantization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `inference_blockwise_fp8_quantization`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `inference_blockwise_fp8_quantization`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Block-Wise FP8 Quantization** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `inference_blockwise_fp8_quantization` accurately and efficiently performs the required transformation.\n",
+  "description": "Quantize floating point tensors into 8-bit floating point range [-fp8_max, fp8_max] with local per-block absolute maximum scaling.\n\n$$\ns_b = \\frac{\\max_{x \\in B} |x|}{x_{\\max}^{\\text{fp8}}}, \\quad q = \\operatorname{clip}\\left(\\operatorname{round}\\left(\\frac{x}{s_b}\\right), -x_{\\max}^{\\text{fp8}}, x_{\\max}^{\\text{fp8}}\\right)\n$$\n\nGiven input parameters `tensor`, `block_size`, `fp8_max`, return dictionary with 'quantized_tensor' and 'block_scales'.",
+  "theory": "## What Is Block-Wise FP8 Quantization?\n\nIn LLM and deep learning inference systems, algorithmic optimizations reduce memory footprint, KV-cache bandwidth, and token generation latency.\n\n$$\ns_b = \\frac{\\max_{x \\in B} |x|}{x_{\\max}^{\\text{fp8}}}, \\quad q = \\operatorname{clip}\\left(\\operatorname{round}\\left(\\frac{x}{s_b}\\right), -x_{\\max}^{\\text{fp8}}, x_{\\max}^{\\text{fp8}}\\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\ns_b = \\frac{\\max_{x \\in B} |x|}{x_{\\max}^{\\text{fp8}}}\n$$\n\n$$\nq = \\operatorname{clip}\\left(\\operatorname{round}\\left(\\frac{x}{s_b}\\right), -x_{\\max}^{\\text{fp8}}, x_{\\max}^{\\text{fp8}}\\right)\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Implement Autoregressive Decoding with a KV Cache**, **Simulate Chunked Prefill Scheduling**, **Simulate Continuous Batching**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: tensor = [100.0, -200.0, 50.0, -448.0, 10.0, -20.0, 5.0, -40.0], block_size = 4, fp8_max = 448.0\n\nOutput: {\"quantized_tensor\": [100.0, -200.0, 50.0, -448.0, 112.0, -224.0, 56.0, -448.0], \"block_scales\": [1.0, 0.089286]}\n\nExplanation: Evaluated inference_blockwise_fp8_quantization under standard test conditions."
+    "Input: tensor = [100.0, -200.0, 50.0, -448.0, 10.0, -20.0, 5.0, -40.0], block_size = 4, fp8_max = 448.0\n\nOutput: {\"quantized_tensor\": [100.0, -200.0, 50.0, -448.0, 112.0, -224.0, 56.0, -448.0], \"block_scales\": [1.0, 0.089286]}",
+    "Input: tensor = [200.0, -400.0, 100.0, -896.0, 20.0, -40.0, 10.0, -80.0], block_size = 8, fp8_max = 896.0\n\nOutput: {\"quantized_tensor\": [200.0, -400.0, 100.0, -896.0, 20.0, -40.0, 10.0, -80.0], \"block_scales\": [1.0]}"
   ],
-  "requirements": "* Function must be named `inference_blockwise_fp8_quantization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `inference_blockwise_fp8_quantization` accepting `tensor`, `block_size`, `fp8_max`\n* Compute one scale per block from that block's own absolute maximum, and scale each block into the [-fp8 max, fp8 max] range with saturation.\n* Return a `dict` containing the exact keys `'quantized_tensor'`, `'block_scales'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `inference_blockwise_fp8_quantization`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`tensor`, `block_size`, `fp8_max`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `inference_blockwise_fp8_quantization` into clear stages: validate/reshape `tensor`, `block_size`, `fp8_max`, evaluate the Implement Block-Wise FP8 Quantization equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('quantized_tensor', 'block_scales') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef inference_blockwise_fp8_quantization(tensor: list, block_size: int = 4, fp8_max: float = 448.0) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Implement Block-Wise FP8 Quantization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef inference_blockwise_fp8_quantization(tensor: list, block_size: int = 4, fp8_max: float = 448.0) -> dict:\n    arr = np.array(tensor, dtype=np.float64).flatten(); bs, fm = int(block_size), float(fp8_max)\n    scales, q_all = [], []\n    for b in range(math.ceil(len(arr) / bs)):\n        blk = arr[b*bs : (b+1)*bs]; sc = max(float(np.max(np.abs(blk))) / fm, 1e-12)\n        scales.append(round(sc, 6)); q_all.extend(np.clip(np.round(blk / sc), -fm, fm).tolist())\n    return {'quantized_tensor': np.round(q_all, 2).tolist(), 'block_scales': scales}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef inference_blockwise_fp8_quantization(tensor: list, block_size: int = 4, fp8_max: float = 448.0) -> dict:\n    \"\"\"\n    Compute one scale per block from that block's own absolute maximum, and scale each block into the [-fp8 max, fp8 max] range with saturation.\n\n    Args:\n        tensor (list): Input parameter `tensor` (list) for Implement Block-Wise FP8 Quantization.\n        block_size (int): Tile or KV-cache page block size in tokens.\n        fp8_max (float): Input parameter `fp8_max` (float) for Implement Block-Wise FP8 Quantization.\n\n    Returns:\n        dict: Computed Implement Block-Wise FP8 Quantization result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Implement Block-Wise FP8 Quantization** (Quantization, Inference, GPU Programming): Compute one scale per block from that block's own absolute maximum, and scale each block into the [-fp8 max, fp8 max] range with saturation.\n\nTo implement `inference_blockwise_fp8_quantization` cleanly and accurately:\n1. Parse and normalize the inputs (`tensor`, `block_size`, `fp8_max`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef inference_blockwise_fp8_quantization(tensor: list, block_size: int = 4, fp8_max: float = 448.0) -> dict:\n    arr = np.array(tensor, dtype=np.float64).flatten(); bs, fm = int(block_size), float(fp8_max)\n    scales, q_all = [], []\n    for b in range(math.ceil(len(arr) / bs)):\n        blk = arr[b*bs : (b+1)*bs]; sc = max(float(np.max(np.abs(blk))) / fm, 1e-12)\n        scales.append(round(sc, 6)); q_all.extend(np.clip(np.round(blk / sc), -fm, fm).tolist())\n    return {'quantized_tensor': np.round(q_all, 2).tolist(), 'block_scales': scales}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Implement Block-Wise FP8 Quantization** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "inference-blockwise-fp8-quantization-tc-1",
@@ -71,7 +73,7 @@
     },
     {
       "id": "inference-blockwise-fp8-quantization-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (block_size=8)",
       "inputs": {
         "tensor": [
           200.0,
@@ -105,7 +107,7 @@
     },
     {
       "id": "inference-blockwise-fp8-quantization-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (block_size=2)",
       "inputs": {
         "tensor": [
           50.0,
@@ -138,11 +140,11 @@
           0.089286
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "inference-blockwise-fp8-quantization-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (block_size=4)",
       "inputs": {
         "tensor": [
           -100.0,
@@ -177,7 +179,7 @@
     },
     {
       "id": "inference-blockwise-fp8-quantization-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (block_size=12)",
       "inputs": {
         "tensor": [
           300.0,
@@ -211,7 +213,7 @@
     },
     {
       "id": "inference-blockwise-fp8-quantization-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (block_size=4)",
       "inputs": {
         "tensor": [
           101.0,
@@ -246,7 +248,7 @@
     },
     {
       "id": "inference-blockwise-fp8-quantization-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (block_size=4)",
       "inputs": {
         "tensor": [
           98.0,
@@ -282,7 +284,26 @@
   ],
   "functionMetadata": {
     "name": "inference_blockwise_fp8_quantization",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "tensor",
+        "type": "array",
+        "example": "[100.0, -200.0, 50.0, -448.0, 10.0, -20.0, 5.0, -40.0]",
+        "description": "Input parameter `tensor` (list) for Implement Block-Wise FP8 Quantization"
+      },
+      {
+        "name": "block_size",
+        "type": "number",
+        "example": "4",
+        "description": "Tile or KV-cache page block size in tokens"
+      },
+      {
+        "name": "fp8_max",
+        "type": "number",
+        "example": "448.0",
+        "description": "Input parameter `fp8_max` (float) for Implement Block-Wise FP8 Quantization"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -291,11 +312,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Implement Block-Wise FP8 Quantization",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/inference-blockwise-fp8-quantization",
+  "localUrl": "http://localhost:3000/problems/inference-blockwise-fp8-quantization"
 }

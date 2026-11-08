@@ -4,7 +4,7 @@
   "description": "Implement the simplified DDPM noise-prediction objective.\n\n$$\nL_{\\mathrm{simple}} = \\frac{1}{N}\\sum_{i=1}^{N}\\left(\\epsilon_i-\\epsilon_{\\theta,i}\\right)^2.\n$$\n\nHere, $\\epsilon$ is the Gaussian noise used to construct a noisy training sample, $\\epsilon_\\theta$ is the denoiser's prediction of that noise, and $N$ is the number of scalar values in the batch. Return the mean squared error as a Python float rounded to six decimals.",
   "seoDescription": "Compute the DDPM training objective as mean squared error between sampled noise and the model's noise prediction.",
   "examples": [
-    "Input: epsilon=[[0.5,-0.3],[0.1,-0.8]], epsilon_pred=[[0,0],[0,0]]\n\nOutput: 0.2475\n\nExplanation: The result is the mean of the four squared noise-prediction errors.",
+    "Input: epsilon=[[0.5,-0.3],[0.1,-0.8]], epsilon_pred=[[0,0],[0,0]]\n\nOutput: 0.2475",
     "Input: epsilon=[[0.5,-0.3],[0.1,-0.8]], epsilon_pred=[[0.5,-0.3],[0.1,-0.8]]\n\nOutput: 0.0",
     "Input: epsilon=[[1,-1]], epsilon_pred=[[0.8,-0.7]]\n\nOutput: 0.065"
   ],
@@ -20,9 +20,9 @@
   "createdAt": "2026-01-23T18:46:11.065Z",
   "updatedAt": "2026-04-04T12:04:50.448Z",
   "topicId": "ddpm-loss",
-  "paperSnippet": "\"Training consists of randomly sampling a time step t and a noise vector Îµ, then computing the gradient of the simplified objective with respect to the neural network parameters.\"",
+  "paperSnippet": "\"Training consists of randomly sampling a time step t and a noise vector \u00ce\u00b5, then computing the gradient of the simplified objective with respect to the neural network parameters.\"",
   "visualizationComponent": "DiffusionLossViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **DDPM Training Loss** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef compute_ddpm_loss(epsilon: list, epsilon_pred: list) -> float:\n    e = np.asarray(epsilon, dtype=float)\n    ep = np.asarray(epsilon_pred, dtype=float)\n    return float(np.round(np.mean((e - ep) ** 2), 6))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **DDPM Training Loss** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef compute_ddpm_loss(epsilon: list, epsilon_pred: list) -> float:\n    e = np.asarray(epsilon, dtype=float)\n    ep = np.asarray(epsilon_pred, dtype=float)\n    return float(np.round(np.mean((e - ep) ** 2), 6))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "ddpm-loss-tc-1",
@@ -254,7 +254,7 @@
   "topic": {
     "id": "ddpm-loss",
     "name": "Training Objective",
-    "description": "Îµ-prediction and simplified loss",
+    "description": "\u00ce\u00b5-prediction and simplified loss",
     "color": "#8b5cf6"
   },
   "paper": {

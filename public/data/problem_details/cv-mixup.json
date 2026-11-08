@@ -19,19 +19,21 @@
   "seoDescription": "MixUp augmentation forms a new training sample by taking a convex combination of two images and their labels using a mixing weight [0, 1].",
   "solved": false,
   "isLocked": true,
-  "description": "Blend input feature tensors and one-hot supervision labels via convex combination with mixing ratio lambda.\n\nMixUp trains networks to favor linear behavior between training examples, regularizing decision boundaries and reducing overconfident misclassifications.\n\n### Mathematical Formulation\n$$\n\\tilde{\\mathbf{x}} = \\lambda \\mathbf{x}_i + (1 - \\lambda) \\mathbf{x}_j, \\quad \\tilde{\\mathbf{y}} = \\lambda \\mathbf{y}_i + (1 - \\lambda) \\mathbf{y}_j\n$$\n\n### Step-by-Step Implementation\n1. Form linear interpolation between input vectors x1 and x2 using ratio lambda\n2. Form matching linear interpolation between target vectors y1 and y2\n3. Return dictionary with 'mixed_x' and 'mixed_y' rounded to 4 decimal places\n\n### Returns\nDictionary with 'mixed_x' and 'mixed_y'.",
-  "theory": "# Understanding MixUp Augmentation\n\n## 1. What Is It?\n\nThe **MixUp Augmentation** is a fundamental computational technique in Numpy. In machine learning workflows, Blend input feature tensors and one-hot supervision labels via convex combination with mixing ratio lambda.\n\n### Key Terminology\n- **Computer Vision**: Core domain concept contextualizing this task within Numpy workflows.\n- **Data Processing**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\tilde{\\mathbf{x}} = \\lambda \\mathbf{x}_i + (1 - \\lambda) \\mathbf{x}_j, \\quad \\tilde{\\mathbf{y}} = \\lambda \\mathbf{y}_i + (1 - \\lambda) \\mathbf{y}_j\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_mixup` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx1 = [1.0, 2.0], x2 = [3.0, 4.0], y1 = [1.0, 0.0], y2 = [0.0, 1.0], lam = 0.7\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_mixup under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"mixed_x\": [1.6, 2.6], \"mixed_y\": [0.7, 0.3]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_mixup` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`mixed_x`**: Represents `mixed_x` (e.g. `[1.6, 2.6]`), reflecting the updated state or component.\n  - **`mixed_y`**: Represents `mixed_y` (e.g. `[0.7, 0.3]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `cv_mixup`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_mixup`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_mixup`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**MixUp Augmentation** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_mixup` accurately and efficiently performs the required transformation.\n",
+  "description": "Blend input feature tensors and one-hot supervision labels via convex combination with mixing ratio lambda.\n\n$$\n\\tilde{\\mathbf{x}} = \\lambda \\mathbf{x}_i + (1 - \\lambda) \\mathbf{x}_j, \\quad \\tilde{\\mathbf{y}} = \\lambda \\mathbf{y}_i + (1 - \\lambda) \\mathbf{y}_j\n$$\n\nGiven input parameters `x1`, `x2`, `y1`, `y2`, `lam`, return dictionary with 'mixed_x' and 'mixed_y'.",
+  "theory": "## What Is MixUp Augmentation?\n\nIn computer vision, spatial tensor operators and geometric bounding-box algorithms extract translation- and scale-aware structure from image grids.\n\n$$\n\\tilde{\\mathbf{x}} = \\lambda \\mathbf{x}_i + (1 - \\lambda) \\mathbf{x}_j, \\quad \\tilde{\\mathbf{y}} = \\lambda \\mathbf{y}_i + (1 - \\lambda) \\mathbf{y}_j\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\tilde{\\mathbf{x}} = \\lambda \\mathbf{x}_i + (1 - \\lambda) \\mathbf{x}_j\n$$\n\n$$\n\\tilde{\\mathbf{y}} = \\lambda \\mathbf{y}_i + (1 - \\lambda) \\mathbf{y}_j\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x1 = [1.0, 2.0], x2 = [3.0, 4.0], y1 = [1.0, 0.0], y2 = [0.0, 1.0], lam = 0.7\n\nOutput: {\"mixed_x\": [1.6, 2.6], \"mixed_y\": [0.7, 0.3]}\n\nExplanation: Evaluated cv_mixup under standard test conditions."
+    "Input: x1 = [1.0, 2.0], x2 = [3.0, 4.0], y1 = [1.0, 0.0], y2 = [0.0, 1.0], lam = 0.7\n\nOutput: {\"mixed_x\": [1.6, 2.6], \"mixed_y\": [0.7, 0.3]}",
+    "Input: x1 = [2.0, 4.0], x2 = [6.0, 8.0], y1 = [2.0, 0.0], y2 = [0.0, 2.0], lam = 1.4\n\nOutput: {\"mixed_x\": [0.4, 2.4], \"mixed_y\": [2.8, -0.8]}"
   ],
-  "requirements": "* Function must be named `cv_mixup`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_mixup` accepting `x1`, `x2`, `y1`, `y2`, `lam`\n* MixUp augmentation forms a new training sample by taking a convex combination of two images and their labels using a mixing weight [0, 1].\n* Return a `dict` containing the exact keys `'mixed_x'`, `'mixed_y'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_mixup`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x1`, `x2`, `y1`, `y2`, `lam`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `cv_mixup` into clear stages: validate/reshape `x1`, `x2`, `y1`, `y2`, `lam`, evaluate the MixUp Augmentation equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('mixed_x', 'mixed_y') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef cv_mixup(x1: list, x2: list, y1: list, y2: list, lam: float = 0.8) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **MixUp Augmentation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_mixup(x1: list, x2: list, y1: list, y2: list, lam: float = 0.8) -> dict:\n    mx = lam * np.array(x1, dtype=float) + (1.0 - lam) * np.array(x2, dtype=float)\n    my = lam * np.array(y1, dtype=float) + (1.0 - lam) * np.array(y2, dtype=float)\n    return {'mixed_x': np.round(mx, 4).tolist(), 'mixed_y': np.round(my, 4).tolist()}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef cv_mixup(x1: list, x2: list, y1: list, y2: list, lam: float = 0.8) -> dict:\n    \"\"\"\n    MixUp augmentation forms a new training sample by taking a convex combination of two images and their labels using a mixing weight [0, 1].\n\n    Args:\n        x1 (list): Input parameter `x1` (list) for MixUp Augmentation.\n        x2 (list): Input parameter `x2` (list) for MixUp Augmentation.\n        y1 (list): Input parameter `y1` (list) for MixUp Augmentation.\n        y2 (list): Input parameter `y2` (list) for MixUp Augmentation.\n        lam (float): Input parameter `lam` (float) for MixUp Augmentation.\n\n    Returns:\n        dict: Computed MixUp Augmentation result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**MixUp Augmentation** (Computer Vision, Data Processing): MixUp augmentation forms a new training sample by taking a convex combination of two images and their labels using a mixing weight [0, 1].\n\nTo implement `cv_mixup` cleanly and accurately:\n1. Parse and normalize the inputs (`x1`, `x2`, `y1`, `y2`, `lam`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_mixup(x1: list, x2: list, y1: list, y2: list, lam: float = 0.8) -> dict:\n    mx = lam * np.array(x1, dtype=float) + (1.0 - lam) * np.array(x2, dtype=float)\n    my = lam * np.array(y1, dtype=float) + (1.0 - lam) * np.array(y2, dtype=float)\n    return {'mixed_x': np.round(mx, 4).tolist(), 'mixed_y': np.round(my, 4).tolist()}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **MixUp Augmentation** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-mixup-tc-1",
@@ -69,7 +71,7 @@
     },
     {
       "id": "cv-mixup-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (x1=[2.0, 4.0])",
       "inputs": {
         "x1": [
           2.0,
@@ -103,7 +105,7 @@
     },
     {
       "id": "cv-mixup-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (x1=[0.5, 1.0])",
       "inputs": {
         "x1": [
           0.5,
@@ -133,11 +135,11 @@
           0.325
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-mixup-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (x1=[-1.0, -2.0])",
       "inputs": {
         "x1": [
           -1.0,
@@ -171,7 +173,7 @@
     },
     {
       "id": "cv-mixup-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (x1=[3.0, 6.0])",
       "inputs": {
         "x1": [
           3.0,
@@ -205,7 +207,7 @@
     },
     {
       "id": "cv-mixup-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (x1=[2.0, 3.0])",
       "inputs": {
         "x1": [
           2.0,
@@ -239,7 +241,7 @@
     },
     {
       "id": "cv-mixup-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (x1=[-1.0, 0.0])",
       "inputs": {
         "x1": [
           -1.0,
@@ -274,7 +276,38 @@
   ],
   "functionMetadata": {
     "name": "cv_mixup",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "x1",
+        "type": "array",
+        "example": "[1.0, 2.0]",
+        "description": "Input parameter `x1` (list) for MixUp Augmentation"
+      },
+      {
+        "name": "x2",
+        "type": "array",
+        "example": "[3.0, 4.0]",
+        "description": "Input parameter `x2` (list) for MixUp Augmentation"
+      },
+      {
+        "name": "y1",
+        "type": "array",
+        "example": "[1.0, 0.0]",
+        "description": "Input parameter `y1` (list) for MixUp Augmentation"
+      },
+      {
+        "name": "y2",
+        "type": "array",
+        "example": "[0.0, 1.0]",
+        "description": "Input parameter `y2` (list) for MixUp Augmentation"
+      },
+      {
+        "name": "lam",
+        "type": "number",
+        "example": "0.7",
+        "description": "Input parameter `lam` (float) for MixUp Augmentation"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -283,11 +316,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "MixUp Augmentation",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-mixup",
+  "localUrl": "http://localhost:3000/problems/cv-mixup"
 }

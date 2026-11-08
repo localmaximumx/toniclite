@@ -18,19 +18,21 @@
   "seoDescription": "Policy iteration solves a finite Markov Decision Process by alternating two steps until the greedy policy stops changing.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute optimal policy for discrete MDP using alternating policy evaluation and greedy policy improvement.\n\nPolicy iteration guarantees strictly monotonic improvement in state values at every iteration, converging to global optimal policy in finite steps.\n\n### Mathematical Formulation\n$$\nV^{\\pi} = (\\mathbf{I} - \\gamma \\mathbf{P}^{\\pi})^{-1} \\mathbf{R}^{\\pi}, \\quad \\pi'(s) = \\arg\\max_a \\left[ R(s, a) + \\gamma \\sum_{s'} P(s'|s, a) V^{\\pi}(s') \\right]\n$$\n\n### Step-by-Step Implementation\n1. Solve linear system for state values under current stationary policy pi\n2. Greedily update action at each state maximizing expected 1-step Q-value\n3. Terminate when policy is stable and return optimal action indices\n\n### Returns\nList of integers representing optimal action choice per state.",
-  "theory": "# Understanding Policy Iteration\n\n## 1. What Is It?\n\nThe **Policy Iteration** is a fundamental computational technique in Python. In machine learning workflows, it involves performing optimal policy for discrete MDP using alternating policy evaluation and greedy policy improvement.\n\n### Key Terminology\n- **`gamma`**: The learned affine scale parameter or discount factor.\n- **Reinforcement Learning**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nV^{\\pi} = (\\mathbf{I} - \\gamma \\mathbf{P}^{\\pi})^{-1} \\mathbf{R}^{\\pi}, \\quad \\pi'(s) = \\arg\\max_a \\left[ R(s, a) + \\gamma \\sum_{s'} P(s'|s, a) V^{\\pi}(s') \\right]\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `rl_policy_iteration` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nP = [[[0.7, 0.3], [0.1, 0.9]], [[0.2, 0.8], [0.8, 0.2]]], R = [[5.0, 10.0], [-1.0, 2.0]], gamma = 0.9\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated rl_policy_iteration under standard test conditions.\n\n**Resulting Output:**\n```python\n[1, 1]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `rl_policy_iteration` must return:\n- **Primary Output:** `[1, 1]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `rl_policy_iteration`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `rl_policy_iteration`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `rl_policy_iteration`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Policy Iteration** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `rl_policy_iteration` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute optimal policy for discrete MDP using alternating policy evaluation and greedy policy improvement.\n\n$$\nV^{\\pi} = (\\mathbf{I} - \\gamma \\mathbf{P}^{\\pi})^{-1} \\mathbf{R}^{\\pi}, \\quad \\pi'(s) = \\arg\\max_a \\left[ R(s, a) + \\gamma \\sum_{s'} P(s'|s, a) V^{\\pi}(s') \\right]\n$$\n\nGiven input parameters `P`, `R`, `gamma`, return list of integers representing optimal action choice per state.",
+  "theory": "## What Is Policy Iteration?\n\nIn reinforcement learning, value functions and policy gradients optimize sequential decision-making over long-horizon Markov Decision Processes (MDPs).\n\n$$\nV^{\\pi} = (\\mathbf{I} - \\gamma \\mathbf{P}^{\\pi})^{-1} \\mathbf{R}^{\\pi}, \\quad \\pi'(s) = \\arg\\max_a \\left[ R(s, a) + \\gamma \\sum_{s'} P(s'|s, a) V^{\\pi}(s') \\right]\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nV^{\\pi} = (\\mathbf{I} - \\gamma \\mathbf{P}^{\\pi})^{-1} \\mathbf{R}^{\\pi}\n$$\n\n$$\n\\pi'(s) = \\arg\\max_a \\left[ R(s, a) + \\gamma \\sum_{s'} P(s'|s, a) V^{\\pi}(s') \\right]\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Actor-Critic (A2C) Loss with Entropy**, **Bellman Expectation Equation**, **Bellman Optimality Equation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d^2 + d^3)$ where $N$ is the number of samples and $d$ is the matrix/feature dimension (dominated by matrix factorization or system solve).\n- **Space Complexity:** $\\mathcal{O}(d^2)$ to store the matrix factors and intermediate linear algebra arrays.",
   "examples": [
-    "Input: P = [[[0.7, 0.3], [0.1, 0.9]], [[0.2, 0.8], [0.8, 0.2]]], R = [[5.0, 10.0], [-1.0, 2.0]], gamma = 0.9\n\nOutput: [1, 1]\n\nExplanation: Evaluated rl_policy_iteration under standard test conditions."
+    "Input: P = [[[0.7, 0.3], [0.1, 0.9]], [[0.2, 0.8], [0.8, 0.2]]], R = [[5.0, 10.0], [-1.0, 2.0]], gamma = 0.9\n\nOutput: [1, 1]",
+    "Input: P = [[[1.05, 0.45], [0.15, 1.35]], [[0.3, 1.2], [1.2, 0.3]]], R = [[7.5, 15.0], [-1.5, 3.0]], gamma = 1.35\n\nOutput: [1, 1]"
   ],
-  "requirements": "* Function must be named `rl_policy_iteration`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `rl_policy_iteration` accepting `P`, `R`, `gamma`\n* Policy iteration solves a finite Markov Decision Process by alternating two steps until the greedy policy stops changing.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `rl_policy_iteration`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`P`, `R`, `gamma`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `rl_policy_iteration` into clear stages: validate/reshape `P`, `R`, `gamma`, evaluate the Policy Iteration equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef rl_policy_iteration(P: list, R: list, gamma: float = 0.9) -> list:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Policy Iteration** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_policy_iteration(P: list, R: list, gamma: float = 0.9) -> list:\n    S, A = len(R), len(P[0])\n    pol = [0] * S\n    for _ in range(20):\n        T_pi = np.array([P[s][pol[s]] for s in range(S)])\n        R_pi = np.array([R[s][pol[s]] for s in range(S)])\n        V = np.linalg.solve(np.eye(S) - gamma * T_pi, R_pi)\n        stable = True\n        for s in range(S):\n            q = [R[s][a] + gamma * np.dot(P[s][a], V) for a in range(A)]\n            best = int(np.argmax(q))\n            if best != pol[s]: stable = False; pol[s] = best\n        if stable: break\n    return pol\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef rl_policy_iteration(P: list, R: list, gamma: float = 0.9) -> list:\n    \"\"\"\n    Policy iteration solves a finite Markov Decision Process by alternating two steps until the greedy policy stops changing.\n\n    Args:\n        P (list): Input parameter `P` (list) for Policy Iteration.\n        R (list): Input parameter `R` (list) for Policy Iteration.\n        gamma (float): Discount factor in [0, 1] or scale parameter.\n\n    Returns:\n        list: Computed Policy Iteration result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Policy Iteration** (Reinforcement Learning): Policy iteration solves a finite Markov Decision Process by alternating two steps until the greedy policy stops changing.\n\nTo implement `rl_policy_iteration` cleanly and accurately:\n1. Parse and normalize the inputs (`P`, `R`, `gamma`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_policy_iteration(P: list, R: list, gamma: float = 0.9) -> list:\n    S, A = len(R), len(P[0])\n    pol = [0] * S\n    for _ in range(20):\n        T_pi = np.array([P[s][pol[s]] for s in range(S)])\n        R_pi = np.array([R[s][pol[s]] for s in range(S)])\n        V = np.linalg.solve(np.eye(S) - gamma * T_pi, R_pi)\n        stable = True\n        for s in range(S):\n            q = [R[s][a] + gamma * np.dot(P[s][a], V) for a in range(A)]\n            best = int(np.argmax(q))\n            if best != pol[s]: stable = False; pol[s] = best\n        if stable: break\n    return pol\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Policy Iteration** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "rl-policy-iteration-tc-1",
@@ -78,7 +80,7 @@
     },
     {
       "id": "rl-policy-iteration-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (gamma=1.35)",
       "inputs": {
         "P": [
           [
@@ -122,7 +124,7 @@
     },
     {
       "id": "rl-policy-iteration-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (gamma=0.45)",
       "inputs": {
         "P": [
           [
@@ -162,11 +164,11 @@
         1,
         1
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "rl-policy-iteration-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (gamma=1.8)",
       "inputs": {
         "P": [
           [
@@ -210,7 +212,7 @@
     },
     {
       "id": "rl-policy-iteration-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (gamma=0.9)",
       "inputs": {
         "P": [
           [
@@ -254,7 +256,7 @@
     },
     {
       "id": "rl-policy-iteration-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (gamma=0.72)",
       "inputs": {
         "P": [
           [
@@ -298,7 +300,7 @@
     },
     {
       "id": "rl-policy-iteration-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (gamma=2.7)",
       "inputs": {
         "P": [
           [
@@ -343,7 +345,26 @@
   ],
   "functionMetadata": {
     "name": "rl_policy_iteration",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "P",
+        "type": "array",
+        "example": "[[[0.7, 0.3], [0.1, 0.9]], [[0.2, 0.8], [0.8, 0.2]]]",
+        "description": "Input parameter `P` (list) for Policy Iteration"
+      },
+      {
+        "name": "R",
+        "type": "array",
+        "example": "[[5.0, 10.0], [-1.0, 2.0]]",
+        "description": "Input parameter `R` (list) for Policy Iteration"
+      },
+      {
+        "name": "gamma",
+        "type": "number",
+        "example": "0.9",
+        "description": "Discount factor in [0, 1] or scale parameter"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -352,11 +373,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Policy Iteration",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/rl-policy-iteration",
+  "localUrl": "http://localhost:3000/problems/rl-policy-iteration"
 }

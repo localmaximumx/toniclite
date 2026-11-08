@@ -4,7 +4,7 @@
   "description": "Implement the discriminator forward pass for a linear GAN discriminator. For a batch of samples, compute\n\n$$\nD(X) = \\sigma(XW)\n$$\n\n$$\n\\sigma(a) = \\frac{1}{1 + e^{-a}}\n$$\n\nHere, $X \\in \\mathbb{R}^{B \\times D}$ contains $B$ samples with $D$ features, $W \\in \\mathbb{R}^{D \\times 1}$ contains the supplied discriminator weights, and $D(X) \\in \\mathbb{R}^{B \\times 1}$ contains the probability assigned to each sample being real. Return $D(X)$ as a float64 NumPy array with shape $(B, 1)$.",
   "seoDescription": "Implement a GAN discriminator that maps input samples through dense layers to real-versus-fake probabilities.",
   "examples": [
-    "Input: x = [[1,0],[0,1],[0.5,0.5]], W = [[0.8],[-0.3]]\n\nOutput: [[0.689974],[0.425557],[0.562177]]\n\nExplanation: The matrix product produces one logit per sample, and sigmoid maps each logit to a probability.",
+    "Input: x = [[1,0],[0,1],[0.5,0.5]], W = [[0.8],[-0.3]]\n\nOutput: [[0.689974],[0.425557],[0.562177]]",
     "Input: x = [[1,1,1],[-1,-1,-1]], W = [[0.5],[0.2],[-0.3]]\n\nOutput: [[0.598688],[0.401312]]",
     "Input: x = [[0.3,-0.7,0.5,0.1]], W = [[0.4],[-0.2],[0.6],[0.1]]\n\nOutput: [[0.638763]]"
   ],
@@ -22,7 +22,7 @@
   "topicId": "gan-discriminator",
   "paperSnippet": "\"The discriminative model D estimates the probability that a sample came from the training data rather than G. D is trained to maximize the probability of assigning the correct label.\"",
   "visualizationComponent": "GANDiscriminatorViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **GAN Discriminator** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef discriminator(x: np.ndarray, W: np.ndarray) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    w = np.asarray(W, dtype=float)\n    logits = x_arr @ w\n    probs = 1.0 / (1.0 + np.exp(-np.clip(logits, -500, 500)))\n    return np.round(probs, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **GAN Discriminator** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef discriminator(x: np.ndarray, W: np.ndarray) -> np.ndarray:\n    x_arr = np.asarray(x, dtype=float)\n    w = np.asarray(W, dtype=float)\n    logits = x_arr @ w\n    probs = 1.0 / (1.0 + np.exp(-np.clip(logits, -500, 500)))\n    return np.round(probs, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gan-discriminator-tc-1",

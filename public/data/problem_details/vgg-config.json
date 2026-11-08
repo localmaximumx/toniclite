@@ -4,7 +4,7 @@
   "description": "Return the canonical convolution and pooling configuration for VGG11, VGG13, VGG16, or VGG19. Each integer is a convolution output-channel count and each string M is a 2 by 2 max-pooling layer. Accept the variant name case-insensitively. Return the configuration as a new Python list containing integers and M strings.",
   "seoDescription": "Generate the canonical convolution and max-pooling layer configuration for VGG11, VGG13, VGG16, or VGG19.",
   "examples": [
-    "Input: variant = \"vgg11\"\n\nOutput: [64,\"M\",128,\"M\",256,256,\"M\",512,512,\"M\",512,512,\"M\"]\n\nExplanation: VGG11 contains eight convolution entries grouped by five pooling entries.",
+    "Input: variant = \"vgg11\"\n\nOutput: [64,\"M\",128,\"M\",256,256,\"M\",512,512,\"M\",512,512,\"M\"]",
     "Input: variant = \"VGG16\"\n\nOutput: [64,64,\"M\",128,128,\"M\",256,256,256,\"M\",512,512,512,\"M\",512,512,512,\"M\"]",
     "Input: variant = \"vgg19\"\n\nOutput: [64,64,\"M\",128,128,\"M\",256,256,256,256,\"M\",512,512,512,512,\"M\",512,512,512,512,\"M\"]"
   ],

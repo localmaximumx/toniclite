@@ -18,23 +18,25 @@
   "seoDescription": "Build a stacking classifier using cross-validated predictions from decision-stump and KNN base models to train a logistic meta-learner.",
   "solved": false,
   "isLocked": true,
-  "description": "Train base estimators, assemble out-of-fold predictions into meta-features, and generate final predictions using a meta-classifier.\n\nStacking blends heterogeneous model families (trees, linear, KNN) by training a meta-model on their collective predictions.\n\n### Mathematical Formulation\n$$\n\\hat{y} = g\\left(f_1(x), f_2(x), \\dots, f_M(x)\\right)\n$$\n\n### Step-by-Step Implementation\n1. Generate predictions from multiple diverse base models\n2. Stack base predictions into a second-level meta-feature matrix\n3. Train meta-learner over assembled features to predict target classes\n\n### Returns\nList of integer ensemble class predictions.",
-  "theory": "# Understanding Stacking Ensemble\n\n## 1. What Is It?\n\nThe **Stacking Ensemble** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing base estimators, assemble out-of-fold predictions into meta-features, and generate final predictions using a meta-classifier.\n\n### Key Terminology\n- **Classic ML**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\hat{y} = g\\left(f_1(x), f_2(x), \\dots, f_M(x)\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `ml_stacking` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nX_train = [[1.0, 2.0], [2.0, 1.0], [5.0, 6.0], [6.0, 5.0]], y_train = [0, 0, 1, 1], X_test = [[1.5, 1.5], [5.5, 5.5]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated ml_stacking under standard test conditions.\n\n**Resulting Output:**\n```python\n[1, 1]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `ml_stacking` must return:\n- **Primary Output:** `[1, 1]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `ml_stacking`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `ml_stacking`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `ml_stacking`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Stacking Ensemble** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `ml_stacking` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement a two-level stacking classifier that fits two heterogeneous base learners on `(X_train, y_train)` and combines their scores using a ridge meta-classifier to predict binary class labels (`0` or `1`) for `X_test`.\n\nFirst, compute the class centroids from `X_train` and evaluate the nearest-centroid base learner probability score:\n\n$$\np_1(\\mathbf{x}) = \\sigma\\!\\left(\\|\\mathbf{x} - \\boldsymbol{\\mu}_0\\|_2 - \\|\\mathbf{x} - \\boldsymbol{\\mu}_1\\|_2\\right), \\qquad \\sigma(z) = \\frac{1}{1 + e^{-z}}\n$$\n\nSecond, augment the feature matrix with a leading ones column and fit the ridge regression base learner:\n\n$$\n\\tilde{\\mathbf{X}} = [\\mathbf{1}, \\mathbf{X}], \\qquad \\mathbf{w}_{\\text{lin}} = \\left(\\tilde{\\mathbf{X}}^T \\tilde{\\mathbf{X}} + 10^{-2} \\mathbf{I}\\right)^{-1} \\tilde{\\mathbf{X}}^T \\mathbf{y}, \\qquad p_2(\\mathbf{x}) = \\tilde{\\mathbf{x}}^T \\mathbf{w}_{\\text{lin}}\n$$\n\nFinally, stack the base predictions into the meta-feature matrix, fit the ridge meta-weights on the training set, and threshold the test predictions at `0.5`:\n\n$$\n\\mathbf{M} = [\\mathbf{1}, \\mathbf{p}_1, \\mathbf{p}_2], \\qquad \\mathbf{w}_{\\text{meta}} = \\left(\\mathbf{M}_{\\text{tr}}^T \\mathbf{M}_{\\text{tr}} + 10^{-2} \\mathbf{I}\\right)^{-1} \\mathbf{M}_{\\text{tr}}^T \\mathbf{y}_{\\text{tr}}, \\qquad \\hat{\\mathbf{y}}_{\\text{te}} = \\mathbb{I}\\!\\left[\\mathbf{M}_{\\text{te}} \\mathbf{w}_{\\text{meta}} \\ge 0.5\\right]\n$$\n\nReturn the predicted binary class labels for `X_test` as a list of integers (`0` or `1`).",
+  "theory": "## What Is Stacking Ensemble?\n\nStacking (Stacked Generalization, Wolpert, 1992) is a hierarchical ensemble paradigm in which a second-level meta-learner is trained on the predictions of diverse first-level base learners.\n\n$$\np_1(\\mathbf{x}) = \\sigma\\!\\left(\\|\\mathbf{x} - \\boldsymbol{\\mu}_0\\|_2 - \\|\\mathbf{x} - \\boldsymbol{\\mu}_1\\|_2\\right), \\qquad \\sigma(z) = \\frac{1}{1 + e^{-z}}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\np_1(\\mathbf{x}) = \\sigma\\!\\left(\\|\\mathbf{x} - \\boldsymbol{\\mu}_0\\|_2 - \\|\\mathbf{x} - \\boldsymbol{\\mu}_1\\|_2\\right)\n$$\n\n$$\n\\sigma(z) = \\frac{1}{1 + e^{-z}}\n$$\n\n$$\n\\tilde{\\mathbf{X}} = [\\mathbf{1}, \\mathbf{X}]\n$$\n\n$$\n\\mathbf{w}_{\\text{lin}} = \\left(\\tilde{\\mathbf{X}}^T \\tilde{\\mathbf{X}} + 10^{-2} \\mathbf{I}\\right)^{-1} \\tilde{\\mathbf{X}}^T \\mathbf{y}\n$$\n\n$$\np_2(\\mathbf{x}) = \\tilde{\\mathbf{x}}^T \\mathbf{w}_{\\text{lin}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Leaky ReLU**, **ReLU**, **Sigmoid**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d^2 + d^3)$ where $N$ is the number of samples and $d$ is the matrix/feature dimension (dominated by matrix factorization or system solve).\n- **Space Complexity:** $\\mathcal{O}(d^2)$ to store the matrix factors and intermediate linear algebra arrays.",
   "examples": [
-    "Input: X_train = [[1.0, 2.0], [2.0, 1.0], [5.0, 6.0], [6.0, 5.0]], y_train = [0, 0, 1, 1], X_test = [[1.5, 1.5], [5.5, 5.5]]\n\nOutput: [1, 1]\n\nExplanation: Evaluated ml_stacking under standard test conditions."
+    "Input: X_train = [[1.0, 2.0], [2.0, 1.0], [5.0, 6.0], [6.0, 5.0]], y_train = [0, 0, 1, 1], X_test = [[1.5, 1.5], [5.5, 5.5]]\n\nOutput: [0, 1]",
+    "Input: X_train = [[1.0, 2.0], [2.0, 1.0], [5.0, 6.0], [6.0, 5.0]], y_train = [1, 1, 0, 0], X_test = [[1.5, 1.5], [5.5, 5.5]]\n\nOutput: [1, 0]"
   ],
-  "requirements": "* Function must be named `ml_stacking`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `ml_stacking` accepting `X_train`, `y_train`, `X_test`\n* Build a stacking classifier using cross-validated predictions from decision-stump and KNN base models to train a logistic meta-learner.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `ml_stacking`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`X_train`, `y_train`, `X_test`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `ml_stacking` into clear stages: validate/reshape `X_train`, `y_train`, `X_test`, evaluate the Stacking Ensemble equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef ml_stacking(X_train: list, y_train: list, X_test: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Stacking Ensemble** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_stacking(X_train: list, y_train: list, X_test: list) -> list:\n    X, y, Xt = np.array(X_train, dtype=np.float64), np.array(y_train, dtype=np.int64), np.array(X_test, dtype=np.float64)\n    th = np.mean(X[:, 0])\n    m1_test = (Xt[:, 0] > th).astype(np.float64)\n    m2_test = (Xt[:, 1] > 0).astype(np.float64)\n    return [int(p >= 0.5) for p in np.mean(np.stack([m1_test, m2_test], axis=1), axis=1)]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef ml_stacking(X_train: list, y_train: list, X_test: list) -> list:\n    \"\"\"\n    Trains two diverse base learners (nearest class centroid and linear ridge regression)\n    on (X_train, y_train), combines their meta-features via a least-squares blender, and predicts binary labels on X_test.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Stacking Ensemble** (Classic ML): Build a stacking classifier using cross-validated predictions from decision-stump and KNN base models to train a logistic meta-learner.\n\nTo implement `ml_stacking` cleanly and accurately:\n1. Parse and normalize the inputs (`X_train`, `y_train`, `X_test`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef ml_stacking(X_train: list, y_train: list, X_test: list) -> list:\n    X_tr = np.asarray(X_train, dtype=float)\n    y_tr = np.asarray(y_train, dtype=float)\n    X_te = np.asarray(X_test, dtype=float)\n    # Base model 1: Class centroid distance probability\n    mask0 = (y_tr == 0)\n    mask1 = (y_tr == 1)\n    c0 = np.mean(X_tr[mask0], axis=0) if np.any(mask0) else np.zeros(X_tr.shape[1])\n    c1 = np.mean(X_tr[mask1], axis=0) if np.any(mask1) else np.ones(X_tr.shape[1])\n    def pred_centroid(X):\n        d0 = np.linalg.norm(X - c0, axis=1)\n        d1 = np.linalg.norm(X - c1, axis=1)\n        return 1.0 / (1.0 + np.exp(d1 - d0))\n    # Base model 2: Regularized linear model with intercept\n    Xb_tr = np.column_stack([np.ones(len(X_tr)), X_tr])\n    Xb_te = np.column_stack([np.ones(len(X_te)), X_te])\n    reg = 1e-2 * np.eye(Xb_tr.shape[1])\n    w_lin = np.linalg.solve(Xb_tr.T @ Xb_tr + reg, Xb_tr.T @ y_tr)\n    # Meta-features [1, p1, p2]\n    M_tr = np.column_stack([np.ones(len(X_tr)), pred_centroid(X_tr), Xb_tr @ w_lin])\n    M_te = np.column_stack([np.ones(len(X_te)), pred_centroid(X_te), Xb_te @ w_lin])\n    w_meta = np.linalg.solve(M_tr.T @ M_tr + 1e-2 * np.eye(3), M_tr.T @ y_tr)\n    preds = (M_te @ w_meta >= 0.5).astype(int)\n    return preds.tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Stacking Ensemble** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "ml-stacking-tc-1",
-      "name": "Binary stacking test",
+      "name": "Separable 2D clusters (class 0 low, class 1 high)",
       "inputs": {
         "X_train": [
           [
@@ -72,182 +74,47 @@
         ]
       },
       "expectedOutput": [
-        1,
+        0,
         1
       ],
       "isPublic": true
     },
     {
       "id": "ml-stacking-tc-2",
-      "name": "Case 2",
+      "name": "Inverted label orientation (class 1 low, class 0 high)",
       "inputs": {
         "X_train": [
           [
-            1.5,
-            3.0
+            1.0,
+            2.0
           ],
           [
-            3.0,
-            1.5
-          ],
-          [
-            7.5,
-            9.0
-          ],
-          [
-            9.0,
-            7.5
-          ]
-        ],
-        "y_train": [
-          0,
-          0,
-          2,
-          2
-        ],
-        "X_test": [
-          [
-            2.25,
-            2.25
-          ],
-          [
-            8.25,
-            8.25
-          ]
-        ]
-      },
-      "expectedOutput": [
-        1,
-        1
-      ],
-      "isPublic": true
-    },
-    {
-      "id": "ml-stacking-tc-3",
-      "name": "Case 3",
-      "inputs": {
-        "X_train": [
-          [
-            0.5,
+            2.0,
             1.0
           ],
           [
-            1.0,
-            0.5
+            5.0,
+            6.0
           ],
           [
-            2.5,
-            3.0
-          ],
-          [
-            3.0,
-            2.5
+            6.0,
+            5.0
           ]
         ],
         "y_train": [
-          0,
-          0,
+          1,
+          1,
           0,
           0
         ],
         "X_test": [
           [
-            0.75,
-            0.75
+            1.5,
+            1.5
           ],
           [
-            2.75,
-            2.75
-          ]
-        ]
-      },
-      "expectedOutput": [
-        1,
-        1
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "ml-stacking-tc-4",
-      "name": "Case 4",
-      "inputs": {
-        "X_train": [
-          [
-            2.0,
-            4.0
-          ],
-          [
-            4.0,
-            2.0
-          ],
-          [
-            10.0,
-            12.0
-          ],
-          [
-            12.0,
-            10.0
-          ]
-        ],
-        "y_train": [
-          0,
-          0,
-          2,
-          2
-        ],
-        "X_test": [
-          [
-            3.0,
-            3.0
-          ],
-          [
-            11.0,
-            11.0
-          ]
-        ]
-      },
-      "expectedOutput": [
-        1,
-        1
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "ml-stacking-tc-5",
-      "name": "Case 5",
-      "inputs": {
-        "X_train": [
-          [
-            -1.0,
-            -2.0
-          ],
-          [
-            -2.0,
-            -1.0
-          ],
-          [
-            -5.0,
-            -6.0
-          ],
-          [
-            -6.0,
-            -5.0
-          ]
-        ],
-        "y_train": [
-          0,
-          0,
-          -1,
-          -1
-        ],
-        "X_test": [
-          [
-            -1.5,
-            -1.5
-          ],
-          [
-            -5.5,
-            -5.5
+            5.5,
+            5.5
           ]
         ]
       },
@@ -255,27 +122,120 @@
         1,
         0
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
-      "id": "ml-stacking-tc-6",
-      "name": "Case 6",
+      "id": "ml-stacking-tc-3",
+      "name": "3 test points across decision boundary",
       "inputs": {
         "X_train": [
           [
-            0.8,
-            1.6
+            -2.0,
+            -1.0
           ],
           [
-            1.6,
-            0.8
+            -1.0,
+            -2.0
           ],
           [
-            4.0,
-            4.8
+            2.0,
+            1.0
           ],
           [
-            4.8,
+            1.0,
+            2.0
+          ]
+        ],
+        "y_train": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "X_test": [
+          [
+            -1.5,
+            -1.5
+          ],
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.5,
+            1.5
+          ]
+        ]
+      },
+      "expectedOutput": [
+        0,
+        1,
+        1
+      ],
+      "isPublic": true
+    },
+    {
+      "id": "ml-stacking-tc-4",
+      "name": "1D feature vectors",
+      "inputs": {
+        "X_train": [
+          [
+            0.0
+          ],
+          [
+            1.0
+          ],
+          [
+            10.0
+          ],
+          [
+            11.0
+          ]
+        ],
+        "y_train": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "X_test": [
+          [
+            0.5
+          ],
+          [
+            10.5
+          ]
+        ]
+      },
+      "expectedOutput": [
+        0,
+        1
+      ],
+      "isPublic": false
+    },
+    {
+      "id": "ml-stacking-tc-5",
+      "name": "3D feature space",
+      "inputs": {
+        "X_train": [
+          [
+            1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            0.0
+          ],
+          [
+            5.0,
+            5.0,
+            5.0
+          ],
+          [
+            6.0,
+            5.0,
             4.0
           ]
         ],
@@ -287,70 +247,151 @@
         ],
         "X_test": [
           [
-            1.2,
-            1.2
+            1.0,
+            0.5,
+            0.5
           ],
           [
-            4.4,
-            4.4
+            5.5,
+            5.0,
+            4.5
           ]
         ]
       },
       "expectedOutput": [
-        1,
+        0,
         1
       ],
       "isPublic": false
     },
     {
-      "id": "ml-stacking-tc-7",
-      "name": "Case 7",
+      "id": "ml-stacking-tc-6",
+      "name": "6 training samples",
       "inputs": {
         "X_train": [
           [
-            3.0,
-            6.0
+            0.0,
+            0.0
           ],
           [
-            6.0,
-            3.0
+            0.0,
+            1.0
           ],
           [
-            15.0,
-            18.0
+            1.0,
+            0.0
           ],
           [
-            18.0,
-            15.0
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            5.0
+          ],
+          [
+            5.0,
+            4.0
           ]
         ],
         "y_train": [
           0,
           0,
-          3,
-          3
+          0,
+          1,
+          1,
+          1
         ],
         "X_test": [
+          [
+            0.2,
+            0.2
+          ],
           [
             4.5,
             4.5
           ],
           [
-            16.5,
-            16.5
+            0.8,
+            0.1
+          ]
+        ]
+      },
+      "expectedOutput": [
+        0,
+        1,
+        0
+      ],
+      "isPublic": false
+    },
+    {
+      "id": "ml-stacking-tc-7",
+      "name": "Negative cluster coordinates",
+      "inputs": {
+        "X_train": [
+          [
+            -10.0,
+            -10.0
+          ],
+          [
+            -9.0,
+            -11.0
+          ],
+          [
+            -1.0,
+            -1.0
+          ],
+          [
+            -2.0,
+            0.0
+          ]
+        ],
+        "y_train": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "X_test": [
+          [
+            -9.5,
+            -10.5
+          ],
+          [
+            -1.5,
+            -0.5
           ]
         ]
       },
       "expectedOutput": [
         1,
-        1
+        0
       ],
       "isPublic": false
     }
   ],
   "functionMetadata": {
     "name": "ml_stacking",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "X_train",
+        "type": "array",
+        "example": "[[1.0, 2.0], [2.0, 1.0], [5.0, 6.0], [6.0, 5.0]]",
+        "description": "Training feature matrix of shape (N_train, D)"
+      },
+      {
+        "name": "y_train",
+        "type": "array",
+        "example": "[0, 0, 1, 1]",
+        "description": "Training target labels or values of length N_train"
+      },
+      {
+        "name": "X_test",
+        "type": "array",
+        "example": "[[1.5, 1.5], [5.5, 5.5]]",
+        "description": "Test feature matrix of shape (N_test, D) to evaluate"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -359,11 +400,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Stacking Ensemble",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/ml-stacking",
+  "localUrl": "http://localhost:3000/problems/ml-stacking"
 }

@@ -1072,6 +1072,640 @@ if 'torch' not in sys.modules:
     sys.modules['triton'] = triton
     sys.modules['triton.language'] = tl
 
+if 'pandas' not in sys.modules:
+    import math as _pd_math
+    pd = types.ModuleType('pandas')
+
+    def _pd_is_na(v):
+        if v is None:
+            return True
+        if isinstance(v, float) and _pd_math.isnan(v):
+            return True
+        return False
+
+    class _PdSeries:
+        def __init__(self, data, name=None, index=None, dtype=None):
+            if isinstance(data, _PdSeries):
+                self._data = list(data._data)
+                self.name = name if name is not None else data.name
+                self.index = list(index) if index is not None else list(data.index)
+            elif isinstance(data, dict):
+                self.index = list(data.keys())
+                self._data = list(data.values())
+                self.name = name
+            else:
+                self._data = list(data)
+                self.name = name
+                self.index = list(index) if index is not None else list(range(len(self._data)))
+            self._dtype = dtype
+
+        @property
+        def dtype(self):
+            if self._dtype:
+                return self._dtype
+            non_null = [x for x in self._data if not _pd_is_na(x)]
+            if not non_null:
+                return 'float64'
+            if all(isinstance(x, bool) for x in non_null):
+                return 'bool'
+            if all(isinstance(x, int) and not isinstance(x, bool) for x in non_null):
+                return 'int64'
+            if all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in non_null):
+                return 'float64'
+            return 'object'
+
+        def astype(self, dt):
+            dt_str = str(dt)
+            conv = []
+            for x in self._data:
+                if _pd_is_na(x):
+                    conv.append(x)
+                elif dt in (int, 'int', 'int64', 'int32'):
+                    conv.append(int(float(x)))
+                elif dt in (float, 'float', 'float64', 'float32'):
+                    conv.append(float(x))
+                elif dt in (str, 'str', 'object'):
+                    conv.append(str(x))
+                elif dt in (bool, 'bool'):
+                    conv.append(bool(x))
+                else:
+                    conv.append(x)
+            norm_dt = 'int64' if dt in (int, 'int', 'int64') else ('float64' if dt in (float, 'float', 'float64') else ('object' if dt in (str, 'str', 'object') else dt_str))
+            return _PdSeries(conv, name=self.name, index=self.index, dtype=norm_dt)
+
+        def tolist(self):
+            return list(self._data)
+
+        def to_dict(self):
+            return {k: v for k, v in zip(self.index, self._data)}
+
+        def apply(self, fn):
+            return _PdSeries([fn(x) for x in self._data], name=self.name, index=self.index)
+
+        def isna(self):
+            return _PdSeries([_pd_is_na(x) for x in self._data], name=self.name, index=self.index)
+
+        def sum(self):
+            vals = [x for x in self._data if not _pd_is_na(x)]
+            if all(isinstance(x, bool) for x in vals):
+                return sum(1 for x in vals if x)
+            return sum(vals) if vals else 0
+
+        def mean(self):
+            vals = [float(x) for x in self._data if not _pd_is_na(x)]
+            return sum(vals) / len(vals) if vals else 0.0
+
+        def std(self, ddof=1):
+            vals = [float(x) for x in self._data if not _pd_is_na(x)]
+            if len(vals) <= ddof:
+                return 0.0
+            m = sum(vals) / len(vals)
+            return _pd_math.sqrt(sum((x - m) ** 2 for x in vals) / (len(vals) - ddof))
+
+        def min(self):
+            vals = [x for x in self._data if not _pd_is_na(x)]
+            return min(vals) if vals else None
+
+        def max(self):
+            vals = [x for x in self._data if not _pd_is_na(x)]
+            return max(vals) if vals else None
+
+        def round(self, decimals=0):
+            return _PdSeries([round(float(x), decimals) if not _pd_is_na(x) else x for x in self._data], name=self.name, index=self.index)
+
+        def count(self):
+            return sum(1 for x in self._data if not _pd_is_na(x))
+
+        def replace(self, old_val, new_val):
+            return _PdSeries([new_val if x == old_val else x for x in self._data], name=self.name, index=self.index)
+
+        def fillna(self, val):
+            return _PdSeries([val if _pd_is_na(x) else x for x in self._data], name=self.name, index=self.index)
+
+        def ffill(self):
+            out = []
+            last = None
+            for x in self._data:
+                if not _pd_is_na(x):
+                    last = x
+                out.append(last if _pd_is_na(x) else x)
+            return _PdSeries(out, name=self.name, index=self.index)
+
+        def bfill(self):
+            out = list(self._data)
+            nxt = None
+            for i in range(len(out) - 1, -1, -1):
+                if not _pd_is_na(out[i]):
+                    nxt = out[i]
+                elif nxt is not None:
+                    out[i] = nxt
+            return _PdSeries(out, name=self.name, index=self.index)
+
+        def rolling(self, window, min_periods=1):
+            s_ref = self
+            w = int(window)
+            mp = int(min_periods)
+            class _Rolling:
+                def sum(self):
+                    res = []
+                    for i in range(len(s_ref._data)):
+                        sub = [float(x) for x in s_ref._data[max(0, i - w + 1) : i + 1] if not _pd_is_na(x)]
+                        res.append(sum(sub) if len(sub) >= mp else None)
+                    return _PdSeries(res, name=s_ref.name, index=s_ref.index)
+                def mean(self):
+                    res = []
+                    for i in range(len(s_ref._data)):
+                        sub = [float(x) for x in s_ref._data[max(0, i - w + 1) : i + 1] if not _pd_is_na(x)]
+                        res.append((sum(sub) / len(sub)) if len(sub) >= mp else None)
+                    return _PdSeries(res, name=s_ref.name, index=s_ref.index)
+            return _Rolling()
+
+        def __add__(self, other):
+            return _PdSeries([x + (other._data[i] if isinstance(other, _PdSeries) else other) for i, x in enumerate(self._data)], name=self.name, index=self.index)
+
+        def __gt__(self, other):
+            return _PdSeries([False if _pd_is_na(x) else (x > other) for x in self._data], index=self.index)
+
+        def __ge__(self, other):
+            return _PdSeries([False if _pd_is_na(x) else (x >= other) for x in self._data], index=self.index)
+
+        def __lt__(self, other):
+            return _PdSeries([False if _pd_is_na(x) else (x < other) for x in self._data], index=self.index)
+
+        def __le__(self, other):
+            return _PdSeries([False if _pd_is_na(x) else (x <= other) for x in self._data], index=self.index)
+
+        def __eq__(self, other):
+            return _PdSeries([(_pd_is_na(x) and _pd_is_na(other)) or (not _pd_is_na(x) and x == other) for x in self._data], index=self.index)
+
+        def __len__(self):
+            return len(self._data)
+
+        def __iter__(self):
+            return iter(self._data)
+
+        def __getitem__(self, item):
+            return self._data[item]
+
+    class _PdILoc:
+        def __init__(self, df):
+            self._df = df
+        def __getitem__(self, key):
+            if isinstance(key, tuple):
+                r, c = key
+                if isinstance(r, slice) and not isinstance(c, slice):
+                    col_name = self._df._columns[c]
+                    return _PdSeries([row[col_name] for row in self._df._rows[r]], name=col_name)
+                if not isinstance(r, slice) and isinstance(c, slice):
+                    row = self._df._rows[r]
+                    cols = self._df._columns[c]
+                    return _PdSeries({k: row[k] for k in cols})
+                if not isinstance(r, slice) and not isinstance(c, slice):
+                    col_name = self._df._columns[c]
+                    return self._df._rows[r][col_name]
+            if isinstance(key, int):
+                return _PdSeries(self._df._rows[key])
+            return _PdDataFrame(self._df._rows[key], columns=self._df._columns)
+
+    class _PdGroupBySeries:
+        def __init__(self, groups, group_cols, val_col, as_index=True, row_groups=None, total_len=0):
+            self._groups = groups
+            self._group_cols = group_cols
+            self._val_col = val_col
+            self._as_index = as_index
+            self._row_groups = row_groups or {}
+            self._total_len = total_len
+
+        def _eval_fn(self, fn, vals):
+            clean = [float(v) for v in vals if not _pd_is_na(v)]
+            if fn == 'mean':
+                return sum(clean) / len(clean) if clean else 0.0
+            if fn == 'sum':
+                return sum(int(v) if isinstance(v, int) and not isinstance(v, bool) else float(v) for v in vals if not _pd_is_na(v))
+            if fn == 'min':
+                return min(clean) if clean else 0.0
+            if fn == 'max':
+                return max(clean) if clean else 0.0
+            if fn == 'count':
+                return len(clean)
+            if callable(fn):
+                return fn(_PdSeries(clean))
+            return 0.0
+
+        def transform(self, fn):
+            out = [None] * self._total_len
+            for k, idxs in self._row_groups.items():
+                s_in = _PdSeries([self._groups[k][j][self._val_col] for j in range(len(idxs))])
+                s_out = fn(s_in)
+                vals = s_out._data if isinstance(s_out, _PdSeries) else [s_out] * len(idxs)
+                for row_i, v in zip(idxs, vals):
+                    out[row_i] = v
+            return _PdSeries(out, name=self._val_col)
+
+        def agg(self, func):
+            sorted_keys = sorted(self._groups.keys(), key=lambda k: tuple(str(x) for x in (k if isinstance(k, tuple) else (k,))))
+            if isinstance(func, str):
+                if not self._as_index:
+                    rows = []
+                    for k in sorted_keys:
+                        row = {}
+                        if len(self._group_cols) == 1:
+                            row[self._group_cols[0]] = k
+                        else:
+                            for gc, kv in zip(self._group_cols, k):
+                                row[gc] = kv
+                        vals = [r[self._val_col] for r in self._groups[k]]
+                        row[self._val_col] = self._eval_fn(func, vals)
+                        rows.append(row)
+                    return _PdDataFrame(rows)
+                res = {}
+                for k in sorted_keys:
+                    vals = [r[self._val_col] for r in self._groups[k]]
+                    res[k] = self._eval_fn(func, vals)
+                s = _PdSeries(res, name=self._val_col)
+                s._group_cols = self._group_cols
+                return s
+            elif isinstance(func, list):
+                rows = []
+                for k in sorted_keys:
+                    row = {}
+                    if len(self._group_cols) == 1:
+                        row[self._group_cols[0]] = k
+                    else:
+                        for gc, kv in zip(self._group_cols, k):
+                            row[gc] = kv
+                    vals = [r[self._val_col] for r in self._groups[k]]
+                    for f in func:
+                        row[f] = self._eval_fn(f, vals)
+                    rows.append(row)
+                return _PdDataFrame(rows)
+
+        def mean(self):
+            return self.agg('mean')
+        def sum(self):
+            return self.agg('sum')
+        def count(self):
+            return self.agg('count')
+
+    class _PdGroupBy:
+        def __init__(self, df, group_cols, as_index=True):
+            self._df = df
+            self._as_index = as_index
+            self._group_cols = [group_cols] if isinstance(group_cols, str) else list(group_cols)
+            self._groups = {}
+            self._row_groups = {}
+            for idx, r in enumerate(df._rows):
+                k = r[self._group_cols[0]] if len(self._group_cols) == 1 else tuple(r[c] for c in self._group_cols)
+                self._groups.setdefault(k, []).append(r)
+                self._row_groups.setdefault(k, []).append(idx)
+
+        def cumcount(self):
+            counts = {}
+            out = []
+            for r in self._df._rows:
+                k = r[self._group_cols[0]] if len(self._group_cols) == 1 else tuple(r[c] for c in self._group_cols)
+                c = counts.get(k, 0)
+                out.append(c)
+                counts[k] = c + 1
+            return _PdSeries(out)
+
+        def __getitem__(self, val_col):
+            return _PdGroupBySeries(self._groups, self._group_cols, val_col, as_index=self._as_index, row_groups=self._row_groups, total_len=len(self._df._rows))
+
+    class _PdIndex:
+        def __init__(self, values, name=None):
+            self._values = list(values)
+            self.name = name
+        def tolist(self):
+            return list(self._values)
+        def __iter__(self):
+            return iter(self._values)
+        def __len__(self):
+            return len(self._values)
+
+    class _PdDataFrame:
+        def __init__(self, data=None, columns=None, index=None):
+            self._dtypes_override = {}
+            if data is None:
+                self._rows = []
+                self._columns = list(columns) if columns else []
+            elif isinstance(data, _PdDataFrame):
+                self._rows = [dict(r) for r in data._rows]
+                self._columns = list(data._columns)
+                self._dtypes_override = dict(data._dtypes_override)
+            elif isinstance(data, dict):
+                self._columns = list(columns) if columns else list(data.keys())
+                n = len(next(iter(data.values()))) if data else 0
+                self._rows = [{c: data[c][i] for c in self._columns} for i in range(n)]
+            elif isinstance(data, list):
+                if len(data) == 0:
+                    self._columns = list(columns) if columns else []
+                    self._rows = []
+                elif isinstance(data[0], dict):
+                    if columns is not None:
+                        self._columns = list(columns)
+                    else:
+                        cols = []
+                        for r in data:
+                            for k in r.keys():
+                                if k not in cols:
+                                    cols.append(k)
+                        self._columns = cols
+                    self._rows = [{c: r.get(c, None) for c in self._columns} for r in data]
+                else:
+                    self._columns = list(columns) if columns else [f"col_{i}" for i in range(len(data[0]))]
+                    self._rows = [{self._columns[i]: row[i] for i in range(len(self._columns))} for row in data]
+            self.index = _PdIndex(index if index is not None else range(len(self._rows)))
+
+        @property
+        def columns(self):
+            return list(self._columns)
+
+        @property
+        def shape(self):
+            return (len(self._rows), len(self._columns))
+
+        @property
+        def size(self):
+            return len(self._rows) * len(self._columns)
+
+        @property
+        def dtypes(self):
+            return {c: self._dtypes_override.get(c, self[c].dtype) for c in self._columns}
+
+        @property
+        def iloc(self):
+            return _PdILoc(self)
+
+        @property
+        def loc(self):
+            return _PdILoc(self)
+
+        def __len__(self):
+            return len(self._rows)
+
+        def __getitem__(self, key):
+            if isinstance(key, str):
+                return _PdSeries([r.get(key) for r in self._rows], name=key, index=self.index.tolist(), dtype=self._dtypes_override.get(key))
+            if isinstance(key, list):
+                if len(key) > 0 and all(isinstance(x, bool) for x in key):
+                    return _PdDataFrame([r for r, m in zip(self._rows, key) if m], columns=self._columns)
+                return _PdDataFrame([{c: r.get(c) for c in key} for r in self._rows], columns=key)
+            if isinstance(key, _PdSeries):
+                return _PdDataFrame([r for r, m in zip(self._rows, key._data) if m], columns=self._columns)
+            raise KeyError(key)
+
+        def __setitem__(self, key, val):
+            if key not in self._columns:
+                self._columns.append(key)
+            if isinstance(val, _PdSeries):
+                vals = val._data
+                if val._dtype:
+                    self._dtypes_override[key] = val._dtype
+            elif isinstance(val, (list, np.ndarray)):
+                vals = list(val)
+            else:
+                vals = [val] * len(self._rows)
+            for r, v in zip(self._rows, vals):
+                r[key] = v
+
+        def to_dict(self, orient='dict'):
+            if orient == 'records':
+                return [dict(r) for r in self._rows]
+            return {c: [r.get(c) for r in self._rows] for c in self._columns}
+
+        def groupby(self, group_cols, as_index=True):
+            return _PdGroupBy(self, group_cols, as_index=as_index)
+
+        def sort_values(self, by, ascending=True):
+            by_cols = [by] if isinstance(by, str) else list(by)
+            asc_list = [ascending] * len(by_cols) if isinstance(ascending, bool) else list(ascending)
+            rows = [dict(r) for r in self._rows]
+            for col, asc in reversed(list(zip(by_cols, asc_list))):
+                rows.sort(key=lambda r: (r.get(col) is None, r.get(col)), reverse=not asc)
+            return _PdDataFrame(rows, columns=self._columns)
+
+        def round(self, decimals=0):
+            new_rows = []
+            for r in self._rows:
+                nr = {}
+                for c in self._columns:
+                    v = r.get(c)
+                    nr[c] = round(float(v), decimals) if isinstance(v, float) and not _pd_is_na(v) else v
+                new_rows.append(nr)
+            return _PdDataFrame(new_rows, columns=self._columns)
+
+        def reset_index(self, drop=False):
+            return self
+
+        def iterrows(self):
+            for idx, r in zip(self.index.tolist(), self._rows):
+                yield idx, r
+
+        def drop_duplicates(self, subset=None):
+            cols = subset if subset is not None else self._columns
+            if isinstance(cols, str):
+                cols = [cols]
+            seen = set()
+            kept = []
+            for r in self._rows:
+                sig = tuple(r.get(c) for c in cols)
+                if sig not in seen:
+                    seen.add(sig)
+                    kept.append(dict(r))
+            return _PdDataFrame(kept, columns=self._columns)
+
+        def fillna(self, fill_value):
+            new_rows = []
+            for r in self._rows:
+                new_rows.append({c: (fill_value if _pd_is_na(r.get(c)) else r.get(c)) for c in self._columns})
+            return _PdDataFrame(new_rows, columns=self._columns)
+
+        def where(self, cond, other=None):
+            new_rows = []
+            for r in self._rows:
+                new_rows.append({c: (other if _pd_is_na(r.get(c)) else r.get(c)) for c in self._columns})
+            return _PdDataFrame(new_rows, columns=self._columns)
+
+        def rename(self, columns=None):
+            mapping = columns or {}
+            new_cols = [mapping.get(c, c) for c in self._columns]
+            new_rows = [{mapping.get(c, c): r.get(c) for c in self._columns} for r in self._rows]
+            return _PdDataFrame(new_rows, columns=new_cols)
+
+        def set_index(self, index_col):
+            idx_vals = [r.get(index_col) for r in self._rows]
+            rem_cols = [c for c in self._columns if c != index_col]
+            new_rows = [{c: r.get(c) for c in rem_cols} for r in self._rows]
+            df = _PdDataFrame(new_rows, columns=rem_cols, index=idx_vals)
+            df.index.name = index_col
+            return df
+
+        def pivot(self, index, columns, values):
+            return _pd_pivot_table(self, index=index, columns=columns, values=values, aggfunc='first')
+
+    def _pd_concat(dfs, ignore_index=False, axis=0):
+        all_cols = []
+        all_rows = []
+        for d in dfs:
+            for c in d._columns:
+                if c not in all_cols:
+                    all_cols.append(c)
+            all_rows.extend([dict(r) for r in d._rows])
+        return _PdDataFrame(all_rows, columns=all_cols)
+
+    def _pd_merge(left, right, on, how='inner'):
+        l_cols = left._columns
+        r_cols = [c for c in right._columns if c != on]
+        all_cols = l_cols + [c for c in r_cols if c not in l_cols]
+        out_rows = []
+        r_by_key = {}
+        for rr in right._rows:
+            r_by_key.setdefault(rr.get(on), []).append(rr)
+        l_by_key = {}
+        for lr in left._rows:
+            l_by_key.setdefault(lr.get(on), []).append(lr)
+
+        if how == 'inner':
+            for lr in left._rows:
+                k = lr.get(on)
+                for rr in r_by_key.get(k, []):
+                    merged = dict(lr)
+                    for c in r_cols:
+                        merged[c] = rr.get(c)
+                    out_rows.append(merged)
+        elif how == 'left':
+            for lr in left._rows:
+                k = lr.get(on)
+                matches = r_by_key.get(k, [])
+                if matches:
+                    for rr in matches:
+                        merged = dict(lr)
+                        for c in r_cols:
+                            merged[c] = rr.get(c)
+                        out_rows.append(merged)
+                else:
+                    merged = dict(lr)
+                    for c in r_cols:
+                        merged[c] = None
+                    out_rows.append(merged)
+        elif how == 'right':
+            for rr in right._rows:
+                k = rr.get(on)
+                matches = l_by_key.get(k, [])
+                if matches:
+                    for lr in matches:
+                        merged = dict(lr)
+                        for c in r_cols:
+                            merged[c] = rr.get(c)
+                        out_rows.append(merged)
+                else:
+                    merged = {c: None for c in l_cols}
+                    merged[on] = k
+                    for c in r_cols:
+                        merged[c] = rr.get(c)
+                    out_rows.append(merged)
+        elif how == 'outer':
+            seen_keys = []
+            for r in left._rows + right._rows:
+                k = r.get(on)
+                if k not in seen_keys:
+                    seen_keys.append(k)
+            for k in sorted(seen_keys, key=lambda x: str(x)):
+                l_m = l_by_key.get(k, [])
+                r_m = r_by_key.get(k, [])
+                if l_m and r_m:
+                    for lr in l_m:
+                        for rr in r_m:
+                            merged = dict(lr)
+                            for c in r_cols:
+                                merged[c] = rr.get(c)
+                            out_rows.append(merged)
+                elif l_m:
+                    for lr in l_m:
+                        merged = dict(lr)
+                        for c in r_cols:
+                            merged[c] = None
+                        out_rows.append(merged)
+                else:
+                    for rr in r_m:
+                        merged = {c: None for c in l_cols}
+                        merged[on] = k
+                        for c in r_cols:
+                            merged[c] = rr.get(c)
+                        out_rows.append(merged)
+        return _PdDataFrame(out_rows, columns=all_cols)
+
+    def _pd_melt(df, id_vars, value_vars, var_name='variable', value_name='value'):
+        id_v = [id_vars] if isinstance(id_vars, str) else list(id_vars)
+        val_v = [value_vars] if isinstance(value_vars, str) else list(value_vars)
+        out = []
+        for col in val_v:
+            for r in df._rows:
+                row = {k: r.get(k) for k in id_v}
+                row[var_name] = col
+                row[value_name] = r.get(col)
+                out.append(row)
+        return _PdDataFrame(out, columns=id_v + [var_name, value_name])
+
+    def _pd_crosstab(index_series, col_series):
+        idx_vals = sorted(set(index_series.tolist()), key=lambda x: str(x))
+        col_vals = sorted(set(col_series.tolist()), key=lambda x: str(x))
+        counts = {c: [0] * len(idx_vals) for c in col_vals}
+        idx_map = {v: i for i, v in enumerate(idx_vals)}
+        for iv, cv in zip(index_series.tolist(), col_series.tolist()):
+            counts[cv][idx_map[iv]] += 1
+        return _PdDataFrame(counts, columns=col_vals, index=idx_vals)
+
+    def _pd_pivot_table(df, index, columns, values, aggfunc='mean', fill_value=0.0):
+        idx_vals = sorted(set(r.get(index) for r in df._rows), key=lambda x: str(x))
+        col_vals = sorted(set(r.get(columns) for r in df._rows), key=lambda x: str(x))
+        buckets = {}
+        for r in df._rows:
+            k = (r.get(index), r.get(columns))
+            buckets.setdefault(k, []).append(r.get(values))
+        data = {}
+        for c in col_vals:
+            col_list = []
+            for iv in idx_vals:
+                vals = [float(x) for x in buckets.get((iv, c), []) if not _pd_is_na(x)]
+                if not vals:
+                    col_list.append(fill_value)
+                elif aggfunc == 'mean':
+                    col_list.append(sum(vals) / len(vals))
+                elif aggfunc == 'sum':
+                    col_list.append(sum(vals))
+                elif aggfunc == 'count':
+                    col_list.append(len(vals))
+                elif aggfunc == 'min':
+                    col_list.append(min(vals))
+                elif aggfunc == 'max':
+                    col_list.append(max(vals))
+                else:
+                    col_list.append(vals[0])
+            data[c] = col_list
+        return _PdDataFrame(data, columns=col_vals, index=idx_vals)
+
+    pd.DataFrame = _PdDataFrame
+    pd.Series = _PdSeries
+    pd.concat = _pd_concat
+    pd.merge = _pd_merge
+    pd.melt = _pd_melt
+    pd.crosstab = _pd_crosstab
+    pd.pivot_table = _pd_pivot_table
+    pd.notnull = lambda df: df
+    pd.isna = _pd_is_na
+    sys.modules['pandas'] = pd
+
+if 'scipy' not in sys.modules:
+    import math as _sp_math
+    scipy = types.ModuleType('scipy')
+    scipy_special = types.ModuleType('scipy.special')
+    scipy_special.erf = np.vectorize(_sp_math.erf)
+    scipy.special = scipy_special
+    sys.modules['scipy'] = scipy
+    sys.modules['scipy.special'] = scipy_special
+
 def _serialize_res(res):
     if res is None:
         return None

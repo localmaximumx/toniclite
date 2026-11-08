@@ -18,19 +18,21 @@
   "seoDescription": "Implement the RMSProp optimizer to train a linear regression model using full-batch gradient descent with MSE loss.",
   "solved": false,
   "isLocked": true,
-  "description": "Train linear regression parameters using RMSProp moving average squared gradient scaling to stabilize non-stationary optimization.\n\nRMSProp resolves AdaGrad's diminishing learning rate problem by discounting ancient squared gradients with decay factor beta.\n\n### Mathematical Formulation\n$$\ns_{t+1} = \\beta s_t + (1 - \\beta) g_t^2, \\quad w_{t+1} = w_t - \\frac{\\eta}{\\sqrt{s_{t+1} + \\varepsilon}} g_t\n$$\n\n### Step-by-Step Implementation\n1. Maintain exponentially decaying moving average of squared gradient coordinates\n2. Scale gradient coordinate step sizes inversely by root mean square magnitude\n3. Update parameter weights and track MSE loss curve\n\n### Returns\nDictionary with 'final_weights' and historical 'loss_curve'.",
-  "theory": "# Understanding RMSProp\n\n## 1. What Is It?\n\nThe **RMSProp** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing linear regression parameters using RMSProp moving average squared gradient scaling to stabilize non-stationary optimization.\n\n### Key Terminology\n- **`X`**: The input feature matrix containing samples as rows and features as columns.\n- **`y`**: The target labels or ground-truth values to predict.\n- **`lr`**: The learning rate $\\eta$, a positive step size scaling gradient updates.\n- **`beta`**: The moving average decay coefficient governing history retention.\n- **`eps`**: The smoothing term $\\varepsilon > 0$, added to denominators for numerical stability.\n- **Optimization**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\ns_{t+1} = \\beta s_t + (1 - \\beta) g_t^2, \\quad w_{t+1} = w_t - \\frac{\\eta}{\\sqrt{s_{t+1} + \\varepsilon}} g_t\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `optim_rmsprop` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nX = [[1.0, 1.0], [2.0, 1.0], [3.0, 1.0]], y = [2.0, 4.0, 6.0], lr = 0.1, beta = 0.9, eps = 1e-08, num_steps = 5\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated optim_rmsprop under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"final_weights\": [0.8909, 0.8783], \"loss_curve\": [18.666667, 11.200593, 7.486562, 5.195522, 3.668753]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `optim_rmsprop` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`final_weights`**: Represents `final_weights` (e.g. `[0.8909, 0.8783]`), reflecting the updated state or component.\n  - **`loss_curve`**: Represents `loss_curve` (e.g. `[18.666667, 11.200593, 7.486562, 5.195522, 3.668753]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `optim_rmsprop`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `optim_rmsprop`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `optim_rmsprop`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**RMSProp** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `optim_rmsprop` accurately and efficiently performs the required transformation.\n",
+  "description": "Train linear regression parameters using RMSProp moving average squared gradient scaling to stabilize non-stationary optimization.\n\n$$\ns_{t+1} = \\beta s_t + (1 - \\beta) g_t^2, \\quad w_{t+1} = w_t - \\frac{\\eta}{\\sqrt{s_{t+1} + \\varepsilon}} g_t\n$$\n\nGiven input parameters `X`, `y`, `lr`, `beta`, `eps`, `num_steps`, return dictionary with 'final_weights' and historical 'loss_curve'.",
+  "theory": "## What Is RMSProp?\n\nRMSProp (Root Mean Square Propagation, Hinton, 2012) resolves AdaGrad's vanishing step-size problem by replacing the unbounded sum of squared gradients with an exponentially decaying moving average.\n\n$$\ns_{t+1} = \\beta s_t + (1 - \\beta) g_t^2, \\quad w_{t+1} = w_t - \\frac{\\eta}{\\sqrt{s_{t+1} + \\varepsilon}} g_t\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\ns_{t+1} = \\beta s_t + (1 - \\beta) g_t^2\n$$\n\n$$\nw_{t+1} = w_t - \\frac{\\eta}{\\sqrt{s_{t+1} + \\varepsilon}} g_t\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **AdaGrad**, **Adam Optimizer**, **AdamW (Decoupled Weight Decay)**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: X = [[1.0, 1.0], [2.0, 1.0], [3.0, 1.0]], y = [2.0, 4.0, 6.0], lr = 0.1, beta = 0.9, eps = 1e-08, num_steps = 5\n\nOutput: {\"final_weights\": [0.8909, 0.8783], \"loss_curve\": [18.666667, 11.200593, 7.486562, 5.195522, 3.668753]}\n\nExplanation: Evaluated optim_rmsprop under standard test conditions."
+    "Input: X = [[1.0, 1.0], [2.0, 1.0], [3.0, 1.0]], y = [2.0, 4.0, 6.0], lr = 0.1, beta = 0.9, eps = 1e-08, num_steps = 5\n\nOutput: {\"final_weights\": [0.8909, 0.8783], \"loss_curve\": [18.666667, 11.200593, 7.486562, 5.195522, 3.668753]}",
+    "Input: X = [[1.5, 1.5], [3.0, 1.5], [4.5, 1.5]], y = [3.0, 6.0, 9.0], lr = 0.15, beta = 0.9, eps = 1e-08, num_steps = 8\n\nOutput: {\"final_weights\": [1.3396, 1.2504], \"loss_curve\": [42.0, 18.433251, 9.393941, 5.043471, 2.822167, 1.678398, 1.097084, 0.807538]}"
   ],
-  "requirements": "* Function must be named `optim_rmsprop`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `optim_rmsprop` accepting `X`, `y`, `lr`, `beta`, `eps`, `num_steps`\n* Implement the RMSProp optimizer to train a linear regression model using full-batch gradient descent with MSE loss.\n* Return a `dict` containing the exact keys `'final_weights'`, `'loss_curve'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `optim_rmsprop`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`X`, `y`, `lr`, `beta`, `eps`, `num_steps`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `optim_rmsprop` into clear stages: validate/reshape `X`, `y`, `lr`, `beta`, `eps`, `num_steps`, evaluate the RMSProp equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('final_weights', 'loss_curve') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef optim_rmsprop(X: list, y: list, lr: float = 0.05, beta: float = 0.9, eps: float = 1e-8, num_steps: int = 10) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **RMSProp** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef optim_rmsprop(X: list, y: list, lr: float = 0.05, beta: float = 0.9, eps: float = 1e-8, num_steps: int = 10) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    N, D = Xa.shape; w, s, losses = np.zeros(D), np.zeros(D), []\n    for _ in range(int(num_steps)):\n        losses.append(round(float(np.mean((np.dot(Xa, w) - ya)**2)), 6))\n        g = (2.0/N) * np.dot(Xa.T, np.dot(Xa, w) - ya)\n        s = float(beta)*s + (1.0 - float(beta))*(g**2)\n        w -= float(lr) * (g / (np.sqrt(s) + float(eps)))\n    return {'final_weights': np.round(w, 4).tolist(), 'loss_curve': losses}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef optim_rmsprop(X: list, y: list, lr: float = 0.05, beta: float = 0.9, eps: float = 1e-8, num_steps: int = 10) -> dict:\n    \"\"\"\n    Implement the RMSProp optimizer to train a linear regression model using full-batch gradient descent with MSE loss.\n\n    Args:\n        X (list): 2D input design matrix of shape (N, D) where rows are samples.\n        y (list): Target values, secondary coordinate, or comparison vector.\n        lr (float): Positive learning rate step size (eta).\n        beta (float): Shift parameter, inverse temperature, or regularization coefficient.\n        eps (float): Small positive constant for numerical stability (preventing division by zero).\n        num_steps (int): Integer count or dimension size for num steps.\n\n    Returns:\n        dict: Computed RMSProp result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**RMSProp** (Optimization): Implement the RMSProp optimizer to train a linear regression model using full-batch gradient descent with MSE loss.\n\nTo implement `optim_rmsprop` cleanly and accurately:\n1. Parse and normalize the inputs (`X`, `y`, `lr`, `beta`, `eps`, `num_steps`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef optim_rmsprop(X: list, y: list, lr: float = 0.05, beta: float = 0.9, eps: float = 1e-8, num_steps: int = 10) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    N, D = Xa.shape; w, s, losses = np.zeros(D), np.zeros(D), []\n    for _ in range(int(num_steps)):\n        losses.append(round(float(np.mean((np.dot(Xa, w) - ya)**2)), 6))\n        g = (2.0/N) * np.dot(Xa.T, np.dot(Xa, w) - ya)\n        s = float(beta)*s + (1.0 - float(beta))*(g**2)\n        w -= float(lr) * (g / (np.sqrt(s) + float(eps)))\n    return {'final_weights': np.round(w, 4).tolist(), 'loss_curve': losses}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **RMSProp** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "optim-rmsprop-tc-1",
@@ -77,7 +79,7 @@
     },
     {
       "id": "optim-rmsprop-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (y=[3.0, 6.0, 9.0])",
       "inputs": {
         "X": [
           [
@@ -123,7 +125,7 @@
     },
     {
       "id": "optim-rmsprop-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (y=[1.0, 2.0, 3.0])",
       "inputs": {
         "X": [
           [
@@ -159,11 +161,11 @@
           4.228185
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "optim-rmsprop-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (y=[4.0, 8.0, 12.0])",
       "inputs": {
         "X": [
           [
@@ -211,7 +213,7 @@
     },
     {
       "id": "optim-rmsprop-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (y=[-2.0, -4.0, -6.0])",
       "inputs": {
         "X": [
           [
@@ -254,7 +256,7 @@
     },
     {
       "id": "optim-rmsprop-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (y=[1.6, 3.2, 4.8])",
       "inputs": {
         "X": [
           [
@@ -296,7 +298,7 @@
     },
     {
       "id": "optim-rmsprop-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (y=[6.0, 12.0, 18.0])",
       "inputs": {
         "X": [
           [
@@ -350,7 +352,44 @@
   ],
   "functionMetadata": {
     "name": "optim_rmsprop",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "X",
+        "type": "array",
+        "example": "[[1.0, 1.0], [2.0, 1.0], [3.0, 1.0]]",
+        "description": "2D input design matrix of shape (N, D) where rows are samples"
+      },
+      {
+        "name": "y",
+        "type": "array",
+        "example": "[2.0, 4.0, 6.0]",
+        "description": "Target values, secondary coordinate, or comparison vector"
+      },
+      {
+        "name": "lr",
+        "type": "number",
+        "example": "0.1",
+        "description": "Positive learning rate step size (eta)"
+      },
+      {
+        "name": "beta",
+        "type": "number",
+        "example": "0.9",
+        "description": "Shift parameter, inverse temperature, or regularization coefficient"
+      },
+      {
+        "name": "eps",
+        "type": "number",
+        "example": "1e-08",
+        "description": "Small positive constant for numerical stability (preventing division by zero)"
+      },
+      {
+        "name": "num_steps",
+        "type": "number",
+        "example": "5",
+        "description": "Integer count or dimension size for num steps"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -359,11 +398,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "RMSProp",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/optim-rmsprop",
+  "localUrl": "http://localhost:3000/problems/optim-rmsprop"
 }

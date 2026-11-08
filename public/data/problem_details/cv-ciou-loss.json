@@ -21,19 +21,21 @@
   "seoDescription": "Compute Complete IoU loss for aligned boxes using overlap, center-distance, and aspect-ratio penalties.",
   "solved": false,
   "isLocked": true,
-  "description": "Evaluate CIoU loss combining overlap area, normalized central Euclidean distance, and aspect ratio consistency.\n\nCIoU loss simultaneously optimizes three critical geometric factors: overlap area, central point distance, and aspect ratio discrepancy.\n\n### Mathematical Formulation\n$$\n\\mathcal{L}_{\\text{CIoU}} = 1 - \\text{IoU} + \\frac{\\rho^2(\\mathbf{b}, \\mathbf{b}^{gt})}{c^2} + \\alpha v\n$$\n\n### Step-by-Step Implementation\n1. Compute bounding box overlap IoU and normalized center distance penalty rho^2 / c^2\n2. Evaluate aspect ratio consistency metric v = (4 / pi^2) (arctan(w1/h1) - arctan(w2/h2))^2\n3. Compute trade-off parameter alpha and subtract CIoU metric from 1\n\n### Returns\nFloat representing CIoU loss rounded to 6 decimal places.",
-  "theory": "# Understanding Complete IoU Loss\n\n## 1. What Is It?\n\nThe **Complete IoU Loss** is a fundamental computational technique in Python. In machine learning workflows, Evaluate CIoU loss combining overlap area, normalized central Euclidean distance, and aspect ratio consistency.\n\n### Key Terminology\n- **Object Detection**: Core domain concept contextualizing this task within Python workflows.\n- **Computer Vision**: Core domain concept contextualizing this task within Python workflows.\n- **Loss Functions**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathcal{L}_{\\text{CIoU}} = 1 - \\text{IoU} + \\frac{\\rho^2(\\mathbf{b}, \\mathbf{b}^{gt})}{c^2} + \\alpha v\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_ciou_loss` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nbox1 = [0.0, 0.0, 2.0, 2.0], box2 = [1.0, 1.0, 4.0, 4.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_ciou_loss under standard test conditions.\n\n**Resulting Output:**\n```python\n1.057292\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_ciou_loss` must return:\n- **Primary Output:** `1.057292`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `cv_ciou_loss`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_ciou_loss`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_ciou_loss`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Complete IoU Loss** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_ciou_loss` accurately and efficiently performs the required transformation.\n",
+  "description": "Evaluate CIoU loss combining overlap area, normalized central Euclidean distance, and aspect ratio consistency.\n\n$$\n\\mathcal{L}_{\\text{CIoU}} = 1 - \\text{IoU} + \\frac{\\rho^2(\\mathbf{b}, \\mathbf{b}^{gt})}{c^2} + \\alpha v\n$$\n\nGiven input parameters `box1`, `box2`, return float representing CIoU loss rounded to 6 decimal places.",
+  "theory": "## What Is Complete IoU Loss?\n\nIn computer vision, spatial tensor operators and geometric bounding-box algorithms extract translation- and scale-aware structure from image grids.\n\n$$\n\\mathcal{L}_{\\text{CIoU}} = 1 - \\text{IoU} + \\frac{\\rho^2(\\mathbf{b}, \\mathbf{b}^{gt})}{c^2} + \\alpha v\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: box1 = [0.0, 0.0, 2.0, 2.0], box2 = [1.0, 1.0, 4.0, 4.0]\n\nOutput: 1.057292\n\nExplanation: Evaluated cv_ciou_loss under standard test conditions."
+    "Input: box1 = [0.0, 0.0, 2.0, 2.0], box2 = [1.0, 1.0, 4.0, 4.0]\n\nOutput: 1.057292",
+    "Input: box1 = [0.0, 0.0, 4.0, 4.0], box2 = [2.0, 2.0, 8.0, 8.0]\n\nOutput: 1.057292"
   ],
-  "requirements": "* Function must be named `cv_ciou_loss`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_ciou_loss` accepting `box1`, `box2`\n* Compute Complete IoU loss for aligned boxes using overlap, center-distance, and aspect-ratio penalties.\n* Return a scalar `float` rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_ciou_loss`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`box1`, `box2`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `cv_ciou_loss` into clear stages: validate/reshape `box1`, `box2`, evaluate the Complete IoU Loss equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math\n\ndef cv_ciou_loss(box1: list, box2: list) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Complete IoU Loss** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math\n\ndef cv_ciou_loss(box1: list, box2: list) -> float:\n    a1, b1, c1, d1 = box1; a2, b2, c2, d2 = box2\n    w1, h1 = max(0.0, c1-a1), max(0.0, d1-b1); w2, h2 = max(0.0, c2-a2), max(0.0, d2-b2)\n    ia = max(0.0, min(c1, c2) - max(a1, a2)) * max(0.0, min(d1, d2) - max(b1, b2))\n    u = w1*h1 + w2*h2 - ia; iou = ia / u if u > 0 else 0.0\n    rho2 = ((a1+c1)/2 - (a2+c2)/2)**2 + ((b1+d1)/2 - (b2+d2)/2)**2\n    c2 = (max(c1, c2) - min(a1, a2))**2 + (max(d1, d2) - min(b1, b2))**2\n    v = (4.0 / (math.pi**2)) * (math.atan(w1/max(1e-12, h1)) - math.atan(w2/max(1e-12, h2)))**2\n    alpha = v / max(1e-12, (1.0 - iou + v))\n    return round(float(1.0 - (iou - (rho2/c2 if c2>0 else 0.0) - alpha * v)), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import math\n\ndef cv_ciou_loss(box1: list, box2: list) -> float:\n    \"\"\"\n    Compute Complete IoU loss for aligned boxes using overlap, center-distance, and aspect-ratio penalties.\n\n    Args:\n        box1 (list): Input parameter `box1` (list) for Complete IoU Loss.\n        box2 (list): Input parameter `box2` (list) for Complete IoU Loss.\n\n    Returns:\n        float: Computed Complete IoU Loss result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Complete IoU Loss** (Object Detection, Computer Vision, Loss Functions, Metrics & Evaluation): Compute Complete IoU loss for aligned boxes using overlap, center-distance, and aspect-ratio penalties.\n\nTo implement `cv_ciou_loss` cleanly and accurately:\n1. Parse and normalize the inputs (`box1`, `box2`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `float` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math\n\ndef cv_ciou_loss(box1: list, box2: list) -> float:\n    a1, b1, c1, d1 = box1; a2, b2, c2, d2 = box2\n    w1, h1 = max(0.0, c1-a1), max(0.0, d1-b1); w2, h2 = max(0.0, c2-a2), max(0.0, d2-b2)\n    ia = max(0.0, min(c1, c2) - max(a1, a2)) * max(0.0, min(d1, d2) - max(b1, b2))\n    u = w1*h1 + w2*h2 - ia; iou = ia / u if u > 0 else 0.0\n    rho2 = ((a1+c1)/2 - (a2+c2)/2)**2 + ((b1+d1)/2 - (b2+d2)/2)**2\n    c2 = (max(c1, c2) - min(a1, a2))**2 + (max(d1, d2) - min(b1, b2))**2\n    v = (4.0 / (math.pi**2)) * (math.atan(w1/max(1e-12, h1)) - math.atan(w2/max(1e-12, h2)))**2\n    alpha = v / max(1e-12, (1.0 - iou + v))\n    return round(float(1.0 - (iou - (rho2/c2 if c2>0 else 0.0) - alpha * v)), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Complete IoU Loss** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-ciou-loss-tc-1",
@@ -57,7 +59,7 @@
     },
     {
       "id": "cv-ciou-loss-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "box1": [
           0.0,
@@ -77,7 +79,7 @@
     },
     {
       "id": "cv-ciou-loss-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "box1": [
           0.0,
@@ -93,11 +95,11 @@
         ]
       },
       "expectedOutput": 1.057292,
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-ciou-loss-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "box1": [
           -0.0,
@@ -117,7 +119,7 @@
     },
     {
       "id": "cv-ciou-loss-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "box1": [
           0.0,
@@ -137,7 +139,7 @@
     },
     {
       "id": "cv-ciou-loss-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "box1": [
           1.0,
@@ -157,7 +159,7 @@
     },
     {
       "id": "cv-ciou-loss-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "box1": [
           -2.0,
@@ -178,7 +180,20 @@
   ],
   "functionMetadata": {
     "name": "cv_ciou_loss",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "box1",
+        "type": "array",
+        "example": "[0.0, 0.0, 2.0, 2.0]",
+        "description": "Input parameter `box1` (list) for Complete IoU Loss"
+      },
+      {
+        "name": "box2",
+        "type": "array",
+        "example": "[1.0, 1.0, 4.0, 4.0]",
+        "description": "Input parameter `box2` (list) for Complete IoU Loss"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -187,11 +202,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Complete IoU Loss",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-ciou-loss",
+  "localUrl": "http://localhost:3000/problems/cv-ciou-loss"
 }

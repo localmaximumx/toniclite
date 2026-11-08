@@ -18,19 +18,21 @@
   "seoDescription": "Compute per-account running transaction totals with a partitioned SQL window ordered by date and transaction ID.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute running cumulative balances partitioned per account and ordered chronologically by transaction date and ID.\n\nThe default frame specification RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW computes monotonic running cumulative aggregates.\n\n### Query Logic & Formulation\n$$\n\\operatorname{SUM}(\\text{amount}) \\quad \\text{OVER}(\\operatorname{PARTITION BY} \\text{account\\_id} \\quad \\operatorname{ORDER BY} \\text{txn\\_date, txn\\_id})\n$$\n\n### Relational Execution Steps\n1. Partition transactions by account_id identifier\n2. Sort records within partition by txn_date and txn_id\n3. Accumulate cumulative running transaction total\n\n### Expected Query Output\nList of records containing running_total balances.",
-  "theory": "# Understanding Running Totals\n\n## 1. What Is It?\n\nThe **Running Totals** is a fundamental computational technique in Sql. In machine learning workflows, it involves performing running cumulative balances partitioned per account and ordered chronologically by transaction date and ID.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Sql workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\operatorname{SUM}(\\text{amount}) \\quad \\text{OVER}(\\operatorname{PARTITION BY} \\text{account\\_id} \\quad \\operatorname{ORDER BY} \\text{txn\\_date, txn\\_id})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `solution` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ntransactions = [{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 101, \"amount\": 100.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 102, \"amount\": 50.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 201, \"amount\": 200.0}]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated sql_running_totals under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 101, \"amount\": 100.0, \"running_total\": 100.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 102, \"amount\": 50.0, \"running_total\": 150.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 201, \"amount\": 200.0, \"running_total\": 200.0}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `solution` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'account_id': 'ACC1', 'txn_date': '2024-01-01', 'txn_id': 101, 'amount': 100.0, 'running_total': 100.0}`.\n  - **Element 2**: Evaluated output component `{'account_id': 'ACC1', 'txn_date': '2024-01-02', 'txn_id': 102, 'amount': 50.0, 'running_total': 150.0}`.\n  - **Element 3**: Evaluated output component `{'account_id': 'ACC2', 'txn_date': '2024-01-01', 'txn_id': 201, 'amount': 200.0, 'running_total': 200.0}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `solution`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `solution`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Running Totals** provides an essential primitive within Sql systems. By combining vectorized array computation with rigorous numerical safeguards, `solution` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute running cumulative balances partitioned per account and ordered chronologically by transaction date and ID.\n\n$$\n\\operatorname{SUM}(\\text{amount}) \\quad \\text{OVER}(\\operatorname{PARTITION BY} \\text{account\\_id} \\quad \\operatorname{ORDER BY} \\text{txn\\_date, txn\\_id})\n$$\n\nGiven input parameters `transactions`, return list of records containing running_total balances.",
+  "theory": "## What Is Running Totals?\n\nIn relational database querying (SQL), declarative set operations\u2014selection ($\\sigma$), projection ($\\pi$), joins ($\\bowtie$), aggregation, and window functions\u2014transform structured tables.\n\n$$\n\\operatorname{SUM}(\\text{amount}) \\quad \\text{OVER}(\\operatorname{PARTITION BY} \\text{account\\_id} \\quad \\operatorname{ORDER BY} \\text{txn\\_date, txn\\_id})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\operatorname{SUM}(\\text{amount})\n$$\n\n$$\n\\text{OVER}(\\operatorname{PARTITION BY} \\text{account\\_id}\n$$\n\n$$\n\\operatorname{ORDER BY} \\text{txn\\_date, txn\\_id})\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Basic SELECT**, **CASE Statements**, **Conditional Aggregation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: transactions = [{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 101, \"amount\": 100.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 102, \"amount\": 50.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 201, \"amount\": 200.0}]\n\nOutput: [{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 101, \"amount\": 100.0, \"running_total\": 100.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 102, \"amount\": 50.0, \"running_total\": 150.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 201, \"amount\": 200.0, \"running_total\": 200.0}]\n\nExplanation: Evaluated sql_running_totals under standard test conditions."
+    "Input: transactions = [{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 101, \"amount\": 100.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 102, \"amount\": 50.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 201, \"amount\": 200.0}]\n\nOutput: [{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 101, \"amount\": 100.0, \"running_total\": 100.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 102, \"amount\": 50.0, \"running_total\": 150.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 201, \"amount\": 200.0, \"running_total\": 200.0}]",
+    "Input: transactions = [{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 152, \"amount\": 150.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 153, \"amount\": 75.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 302, \"amount\": 300.0}]\n\nOutput: [{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 152, \"amount\": 150.0, \"running_total\": 150.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 153, \"amount\": 75.0, \"running_total\": 225.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 302, \"amount\": 300.0, \"running_total\": 300.0}]"
   ],
-  "requirements": "* Function must be named `sql_running_totals`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `sql_running_totals` accepting `transactions`\n* Compute per-account running transaction totals with a partitioned SQL window ordered by date and transaction ID.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `sql_running_totals`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`transactions`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `sql_running_totals` into clear stages: validate/reshape `transactions`, evaluate the Running Totals equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def sql_running_totals(transactions: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL Running Totals\n    SELECT account_id, txn_date, txn_id, amount,\n           ROUND(SUM(amount) OVER (PARTITION BY account_id ORDER BY txn_date, txn_id), 2) AS running_total\n    FROM transactions\n    ORDER BY account_id, txn_date, txn_id;\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Running Totals** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_running_totals(transactions: list) -> list:\n    parts = {}\n    for t in transactions: parts.setdefault(t['account_id'], []).append(t)\n    res = []\n    for acc, txns in sorted(parts.items()):\n        cur = 0.0\n        for it in sorted(txns, key=lambda x: (x['txn_date'], x['txn_id'])):\n            cur += float(it['amount'])\n            res.append({'account_id': it['account_id'], 'txn_date': it['txn_date'], 'txn_id': it['txn_id'], 'amount': float(it['amount']), 'running_total': round(cur, 2)})\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: SQLite3 / Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef sql_running_totals(transactions: list) -> list:\n    \"\"\"\n    Compute per-account running transaction totals with a partitioned SQL window ordered by date and transaction ID.\n\n    Args:\n        transactions (list): Input parameter `transactions` (list) for Running Totals.\n\n    Returns:\n        list: Computed Running Totals result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Running Totals** (Data Processing): Compute per-account running transaction totals with a partitioned SQL window ordered by date and transaction ID.\n\nTo implement `sql_running_totals` cleanly and accurately:\n1. Parse and normalize the inputs (`transactions`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef sql_running_totals(transactions: list) -> list:\n    parts = {}\n    for t in transactions: parts.setdefault(t['account_id'], []).append(t)\n    res = []\n    for acc, txns in sorted(parts.items()):\n        cur = 0.0\n        for it in sorted(txns, key=lambda x: (x['txn_date'], x['txn_id'])):\n            cur += float(it['amount'])\n            res.append({'account_id': it['account_id'], 'txn_date': it['txn_date'], 'txn_id': it['txn_id'], 'amount': float(it['amount']), 'running_total': round(cur, 2)})\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Running Totals** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "sql-running-totals-tc-1",
@@ -84,7 +86,7 @@
     },
     {
       "id": "sql-running-totals-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "transactions": [
           {
@@ -134,7 +136,7 @@
     },
     {
       "id": "sql-running-totals-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "transactions": [
           {
@@ -180,11 +182,11 @@
           "running_total": 100.0
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "sql-running-totals-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "transactions": [
           {
@@ -234,7 +236,7 @@
     },
     {
       "id": "sql-running-totals-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "transactions": [
           {
@@ -284,7 +286,7 @@
     },
     {
       "id": "sql-running-totals-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "transactions": [
           {
@@ -334,7 +336,7 @@
     },
     {
       "id": "sql-running-totals-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "transactions": [
           {
@@ -385,7 +387,14 @@
   ],
   "functionMetadata": {
     "name": "sql_running_totals",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "transactions",
+        "type": "array",
+        "example": "[{\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-01\", \"txn_id\": 101, \"amount\": 100.0}, {\"account_id\": \"ACC1\", \"txn_date\": \"2024-01-02\", \"txn_id\": 102, \"amount\": 50.0}, {\"account_id\": \"ACC2\", \"txn_date\": \"2024-01-01\", \"txn_id\": 201, \"amount\": 200.0}]",
+        "description": "Input parameter `transactions` (list) for Running Totals"
+      }
+    ]
   },
   "relatedProblems": [
     "sql-multiple-joins",
@@ -394,11 +403,7 @@
     "sql-row-number",
     "sql-inner-join"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "sql",
-    "placeholderType": "sql_dummy_select (SELECT * FROM main_table)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Running Totals",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/sql-running-totals",
+  "localUrl": "http://localhost:3000/problems/sql-running-totals"
 }

@@ -18,19 +18,21 @@
   "seoDescription": "Compute the NumPy outer product of two vectors as a matrix containing every pairwise element multiplication.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute the outer product of two vectors yielding a rank-one matrix of pairwise element multiplications.\n\nEvery matrix can be decomposed into a sum of rank-one outer product matrices via Singular Value Decomposition.\n\n### Mathematical Formulation\n$$\nM_{ij} = u_i v_j, \\quad M = u v^T\n$$\n\n### Step-by-Step Implementation\n1. Verify vector dimensionality m and n\n2. Compute pairwise multiplications across all index combinations\n3. Return m x n rank-1 outer product matrix\n\n### Returns\nNested list representing outer product matrix.",
-  "theory": "# Understanding Outer Product\n\n## 1. What Is It?\n\nThe **Outer Product** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing the outer product of two vectors yielding a rank-one matrix of pairwise element multiplications.\n\n### Key Terminology\n- **`v`**: The uncentered second moment vector tracking squared gradient magnitudes.\n- **Linear Algebra**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nM_{ij} = u_i v_j, \\quad M = u v^T\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `la_outer_product` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nu = [1.0, 2.0, 3.0], v = [4.0, 5.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated la_outer_product under standard test conditions.\n\n**Resulting Output:**\n```python\n[[4.0, 5.0], [8.0, 10.0], [12.0, 15.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `la_outer_product` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[4.0, 5.0]`.\n  - **Element 2**: Evaluated output component `[8.0, 10.0]`.\n  - **Element 3**: Evaluated output component `[12.0, 15.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `la_outer_product`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `la_outer_product`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Outer Product** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `la_outer_product` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute the outer product of two vectors yielding a rank-one matrix of pairwise element multiplications.\n\n$$\nM_{ij} = u_i v_j, \\quad M = u v^T\n$$\n\nGiven input parameters `u`, `v`, return nested list representing outer product matrix.",
+  "theory": "## What Is Outer Product?\n\nIn numerical linear algebra, matrix decompositions, projections, and inner-product structures provide stable geometric representations of high-dimensional data.\n\n$$\nM_{ij} = u_i v_j, \\quad M = u v^T\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nM_{ij} = u_i v_j\n$$\n\n$$\nM = u v^T\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Cholesky Decomposition**, **Implement Cosine Similarity**, **Implement Dot Product**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: u = [1.0, 2.0, 3.0], v = [4.0, 5.0]\n\nOutput: [[4.0, 5.0], [8.0, 10.0], [12.0, 15.0]]\n\nExplanation: Evaluated la_outer_product under standard test conditions."
+    "Input: u = [1.0, 2.0, 3.0], v = [4.0, 5.0]\n\nOutput: [[4.0, 5.0], [8.0, 10.0], [12.0, 15.0]]",
+    "Input: u = [2.0, 4.0, 6.0], v = [8.0, 10.0]\n\nOutput: [[16.0, 20.0], [32.0, 40.0], [48.0, 60.0]]"
   ],
-  "requirements": "* Function must be named `la_outer_product`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `la_outer_product` accepting `u`, `v`\n* Compute the NumPy outer product of two vectors as a matrix containing every pairwise element multiplication.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `la_outer_product`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`u`, `v`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $M_{ij} = u_i v_j, \\quad M = u v^T$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef la_outer_product(u: list, v: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Outer Product** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef la_outer_product(u: list, v: list) -> list:\n    return np.round(np.outer(np.array(u, dtype=np.float64), np.array(v, dtype=np.float64)), 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef la_outer_product(u: list, v: list) -> list:\n    \"\"\"\n    Compute the NumPy outer product of two vectors as a matrix containing every pairwise element multiplication.\n\n    Args:\n        u (list): Input parameter `u` (list) for Outer Product.\n        v (list): Input parameter `v` (list) for Outer Product.\n\n    Returns:\n        list: Computed Outer Product result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Outer Product** (Linear Algebra): Compute the NumPy outer product of two vectors as a matrix containing every pairwise element multiplication.\n\nTo implement `la_outer_product` cleanly and accurately:\n1. Parse and normalize the inputs (`u`, `v`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef la_outer_product(u: list, v: list) -> list:\n    return np.round(np.outer(np.array(u, dtype=np.float64), np.array(v, dtype=np.float64)), 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Outer Product** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "la-outer-product-tc-1",
@@ -64,7 +66,7 @@
     },
     {
       "id": "la-outer-product-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (u=[2.0, 4.0, 6.0])",
       "inputs": {
         "u": [
           2.0,
@@ -94,7 +96,7 @@
     },
     {
       "id": "la-outer-product-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (u=[0.5, 1.0, 1.5])",
       "inputs": {
         "u": [
           0.5,
@@ -120,11 +122,11 @@
           3.75
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "la-outer-product-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (u=[2.0, 3.0, 4.0])",
       "inputs": {
         "u": [
           2.0,
@@ -154,7 +156,7 @@
     },
     {
       "id": "la-outer-product-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (u=[1.5, 3.0, 4.5])",
       "inputs": {
         "u": [
           1.5,
@@ -184,7 +186,7 @@
     },
     {
       "id": "la-outer-product-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (u=[3.0, 6.0, 9.0])",
       "inputs": {
         "u": [
           3.0,
@@ -214,7 +216,7 @@
     },
     {
       "id": "la-outer-product-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (u=[0.25, 0.5, 0.75])",
       "inputs": {
         "u": [
           0.25,
@@ -245,7 +247,20 @@
   ],
   "functionMetadata": {
     "name": "la_outer_product",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "u",
+        "type": "array",
+        "example": "[1.0, 2.0, 3.0]",
+        "description": "Input parameter `u` (list) for Outer Product"
+      },
+      {
+        "name": "v",
+        "type": "array",
+        "example": "[4.0, 5.0]",
+        "description": "Input parameter `v` (list) for Outer Product"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -254,11 +269,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Outer Product",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/la-outer-product",
+  "localUrl": "http://localhost:3000/problems/la-outer-product"
 }

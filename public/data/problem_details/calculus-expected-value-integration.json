@@ -19,19 +19,21 @@
   "seoDescription": "Approximate expected values with numerical integration when a probability density has no convenient closed form.",
   "solved": false,
   "isLocked": true,
-  "description": "Approximate expectation E[X] for continuous densities over bounded intervals using composite trapezoidal numerical quadrature.\n\nWhen continuous distributions lack closed-form antiderivatives (e.g. truncated Gaussians), numerical quadrature evaluates exact expectations.\n\n### Mathematical Formulation\n$$\n\\mathbb{E}[X] = \\frac{\\int_a^b x f(x) \\, dx}{\\int_a^b f(x) \\, dx} \\approx \\frac{\\sum w_i x_i f(x_i)}{\\sum w_i f(x_i)}\n$$\n\n### Step-by-Step Implementation\n1. Discretize continuous domain into regular numerical integration grid\n2. Compute composite trapezoidal weights for normalizing constant Z\n3. Integrate first-moment product x * f(x) to compute expectation\n\n### Returns\nScalar float representing estimated expected value.",
-  "theory": "# Understanding Expected Value via Numerical Integration\n\n## 1. What Is It?\n\nThe **Expected Value via Numerical Integration** is a fundamental computational technique in Numpy. In machine learning workflows, Approximate expectation E[X] for continuous densities over bounded intervals using composite trapezoidal numerical quadrature.\n\n### Key Terminology\n- **`b`**: The bias vector or offset scalar in the affine transformation.\n- **Calculus**: Core domain concept contextualizing this task within Numpy workflows.\n- **Probability and Statistics**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbb{E}[X] = \\frac{\\int_a^b x f(x) \\, dx}{\\int_a^b f(x) \\, dx} \\approx \\frac{\\sum w_i x_i f(x_i)}{\\sum w_i f(x_i)}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `calculus_expected_value_integration` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\na = 0.0, b = 2.0, num_intervals = 200\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated calculus_expected_value_integration under standard test conditions.\n\n**Resulting Output:**\n```python\n0.722781\n```\n\n## 4. Understanding the Expected Output\n\nThe function `calculus_expected_value_integration` must return:\n- **Primary Output:** `0.722781`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `calculus_expected_value_integration`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `calculus_expected_value_integration`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `calculus_expected_value_integration`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Expected Value via Numerical Integration** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `calculus_expected_value_integration` accurately and efficiently performs the required transformation.\n",
+  "description": "Approximate expectation $\\mathbb{E}[X]$ for continuous densities over bounded intervals using composite trapezoidal numerical quadrature.\n\n$$\n\\mathbb{E}[X] = \\frac{\\int_a^b x f(x) \\, dx}{\\int_a^b f(x) \\, dx} \\approx \\frac{\\sum w_i x_i f(x_i)}{\\sum w_i f(x_i)}\n$$\n\nGiven input parameters `a`, `b`, `num_intervals`, return scalar float representing estimated expected value.",
+  "theory": "## What Is Expected Value via Numerical Integration?\n\nIn machine learning calculus, analytical derivatives and local linear approximations govern how small parameter changes affect model predictions and loss objectives.\n\n$$\n\\mathbb{E}[X] = \\frac{\\int_a^b x f(x) \\, dx}{\\int_a^b f(x) \\, dx} \\approx \\frac{\\sum w_i x_i f(x_i)}{\\sum w_i f(x_i)}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Continuity of Activation Functions**, **Derivatives of Common Activation Functions**, **Backpropagation Through a Computation Graph**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: a = 0.0, b = 2.0, num_intervals = 200\n\nOutput: 0.722781\n\nExplanation: Evaluated calculus_expected_value_integration under standard test conditions."
+    "Input: a = 0.0, b = 2.0, num_intervals = 200\n\nOutput: 0.722781",
+    "Input: a = 0.0, b = 4.0, num_intervals = 400\n\nOutput: 0.797661"
   ],
-  "requirements": "* Function must be named `calculus_expected_value_integration`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `calculus_expected_value_integration` accepting `a`, `b`, `num_intervals`\n* Approximate expected values with numerical integration when a probability density has no convenient closed form.\n* Return a scalar `float` rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `calculus_expected_value_integration`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`a`, `b`, `num_intervals`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `calculus_expected_value_integration` into clear stages: validate/reshape `a`, `b`, `num_intervals`, evaluate the Expected Value via Numerical Integration equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef calculus_expected_value_integration(a: float, b: float, num_intervals: int = 100) -> float:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Expected Value via Numerical Integration** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_expected_value_integration(a: float, b: float, num_intervals: int = 100) -> float:\n    n = int(num_intervals); xs = np.linspace(float(a), float(b), n + 1)\n    pdf = np.exp(-0.5 * (xs ** 2)); h = (float(b) - float(a)) / n\n    Z = h * (0.5*pdf[0] + np.sum(pdf[1:-1]) + 0.5*pdf[-1])\n    num = h * (0.5*xs[0]*pdf[0] + np.sum(xs[1:-1]*pdf[1:-1]) + 0.5*xs[-1]*pdf[-1])\n    return round(float(num / max(Z, 1e-12)), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef calculus_expected_value_integration(a: float, b: float, num_intervals: int = 100) -> float:\n    \"\"\"\n    Approximate expected values with numerical integration when a probability density has no convenient closed form.\n\n    Args:\n        a (float): Input parameter `a` (float) for Expected Value via Numerical Integration.\n        b (float): Bias vector or linear system right-hand side vector.\n        num_intervals (int): Integer count or dimension size for num intervals.\n\n    Returns:\n        float: Computed Expected Value via Numerical Integration result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Expected Value via Numerical Integration** (Calculus, Probability and Statistics): Approximate expected values with numerical integration when a probability density has no convenient closed form.\n\nTo implement `calculus_expected_value_integration` cleanly and accurately:\n1. Parse and normalize the inputs (`a`, `b`, `num_intervals`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `float` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_expected_value_integration(a: float, b: float, num_intervals: int = 100) -> float:\n    n = int(num_intervals); xs = np.linspace(float(a), float(b), n + 1)\n    pdf = np.exp(-0.5 * (xs ** 2)); h = (float(b) - float(a)) / n\n    Z = h * (0.5*pdf[0] + np.sum(pdf[1:-1]) + 0.5*pdf[-1])\n    num = h * (0.5*xs[0]*pdf[0] + np.sum(xs[1:-1]*pdf[1:-1]) + 0.5*xs[-1]*pdf[-1])\n    return round(float(num / max(Z, 1e-12)), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Expected Value via Numerical Integration** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "calculus-expected-value-integration-tc-1",
@@ -46,7 +48,7 @@
     },
     {
       "id": "calculus-expected-value-integration-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (a=0.0)",
       "inputs": {
         "a": 0.0,
         "b": 4.0,
@@ -57,18 +59,18 @@
     },
     {
       "id": "calculus-expected-value-integration-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (a=0.0)",
       "inputs": {
         "a": 0.0,
         "b": 1.0,
         "num_intervals": 100
       },
       "expectedOutput": 0.459855,
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "calculus-expected-value-integration-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (a=0.0)",
       "inputs": {
         "a": 0.0,
         "b": 6.0,
@@ -79,7 +81,7 @@
     },
     {
       "id": "calculus-expected-value-integration-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (a=1.0)",
       "inputs": {
         "a": 1.0,
         "b": 3.0,
@@ -90,7 +92,7 @@
     },
     {
       "id": "calculus-expected-value-integration-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (a=-2.0)",
       "inputs": {
         "a": -2.0,
         "b": 0.0,
@@ -101,7 +103,7 @@
     },
     {
       "id": "calculus-expected-value-integration-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (a=0.0)",
       "inputs": {
         "a": 0.0,
         "b": 20.0,
@@ -113,7 +115,26 @@
   ],
   "functionMetadata": {
     "name": "calculus_expected_value_integration",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "a",
+        "type": "number",
+        "example": "0.0",
+        "description": "Input parameter `a` (float) for Expected Value via Numerical Integration"
+      },
+      {
+        "name": "b",
+        "type": "number",
+        "example": "2.0",
+        "description": "Bias vector or linear system right-hand side vector"
+      },
+      {
+        "name": "num_intervals",
+        "type": "number",
+        "example": "200",
+        "description": "Integer count or dimension size for num intervals"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -122,11 +143,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Expected Value via Numerical Integration",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/calculus-expected-value-integration",
+  "localUrl": "http://localhost:3000/problems/calculus-expected-value-integration"
 }

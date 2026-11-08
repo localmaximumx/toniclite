@@ -18,23 +18,25 @@
   "seoDescription": "Implement two-dimensional transposed convolution matching PyTorch output layout, stride, padding, and optional bias.",
   "solved": false,
   "isLocked": true,
-  "description": "Perform fractionally strided transposed convolution projecting spatial input activations into larger spatial canvas.\n\nTransposed convolution corresponds to the backward pass adjoint operation of standard convolution, enabling learnable spatial upsampling.\n\n### Mathematical Formulation\n$$\n\\mathbf{Y}_{i:i+K_h, j:j+K_w} += X_{i, j} \\cdot \\mathbf{K}\n$$\n\n### Step-by-Step Implementation\n1. Initialize output canvas of size (H + Kh - 1, W + Kw - 1)\n2. Multiply kernel matrix by each input scalar and accumulate into overlapping output regions\n3. Return expanded spatial output rounded to 4 decimal places\n\n### Returns\nNested 2D list representing upsampled transposed convolution output.",
-  "theory": "# Understanding 2D Transposed Convolution\n\n## 1. What Is It?\n\nThe **2D Transposed Convolution** is a fundamental computational technique in Python. In machine learning workflows, it involves performing fractionally strided transposed convolution projecting spatial input activations into larger spatial canvas.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Computer Vision**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{Y}_{i:i+K_h, j:j+K_w} += X_{i, j} \\cdot \\mathbf{K}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_conv2d_transpose` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [[1.0, 2.0], [3.0, 4.0]], kernel = [[1.0, 0.5], [0.5, 1.0]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_conv2d_transpose under standard test conditions.\n\n**Resulting Output:**\n```python\n[[1.0, 2.5, 1.0], [3.5, 7.5, 4.0], [1.5, 5.0, 4.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_conv2d_transpose` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[1.0, 2.5, 1.0]`.\n  - **Element 2**: Evaluated output component `[3.5, 7.5, 4.0]`.\n  - **Element 3**: Evaluated output component `[1.5, 5.0, 4.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_conv2d_transpose`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_conv2d_transpose`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**2D Transposed Convolution** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_conv2d_transpose` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement 2D transposed convolution (fractionally-strided upsampling) for a 2D input feature map `x` and 2D `kernel` with configurable `stride` $s \\ge 1$ and `padding` $p \\ge 0$.\n\nFor each input activation $X_{i,j}$, scatter-add the scaled kernel into the unpadded output canvas at top-left offset $(i \\cdot s, j \\cdot s)$:\n\n$$\n\\tilde{Y}_{i s + u, \\, j s + v} = \\sum_{i, j} X_{i, j} \\cdot K_{u, v}\n$$\n\nWhen `padding` $p > 0$, crop $p$ border rows and columns from each side so the output spatial dimensions are:\n\n$$\nH_{\\text{out}} = (H - 1)s - 2p + k_H, \\qquad W_{\\text{out}} = (W - 1)s - 2p + k_W\n$$\n\nReturn the resulting 2D feature map as a nested list of floats rounded to 4 decimal places.",
+  "theory": "## What Is 2D Transposed Convolution?\n\nConvolutional layers apply shared local filters across spatial positions to extract translation-equivariant features.\n\n$$\n\\tilde{Y}_{i s + u, \\, j s + v} = \\sum_{i, j} X_{i, j} \\cdot K_{u, v}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nH_{\\text{out}} = (H - 1)s - 2p + k_H\n$$\n\n$$\nW_{\\text{out}} = (W - 1)s - 2p + k_W\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x = [[1.0, 2.0], [3.0, 4.0]], kernel = [[1.0, 0.5], [0.5, 1.0]]\n\nOutput: [[1.0, 2.5, 1.0], [3.5, 7.5, 4.0], [1.5, 5.0, 4.0]]\n\nExplanation: Evaluated cv_conv2d_transpose under standard test conditions."
+    "Input: x = [[1.0, 2.0], [3.0, 4.0]], kernel = [[1.0, 0.5], [0.5, 1.0]], stride = 1, padding = 0\n\nOutput: [[1.0, 2.5, 1.0], [3.5, 7.5, 4.0], [1.5, 5.0, 4.0]]",
+    "Input: x = [[1.0, 2.0], [3.0, 4.0]], kernel = [[1.0, 1.0], [1.0, 1.0]], stride = 2, padding = 0\n\nOutput: [[1.0, 1.0, 2.0, 2.0], [1.0, 1.0, 2.0, 2.0], [3.0, 3.0, 4.0, 4.0], [3.0, 3.0, 4.0, 4.0]]"
   ],
-  "requirements": "* Function must be named `cv_conv2d_transpose`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_conv2d_transpose` accepting `x`, `kernel`, `stride`, `padding`\n* Implement two-dimensional transposed convolution matching PyTorch output layout, stride, padding, and optional bias.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_conv2d_transpose`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `kernel`, `stride`, `padding`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\tilde{Y}_{i s + u, \\, j s + v} \\mathrel{+}= X_{i, j} \\cdot K_{u, v}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef cv_conv2d_transpose(x: list, kernel: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **2D Transposed Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_conv2d_transpose(x: list, kernel: list) -> list:\n    ax, ak = np.array(x, dtype=float), np.array(kernel, dtype=float)\n    H, W = ax.shape; Kh, Kw = ak.shape\n    out = np.zeros((H + Kh - 1, W + Kw - 1))\n    for i in range(H):\n        for j in range(W): out[i:i+Kh, j:j+Kw] += ax[i, j] * ak\n    return np.round(out, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef cv_conv2d_transpose(x: list, kernel: list, stride: int = 1, padding: int = 0) -> list:\n    \"\"\"\n    Computes 2D transposed convolution (fractionally-strided convolution) of a 2D input\n    feature map x with a 2D kernel using configurable stride and padding.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**2D Transposed Convolution** (Computer Vision): Implement two-dimensional transposed convolution matching PyTorch output layout, stride, padding, and optional bias.\n\nTo implement `cv_conv2d_transpose` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `kernel`, `stride`, `padding`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_conv2d_transpose(x: list, kernel: list, stride: int = 1, padding: int = 0) -> list:\n    inp = np.asarray(x, dtype=float)\n    k = np.asarray(kernel, dtype=float)\n    s = int(stride)\n    p = int(padding)\n    H, W = inp.shape\n    kH, kW = k.shape\n    full_h = (H - 1) * s + kH\n    full_w = (W - 1) * s + kW\n    out = np.zeros((full_h, full_w), dtype=float)\n    for i in range(H):\n        for j in range(W):\n            out[i * s : i * s + kH, j * s : j * s + kW] += inp[i, j] * k\n    if p > 0:\n        out = out[p : full_h - p, p : full_w - p]\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^2 \\cdot d)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **2D Transposed Convolution** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-conv2d-transpose-tc-1",
-      "name": "2x2 input with 2x2 kernel",
+      "name": "2x2 input, 2x2 kernel, stride=1, padding=0",
       "inputs": {
         "x": [
           [
@@ -55,7 +57,9 @@
             0.5,
             1.0
           ]
-        ]
+        ],
+        "stride": 1,
+        "padding": 0
       },
       "expectedOutput": [
         [
@@ -78,131 +82,141 @@
     },
     {
       "id": "cv-conv2d-transpose-tc-2",
-      "name": "Case 2",
+      "name": "Upsampling with stride=2",
       "inputs": {
         "x": [
           [
-            2.0,
-            4.0
+            1.0,
+            2.0
           ],
           [
-            6.0,
-            8.0
+            3.0,
+            4.0
           ]
         ],
         "kernel": [
           [
-            2.0,
+            1.0,
             1.0
           ],
           [
             1.0,
-            2.0
+            1.0
           ]
-        ]
+        ],
+        "stride": 2,
+        "padding": 0
       },
       "expectedOutput": [
         [
+          1.0,
+          1.0,
+          2.0,
+          2.0
+        ],
+        [
+          1.0,
+          1.0,
+          2.0,
+          2.0
+        ],
+        [
+          3.0,
+          3.0,
           4.0,
-          10.0,
           4.0
         ],
         [
-          14.0,
-          30.0,
-          16.0
-        ],
-        [
-          6.0,
-          20.0,
-          16.0
+          3.0,
+          3.0,
+          4.0,
+          4.0
         ]
       ],
       "isPublic": true
     },
     {
       "id": "cv-conv2d-transpose-tc-3",
-      "name": "Case 3",
+      "name": "Stride=2 with padding=1 crop",
       "inputs": {
         "x": [
           [
+            2.0,
+            1.0
+          ],
+          [
+            0.5,
+            3.0
+          ]
+        ],
+        "kernel": [
+          [
+            1.0,
             0.5,
             1.0
           ],
           [
-            1.5,
-            2.0
-          ]
-        ],
-        "kernel": [
-          [
             0.5,
-            0.25
+            2.0,
+            0.5
           ],
           [
-            0.25,
-            0.5
+            1.0,
+            0.5,
+            1.0
           ]
-        ]
+        ],
+        "stride": 2,
+        "padding": 1
       },
       "expectedOutput": [
         [
-          0.25,
-          0.625,
-          0.25
+          4.0,
+          1.5,
+          2.0
         ],
         [
-          0.875,
-          1.875,
-          1.0
-        ],
-        [
-          0.375,
           1.25,
-          1.0
+          6.5,
+          2.0
+        ],
+        [
+          1.0,
+          1.75,
+          6.0
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-conv2d-transpose-tc-4",
-      "name": "Case 4",
+      "name": "Single impulse response",
       "inputs": {
         "x": [
           [
-            -1.0,
-            -2.0
-          ],
-          [
-            -3.0,
-            -4.0
+            5.0
           ]
         ],
         "kernel": [
           [
-            -1.0,
-            -0.5
+            0.2,
+            0.4
           ],
           [
-            -0.5,
-            -1.0
+            0.6,
+            0.8
           ]
-        ]
+        ],
+        "stride": 1,
+        "padding": 0
       },
       "expectedOutput": [
         [
           1.0,
-          2.5,
-          1.0
+          2.0
         ],
         [
-          3.5,
-          7.5,
-          4.0
-        ],
-        [
-          1.5,
-          5.0,
+          3.0,
           4.0
         ]
       ],
@@ -210,132 +224,136 @@
     },
     {
       "id": "cv-conv2d-transpose-tc-5",
-      "name": "Case 5",
+      "name": "Negative filter weights",
       "inputs": {
         "x": [
           [
-            3.0,
-            6.0
+            1.0,
+            -1.0
           ],
           [
-            9.0,
-            12.0
+            -1.0,
+            1.0
           ]
         ],
         "kernel": [
           [
-            3.0,
-            1.5
+            1.0,
+            -0.5
           ],
           [
-            1.5,
-            3.0
+            -0.5,
+            1.0
           ]
-        ]
+        ],
+        "stride": 1,
+        "padding": 0
       },
       "expectedOutput": [
         [
-          9.0,
-          22.5,
-          9.0
+          1.0,
+          -1.5,
+          0.5
         ],
         [
-          31.5,
-          67.5,
-          36.0
+          -1.5,
+          3.0,
+          -1.5
         ],
         [
-          13.5,
-          45.0,
-          36.0
+          0.5,
+          -1.5,
+          1.0
         ]
       ],
       "isPublic": false
     },
     {
       "id": "cv-conv2d-transpose-tc-6",
-      "name": "Case 6",
+      "name": "3x3 input with padding=1",
       "inputs": {
         "x": [
           [
+            1.0,
             2.0,
-            3.0
+            1.0
           ],
           [
-            4.0,
-            5.0
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            2.0,
+            1.0
           ]
         ],
         "kernel": [
           [
-            2.0,
-            1.5
+            1.0,
+            1.0
           ],
           [
-            1.5,
-            2.0
+            1.0,
+            1.0
           ]
-        ]
+        ],
+        "stride": 1,
+        "padding": 1
       },
       "expectedOutput": [
         [
           4.0,
-          9.0,
-          4.5
+          4.0
         ],
         [
-          11.0,
-          24.5,
-          13.5
-        ],
-        [
-          6.0,
-          15.5,
-          10.0
+          4.0,
+          4.0
         ]
       ],
       "isPublic": false
     },
     {
       "id": "cv-conv2d-transpose-tc-7",
-      "name": "Case 7",
+      "name": "Non-square input with stride=2",
       "inputs": {
         "x": [
           [
-            -1.0,
-            0.0
-          ],
-          [
             1.0,
-            2.0
+            2.0,
+            3.0
           ]
         ],
         "kernel": [
           [
-            -1.0,
-            -1.5
+            1.0,
+            0.5
           ],
           [
-            -1.5,
-            -1.0
+            0.5,
+            1.0
           ]
-        ]
+        ],
+        "stride": 2,
+        "padding": 0
       },
       "expectedOutput": [
         [
           1.0,
-          1.5,
-          0.0
+          0.5,
+          2.0,
+          1.0,
+          3.0,
+          1.5
         ],
         [
           0.5,
-          -2.5,
-          -3.0
-        ],
-        [
-          -1.5,
-          -4.0,
-          -2.0
+          1.0,
+          1.0,
+          2.0,
+          1.5,
+          3.0
         ]
       ],
       "isPublic": false
@@ -343,7 +361,32 @@
   ],
   "functionMetadata": {
     "name": "cv_conv2d_transpose",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[[1.0, 2.0], [3.0, 4.0]]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "kernel",
+        "type": "array",
+        "example": "[[1.0, 0.5], [0.5, 1.0]]",
+        "description": "2D convolution or morphological filter kernel"
+      },
+      {
+        "name": "stride",
+        "type": "number",
+        "example": "1",
+        "description": "Spatial step size between successive sliding window positions"
+      },
+      {
+        "name": "padding",
+        "type": "number",
+        "example": "0",
+        "description": "Number of zero-padding rows/columns added around spatial borders"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -352,11 +395,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "2D Transposed Convolution",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-conv2d-transpose",
+  "localUrl": "http://localhost:3000/problems/cv-conv2d-transpose"
 }

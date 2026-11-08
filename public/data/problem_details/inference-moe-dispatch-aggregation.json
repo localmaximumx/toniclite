@@ -20,23 +20,25 @@
   "seoDescription": "Run each expert's feed-forward computation only on the tokens routed to it, and scatter-add the routing-weighted results back into token order.",
   "solved": false,
   "isLocked": true,
-  "description": "Aggregate top-K routed expert outputs using normalized routing gate probabilities.\n\nMixture of Experts routes tokens conditionally to specialized subnetworks, increasing total parameter capacity by orders of magnitude at constant compute budget.\n\n### Mathematical Formulation\n$$\n\\mathbf{y}_t = \\sum_{i=1}^K g_{t, i} \\mathbf{E}_{t, i}(\\mathbf{x}_t)\n$$\n\n### Step-by-Step Implementation\n1. Multiply each expert output vector by its corresponding gating coefficient g\n2. Sum scaled vectors across top-k active experts per token\n3. Return aggregated token representations rounded to 4 decimal places\n\n### Returns\nNested 2D list of shape (N, D) representing aggregated MoE layer activations.",
-  "theory": "# Understanding MoE Token Dispatch and Expert Aggregation\n\n## 1. What Is It?\n\nThe **MoE Token Dispatch and Expert Aggregation** is a fundamental computational technique in Pytorch. In machine learning workflows, Aggregate top-K routed expert outputs using normalized routing gate probabilities.\n\n### Key Terminology\n- **Inference**: Core domain concept contextualizing this task within Pytorch workflows.\n- **Neural Networks**: Core domain concept contextualizing this task within Pytorch workflows.\n- **Transformers**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{y}_t = \\sum_{i=1}^K g_{t, i} \\mathbf{E}_{t, i}(\\mathbf{x}_t)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `inference_moe_dispatch_aggregation` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ntoken_hidden_states = [[1.0, 2.0], [3.0, 4.0]], routing_weights = [[0.7, 0.3], [0.4, 0.6]], expert_outputs = [[[10.0, 10.0], [20.0, 20.0]], [[30.0, 30.0], [40.0, 40.0]]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated inference_moe_dispatch_aggregation under standard test conditions.\n\n**Resulting Output:**\n```python\n[[13.0, 13.0], [36.0, 36.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `inference_moe_dispatch_aggregation` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[13.0, 13.0]`.\n  - **Element 2**: Evaluated output component `[36.0, 36.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `inference_moe_dispatch_aggregation`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `inference_moe_dispatch_aggregation`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**MoE Token Dispatch and Expert Aggregation** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `inference_moe_dispatch_aggregation` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement Mixture-of-Experts (MoE) token dispatch and residual output aggregation given `token_hidden_states` of shape $(T, d)$, `routing_weights` of shape $(T, E)$, and `expert_outputs` of shape $(T, E, d)$.\n\nFirst, normalize the routing weights across experts for each token $t$ so the gate probabilities sum to $1$:\n\n$$\n\\tilde{G}_{t, e} = \\frac{G_{t, e}}{\\sum_{k=1}^E G_{t, k}}\n$$\n\nSecond, aggregate the routing-weighted expert outputs and add the residual token representation:\n\n$$\n\\mathbf{Y}_t = \\mathbf{X}_t + \\sum_{e=1}^E \\tilde{G}_{t, e} \\mathbf{E}_{t, e}\n$$\n\nReturn the aggregated $(T, d)$ output tensor as a nested list rounded to 4 decimal places.",
+  "theory": "## What Is MoE Token Dispatch and Expert Aggregation?\n\nIn LLM and deep learning inference systems, algorithmic optimizations reduce memory footprint, KV-cache bandwidth, and token generation latency.\n\n$$\n\\tilde{G}_{t, e} = \\frac{G_{t, e}}{\\sum_{k=1}^E G_{t, k}}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\mathbf{Y}_t = \\mathbf{X}_t + \\sum_{e=1}^E \\tilde{G}_{t, e} \\mathbf{E}_{t, e}\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Implement Autoregressive Decoding with a KV Cache**, **Implement Block-Wise FP8 Quantization**, **Simulate Chunked Prefill Scheduling**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: token_hidden_states = [[1.0, 2.0], [3.0, 4.0]], routing_weights = [[0.7, 0.3], [0.4, 0.6]], expert_outputs = [[[10.0, 10.0], [20.0, 20.0]], [[30.0, 30.0], [40.0, 40.0]]]\n\nOutput: [[13.0, 13.0], [36.0, 36.0]]\n\nExplanation: Evaluated inference_moe_dispatch_aggregation under standard test conditions."
+    "Input: token_hidden_states = [[1.0, 2.0], [3.0, 4.0]], routing_weights = [[0.7, 0.3], [0.4, 0.6]], expert_outputs = [[[10.0, 10.0], [20.0, 20.0]], [[30.0, 30.0], [40.0, 40.0]]]\n\nOutput: [[14.0, 15.0], [39.0, 40.0]]",
+    "Input: token_hidden_states = [[0.5, -0.5], [1.0, 1.0]], routing_weights = [[2.0, 6.0], [1.0, 3.0]], expert_outputs = [[[4.0, 8.0], [12.0, 16.0]], [[2.0, 4.0], [6.0, 8.0]]]\n\nOutput: [[10.5, 13.5], [6.0, 8.0]]"
   ],
-  "requirements": "* Function must be named `inference_moe_dispatch_aggregation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `inference_moe_dispatch_aggregation` accepting `token_hidden_states`, `routing_weights`, `expert_outputs`\n* Run each expert's feed-forward computation only on the tokens routed to it, and scatter-add the routing-weighted results back into token order.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `inference_moe_dispatch_aggregation`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`token_hidden_states`, `routing_weights`, `expert_outputs`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\tilde{G}_{t, e} = \\frac{G_{t, e}}{\\sum_{k=1}^E G_{t, k}}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef inference_moe_dispatch_aggregation(token_hidden_states: list, routing_weights: list, expert_outputs: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Implement MoE Token Dispatch and Expert Aggregation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef inference_moe_dispatch_aggregation(token_hidden_states: list, routing_weights: list, expert_outputs: list) -> list:\n    rw = np.array(routing_weights, dtype=float)[:, :, None]\n    return np.round(np.sum(rw * np.array(expert_outputs, dtype=float), axis=1), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import torch\n\ndef inference_moe_dispatch_aggregation(token_hidden_states: list, routing_weights: list, expert_outputs: list) -> list:\n    \"\"\"\n    Computes the MoE layer output by applying each expert's linear transformation (or expert output)\n    to token_hidden_states and aggregating with routing_weights plus residual connection.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Implement MoE Token Dispatch and Expert Aggregation** (Inference, Neural Networks, Transformers): Run each expert's feed-forward computation only on the tokens routed to it, and scatter-add the routing-weighted results back into token order.\n\nTo implement `inference_moe_dispatch_aggregation` cleanly and accurately:\n1. Parse and normalize the inputs (`token_hidden_states`, `routing_weights`, `expert_outputs`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\nimport numpy as np\n\ndef inference_moe_dispatch_aggregation(token_hidden_states: list, routing_weights: list, expert_outputs: list) -> list:\n    x = np.asarray(token_hidden_states, dtype=float)\n    w = np.asarray(routing_weights, dtype=float)\n    e = np.asarray(expert_outputs, dtype=float)\n    # Normalize routing weights per token across active experts and combine with residual token_hidden_states\n    w_norm = w / np.maximum(np.sum(w, axis=1, keepdims=True), 1e-12)\n    moe_agg = np.sum(w_norm[:, :, None] * e, axis=1)\n    out = x + moe_agg\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Implement MoE Token Dispatch and Expert Aggregation** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "inference-moe-dispatch-aggregation-tc-1",
-      "name": "2 tokens 2 experts 2 dims",
+      "name": "2 tokens routed across 2 experts with residual",
       "inputs": {
         "token_hidden_states": [
           [
@@ -77,183 +79,6 @@
             [
               40.0,
               40.0
-            ]
-          ]
-        ]
-      },
-      "expectedOutput": [
-        [
-          13.0,
-          13.0
-        ],
-        [
-          36.0,
-          36.0
-        ]
-      ],
-      "isPublic": true
-    },
-    {
-      "id": "inference-moe-dispatch-aggregation-tc-2",
-      "name": "Case 2",
-      "inputs": {
-        "token_hidden_states": [
-          [
-            2.0,
-            4.0
-          ],
-          [
-            6.0,
-            8.0
-          ]
-        ],
-        "routing_weights": [
-          [
-            1.4,
-            0.6
-          ],
-          [
-            0.8,
-            1.2
-          ]
-        ],
-        "expert_outputs": [
-          [
-            [
-              20.0,
-              20.0
-            ],
-            [
-              40.0,
-              40.0
-            ]
-          ],
-          [
-            [
-              60.0,
-              60.0
-            ],
-            [
-              80.0,
-              80.0
-            ]
-          ]
-        ]
-      },
-      "expectedOutput": [
-        [
-          52.0,
-          52.0
-        ],
-        [
-          144.0,
-          144.0
-        ]
-      ],
-      "isPublic": true
-    },
-    {
-      "id": "inference-moe-dispatch-aggregation-tc-3",
-      "name": "Case 3",
-      "inputs": {
-        "token_hidden_states": [
-          [
-            0.5,
-            1.0
-          ],
-          [
-            1.5,
-            2.0
-          ]
-        ],
-        "routing_weights": [
-          [
-            0.35,
-            0.15
-          ],
-          [
-            0.2,
-            0.3
-          ]
-        ],
-        "expert_outputs": [
-          [
-            [
-              5.0,
-              5.0
-            ],
-            [
-              10.0,
-              10.0
-            ]
-          ],
-          [
-            [
-              15.0,
-              15.0
-            ],
-            [
-              20.0,
-              20.0
-            ]
-          ]
-        ]
-      },
-      "expectedOutput": [
-        [
-          3.25,
-          3.25
-        ],
-        [
-          9.0,
-          9.0
-        ]
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "inference-moe-dispatch-aggregation-tc-4",
-      "name": "Case 4",
-      "inputs": {
-        "token_hidden_states": [
-          [
-            1.0,
-            2.0
-          ],
-          [
-            3.0,
-            4.0
-          ]
-        ],
-        "routing_weights": [
-          [
-            0.7,
-            0.3
-          ],
-          [
-            0.4,
-            0.6
-          ]
-        ],
-        "expert_outputs": [
-          [
-            [
-              11.0,
-              11.0
-            ],
-            [
-              21.0,
-              21.0
-            ]
-          ],
-          [
-            [
-              31.0,
-              31.0
-            ],
-            [
-              41.0,
-              41.0
             ]
           ]
         ]
@@ -261,175 +86,340 @@
       "expectedOutput": [
         [
           14.0,
-          14.0
+          15.0
         ],
         [
-          37.0,
-          37.0
+          39.0,
+          40.0
+        ]
+      ],
+      "isPublic": true
+    },
+    {
+      "id": "inference-moe-dispatch-aggregation-tc-2",
+      "name": "Unnormalized top-k routing weights",
+      "inputs": {
+        "token_hidden_states": [
+          [
+            0.5,
+            -0.5
+          ],
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "routing_weights": [
+          [
+            2.0,
+            6.0
+          ],
+          [
+            1.0,
+            3.0
+          ]
+        ],
+        "expert_outputs": [
+          [
+            [
+              4.0,
+              8.0
+            ],
+            [
+              12.0,
+              16.0
+            ]
+          ],
+          [
+            [
+              2.0,
+              4.0
+            ],
+            [
+              6.0,
+              8.0
+            ]
+          ]
+        ]
+      },
+      "expectedOutput": [
+        [
+          10.5,
+          13.5
+        ],
+        [
+          6.0,
+          8.0
+        ]
+      ],
+      "isPublic": true
+    },
+    {
+      "id": "inference-moe-dispatch-aggregation-tc-3",
+      "name": "Hard one-hot expert routing",
+      "inputs": {
+        "token_hidden_states": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "routing_weights": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "expert_outputs": [
+          [
+            [
+              5.0,
+              2.0
+            ],
+            [
+              9.0,
+              9.0
+            ]
+          ],
+          [
+            [
+              8.0,
+              8.0
+            ],
+            [
+              3.0,
+              7.0
+            ]
+          ]
+        ]
+      },
+      "expectedOutput": [
+        [
+          6.0,
+          2.0
+        ],
+        [
+          3.0,
+          8.0
+        ]
+      ],
+      "isPublic": true
+    },
+    {
+      "id": "inference-moe-dispatch-aggregation-tc-4",
+      "name": "3 experts with sparse zero gates",
+      "inputs": {
+        "token_hidden_states": [
+          [
+            2.0,
+            1.0
+          ]
+        ],
+        "routing_weights": [
+          [
+            0.5,
+            0.0,
+            1.5
+          ]
+        ],
+        "expert_outputs": [
+          [
+            [
+              4.0,
+              2.0
+            ],
+            [
+              100.0,
+              100.0
+            ],
+            [
+              8.0,
+              6.0
+            ]
+          ]
+        ]
+      },
+      "expectedOutput": [
+        [
+          9.0,
+          6.0
         ]
       ],
       "isPublic": false
     },
     {
       "id": "inference-moe-dispatch-aggregation-tc-5",
-      "name": "Case 5",
+      "name": "Uniform expert weighting",
       "inputs": {
         "token_hidden_states": [
           [
-            1.5,
-            3.0
+            0.0,
+            0.0
           ],
           [
-            4.5,
-            6.0
+            1.0,
+            2.0
           ]
         ],
         "routing_weights": [
           [
-            1.0499999999999998,
-            0.44999999999999996
+            1.0,
+            1.0
           ],
           [
-            0.6000000000000001,
-            0.8999999999999999
+            2.0,
+            2.0
           ]
         ],
         "expert_outputs": [
           [
             [
-              15.0,
-              15.0
+              2.0,
+              4.0
             ],
             [
-              30.0,
-              30.0
+              6.0,
+              8.0
             ]
           ],
           [
             [
-              45.0,
-              45.0
+              1.0,
+              3.0
             ],
             [
-              60.0,
-              60.0
+              5.0,
+              7.0
             ]
           ]
         ]
       },
       "expectedOutput": [
         [
-          29.25,
-          29.25
+          4.0,
+          6.0
         ],
         [
-          81.0,
-          81.0
+          4.0,
+          7.0
         ]
       ],
       "isPublic": false
     },
     {
       "id": "inference-moe-dispatch-aggregation-tc-6",
-      "name": "Case 6",
+      "name": "Negative expert deltas",
       "inputs": {
         "token_hidden_states": [
           [
-            3.0,
-            6.0
-          ],
-          [
-            9.0,
-            12.0
+            5.0,
+            5.0
           ]
         ],
         "routing_weights": [
           [
-            2.0999999999999996,
-            0.8999999999999999
-          ],
-          [
-            1.2000000000000002,
-            1.7999999999999998
+            0.25,
+            0.75
           ]
         ],
         "expert_outputs": [
           [
             [
-              30.0,
-              30.0
+              -2.0,
+              -4.0
             ],
             [
-              60.0,
-              60.0
-            ]
-          ],
-          [
-            [
-              90.0,
-              90.0
-            ],
-            [
-              120.0,
-              120.0
+              -6.0,
+              -8.0
             ]
           ]
         ]
       },
       "expectedOutput": [
         [
-          117.0,
-          117.0
-        ],
-        [
-          324.0,
-          324.0
+          0.0,
+          -2.0
         ]
       ],
       "isPublic": false
     },
     {
       "id": "inference-moe-dispatch-aggregation-tc-7",
-      "name": "Case 7",
+      "name": "3 tokens in 3D hidden space",
       "inputs": {
         "token_hidden_states": [
           [
-            0.25,
-            0.5
+            1.0,
+            2.0,
+            3.0
           ],
           [
-            0.75,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0,
             1.0
           ]
         ],
         "routing_weights": [
           [
-            0.175,
-            0.1
+            0.8,
+            0.2
+          ],
+          [
+            0.5,
+            0.5
           ],
           [
             0.1,
-            0.15
+            0.9
           ]
         ],
         "expert_outputs": [
           [
             [
-              2.5,
-              2.5
+              1.0,
+              0.0,
+              1.0
             ],
             [
-              5.0,
-              5.0
+              0.0,
+              1.0,
+              0.0
             ]
           ],
           [
             [
-              7.5,
-              7.5
+              2.0,
+              2.0,
+              2.0
+            ],
+            [
+              4.0,
+              4.0,
+              4.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              5.0,
+              0.0
             ],
             [
               10.0,
+              0.0,
               10.0
             ]
           ]
@@ -437,12 +427,19 @@
       },
       "expectedOutput": [
         [
-          0.9375,
-          0.9375
+          1.8,
+          2.2,
+          3.8
         ],
         [
-          2.25,
-          2.25
+          3.0,
+          4.0,
+          3.0
+        ],
+        [
+          11.0,
+          0.5,
+          10.0
         ]
       ],
       "isPublic": false
@@ -450,7 +447,26 @@
   ],
   "functionMetadata": {
     "name": "inference_moe_dispatch_aggregation",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "token_hidden_states",
+        "type": "array",
+        "example": "[[1.0, 2.0], [3.0, 4.0]]",
+        "description": "Input parameter `token_hidden_states` (list) for Implement MoE Token Dispatch and Expert Aggregation"
+      },
+      {
+        "name": "routing_weights",
+        "type": "array",
+        "example": "[[0.7, 0.3], [0.4, 0.6]]",
+        "description": "Weight matrix/vector for routing weights"
+      },
+      {
+        "name": "expert_outputs",
+        "type": "array",
+        "example": "[[[10.0, 10.0], [20.0, 20.0]], [[30.0, 30.0], [40.0, 40.0]]]",
+        "description": "Input parameter `expert_outputs` (list) for Implement MoE Token Dispatch and Expert Aggregation"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -459,11 +475,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Implement MoE Token Dispatch and Expert Aggregation",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/inference-moe-dispatch-aggregation",
+  "localUrl": "http://localhost:3000/problems/inference-moe-dispatch-aggregation"
 }

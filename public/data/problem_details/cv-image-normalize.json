@@ -19,19 +19,21 @@
   "seoDescription": "Normalize each image channel by its supplied mean and standard deviation to produce standardized vision-model inputs.",
   "solved": false,
   "isLocked": true,
-  "description": "Normalize 3D image tensor (C, H, W) using channel-specific mean and standard deviation vectors.\n\nStandardizing images centers feature distributions at zero and rescales gradients, accelerating convergence in deep residual backbones.\n\n### Mathematical Formulation\n$$\n\\tilde{X}_{c, h, w} = \\frac{X_{c, h, w} - \\mu_c}{\\sigma_c}\n$$\n\n### Step-by-Step Implementation\n1. Broadcast per-channel mean and standard deviation across spatial dimensions (H, W)\n2. Subtract channel mean and divide by standard deviation\n3. Return normalized image tensor rounded to 4 decimal places\n\n### Returns\nNested 3D list representing standardized image tensor.",
-  "theory": "# Understanding Image Normalize\n\n## 1. What Is It?\n\nThe **Image Normalize** is a fundamental computational technique in Python. In machine learning workflows, Normalize 3D image tensor (C, H, W) using channel-specific mean and standard deviation vectors.\n\n### Key Terminology\n- **Computer Vision**: Core domain concept contextualizing this task within Python workflows.\n- **Data Processing**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\tilde{X}_{c, h, w} = \\frac{X_{c, h, w} - \\mu_c}{\\sigma_c}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_image_normalize` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nimage = [[[10.0, 20.0], [30.0, 40.0]], [[100.0, 200.0], [300.0, 400.0]]], mean = [25.0, 250.0], std = [10.0, 100.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_image_normalize under standard test conditions.\n\n**Resulting Output:**\n```python\n[[[-1.5, -0.5], [0.5, 1.5]], [[-1.5, -0.5], [0.5, 1.5]]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_image_normalize` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[[-1.5, -0.5], [0.5, 1.5]]`.\n  - **Element 2**: Evaluated output component `[[-1.5, -0.5], [0.5, 1.5]]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_image_normalize`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_image_normalize`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Image Normalize** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_image_normalize` accurately and efficiently performs the required transformation.\n",
+  "description": "Normalize 3D image tensor (C, H, W) using channel-specific mean and standard deviation vectors.\n\n$$\n\\tilde{X}_{c, h, w} = \\frac{X_{c, h, w} - \\mu_c}{\\sigma_c}\n$$\n\nGiven input parameters `image`, `mean`, `std`, return nested 3D list representing standardized image tensor.",
+  "theory": "## What Is Image Normalize?\n\nIn computer vision, spatial tensor operators and geometric bounding-box algorithms extract translation- and scale-aware structure from image grids.\n\n$$\n\\tilde{X}_{c, h, w} = \\frac{X_{c, h, w} - \\mu_c}{\\sigma_c}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: image = [[[10.0, 20.0], [30.0, 40.0]], [[100.0, 200.0], [300.0, 400.0]]], mean = [25.0, 250.0], std = [10.0, 100.0]\n\nOutput: [[[-1.5, -0.5], [0.5, 1.5]], [[-1.5, -0.5], [0.5, 1.5]]]\n\nExplanation: Evaluated cv_image_normalize under standard test conditions."
+    "Input: image = [[[10.0, 20.0], [30.0, 40.0]], [[100.0, 200.0], [300.0, 400.0]]], mean = [25.0, 250.0], std = [10.0, 100.0]\n\nOutput: [[[-1.5, -0.5], [0.5, 1.5]], [[-1.5, -0.5], [0.5, 1.5]]]",
+    "Input: image = [[[20.0, 40.0], [60.0, 80.0]], [[200.0, 400.0], [600.0, 800.0]]], mean = [50.0, 500.0], std = [20.0, 200.0]\n\nOutput: [[[-1.5, -0.5], [0.5, 1.5]], [[-1.5, -0.5], [0.5, 1.5]]]"
   ],
-  "requirements": "* Function must be named `cv_image_normalize`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_image_normalize` accepting `image`, `mean`, `std`\n* Normalize each image channel by its supplied mean and standard deviation to produce standardized vision-model inputs.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_image_normalize`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`image`, `mean`, `std`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\tilde{X}_{c, h, w} = \\frac{X_{c, h, w} - \\mu_c}{\\sigma_c}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef cv_image_normalize(image: list, mean: list, std: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Image Normalize** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_image_normalize(image: list, mean: list, std: list) -> list:\n    arr = np.array(image, dtype=float)\n    m = np.array(mean, dtype=float)[:, None, None]\n    s = np.array(std, dtype=float)[:, None, None]\n    return np.round((arr - m) / s, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef cv_image_normalize(image: list, mean: list, std: list) -> list:\n    \"\"\"\n    Normalize each image channel by its supplied mean and standard deviation to produce standardized vision-model inputs.\n\n    Args:\n        image (list): 2D spatial image array of pixel intensities.\n        mean (list): Input parameter `mean` (list) for Image Normalize.\n        std (list): Input parameter `std` (list) for Image Normalize.\n\n    Returns:\n        list: Computed Image Normalize result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Image Normalize** (Computer Vision, Data Processing): Normalize each image channel by its supplied mean and standard deviation to produce standardized vision-model inputs.\n\nTo implement `cv_image_normalize` cleanly and accurately:\n1. Parse and normalize the inputs (`image`, `mean`, `std`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_image_normalize(image: list, mean: list, std: list) -> list:\n    arr = np.array(image, dtype=float)\n    m = np.array(mean, dtype=float)[:, None, None]\n    s = np.array(std, dtype=float)[:, None, None]\n    return np.round((arr - m) / s, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Image Normalize** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-image-normalize-tc-1",
@@ -94,7 +96,7 @@
     },
     {
       "id": "cv-image-normalize-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (mean=[50.0, 500.0])",
       "inputs": {
         "image": [
           [
@@ -153,7 +155,7 @@
     },
     {
       "id": "cv-image-normalize-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (mean=[12.5, 125.0])",
       "inputs": {
         "image": [
           [
@@ -208,11 +210,11 @@
           ]
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-image-normalize-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (mean=[-25.0, -250.0])",
       "inputs": {
         "image": [
           [
@@ -271,7 +273,7 @@
     },
     {
       "id": "cv-image-normalize-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (mean=[75.0, 750.0])",
       "inputs": {
         "image": [
           [
@@ -330,7 +332,7 @@
     },
     {
       "id": "cv-image-normalize-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (mean=[26.0, 251.0])",
       "inputs": {
         "image": [
           [
@@ -389,7 +391,7 @@
     },
     {
       "id": "cv-image-normalize-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (mean=[23.0, 248.0])",
       "inputs": {
         "image": [
           [
@@ -449,7 +451,26 @@
   ],
   "functionMetadata": {
     "name": "cv_image_normalize",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "image",
+        "type": "array",
+        "example": "[[[10.0, 20.0], [30.0, 40.0]], [[100.0, 200.0], [300.0, 400.0]]]",
+        "description": "2D spatial image array of pixel intensities"
+      },
+      {
+        "name": "mean",
+        "type": "array",
+        "example": "[25.0, 250.0]",
+        "description": "Input parameter `mean` (list) for Image Normalize"
+      },
+      {
+        "name": "std",
+        "type": "array",
+        "example": "[10.0, 100.0]",
+        "description": "Input parameter `std` (list) for Image Normalize"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -458,11 +479,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Image Normalize",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-image-normalize",
+  "localUrl": "http://localhost:3000/problems/cv-image-normalize"
 }

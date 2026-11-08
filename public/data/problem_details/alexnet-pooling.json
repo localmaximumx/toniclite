@@ -4,7 +4,7 @@
   "description": "Implement two-dimensional max pooling for an NHWC tensor. A square window of width $K$ moves by stride $s$, and each output keeps the largest value independently in every batch item and channel.\n\n$$\nY_{n,i,j,c}=\\max_{0\\le u,v<K}X_{n,is+u,js+v,c}.\n$$\n\nHere, $n$ is the batch index, $(i,j)$ is the output location, and $c$ is the channel. AlexNet used windows larger than their stride, so neighboring windows overlap. Return the pooled values as a float64 NumPy array with shape $(B,H_{out},W_{out},C)$.",
   "seoDescription": "Implement AlexNet overlapping max pooling with a 3x3 window and stride two across spatial dimensions.",
   "examples": [
-    "Input: x = [[[[1],[2],[3],[4]],[[5],[6],[7],[8]],[[9],[10],[11],[12]],[[13],[14],[15],[16]]]], kernel_size = 3, stride = 1\n\nOutput: [[[[11],[12]],[[15],[16]]]]\n\nExplanation: Each three-by-three window contributes its maximum value, and stride one makes adjacent windows overlap.",
+    "Input: x = [[[[1],[2],[3],[4]],[[5],[6],[7],[8]],[[9],[10],[11],[12]],[[13],[14],[15],[16]]]], kernel_size = 3, stride = 1\n\nOutput: [[[[11],[12]],[[15],[16]]]]",
     "Input: x = [[[[1,8],[2,7]],[[3,6],[4,5]]]], kernel_size = 2, stride = 1\n\nOutput: [[[[4,8]]]]",
     "Input: x = [[[[1],[5],[2],[4]],[[3],[0],[7],[6]],[[8],[2],[9],[1]],[[4],[3],[5],[0]]]], kernel_size = 2, stride = 2\n\nOutput: [[[[5],[7]],[[8],[9]]]]"
   ],

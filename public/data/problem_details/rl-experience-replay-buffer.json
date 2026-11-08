@@ -19,19 +19,21 @@
   "seoDescription": "Implement a fixed-capacity circular replay buffer with deterministic overwrites and sampled transition batches.",
   "solved": false,
   "isLocked": true,
-  "description": "Implement a circular FIFO experience replay memory buffer with overwrite wrapping and batch mini-batch sampling.\n\nExperience replay breaks the temporal correlation of consecutive environmental states, satisfying the i.i.d. assumption of stochastic gradient descent.\n\n### Mathematical Formulation\n$$\n\\mathcal{D} = \\{ (s_i, a_i, r_i, s'_i, d_i) \\}_{i=1}^N, \\quad N \\le \\text{capacity}\n$$\n\n### Step-by-Step Implementation\n1. Store transition tuples in sequential memory buffer up to capacity limit\n2. Wrap overwrite pointer circularly when capacity is saturated\n3. Draw mini-batches of transitions to decorrelate training data\n\n### Returns\nDictionary with 'buffer_size', 'sampled_batch', and 'is_full' boolean.",
-  "theory": "# Understanding Experience Replay Buffer\n\n## 1. What Is It?\n\nThe **Experience Replay Buffer** is a fundamental computational technique in Python. In machine learning workflows, it involves performing circular FIFO experience replay memory buffer with overwrite wrapping and batch mini-batch sampling.\n\n### Key Terminology\n- **Reinforcement Learning**: Core domain concept contextualizing this task within Python workflows.\n- **Data Processing**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathcal{D} = \\{ (s_i, a_i, r_i, s'_i, d_i) \\}_{i=1}^N, \\quad N \\le \\text{capacity}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `rl_experience_replay_buffer` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ncapacity = 3, transitions_to_push = [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}, {\"id\": 4}], sample_size = 2\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated rl_experience_replay_buffer under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"buffer_size\": 3, \"sampled_batch\": [{\"id\": 4}, {\"id\": 2}], \"is_full\": 1}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `rl_experience_replay_buffer` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`buffer_size`**: Represents `buffer_size` (e.g. `3`), reflecting the updated state or component.\n  - **`sampled_batch`**: Represents `sampled_batch` (e.g. `[{'id': 4}, {'id': 2}]`), reflecting the updated state or component.\n  - **`is_full`**: Represents `is_full` (e.g. `1`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `rl_experience_replay_buffer`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `rl_experience_replay_buffer`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `rl_experience_replay_buffer`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Experience Replay Buffer** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `rl_experience_replay_buffer` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement a circular FIFO experience replay memory buffer with overwrite wrapping and batch mini-batch sampling.\n\n$$\n\\mathcal{D} = \\{ (s_i, a_i, r_i, s'_i, d_i) \\}_{i=1}^N, \\quad N \\le \\text{capacity}\n$$\n\nGiven input parameters `capacity`, `transitions_to_push`, `sample_size`, return dictionary with 'buffer_size', 'sampled_batch', and 'is_full' boolean.",
+  "theory": "## What Is Experience Replay Buffer?\n\nIn reinforcement learning, value functions and policy gradients optimize sequential decision-making over long-horizon Markov Decision Processes (MDPs).\n\n$$\n\\mathcal{D} = \\{ (s_i, a_i, r_i, s'_i, d_i) \\}_{i=1}^N, \\quad N \\le \\text{capacity}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\mathcal{D} = \\{ (s_i, a_i, r_i, s'_i, d_i) \\}_{i=1}^N\n$$\n\n$$\nN \\le \\text{capacity}\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Actor-Critic (A2C) Loss with Entropy**, **Bellman Expectation Equation**, **Bellman Optimality Equation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: capacity = 3, transitions_to_push = [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}, {\"id\": 4}], sample_size = 2\n\nOutput: {\"buffer_size\": 3, \"sampled_batch\": [{\"id\": 4}, {\"id\": 2}], \"is_full\": 1}\n\nExplanation: Evaluated rl_experience_replay_buffer under standard test conditions."
+    "Input: capacity = 3, transitions_to_push = [{\"id\": 1}, {\"id\": 2}, {\"id\": 3}, {\"id\": 4}], sample_size = 2\n\nOutput: {\"buffer_size\": 3, \"sampled_batch\": [{\"id\": 4}, {\"id\": 2}], \"is_full\": 1}",
+    "Input: capacity = 4, transitions_to_push = [{\"id\": 2}, {\"id\": 3}, {\"id\": 4}, {\"id\": 6}], sample_size = 3\n\nOutput: {\"buffer_size\": 4, \"sampled_batch\": [{\"id\": 2}, {\"id\": 3}, {\"id\": 4}], \"is_full\": true}"
   ],
-  "requirements": "* Function must be named `rl_experience_replay_buffer`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `rl_experience_replay_buffer` accepting `capacity`, `transitions_to_push`, `sample_size`\n* Implement a fixed-capacity circular replay buffer with deterministic overwrites and sampled transition batches.\n* Return a `dict` containing the exact keys `'buffer_size'`, `'sampled_batch'`, `'is_full'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `rl_experience_replay_buffer`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`capacity`, `transitions_to_push`, `sample_size`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\mathcal{D} = \\{ (s_i, a_i, r_i, s'_i, d_i) \\}_{i=1}^N, \\quad N \\le \\text{capacity}$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('buffer_size', 'sampled_batch', 'is_full') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def rl_experience_replay_buffer(capacity: int, transitions_to_push: list, sample_size: int) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Experience Replay Buffer** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef rl_experience_replay_buffer(capacity: int, transitions_to_push: list, sample_size: int) -> dict:\n    buf, ptr, cap = [], 0, int(capacity)\n    for t in transitions_to_push:\n        if len(buf) < cap: buf.append(t)\n        else: buf[ptr] = t; ptr = (ptr + 1) % cap\n    return {'buffer_size': len(buf), 'sampled_batch': buf[:min(int(sample_size), len(buf))], 'is_full': len(buf) == cap}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef rl_experience_replay_buffer(capacity: int, transitions_to_push: list, sample_size: int) -> dict:\n    \"\"\"\n    Implement a fixed-capacity circular replay buffer with deterministic overwrites and sampled transition batches.\n\n    Args:\n        capacity (int): Input parameter `capacity` (int) for Experience Replay Buffer.\n        transitions_to_push (list): Input parameter `transitions_to_push` (list) for Experience Replay Buffer.\n        sample_size (int): Integer count or dimension size for sample size.\n\n    Returns:\n        dict: Computed Experience Replay Buffer result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Experience Replay Buffer** (Reinforcement Learning, Data Processing): Implement a fixed-capacity circular replay buffer with deterministic overwrites and sampled transition batches.\n\nTo implement `rl_experience_replay_buffer` cleanly and accurately:\n1. Parse and normalize the inputs (`capacity`, `transitions_to_push`, `sample_size`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef rl_experience_replay_buffer(capacity: int, transitions_to_push: list, sample_size: int) -> dict:\n    buf, ptr, cap = [], 0, int(capacity)\n    for t in transitions_to_push:\n        if len(buf) < cap: buf.append(t)\n        else: buf[ptr] = t; ptr = (ptr + 1) % cap\n    return {'buffer_size': len(buf), 'sampled_batch': buf[:min(int(sample_size), len(buf))], 'is_full': len(buf) == cap}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Experience Replay Buffer** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "rl-experience-replay-buffer-tc-1",
@@ -70,7 +72,7 @@
     },
     {
       "id": "rl-experience-replay-buffer-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (capacity=4)",
       "inputs": {
         "capacity": 4,
         "transitions_to_push": [
@@ -108,7 +110,7 @@
     },
     {
       "id": "rl-experience-replay-buffer-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (capacity=2)",
       "inputs": {
         "capacity": 2,
         "transitions_to_push": [
@@ -136,11 +138,11 @@
         ],
         "is_full": true
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "rl-experience-replay-buffer-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (capacity=6)",
       "inputs": {
         "capacity": 6,
         "transitions_to_push": [
@@ -181,7 +183,7 @@
     },
     {
       "id": "rl-experience-replay-buffer-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (capacity=2)",
       "inputs": {
         "capacity": 2,
         "transitions_to_push": [
@@ -216,7 +218,7 @@
     },
     {
       "id": "rl-experience-replay-buffer-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (capacity=9)",
       "inputs": {
         "capacity": 9,
         "transitions_to_push": [
@@ -257,7 +259,7 @@
     },
     {
       "id": "rl-experience-replay-buffer-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (capacity=1)",
       "inputs": {
         "capacity": 1,
         "transitions_to_push": [
@@ -286,7 +288,26 @@
   ],
   "functionMetadata": {
     "name": "rl_experience_replay_buffer",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "capacity",
+        "type": "number",
+        "example": "3",
+        "description": "Input parameter `capacity` (int) for Experience Replay Buffer"
+      },
+      {
+        "name": "transitions_to_push",
+        "type": "array",
+        "example": "[{\"id\": 1}, {\"id\": 2}, {\"id\": 3}, {\"id\": 4}]",
+        "description": "Input parameter `transitions_to_push` (list) for Experience Replay Buffer"
+      },
+      {
+        "name": "sample_size",
+        "type": "number",
+        "example": "2",
+        "description": "Integer count or dimension size for sample size"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -295,11 +316,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Experience Replay Buffer",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/rl-experience-replay-buffer",
+  "localUrl": "http://localhost:3000/problems/rl-experience-replay-buffer"
 }

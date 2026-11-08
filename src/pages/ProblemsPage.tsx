@@ -5,6 +5,7 @@ import { getProblemCatalog, getSolvedProblems } from '../services/dataService';
 import { ProblemSummary, Difficulty, Category } from '../types';
 import { ExplorePanel } from '../components/ExplorePanel';
 import { DailyChallengeBanner } from '../components/DailyChallengeBanner';
+import { CrackedLockIcon } from '../components/CrackedLockIcon';
 
 export const ProblemsPage: React.FC = () => {
   const [catalog, setCatalog] = useState<{ total: number; topics: { name: string; count: number }[]; problems: ProblemSummary[] }>({
@@ -74,6 +75,8 @@ export const ProblemsPage: React.FC = () => {
       const isSolved = solvedSet.has(p.slug);
       if (selectedStatus === 'Solved' && !isSolved) return false;
       if (selectedStatus === 'Unsolved' && isSolved) return false;
+      if (selectedStatus === 'CrackedPro' && p.isFree !== false) return false;
+      if (selectedStatus === 'Free' && p.isFree === false) return false;
       // Search query filter
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
@@ -194,13 +197,13 @@ export const ProblemsPage: React.FC = () => {
           </div>
 
           {/* Pro Unlocked Banner */}
-          <div className="bg-card dark:bg-background/50 backdrop-blur-xl border border-emerald-500/20 rounded-xl p-4 relative overflow-hidden">
-            <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-1">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span>Full Free Access</span>
+          <div className="bg-card dark:bg-background/50 backdrop-blur-xl border border-amber-500/20 rounded-xl p-4 relative overflow-hidden">
+            <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 mb-1">
+              <CrackedLockIcon variant="icon" />
+              <span>420 Pro Problems Cracked</span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-              All 790 problems and landmark research papers are fully unlocked. No subscription required.
+              All 790 problems—including 420 cracked Pro questions marked with the cracked lock icon—are 100% unlocked.
             </p>
           </div>
 
@@ -310,6 +313,8 @@ export const ProblemsPage: React.FC = () => {
                 <option value="All">Status: All</option>
                 <option value="Solved">Status: Solved</option>
                 <option value="Unsolved">Status: Unsolved</option>
+                <option value="CrackedPro">Type: Cracked Pro (420)</option>
+                <option value="Free">Type: Original Free (370)</option>
               </select>
 
               {/* Difficulty Filter */}
@@ -370,10 +375,11 @@ export const ProblemsPage: React.FC = () => {
                         <span className="text-muted-foreground text-sm font-mono shrink-0">{p.sortOrder}.</span>
                         <Link
                           to={`/problems/${p.slug}`}
-                          className="min-w-0 flex-1 text-foreground text-sm hover:text-[#93C572] transition-colors truncate font-medium py-1"
+                          className="min-w-0 flex items-center gap-2 text-foreground text-sm hover:text-[#93C572] transition-colors font-medium py-1"
                           title={p.title}
                         >
-                          {p.title}
+                          <span className="truncate">{p.title}</span>
+                          {p.isFree === false && <CrackedLockIcon variant="icon" />}
                         </Link>
                       </div>
 

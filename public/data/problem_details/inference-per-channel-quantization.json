@@ -20,19 +20,21 @@
   "seoDescription": "Quantize weights independently along a selected channel axis, then dequantize with channel-specific scales.",
   "solved": false,
   "isLocked": true,
-  "description": "Quantize 2D weight matrices along output channels into signed integers using symmetric scale factors.\n\nWeight distributions vary substantially across neural network output channels. Per-channel scaling prevents outlier channels from degrading quantization resolution of low-magnitude channels.\n\n### Mathematical Formulation\n$$\ns_i = \\frac{\\max_j |W_{i, j}|}{2^{b-1} - 1}, \\quad q_{i, j} = \\text{clamp}\\left(\\left\\lfloor \\frac{W_{i, j}}{s_i} \\right\\rceil, -2^{b-1}, 2^{b-1}-1\\right)\n$$\n\n### Step-by-Step Implementation\n1. Compute maximum absolute weight per output channel row\n2. Derive per-channel scale factors normalized by dynamic integer range 2^(b-1) - 1\n3. Divide weights by scale, round to nearest integer, and clamp into [-(2^(b-1)), 2^(b-1) - 1]\n\n### Returns\nDictionary with 'quantized' (2D integer list) and 'scales' (list of floats rounded to 6 decimal places).",
-  "theory": "# Understanding Per-Channel Weight Quantization\n\n## 1. What Is It?\n\nThe **Per-Channel Weight Quantization** is a fundamental computational technique in Pytorch. In machine learning workflows, Quantize 2D weight matrices along output channels into signed integers using symmetric scale factors.\n\n### Key Terminology\n- **Quantization**: Core domain concept contextualizing this task within Pytorch workflows.\n- **Inference**: Core domain concept contextualizing this task within Pytorch workflows.\n- **GPU Programming**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\ns_i = \\frac{\\max_j |W_{i, j}|}{2^{b-1} - 1}, \\quad q_{i, j} = \\text{clamp}\\left(\\left\\lfloor \\frac{W_{i, j}}{s_i} \\right\\rceil, -2^{b-1}, 2^{b-1}-1\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `inference_per_channel_quantization` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nweight = [[1.2, -2.4, 0.6], [-0.5, 0.0, 0.5]], num_bits = 8\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated inference_per_channel_quantization under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"quantized\": [[64, -127, 32], [-127, 0, 127]], \"scales\": [0.018898, 0.003937]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `inference_per_channel_quantization` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`quantized`**: Represents `quantized` (e.g. `[[64, -127, 32], [-127, 0, 127]]`), reflecting the updated state or component.\n  - **`scales`**: Represents `scales` (e.g. `[0.018898, 0.003937]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `inference_per_channel_quantization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `inference_per_channel_quantization`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `inference_per_channel_quantization`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Per-Channel Weight Quantization** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `inference_per_channel_quantization` accurately and efficiently performs the required transformation.\n",
+  "description": "Quantize 2D weight matrices along output channels into signed integers using symmetric scale factors.\n\n$$\ns_i = \\frac{\\max_j |W_{i, j}|}{2^{b-1} - 1}, \\quad q_{i, j} = \\text{clamp}\\left(\\left\\lfloor \\frac{W_{i, j}}{s_i} \\right\\rceil, -2^{b-1}, 2^{b-1}-1\\right)\n$$\n\nGiven input parameters `weight`, `num_bits`, return dictionary with 'quantized' (2D integer list) and 'scales' (list of floats rounded to 6 decimal places).",
+  "theory": "## What Is Per-Channel Weight Quantization?\n\nIn LLM and deep learning inference systems, algorithmic optimizations reduce memory footprint, KV-cache bandwidth, and token generation latency.\n\n$$\ns_i = \\frac{\\max_j |W_{i, j}|}{2^{b-1} - 1}, \\quad q_{i, j} = \\text{clamp}\\left(\\left\\lfloor \\frac{W_{i, j}}{s_i} \\right\\rceil, -2^{b-1}, 2^{b-1}-1\\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\ns_i = \\frac{\\max_j |W_{i, j}|}{2^{b-1} - 1}\n$$\n\n$$\nq_{i, j} = \\text{clamp}\\left(\\left\\lfloor \\frac{W_{i, j}}{s_i} \\right\\rceil, -2^{b-1}, 2^{b-1}-1\\right)\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Implement Autoregressive Decoding with a KV Cache**, **Implement Block-Wise FP8 Quantization**, **Simulate Chunked Prefill Scheduling**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: weight = [[1.2, -2.4, 0.6], [-0.5, 0.0, 0.5]], num_bits = 8\n\nOutput: {\"quantized\": [[64, -127, 32], [-127, 0, 127]], \"scales\": [0.018898, 0.003937]}\n\nExplanation: Evaluated inference_per_channel_quantization under standard test conditions."
+    "Input: weight = [[1.2, -2.4, 0.6], [-0.5, 0.0, 0.5]], num_bits = 8\n\nOutput: {\"quantized\": [[64, -127, 32], [-127, 0, 127]], \"scales\": [0.018898, 0.003937]}",
+    "Input: weight = [[2.4, -4.8, 1.2], [-1.0, 0.0, 1.0]], num_bits = 16\n\nOutput: {\"quantized\": [[16384, -32767, 8192], [-32767, 0, 32767]], \"scales\": [0.000146, 3.1e-05]}"
   ],
-  "requirements": "* Function must be named `inference_per_channel_quantization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `inference_per_channel_quantization` accepting `weight`, `num_bits`\n* Quantize weights independently along a selected channel axis, then dequantize with channel-specific scales.\n* Return a `dict` containing the exact keys `'quantized'`, `'scales'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `inference_per_channel_quantization`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`weight`, `num_bits`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `inference_per_channel_quantization` into clear stages: validate/reshape `weight`, `num_bits`, evaluate the Implement Per-Channel Weight Quantization equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('quantized', 'scales') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import torch\n\ndef inference_per_channel_quantization(weight: list, num_bits: int = 8) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Implement Per-Channel Weight Quantization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef inference_per_channel_quantization(weight: list, num_bits: int = 8) -> dict:\n    w = torch.tensor(weight, dtype=torch.float32)\n    q_max = 2 ** (num_bits - 1) - 1\n    q_min = -(2 ** (num_bits - 1))\n    max_vals = torch.amax(torch.abs(w), dim=1)\n    scales = torch.where(max_vals > 0, max_vals / q_max, torch.ones_like(max_vals))\n    q = torch.clamp(torch.round(w / scales.unsqueeze(1)), q_min, q_max).to(torch.int32)\n    return {'quantized': q.tolist(), 'scales': [round(float(s), 6) for s in scales]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import torch\n\ndef inference_per_channel_quantization(weight: list, num_bits: int = 8) -> dict:\n    \"\"\"\n    Quantize weights independently along a selected channel axis, then dequantize with channel-specific scales.\n\n    Args:\n        weight (list): Filter kernel or linear layer weight tensor.\n        num_bits (int): Integer count or dimension size for num bits.\n\n    Returns:\n        dict: Computed Implement Per-Channel Weight Quantization result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Implement Per-Channel Weight Quantization** (Quantization, Inference, GPU Programming): Quantize weights independently along a selected channel axis, then dequantize with channel-specific scales.\n\nTo implement `inference_per_channel_quantization` cleanly and accurately:\n1. Parse and normalize the inputs (`weight`, `num_bits`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef inference_per_channel_quantization(weight: list, num_bits: int = 8) -> dict:\n    w = torch.tensor(weight, dtype=torch.float32)\n    q_max = 2 ** (num_bits - 1) - 1\n    q_min = -(2 ** (num_bits - 1))\n    max_vals = torch.amax(torch.abs(w), dim=1)\n    scales = torch.where(max_vals > 0, max_vals / q_max, torch.ones_like(max_vals))\n    q = torch.clamp(torch.round(w / scales.unsqueeze(1)), q_min, q_max).to(torch.int32)\n    return {'quantized': q.tolist(), 'scales': [round(float(s), 6) for s in scales]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Implement Per-Channel Weight Quantization** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "inference-per-channel-quantization-tc-1",
@@ -74,7 +76,7 @@
     },
     {
       "id": "inference-per-channel-quantization-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (num_bits=16)",
       "inputs": {
         "weight": [
           [
@@ -112,7 +114,7 @@
     },
     {
       "id": "inference-per-channel-quantization-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (num_bits=4)",
       "inputs": {
         "weight": [
           [
@@ -146,11 +148,11 @@
           0.04
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "inference-per-channel-quantization-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (num_bits=8)",
       "inputs": {
         "weight": [
           [
@@ -188,7 +190,7 @@
     },
     {
       "id": "inference-per-channel-quantization-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (num_bits=12)",
       "inputs": {
         "weight": [
           [
@@ -226,7 +228,7 @@
     },
     {
       "id": "inference-per-channel-quantization-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (num_bits=10)",
       "inputs": {
         "weight": [
           [
@@ -264,7 +266,7 @@
     },
     {
       "id": "inference-per-channel-quantization-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (num_bits=2)",
       "inputs": {
         "weight": [
           [
@@ -303,7 +305,20 @@
   ],
   "functionMetadata": {
     "name": "inference_per_channel_quantization",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "weight",
+        "type": "array",
+        "example": "[[1.2, -2.4, 0.6], [-0.5, 0.0, 0.5]]",
+        "description": "Filter kernel or linear layer weight tensor"
+      },
+      {
+        "name": "num_bits",
+        "type": "number",
+        "example": "8",
+        "description": "Integer count or dimension size for num bits"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -312,11 +327,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Implement Per-Channel Weight Quantization",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/inference-per-channel-quantization",
+  "localUrl": "http://localhost:3000/problems/inference-per-channel-quantization"
 }

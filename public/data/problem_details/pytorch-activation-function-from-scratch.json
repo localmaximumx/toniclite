@@ -18,19 +18,21 @@
   "seoDescription": "Implement four common activation functions from scratch using basic PyTorch tensor operations (no torch.nn module).",
   "solved": false,
   "isLocked": true,
-  "description": "Evaluate common non-linear activation functions element-wise across continuous input arrays.\n\nActivation functions introduce non-linearity into neural architectures, enabling networks to learn non-trivial decision boundaries and representations.\n\n### Mathematical Formulation\n$$\n\\text{GELU}(x) = x \\Phi(x), \\quad \\text{Sigmoid}(x) = \\frac{1}{1 + e^{-x}}, \\quad \\text{ReLU}(x) = \\max(0, x)\n$$\n\n### Step-by-Step Implementation\n1. Select target activation function according to act_type argument\n2. Apply analytical formulation element-wise across array\n3. Return transformed array rounded to 4 decimal places\n\n### Returns\nList of floats representing activated values.",
-  "theory": "# Understanding Activation Functions\n\n## 1. What Is It?\n\nThe **Activation Functions** is a fundamental computational technique in Pytorch. In machine learning workflows, Evaluate common non-linear activation functions element-wise across continuous input arrays.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Activation Functions**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{GELU}(x) = x \\Phi(x), \\quad \\text{Sigmoid}(x) = \\frac{1}{1 + e^{-x}}, \\quad \\text{ReLU}(x) = \\max(0, x)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pytorch_activation_function_from_scratch` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [-2.0, -0.5, 0.0, 1.5, 3.0], act_type = \"relu\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pytorch_activation_function_from_scratch under standard test conditions.\n\n**Resulting Output:**\n```python\n[0.0, 0.0, 0.0, 1.5, 3.0]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pytorch_activation_function_from_scratch` must return:\n- **Primary Output:** `[0.0, 0.0, 0.0, 1.5, 3.0]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `pytorch_activation_function_from_scratch`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pytorch_activation_function_from_scratch`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pytorch_activation_function_from_scratch`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Activation Functions** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `pytorch_activation_function_from_scratch` accurately and efficiently performs the required transformation.\n",
+  "description": "Evaluate common non-linear activation functions element-wise across continuous input arrays.\n\n$$\n\\text{GELU}(x) = x \\Phi(x), \\quad \\text{Sigmoid}(x) = \\frac{1}{1 + e^{-x}}, \\quad \\text{ReLU}(x) = \\max(0, x)\n$$\n\nGiven input parameters `x`, `act_type`, return list of floats representing activated values.",
+  "theory": "## What Is Activation Functions?\n\nIn PyTorch tensor computing, modular forward passes and optimizer routines manipulate multi-dimensional tensors with explicit shape and device discipline.\n\n$$\n\\text{GELU}(x) = x \\Phi(x), \\quad \\text{Sigmoid}(x) = \\frac{1}{1 + e^{-x}}, \\quad \\text{ReLU}(x) = \\max(0, x)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{GELU}(x) = x \\Phi(x)\n$$\n\n$$\n\\text{Sigmoid}(x) = \\frac{1}{1 + e^{-x}}\n$$\n\n$$\n\\text{ReLU}(x) = \\max(0, x)\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Attention Mechanism from Scratch**, **Balanced DataLoader**, **Basic Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x = [-2.0, -0.5, 0.0, 1.5, 3.0], act_type = \"relu\"\n\nOutput: [0.0, 0.0, 0.0, 1.5, 3.0]\n\nExplanation: Evaluated pytorch_activation_function_from_scratch under standard test conditions."
+    "Input: x = [-2.0, -0.5, 0.0, 1.5, 3.0], act_type = \"relu\"\n\nOutput: [0.0, 0.0, 0.0, 1.5, 3.0]",
+    "Input: x = [-3.0, -0.75, 0.0, 2.25, 4.5], act_type = \"relu\"\n\nOutput: [0.0, 0.0, 0.0, 2.25, 4.5]"
   ],
-  "requirements": "* Function must be named `pytorch_activation_function_from_scratch`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pytorch_activation_function_from_scratch` accepting `x`, `act_type`\n* Implement four common activation functions from scratch using basic PyTorch tensor operations (no torch.nn module).\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pytorch_activation_function_from_scratch`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `act_type`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `pytorch_activation_function_from_scratch` into clear stages: validate/reshape `x`, `act_type`, evaluate the Activation Functions equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np, math\n\ndef pytorch_activation_function_from_scratch(x: list, act_type: str = 'relu') -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Activation Functions** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef pytorch_activation_function_from_scratch(x: list, act_type: str = 'relu') -> list:\n    a = np.array(x, dtype=float)\n    if act_type == 'sigmoid': return np.round(1.0 / (1.0 + np.exp(-a)), 4).tolist()\n    if act_type == 'tanh': return np.round(np.tanh(a), 4).tolist()\n    if act_type == 'gelu': return np.round(0.5 * a * (1.0 + np.vectorize(math.erf)(a / math.sqrt(2.0))), 4).tolist()\n    return np.round(np.maximum(0.0, a), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np, math\n\ndef pytorch_activation_function_from_scratch(x: list, act_type: str = 'relu') -> list:\n    \"\"\"\n    Implement four common activation functions from scratch using basic PyTorch tensor operations (no torch.nn module).\n\n    Args:\n        x (list): Input feature vector, array, or scalar evaluation point.\n        act_type (str): Input parameter `act_type` (str) for Activation Functions.\n\n    Returns:\n        list: Computed Activation Functions result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Activation Functions** (Activation Functions): Implement four common activation functions from scratch using basic PyTorch tensor operations (no torch.nn module).\n\nTo implement `pytorch_activation_function_from_scratch` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `act_type`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef pytorch_activation_function_from_scratch(x: list, act_type: str = 'relu') -> list:\n    a = np.array(x, dtype=float)\n    if act_type == 'sigmoid': return np.round(1.0 / (1.0 + np.exp(-a)), 4).tolist()\n    if act_type == 'tanh': return np.round(np.tanh(a), 4).tolist()\n    if act_type == 'gelu': return np.round(0.5 * a * (1.0 + np.vectorize(math.erf)(a / math.sqrt(2.0))), 4).tolist()\n    return np.round(np.maximum(0.0, a), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Activation Functions** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pytorch-activation-function-from-scratch-tc-1",
@@ -56,7 +58,7 @@
     },
     {
       "id": "pytorch-activation-function-from-scratch-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (act_type=relu)",
       "inputs": {
         "x": [
           -3.0,
@@ -78,7 +80,7 @@
     },
     {
       "id": "pytorch-activation-function-from-scratch-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (act_type=relu)",
       "inputs": {
         "x": [
           -1.0,
@@ -96,11 +98,11 @@
         0.75,
         1.5
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pytorch-activation-function-from-scratch-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (act_type=relu)",
       "inputs": {
         "x": [
           -4.0,
@@ -122,7 +124,7 @@
     },
     {
       "id": "pytorch-activation-function-from-scratch-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (act_type=relu)",
       "inputs": {
         "x": [
           2.0,
@@ -144,7 +146,7 @@
     },
     {
       "id": "pytorch-activation-function-from-scratch-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (act_type=relu)",
       "inputs": {
         "x": [
           -1.6,
@@ -166,7 +168,7 @@
     },
     {
       "id": "pytorch-activation-function-from-scratch-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (act_type=relu)",
       "inputs": {
         "x": [
           -6.0,
@@ -189,7 +191,20 @@
   ],
   "functionMetadata": {
     "name": "pytorch_activation_function_from_scratch",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[-2.0, -0.5, 0.0, 1.5, 3.0]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "act_type",
+        "type": "string",
+        "example": "\"relu\"",
+        "description": "Input parameter `act_type` (str) for Activation Functions"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -198,11 +213,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Activation Functions",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pytorch-activation-function-from-scratch",
+  "localUrl": "http://localhost:3000/problems/pytorch-activation-function-from-scratch"
 }

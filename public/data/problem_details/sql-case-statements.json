@@ -18,19 +18,21 @@
   "seoDescription": "Classify user activity and platform type with SQL CASE expressions using session counts and mobile platform values.",
   "solved": false,
   "isLocked": true,
-  "description": "Categorize user engagement and platform type into discrete qualitative buckets using SQL CASE statements.\n\nCASE WHEN expressions enable rule-based categorization inside database query engines prior to export.\n\n### Query Logic & Formulation\n$$\n\\text{CASE WHEN sessions} \\ge 10 \\text{ THEN 'High' ELSE 'Low' END}\n$$\n\n### Relational Execution Steps\n1. Evaluate session count against thresholds to classify activity tier\n2. Classify client platform into Mobile vs Desktop categories\n3. Sort output records deterministically by user_id\n\n### Expected Query Output\nList of records containing categorized user properties.",
-  "theory": "# Understanding CASE Statements\n\n## 1. What Is It?\n\nThe **CASE Statements** is a fundamental computational technique in Sql. In machine learning workflows, Categorize user engagement and platform type into discrete qualitative buckets using SQL CASE statements.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Sql workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{CASE WHEN sessions} \\ge 10 \\text{ THEN 'High' ELSE 'Low' END}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `solution` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nuser_sessions = [{\"user_id\": 1, \"sessions\": 12, \"platform\": \"ios\"}, {\"user_id\": 2, \"sessions\": 6, \"platform\": \"web\"}, {\"user_id\": 3, \"sessions\": 2, \"platform\": \"android\"}]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated sql_case_statements under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"user_id\": 1, \"sessions\": 12, \"activity_level\": \"High\", \"platform_type\": \"Mobile\"}, {\"user_id\": 2, \"sessions\": 6, \"activity_level\": \"Medium\", \"platform_type\": \"Desktop\"}, {\"user_id\": 3, \"sessions\": 2, \"activity_level\": \"Low\", \"platform_type\": \"Mobile\"}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `solution` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'user_id': 1, 'sessions': 12, 'activity_level': 'High', 'platform_type': 'Mobile'}`.\n  - **Element 2**: Evaluated output component `{'user_id': 2, 'sessions': 6, 'activity_level': 'Medium', 'platform_type': 'Desktop'}`.\n  - **Element 3**: Evaluated output component `{'user_id': 3, 'sessions': 2, 'activity_level': 'Low', 'platform_type': 'Mobile'}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `solution`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `solution`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**CASE Statements** provides an essential primitive within Sql systems. By combining vectorized array computation with rigorous numerical safeguards, `solution` accurately and efficiently performs the required transformation.\n",
+  "description": "Categorize user engagement and platform type into discrete qualitative buckets using SQL CASE statements.\n\n$$\n\\text{CASE WHEN sessions} \\ge 10 \\text{ THEN 'High' ELSE 'Low' END}\n$$\n\nGiven input parameters `user_sessions`, return list of records containing categorized user properties.",
+  "theory": "## What Is CASE Statements?\n\nIn relational database querying (SQL), declarative set operations\u2014selection ($\\sigma$), projection ($\\pi$), joins ($\\bowtie$), aggregation, and window functions\u2014transform structured tables.\n\n$$\n\\text{CASE WHEN sessions} \\ge 10 \\text{ THEN 'High' ELSE 'Low' END}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Basic SELECT**, **Conditional Aggregation**, **COUNT, SUM, AVG**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: user_sessions = [{\"user_id\": 1, \"sessions\": 12, \"platform\": \"ios\"}, {\"user_id\": 2, \"sessions\": 6, \"platform\": \"web\"}, {\"user_id\": 3, \"sessions\": 2, \"platform\": \"android\"}]\n\nOutput: [{\"user_id\": 1, \"sessions\": 12, \"activity_level\": \"High\", \"platform_type\": \"Mobile\"}, {\"user_id\": 2, \"sessions\": 6, \"activity_level\": \"Medium\", \"platform_type\": \"Desktop\"}, {\"user_id\": 3, \"sessions\": 2, \"activity_level\": \"Low\", \"platform_type\": \"Mobile\"}]\n\nExplanation: Evaluated sql_case_statements under standard test conditions."
+    "Input: user_sessions = [{\"user_id\": 1, \"sessions\": 12, \"platform\": \"ios\"}, {\"user_id\": 2, \"sessions\": 6, \"platform\": \"web\"}, {\"user_id\": 3, \"sessions\": 2, \"platform\": \"android\"}]\n\nOutput: [{\"user_id\": 1, \"sessions\": 12, \"activity_level\": \"High\", \"platform_type\": \"Mobile\"}, {\"user_id\": 2, \"sessions\": 6, \"activity_level\": \"Medium\", \"platform_type\": \"Desktop\"}, {\"user_id\": 3, \"sessions\": 2, \"activity_level\": \"Low\", \"platform_type\": \"Mobile\"}]",
+    "Input: user_sessions = [{\"user_id\": 2, \"sessions\": 18, \"platform\": \"ios\"}, {\"user_id\": 3, \"sessions\": 9, \"platform\": \"web\"}, {\"user_id\": 4, \"sessions\": 3, \"platform\": \"android\"}]\n\nOutput: [{\"user_id\": 2, \"sessions\": 18, \"activity_level\": \"High\", \"platform_type\": \"Mobile\"}, {\"user_id\": 3, \"sessions\": 9, \"activity_level\": \"Medium\", \"platform_type\": \"Desktop\"}, {\"user_id\": 4, \"sessions\": 3, \"activity_level\": \"Low\", \"platform_type\": \"Mobile\"}]"
   ],
-  "requirements": "* Function must be named `sql_case_statements`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `sql_case_statements` accepting `user_sessions`\n* Classify user activity and platform type with SQL CASE expressions using session counts and mobile platform values.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `sql_case_statements`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`user_sessions`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\text{CASE WHEN sessions} \\ge 10 \\text{ THEN 'High' ELSE 'Low' END}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def sql_case_statements(user_sessions: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL CASE Statements\n    SELECT user_id, sessions,\n           CASE WHEN sessions >= 10 THEN 'High' WHEN sessions >= 5 THEN 'Medium' ELSE 'Low' END AS activity_level,\n           CASE WHEN platform IN ('ios', 'android') THEN 'Mobile' ELSE 'Desktop' END AS platform_type\n    FROM user_sessions\n    ORDER BY user_id;\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **CASE Statements** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_case_statements(user_sessions: list) -> list:\n    res = [{'user_id': u['user_id'], 'sessions': int(u['sessions']), 'activity_level': 'High' if int(u['sessions'])>=10 else ('Medium' if int(u['sessions'])>=5 else 'Low'), 'platform_type': 'Mobile' if str(u['platform']).lower() in ['ios', 'android'] else 'Desktop'} for u in user_sessions]\n    res.sort(key=lambda x: x['user_id'])\n    return res\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: SQLite3 / Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef sql_case_statements(user_sessions: list) -> list:\n    \"\"\"\n    Classify user activity and platform type with SQL CASE expressions using session counts and mobile platform values.\n\n    Args:\n        user_sessions (list): Input parameter `user_sessions` (list) for CASE Statements.\n\n    Returns:\n        list: Computed CASE Statements result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**CASE Statements** (Data Processing): Classify user activity and platform type with SQL CASE expressions using session counts and mobile platform values.\n\nTo implement `sql_case_statements` cleanly and accurately:\n1. Parse and normalize the inputs (`user_sessions`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef sql_case_statements(user_sessions: list) -> list:\n    res = [{'user_id': u['user_id'], 'sessions': int(u['sessions']), 'activity_level': 'High' if int(u['sessions'])>=10 else ('Medium' if int(u['sessions'])>=5 else 'Low'), 'platform_type': 'Mobile' if str(u['platform']).lower() in ['ios', 'android'] else 'Desktop'} for u in user_sessions]\n    res.sort(key=lambda x: x['user_id'])\n    return res\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **CASE Statements** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "sql-case-statements-tc-1",
@@ -78,7 +80,7 @@
     },
     {
       "id": "sql-case-statements-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "user_sessions": [
           {
@@ -122,7 +124,7 @@
     },
     {
       "id": "sql-case-statements-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "user_sessions": [
           {
@@ -162,11 +164,11 @@
           "platform_type": "Mobile"
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "sql-case-statements-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "user_sessions": [
           {
@@ -210,7 +212,7 @@
     },
     {
       "id": "sql-case-statements-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "user_sessions": [
           {
@@ -254,7 +256,7 @@
     },
     {
       "id": "sql-case-statements-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "user_sessions": [
           {
@@ -298,7 +300,7 @@
     },
     {
       "id": "sql-case-statements-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "user_sessions": [
           {
@@ -343,7 +345,14 @@
   ],
   "functionMetadata": {
     "name": "sql_case_statements",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "user_sessions",
+        "type": "array",
+        "example": "[{\"user_id\": 1, \"sessions\": 12, \"platform\": \"ios\"}, {\"user_id\": 2, \"sessions\": 6, \"platform\": \"web\"}, {\"user_id\": 3, \"sessions\": 2, \"platform\": \"android\"}]",
+        "description": "Input parameter `user_sessions` (list) for CASE Statements"
+      }
+    ]
   },
   "relatedProblems": [
     "sql-multiple-joins",
@@ -352,11 +361,7 @@
     "sql-row-number",
     "sql-inner-join"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "sql",
-    "placeholderType": "sql_dummy_select (SELECT * FROM main_table)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "CASE Statements",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/sql-case-statements",
+  "localUrl": "http://localhost:3000/problems/sql-case-statements"
 }

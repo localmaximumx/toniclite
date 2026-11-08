@@ -198,7 +198,7 @@ export const Navbar: React.FC = () => {
                 {isMobileMenuOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
               </button>
 
-              <Link to="/" className="hover:opacity-85 transition-opacity flex items-center gap-2 shrink-0">
+              <Link to="/problems" className="hover:opacity-85 transition-opacity flex items-center gap-2 shrink-0">
                 <img
                   alt="TonicLite"
                   width={28}
@@ -408,7 +408,7 @@ export const Navbar: React.FC = () => {
             </button>
 
             <Link
-              to="/"
+              to="/problems"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center gap-2 shrink-0 hover:opacity-85 transition-opacity"
             >

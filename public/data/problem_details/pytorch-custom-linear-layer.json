@@ -18,19 +18,21 @@
   "seoDescription": "Implement a custom linear layer that computes the affine transformation without using any built-in linear layer.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute linear forward projection matching PyTorch nn.Linear layout where weights are stored as (out_features, in_features).\n\nPyTorch parameterizes linear layers as x W^T rather than W x to facilitate row-major matrix multiplication without requiring continuous transpose reshapes.\n\n### Mathematical Formulation\n$$\n\\mathbf{y} = \\mathbf{x} \\mathbf{W}^T + \\mathbf{b}\n$$\n\n### Step-by-Step Implementation\n1. Multiply input activation matrix x by transposed weight matrix W^T\n2. Add optional bias vector b with broadcasting along batch dimension\n3. Return projected activations rounded to 4 decimal places\n\n### Returns\nNested 2D list representing projected feature tensor.",
-  "theory": "# Understanding Custom Linear Layer\n\n## 1. What Is It?\n\nThe **Custom Linear Layer** is a fundamental computational technique in Pytorch. In machine learning workflows, it involves performing linear forward projection matching PyTorch nn.Linear layout where weights are stored as (out_features, in_features).\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **`bias`**: The learned additive offset vector.\n- **Neural Networks**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{y} = \\mathbf{x} \\mathbf{W}^T + \\mathbf{b}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pytorch_custom_linear_layer` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [[1.0, 2.0], [-1.0, 0.5]], weight = [[0.5, -0.5], [1.0, 0.0], [0.0, 2.0]], bias = [0.1, -0.2, 0.0]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pytorch_custom_linear_layer under standard test conditions.\n\n**Resulting Output:**\n```python\n[[-0.4, 0.8, 4.0], [-0.65, -1.2, 1.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pytorch_custom_linear_layer` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[-0.4, 0.8, 4.0]`.\n  - **Element 2**: Evaluated output component `[-0.65, -1.2, 1.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pytorch_custom_linear_layer`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pytorch_custom_linear_layer`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Custom Linear Layer** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `pytorch_custom_linear_layer` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute linear forward projection matching PyTorch `nn.Linear` layout where weights are stored as (out_features, in_features).\n\n$$\n\\mathbf{y} = \\mathbf{x} \\mathbf{W}^T + \\mathbf{b}\n$$\n\nGiven input parameters `x`, `weight`, `bias`, return nested 2D list representing projected feature tensor.",
+  "theory": "## What Is Custom Linear Layer?\n\nIn PyTorch tensor computing, modular forward passes and optimizer routines manipulate multi-dimensional tensors with explicit shape and device discipline.\n\n$$\n\\mathbf{y} = \\mathbf{x} \\mathbf{W}^T + \\mathbf{b}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Attention Mechanism from Scratch**, **Balanced DataLoader**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x = [[1.0, 2.0], [-1.0, 0.5]], weight = [[0.5, -0.5], [1.0, 0.0], [0.0, 2.0]], bias = [0.1, -0.2, 0.0]\n\nOutput: [[-0.4, 0.8, 4.0], [-0.65, -1.2, 1.0]]\n\nExplanation: Evaluated pytorch_custom_linear_layer under standard test conditions."
+    "Input: x = [[1.0, 2.0], [-1.0, 0.5]], weight = [[0.5, -0.5], [1.0, 0.0], [0.0, 2.0]], bias = [0.1, -0.2, 0.0]\n\nOutput: [[-0.4, 0.8, 4.0], [-0.65, -1.2, 1.0]]",
+    "Input: x = [[1.5, 3.0], [-1.5, 0.75]], weight = [[0.75, -0.75], [1.5, 0.0], [0.0, 3.0]], bias = [0.15, -0.3, 0.0]\n\nOutput: [[-0.975, 1.95, 9.0], [-1.5375, -2.55, 2.25]]"
   ],
-  "requirements": "* Function must be named `pytorch_custom_linear_layer`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pytorch_custom_linear_layer` accepting `x`, `weight`, `bias`\n* Implement a custom linear layer that computes the affine transformation without using any built-in linear layer.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pytorch_custom_linear_layer`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `weight`, `bias`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\mathbf{y} = \\mathbf{x} \\mathbf{W}^T + \\mathbf{b}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import torch\n\ndef pytorch_custom_linear_layer(x: list, weight: list, bias: list = None) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Custom Linear Layer** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_custom_linear_layer(x: list, weight: list, bias: list = None) -> list:\n    out = torch.matmul(torch.tensor(x, dtype=torch.float32), torch.tensor(weight, dtype=torch.float32).t())\n    if bias is not None: out += torch.tensor(bias, dtype=torch.float32)\n    return torch.round(out, decimals=4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import torch\n\ndef pytorch_custom_linear_layer(x: list, weight: list, bias: list = None) -> list:\n    \"\"\"\n    Implement a custom linear layer that computes the affine transformation without using any built-in linear layer.\n\n    Args:\n        x (list): Input feature vector, array, or scalar evaluation point.\n        weight (list): Filter kernel or linear layer weight tensor.\n        bias (list): Additive bias term or vector.\n\n    Returns:\n        list: Computed Custom Linear Layer result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Custom Linear Layer** (Neural Networks): Implement a custom linear layer that computes the affine transformation without using any built-in linear layer.\n\nTo implement `pytorch_custom_linear_layer` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `weight`, `bias`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport torch\n\ndef pytorch_custom_linear_layer(x: list, weight: list, bias: list = None) -> list:\n    out = torch.matmul(torch.tensor(x, dtype=torch.float32), torch.tensor(weight, dtype=torch.float32).t())\n    if bias is not None: out += torch.tensor(bias, dtype=torch.float32)\n    return torch.round(out, decimals=4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Custom Linear Layer** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pytorch-custom-linear-layer-tc-1",
@@ -82,7 +84,7 @@
     },
     {
       "id": "pytorch-custom-linear-layer-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (bias=[0.15, -0.3, 0.0])",
       "inputs": {
         "x": [
           [
@@ -130,7 +132,7 @@
     },
     {
       "id": "pytorch-custom-linear-layer-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (bias=[0.05, -0.1, 0.0])",
       "inputs": {
         "x": [
           [
@@ -174,11 +176,11 @@
           0.25
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pytorch-custom-linear-layer-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (bias=[0.2, -0.4, 0.0])",
       "inputs": {
         "x": [
           [
@@ -226,7 +228,7 @@
     },
     {
       "id": "pytorch-custom-linear-layer-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (bias=[-0.1, 0.2, -0.0])",
       "inputs": {
         "x": [
           [
@@ -274,7 +276,7 @@
     },
     {
       "id": "pytorch-custom-linear-layer-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (bias=[0.08, -0.16, 0.0])",
       "inputs": {
         "x": [
           [
@@ -322,7 +324,7 @@
     },
     {
       "id": "pytorch-custom-linear-layer-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (bias=[0.3, -0.6, 0.0])",
       "inputs": {
         "x": [
           [
@@ -371,7 +373,26 @@
   ],
   "functionMetadata": {
     "name": "pytorch_custom_linear_layer",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[[1.0, 2.0], [-1.0, 0.5]]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "weight",
+        "type": "array",
+        "example": "[[0.5, -0.5], [1.0, 0.0], [0.0, 2.0]]",
+        "description": "Filter kernel or linear layer weight tensor"
+      },
+      {
+        "name": "bias",
+        "type": "array",
+        "example": "[0.1, -0.2, 0.0]",
+        "description": "Additive bias term or vector"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -380,11 +401,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Custom Linear Layer",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pytorch-custom-linear-layer",
+  "localUrl": "http://localhost:3000/problems/pytorch-custom-linear-layer"
 }

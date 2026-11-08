@@ -18,99 +18,153 @@
   "seoDescription": "Estimate pi by sampling points in a unit square and measuring the fraction inside the quarter circle.",
   "solved": false,
   "isLocked": true,
-  "description": "Estimate pi by evaluating the proportion of uniform 2D unit-square coordinates that land inside a quadrant of radius 1.\n\nMonte Carlo methods approximate intractable high-dimensional integrals by taking empirical sample averages over random variables.\n\n### Mathematical Formulation\n$$\n\\pi \\approx 4 \\times \\frac{N_{\\text{inside}}}{N_{\\text{total}}}, \\quad x^2 + y^2 \\le 1\n$$\n\n### Step-by-Step Implementation\n1. Evaluate Euclidean distance condition x^2 + y^2 <= 1 for all sampled coordinate pairs\n2. Count number of sampled points landing inside the quarter unit circle\n3. Multiply proportion by 4 to estimate circular area pi\n\n### Returns\nDictionary with 'total_samples', 'inside_circle', and 'pi_estimate'.",
-  "theory": "# Understanding Monte Carlo Pi Estimation\n\n## 1. What Is It?\n\nThe **Monte Carlo Pi Estimation** is a fundamental computational technique in Numpy. In machine learning workflows, Estimate pi by evaluating the proportion of uniform 2D unit-square coordinates that land inside a quadrant of radius 1.\n\n### Key Terminology\n- **Probability and Statistics**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\pi \\approx 4 \\times \\frac{N_{\\text{inside}}}{N_{\\text{total}}}, \\quad x^2 + y^2 \\le 1\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `probstat_monte_carlo_pi` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\npoints = [[0.5, 0.5], [0.1, 0.1], [0.9, 0.9], [0.2, 0.8]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated probstat_monte_carlo_pi under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"total_samples\": 4, \"inside_circle\": 3, \"pi_estimate\": 3.0}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `probstat_monte_carlo_pi` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`total_samples`**: Represents `total_samples` (e.g. `4`), reflecting the updated state or component.\n  - **`inside_circle`**: Represents `inside_circle` (e.g. `3`), reflecting the updated state or component.\n  - **`pi_estimate`**: Represents `pi_estimate` (e.g. `3.0`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `probstat_monte_carlo_pi`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `probstat_monte_carlo_pi`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `probstat_monte_carlo_pi`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Monte Carlo Pi Estimation** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `probstat_monte_carlo_pi` accurately and efficiently performs the required transformation.\n",
+  "description": "Estimate $\\pi$ and its sampling uncertainty using Monte Carlo simulation over $N$ 2D points `(x_i, y_i)` in the unit square $[0, 1]^2$:\n\n$$\nI_i = \\mathbb{I}\\!\\left[x_i^2 + y_i^2 \\le 1\\right], \\qquad \\hat{p} = \\frac{1}{N} \\sum_{i=1}^N I_i, \\qquad \\hat{\\pi} = 4\\hat{p}\n$$\n\n$$\n\\operatorname{SE}(\\hat{\\pi}) = 4\\sqrt{\\frac{\\hat{p}(1 - \\hat{p})}{N}}, \\qquad \\text{error} = \\left|\\hat{\\pi} - \\pi\\right|\n$$\n\nReturn a dictionary with keys `'total_samples'`, `'inside_circle'`, `'pi_estimate'`, `'standard_error'`, and `'absolute_error'`, with float values rounded to 4 decimal places.",
+  "theory": "## What Is Monte Carlo Pi Estimation?\n\nIn probability and mathematical statistics, distributions and estimators quantify uncertainty and allow principled inference from finite empirical samples.\n\n$$\nI_i = \\mathbb{I}\\!\\left[x_i^2 + y_i^2 \\le 1\\right], \\qquad \\hat{p} = \\frac{1}{N} \\sum_{i=1}^N I_i, \\qquad \\hat{\\pi} = 4\\hat{p}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nI_i = \\mathbb{I}\\!\\left[x_i^2 + y_i^2 \\le 1\\right]\n$$\n\n$$\n\\hat{p} = \\frac{1}{N} \\sum_{i=1}^N I_i\n$$\n\n$$\n\\hat{\\pi} = 4\\hat{p}\n$$\n\n$$\n\\operatorname{SE}(\\hat{\\pi}) = 4\\sqrt{\\frac{\\hat{p}(1 - \\hat{p})}{N}}\n$$\n\n$$\n\\text{error} = \\left|\\hat{\\pi} - \\pi\\right|\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **A/B Test Significance**, **ANOVA F-Statistic**, **Basic Probability Rules**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: points = [[0.5, 0.5], [0.1, 0.1], [0.9, 0.9], [0.2, 0.8]]\n\nOutput: {\"total_samples\": 4, \"inside_circle\": 3, \"pi_estimate\": 3.0}\n\nExplanation: Evaluated probstat_monte_carlo_pi under standard test conditions."
+    "Input: points = [[0.1, 0.2], [0.5, 0.5], [0.9, 0.9], [0.3, 0.4]]\n\nOutput: {\"total_samples\": 4, \"inside_circle\": 3, \"pi_estimate\": 3.0, \"standard_error\": 0.866, \"absolute_error\": 0.1416}",
+    "Input: points = [[0.2, 0.2], [0.2, 0.6], [0.6, 0.2], [0.6, 0.6], [0.8, 0.5], [0.5, 0.8], [0.9, 0.8], [0.8, 0.9]]\n\nOutput: {\"total_samples\": 8, \"inside_circle\": 6, \"pi_estimate\": 3.0, \"standard_error\": 0.6124, \"absolute_error\": 0.1416}"
   ],
-  "requirements": "* Function must be named `probstat_monte_carlo_pi`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `probstat_monte_carlo_pi` accepting `points`\n* Estimate pi by sampling points in a unit square and measuring the fraction inside the quarter circle.\n* Return a `dict` containing the exact keys `'total_samples'`, `'inside_circle'`, `'pi_estimate'`, `'standard_error'`, `'absolute_error'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `probstat_monte_carlo_pi`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`points`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `probstat_monte_carlo_pi` into clear stages: validate/reshape `points`, evaluate the Monte Carlo Pi Estimation equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('total_samples', 'inside_circle', 'pi_estimate', 'standard_error', 'absolute_error') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef probstat_monte_carlo_pi(points: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Monte Carlo Pi Estimation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef probstat_monte_carlo_pi(points: list) -> dict:\n    pts = np.array(points, dtype=np.float64)\n    inside = int(np.sum(pts[:, 0]**2 + pts[:, 1]**2 <= 1.0))\n    return {'total_samples': len(pts), 'inside_circle': inside, 'pi_estimate': round(4.0 * (inside / max(len(pts), 1)), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef probstat_monte_carlo_pi(points: list) -> dict:\n    \"\"\"\n    Estimates pi from 2D points in [-1, 1]^2 (or [0, 1]^2), returning total_samples,\n    inside_circle count, pi_estimate, standard_error, and absolute_error.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Monte Carlo Pi Estimation** (Probability and Statistics): Estimate pi by sampling points in a unit square and measuring the fraction inside the quarter circle.\n\nTo implement `probstat_monte_carlo_pi` cleanly and accurately:\n1. Parse and normalize the inputs (`points`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\nimport math\n\ndef probstat_monte_carlo_pi(points: list) -> dict:\n    pts = np.asarray(points, dtype=float)\n    n = len(pts)\n    in_mask = (pts[:, 0] ** 2 + pts[:, 1] ** 2) <= 1.0\n    inside = int(np.sum(in_mask))\n    p_hat = inside / float(max(n, 1))\n    pi_est = 4.0 * p_hat\n    # Since pi_hat = 4 * Bernoulli(p), SE(pi_hat) = 4 * sqrt(p_hat * (1 - p_hat) / n)\n    se = 4.0 * math.sqrt(p_hat * (1.0 - p_hat) / float(max(n, 1)))\n    abs_err = abs(pi_est - math.pi)\n    return {\n        \"total_samples\": n,\n        \"inside_circle\": inside,\n        \"pi_estimate\": round(float(pi_est), 4),\n        \"standard_error\": round(float(se), 4),\n        \"absolute_error\": round(float(abs_err), 4)\n    }\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Monte Carlo Pi Estimation** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "probstat-monte-carlo-pi-tc-1",
-      "name": "4 corner points",
+      "name": "4 points (3 inside, 1 outside)",
       "inputs": {
         "points": [
           [
-            0.5,
-            0.5
+            0.1,
+            0.2
           ],
           [
-            0.1,
-            0.1
+            0.5,
+            0.5
           ],
           [
             0.9,
             0.9
           ],
           [
-            0.2,
-            0.8
+            0.3,
+            0.4
           ]
         ]
       },
       "expectedOutput": {
         "total_samples": 4,
         "inside_circle": 3,
-        "pi_estimate": 3.0
+        "pi_estimate": 3.0,
+        "standard_error": 0.866,
+        "absolute_error": 0.1416
       },
       "isPublic": true
     },
     {
       "id": "probstat-monte-carlo-pi-tc-2",
-      "name": "Case 2",
+      "name": "8 stratified grid points",
       "inputs": {
         "points": [
           [
-            0.75,
-            0.75
+            0.2,
+            0.2
           ],
           [
-            0.15,
-            0.15
+            0.2,
+            0.6
           ],
           [
-            1.35,
-            1.35
+            0.6,
+            0.2
           ],
           [
-            0.3,
-            1.2
+            0.6,
+            0.6
+          ],
+          [
+            0.8,
+            0.5
+          ],
+          [
+            0.5,
+            0.8
+          ],
+          [
+            0.9,
+            0.8
+          ],
+          [
+            0.8,
+            0.9
           ]
         ]
       },
       "expectedOutput": {
-        "total_samples": 4,
-        "inside_circle": 1,
-        "pi_estimate": 1.0
+        "total_samples": 8,
+        "inside_circle": 6,
+        "pi_estimate": 3.0,
+        "standard_error": 0.6124,
+        "absolute_error": 0.1416
       },
       "isPublic": true
     },
     {
       "id": "probstat-monte-carlo-pi-tc-3",
-      "name": "Case 3",
+      "name": "Boundary point on unit circle x^2+y^2=1",
       "inputs": {
         "points": [
           [
-            0.25,
-            0.25
+            0.6,
+            0.8
           ],
           [
-            0.05,
-            0.05
+            0.0,
+            1.0
           ],
           [
-            0.45,
-            0.45
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0
+          ]
+        ]
+      },
+      "expectedOutput": {
+        "total_samples": 4,
+        "inside_circle": 3,
+        "pi_estimate": 3.0,
+        "standard_error": 0.866,
+        "absolute_error": 0.1416
+      },
+      "isPublic": true
+    },
+    {
+      "id": "probstat-monte-carlo-pi-tc-4",
+      "name": "All points inside circle",
+      "inputs": {
+        "points": [
+          [
+            0.0,
+            0.0
           ],
           [
             0.1,
+            0.1
+          ],
+          [
+            0.2,
+            0.3
+          ],
+          [
+            0.4,
             0.4
           ]
         ]
@@ -118,134 +172,131 @@
       "expectedOutput": {
         "total_samples": 4,
         "inside_circle": 4,
-        "pi_estimate": 4.0
+        "pi_estimate": 4.0,
+        "standard_error": 0.0,
+        "absolute_error": 0.8584
       },
       "isPublic": false
     },
     {
-      "id": "probstat-monte-carlo-pi-tc-4",
-      "name": "Case 4",
+      "id": "probstat-monte-carlo-pi-tc-5",
+      "name": "Half inside, half outside",
       "inputs": {
         "points": [
           [
-            1.0,
-            1.0
+            0.1,
+            0.1
           ],
           [
             0.2,
             0.2
           ],
           [
-            1.8,
-            1.8
+            0.9,
+            0.9
           ],
           [
-            0.4,
-            1.6
+            0.8,
+            0.8
           ]
         ]
       },
       "expectedOutput": {
         "total_samples": 4,
-        "inside_circle": 1,
-        "pi_estimate": 1.0
-      },
-      "isPublic": false
-    },
-    {
-      "id": "probstat-monte-carlo-pi-tc-5",
-      "name": "Case 5",
-      "inputs": {
-        "points": [
-          [
-            -0.5,
-            -0.5
-          ],
-          [
-            -0.1,
-            -0.1
-          ],
-          [
-            -0.9,
-            -0.9
-          ],
-          [
-            -0.2,
-            -0.8
-          ]
-        ]
-      },
-      "expectedOutput": {
-        "total_samples": 4,
-        "inside_circle": 3,
-        "pi_estimate": 3.0
+        "inside_circle": 2,
+        "pi_estimate": 2.0,
+        "standard_error": 1.0,
+        "absolute_error": 1.1416
       },
       "isPublic": false
     },
     {
       "id": "probstat-monte-carlo-pi-tc-6",
-      "name": "Case 6",
+      "name": "5 sample points",
       "inputs": {
         "points": [
-          [
-            0.4,
-            0.4
-          ],
-          [
-            0.08,
-            0.08
-          ],
-          [
-            0.72,
-            0.72
-          ],
-          [
-            0.16,
-            0.64
-          ]
-        ]
-      },
-      "expectedOutput": {
-        "total_samples": 4,
-        "inside_circle": 3,
-        "pi_estimate": 3.0
-      },
-      "isPublic": false
-    },
-    {
-      "id": "probstat-monte-carlo-pi-tc-7",
-      "name": "Case 7",
-      "inputs": {
-        "points": [
-          [
-            1.5,
-            1.5
-          ],
           [
             0.3,
             0.3
           ],
           [
-            2.7,
-            2.7
+            0.7,
+            0.7
           ],
           [
-            0.6,
-            2.4
+            0.7,
+            0.8
+          ],
+          [
+            0.5,
+            0.2
+          ],
+          [
+            0.95,
+            0.95
           ]
         ]
       },
       "expectedOutput": {
-        "total_samples": 4,
-        "inside_circle": 1,
-        "pi_estimate": 1.0
+        "total_samples": 5,
+        "inside_circle": 3,
+        "pi_estimate": 2.4,
+        "standard_error": 0.8764,
+        "absolute_error": 0.7416
+      },
+      "isPublic": false
+    },
+    {
+      "id": "probstat-monte-carlo-pi-tc-7",
+      "name": "6 mixed quadrant points",
+      "inputs": {
+        "points": [
+          [
+            -0.5,
+            0.5
+          ],
+          [
+            0.5,
+            -0.5
+          ],
+          [
+            -0.8,
+            -0.8
+          ],
+          [
+            0.3,
+            0.9
+          ],
+          [
+            0.1,
+            -0.2
+          ],
+          [
+            0.9,
+            0.6
+          ]
+        ]
+      },
+      "expectedOutput": {
+        "total_samples": 6,
+        "inside_circle": 4,
+        "pi_estimate": 2.6667,
+        "standard_error": 0.7698,
+        "absolute_error": 0.4749
       },
       "isPublic": false
     }
   ],
   "functionMetadata": {
     "name": "probstat_monte_carlo_pi",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "points",
+        "type": "array",
+        "example": "[[0.1, 0.2], [0.5, 0.5], [0.9, 0.9], [0.3, 0.4]]",
+        "description": "Input parameter `points` (list) for Monte Carlo Pi Estimation"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -254,11 +305,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Monte Carlo Pi Estimation",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/probstat-monte-carlo-pi",
+  "localUrl": "http://localhost:3000/problems/probstat-monte-carlo-pi"
 }

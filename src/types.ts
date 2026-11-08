@@ -45,6 +45,7 @@ export interface ProblemSummary {
 export interface ProblemDetail {
   id: string;
   title: string;
+  isFree?: boolean;
   description: string;
   seoDescription?: string;
   examples?: any[];

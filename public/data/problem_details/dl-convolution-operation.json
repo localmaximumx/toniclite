@@ -19,19 +19,21 @@
   "seoDescription": "Implement multichannel two-dimensional cross-correlation from scratch with multiple filters, stride, padding, and bias.",
   "solved": false,
   "isLocked": true,
-  "description": "Perform 2D cross-correlation convolution of image with kernel without padding.\n\nSpatial parameter sharing enforces translation equivariance: translating an image translates the resulting feature activations identically.\n\n### Mathematical Formulation\n$$\nY_{i, j} = \\sum_{u=0}^{K_h-1} \\sum_{v=0}^{K_w-1} X_{i+u, j+v} \\cdot K_{u, v}\n$$\n\n### Step-by-Step Implementation\n1. Slide kernel across valid spatial coordinates of input image\n2. Compute Frobenius inner product sum(patch * kernel) at each location\n3. Return output feature map of shape (H - Kh + 1, W - Kw + 1) rounded to 4 decimal places\n\n### Returns\nNested 2D list representing valid convolution output.",
-  "theory": "# Understanding 2D Convolution from Scratch\n\n## 1. What Is It?\n\nThe **2D Convolution from Scratch** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing 2D cross-correlation convolution of image with kernel without padding.\n\n### Key Terminology\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n- **Computer Vision**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nY_{i, j} = \\sum_{u=0}^{K_h-1} \\sum_{v=0}^{K_w-1} X_{i+u, j+v} \\cdot K_{u, v}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_convolution_operation` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nimage = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], kernel = [[1.0, 0.0], [0.0, 1.0]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_convolution_operation under standard test conditions.\n\n**Resulting Output:**\n```python\n[[6.0, 8.0], [12.0, 14.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_convolution_operation` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[6.0, 8.0]`.\n  - **Element 2**: Evaluated output component `[12.0, 14.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_convolution_operation`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_convolution_operation`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**2D Convolution from Scratch** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_convolution_operation` accurately and efficiently performs the required transformation.\n",
+  "description": "Perform 2D cross-correlation convolution of image with kernel without padding.\n\n$$\nY_{i, j} = \\sum_{u=0}^{K_h-1} \\sum_{v=0}^{K_w-1} X_{i+u, j+v} \\cdot K_{u, v}\n$$\n\nGiven input parameters `image`, `kernel`, return nested 2D list representing valid convolution output.",
+  "theory": "## What Is 2D Convolution from Scratch?\n\nConvolutional layers apply shared local filters across spatial positions to extract translation-equivariant features.\n\n$$\nY_{i, j} = \\sum_{u=0}^{K_h-1} \\sum_{v=0}^{K_w-1} X_{i+u, j+v} \\cdot K_{u, v}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: image = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], kernel = [[1.0, 0.0], [0.0, 1.0]]\n\nOutput: [[6.0, 8.0], [12.0, 14.0]]\n\nExplanation: Evaluated dl_convolution_operation under standard test conditions."
+    "Input: image = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]], kernel = [[1.0, 0.0], [0.0, 1.0]]\n\nOutput: [[6.0, 8.0], [12.0, 14.0]]",
+    "Input: image = [[2.0, 4.0, 6.0], [8.0, 10.0, 12.0], [14.0, 16.0, 18.0]], kernel = [[2.0, 0.0], [0.0, 2.0]]\n\nOutput: [[24.0, 32.0], [48.0, 56.0]]"
   ],
-  "requirements": "* Function must be named `dl_convolution_operation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_convolution_operation` accepting `image`, `kernel`\n* Implement multichannel two-dimensional cross-correlation from scratch with multiple filters, stride, padding, and bias.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_convolution_operation`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`image`, `kernel`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $Y_{i, j} = \\sum_{u=0}^{K_h-1} \\sum_{v=0}^{K_w-1} X_{i+u, j+v} \\cdot K_{u, v}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef dl_convolution_operation(image: list, kernel: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **2D Convolution from Scratch** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_convolution_operation(image: list, kernel: list) -> list:\n    img, k = np.array(image, dtype=float), np.array(kernel, dtype=float)\n    oh, ow = img.shape[0] - k.shape[0] + 1, img.shape[1] - k.shape[1] + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow): out[i, j] = np.sum(img[i:i+k.shape[0], j:j+k.shape[1]] * k)\n    return np.round(out, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef dl_convolution_operation(image: list, kernel: list) -> list:\n    \"\"\"\n    Implement multichannel two-dimensional cross-correlation from scratch with multiple filters, stride, padding, and bias.\n\n    Args:\n        image (list): 2D spatial image array of pixel intensities.\n        kernel (list): 2D convolution or morphological filter kernel.\n\n    Returns:\n        list: Computed 2D Convolution from Scratch result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**2D Convolution from Scratch** (Neural Networks, Computer Vision): Implement multichannel two-dimensional cross-correlation from scratch with multiple filters, stride, padding, and bias.\n\nTo implement `dl_convolution_operation` cleanly and accurately:\n1. Parse and normalize the inputs (`image`, `kernel`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_convolution_operation(image: list, kernel: list) -> list:\n    img, k = np.array(image, dtype=float), np.array(kernel, dtype=float)\n    oh, ow = img.shape[0] - k.shape[0] + 1, img.shape[1] - k.shape[1] + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow): out[i, j] = np.sum(img[i:i+k.shape[0], j:j+k.shape[1]] * k)\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **2D Convolution from Scratch** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-convolution-operation-tc-1",
@@ -79,7 +81,7 @@
     },
     {
       "id": "dl-convolution-operation-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "image": [
           [
@@ -123,7 +125,7 @@
     },
     {
       "id": "dl-convolution-operation-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "image": [
           [
@@ -163,11 +165,11 @@
           3.5
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "dl-convolution-operation-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "image": [
           [
@@ -211,7 +213,7 @@
     },
     {
       "id": "dl-convolution-operation-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "image": [
           [
@@ -255,7 +257,7 @@
     },
     {
       "id": "dl-convolution-operation-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "image": [
           [
@@ -299,7 +301,7 @@
     },
     {
       "id": "dl-convolution-operation-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "image": [
           [
@@ -344,7 +346,20 @@
   ],
   "functionMetadata": {
     "name": "dl_convolution_operation",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "image",
+        "type": "array",
+        "example": "[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]",
+        "description": "2D spatial image array of pixel intensities"
+      },
+      {
+        "name": "kernel",
+        "type": "array",
+        "example": "[[1.0, 0.0], [0.0, 1.0]]",
+        "description": "2D convolution or morphological filter kernel"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -353,11 +368,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "2D Convolution from Scratch",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-convolution-operation",
+  "localUrl": "http://localhost:3000/problems/dl-convolution-operation"
 }

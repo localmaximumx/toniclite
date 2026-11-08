@@ -19,19 +19,21 @@
   "seoDescription": "Build a normalized separable Gaussian kernel and apply it to a grayscale image with the specified padding behavior.",
   "solved": false,
   "isLocked": true,
-  "description": "Filter 2D image matrix using normalized discrete bivariate Gaussian convolution kernel.\n\nGaussian blur is the unique linear scale-space filter that does not introduce spurious artificial edge artifacts at coarser scales.\n\n### Mathematical Formulation\n$$\nG(x, y) = \\frac{1}{2\\pi\\sigma^2} \\exp\\left(-\\frac{x^2 + y^2}{2\\sigma^2}\\right), \\quad \\mathbf{Y} = \\mathbf{X} \\star \\mathbf{G}\n$$\n\n### Step-by-Step Implementation\n1. Generate 2D spatial coordinate grid centered at kernel midpoint\n2. Evaluate bivariate Gaussian density and normalize kernel weights to sum to 1.0\n3. Convolve input image with Gaussian kernel and return filtered matrix rounded to 4 decimal places\n\n### Returns\nNested 2D list representing blurred image feature map.",
-  "theory": "# Understanding Gaussian Blur 2D\n\n## 1. What Is It?\n\nThe **Gaussian Blur 2D** is a fundamental computational technique in Numpy. In machine learning workflows, Filter 2D image matrix using normalized discrete bivariate Gaussian convolution kernel.\n\n### Key Terminology\n- **Computer Vision**: Core domain concept contextualizing this task within Numpy workflows.\n- **Data Processing**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nG(x, y) = \\frac{1}{2\\pi\\sigma^2} \\exp\\left(-\\frac{x^2 + y^2}{2\\sigma^2}\\right), \\quad \\mathbf{Y} = \\mathbf{X} \\star \\mathbf{G}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_gaussian_blur` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nimage = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]], kernel_size = 3, sigma = 1.0\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_gaussian_blur under standard test conditions.\n\n**Resulting Output:**\n```python\n[[6.0, 7.0], [10.0, 11.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_gaussian_blur` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[6.0, 7.0]`.\n  - **Element 2**: Evaluated output component `[10.0, 11.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_gaussian_blur`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_gaussian_blur`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Gaussian Blur 2D** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_gaussian_blur` accurately and efficiently performs the required transformation.\n",
+  "description": "Filter 2D image matrix using normalized discrete bivariate Gaussian convolution kernel.\n\n$$\nG(x, y) = \\frac{1}{2\\pi\\sigma^2} \\exp\\left(-\\frac{x^2 + y^2}{2\\sigma^2}\\right), \\quad \\mathbf{Y} = \\mathbf{X} \\star \\mathbf{G}\n$$\n\nGiven input parameters `image`, `kernel_size`, `sigma`, return nested 2D list representing blurred image feature map.",
+  "theory": "## What Is Gaussian Blur 2D?\n\nIn computer vision, spatial tensor operators and geometric bounding-box algorithms extract translation- and scale-aware structure from image grids.\n\n$$\nG(x, y) = \\frac{1}{2\\pi\\sigma^2} \\exp\\left(-\\frac{x^2 + y^2}{2\\sigma^2}\\right), \\quad \\mathbf{Y} = \\mathbf{X} \\star \\mathbf{G}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nG(x, y) = \\frac{1}{2\\pi\\sigma^2} \\exp\\left(-\\frac{x^2 + y^2}{2\\sigma^2}\\right)\n$$\n\n$$\n\\mathbf{Y} = \\mathbf{X} \\star \\mathbf{G}\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: image = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]], kernel_size = 3, sigma = 1.0\n\nOutput: [[6.0, 7.0], [10.0, 11.0]]\n\nExplanation: Evaluated cv_gaussian_blur under standard test conditions."
+    "Input: image = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]], kernel_size = 3, sigma = 1.0\n\nOutput: [[6.0, 7.0], [10.0, 11.0]]",
+    "Input: image = [[4, 3, 2, 1], [8, 7, 6, 5], [12, 11, 10, 9], [16, 15, 14, 13]], kernel_size = 3, sigma = 1.0\n\nOutput: [[7.0, 6.0], [11.0, 10.0]]"
   ],
-  "requirements": "* Function must be named `cv_gaussian_blur`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_gaussian_blur` accepting `image`, `kernel_size`, `sigma`\n* Build a normalized separable Gaussian kernel and apply it to a grayscale image with the specified padding behavior.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_gaussian_blur`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`image`, `kernel_size`, `sigma`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `cv_gaussian_blur` into clear stages: validate/reshape `image`, `kernel_size`, `sigma`, evaluate the Gaussian Blur 2D equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef cv_gaussian_blur(image: list, kernel_size: int = 3, sigma: float = 1.0) -> list:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Gaussian Blur 2D** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_gaussian_blur(image: list, kernel_size: int = 3, sigma: float = 1.0) -> list:\n    img = np.array(image, dtype=float)\n    H, W = img.shape; k = kernel_size // 2\n    x, y = np.mgrid[-k:k+1, -k:k+1]\n    g = np.exp(-(x**2 + y**2) / (2.0 * sigma**2))\n    g = g / np.sum(g)\n    oh, ow = H - kernel_size + 1, W - kernel_size + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow): out[i, j] = np.sum(img[i:i+kernel_size, j:j+kernel_size] * g)\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef cv_gaussian_blur(image: list, kernel_size: int = 3, sigma: float = 1.0) -> list:\n    \"\"\"\n    Build a normalized separable Gaussian kernel and apply it to a grayscale image with the specified padding behavior.\n\n    Args:\n        image (list): 2D spatial image array of pixel intensities.\n        kernel_size (int): Integer count or dimension size for kernel size.\n        sigma (float): Input parameter `sigma` (float) for Gaussian Blur 2D.\n\n    Returns:\n        list: Computed Gaussian Blur 2D result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Gaussian Blur 2D** (Computer Vision, Data Processing): Build a normalized separable Gaussian kernel and apply it to a grayscale image with the specified padding behavior.\n\nTo implement `cv_gaussian_blur` cleanly and accurately:\n1. Parse and normalize the inputs (`image`, `kernel_size`, `sigma`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_gaussian_blur(image: list, kernel_size: int = 3, sigma: float = 1.0) -> list:\n    img = np.array(image, dtype=float)\n    H, W = img.shape; k = kernel_size // 2\n    x, y = np.mgrid[-k:k+1, -k:k+1]\n    g = np.exp(-(x**2 + y**2) / (2.0 * sigma**2))\n    g = g / np.sum(g)\n    oh, ow = H - kernel_size + 1, W - kernel_size + 1\n    out = np.zeros((oh, ow))\n    for i in range(oh):\n        for j in range(ow): out[i, j] = np.sum(img[i:i+kernel_size, j:j+kernel_size] * g)\n    return np.round(out, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Gaussian Blur 2D** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-gaussian-blur-tc-1",
@@ -80,7 +82,7 @@
     },
     {
       "id": "cv-gaussian-blur-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (kernel_size=3)",
       "inputs": {
         "image": [
           [
@@ -125,7 +127,7 @@
     },
     {
       "id": "cv-gaussian-blur-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (kernel_size=3)",
       "inputs": {
         "image": [
           [
@@ -166,11 +168,11 @@
           1.0
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-gaussian-blur-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (kernel_size=1)",
       "inputs": {
         "image": [
           [
@@ -231,7 +233,7 @@
     },
     {
       "id": "cv-gaussian-blur-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (kernel_size=1)",
       "inputs": {
         "image": [
           [
@@ -292,7 +294,7 @@
     },
     {
       "id": "cv-gaussian-blur-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (kernel_size=3)",
       "inputs": {
         "image": [
           [
@@ -337,7 +339,7 @@
     },
     {
       "id": "cv-gaussian-blur-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (kernel_size=3)",
       "inputs": {
         "image": [
           [
@@ -383,7 +385,26 @@
   ],
   "functionMetadata": {
     "name": "cv_gaussian_blur",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "image",
+        "type": "array",
+        "example": "[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]",
+        "description": "2D spatial image array of pixel intensities"
+      },
+      {
+        "name": "kernel_size",
+        "type": "number",
+        "example": "3",
+        "description": "Integer count or dimension size for kernel size"
+      },
+      {
+        "name": "sigma",
+        "type": "number",
+        "example": "1.0",
+        "description": "Input parameter `sigma` (float) for Gaussian Blur 2D"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -392,11 +413,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Gaussian Blur 2D",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-gaussian-blur",
+  "localUrl": "http://localhost:3000/problems/cv-gaussian-blur"
 }

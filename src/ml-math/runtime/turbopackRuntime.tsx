@@ -240,9 +240,6 @@ function instantiateModule(id: number): ModRecord {
 }
 
 export function initTurbopackRuntime() {
-  if (initialized) return;
-  initialized = true;
-
   const tb = (globalThis as any).TURBOPACK || [];
   for (const chunk of tb) {
     if (!Array.isArray(chunk) || chunk.length === 2) continue;
@@ -260,6 +257,9 @@ export function initTurbopackRuntime() {
       r = o + 1;
     }
   }
+
+  if (initialized) return;
+  initialized = true;
 
   registerHostMod(414294, jsxRuntime);
   registerHostMod(430878, React);

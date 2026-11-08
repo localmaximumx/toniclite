@@ -19,19 +19,21 @@
   "seoDescription": "Implement a NumPy Transformer encoder block with self-attention, residual connections, normalization, and feed-forward layers.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute the forward pass of a canonical Transformer encoder layer comprising self-attention, residual additions, layer normalization, and feed-forward projection.\n\nResidual connections allow gradient signal highways to flow unimpeded through hundreds of stacked transformer blocks.\n\n### Mathematical Formulation\n$$\n\\mathbf{X}_1 = \\operatorname{LN}(\\mathbf{X} + \\operatorname{MHA}(\\mathbf{X})), \\quad \\mathbf{X}_2 = \\operatorname{LN}(\\mathbf{X}_1 + \\operatorname{FFN}(\\mathbf{X}_1))\n$$\n\n### Step-by-Step Implementation\n1. Compute scaled dot-product self-attention across input token representations\n2. Apply residual addition and layer normalization\n3. Pass normalized states through two-layer MLP and second residual layer norm\n\n### Returns\nNested list of shape (S, D) representing contextualized token representations.",
-  "theory": "# Understanding Transformer Encoder Block\n\n## 1. What Is It?\n\nThe **Transformer Encoder Block** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing the forward pass of a canonical Transformer encoder layer comprising self-attention, residual additions, layer normalization, and feed-forward projection.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n- **Transformers**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{X}_1 = \\operatorname{LN}(\\mathbf{X} + \\operatorname{MHA}(\\mathbf{X})), \\quad \\mathbf{X}_2 = \\operatorname{LN}(\\mathbf{X}_1 + \\operatorname{FFN}(\\mathbf{X}_1))\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_encoder_block` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [[1.0, 2.0], [3.0, 4.0]], W_qkv = [[0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]], W_ffn1 = [[0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2]], W_ffn2 = [[0.1, 0.1], [0.1, 0.1], [0.1, 0.1], [0.1, 0.1]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_encoder_block under standard test conditions.\n\n**Resulting Output:**\n```python\n[[-1.0, 1.0], [-1.0, 1.0]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_encoder_block` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[-1.0, 1.0]`.\n  - **Element 2**: Evaluated output component `[-1.0, 1.0]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_encoder_block`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_encoder_block`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Transformer Encoder Block** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_encoder_block` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute the forward pass of a canonical Transformer encoder layer comprising self-attention, residual additions, layer normalization, and feed-forward projection.\n\n$$\n\\mathbf{X}_1 = \\operatorname{LN}(\\mathbf{X} + \\operatorname{MHA}(\\mathbf{X})), \\quad \\mathbf{X}_2 = \\operatorname{LN}(\\mathbf{X}_1 + \\operatorname{FFN}(\\mathbf{X}_1))\n$$\n\nGiven input parameters `x`, `W_qkv`, `W_ffn1`, `W_ffn2`, return nested list of shape (S, D) representing contextualized token representations.",
+  "theory": "## What Is Transformer Encoder Block?\n\nIn deep learning architectures, composable differentiable modules transform representations across layers while preserving stable activation and gradient norms.\n\n$$\n\\mathbf{X}_1 = \\operatorname{LN}(\\mathbf{X} + \\operatorname{MHA}(\\mathbf{X})), \\quad \\mathbf{X}_2 = \\operatorname{LN}(\\mathbf{X}_1 + \\operatorname{FFN}(\\mathbf{X}_1))\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\mathbf{X}_1 = \\operatorname{LN}(\\mathbf{X} + \\operatorname{MHA}(\\mathbf{X}))\n$$\n\n$$\n\\mathbf{X}_2 = \\operatorname{LN}(\\mathbf{X}_1 + \\operatorname{FFN}(\\mathbf{X}_1))\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: x = [[1.0, 2.0], [3.0, 4.0]], W_qkv = [[0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]], W_ffn1 = [[0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2]], W_ffn2 = [[0.1, 0.1], [0.1, 0.1], [0.1, 0.1], [0.1, 0.1]]\n\nOutput: [[-1.0, 1.0], [-1.0, 1.0]]\n\nExplanation: Evaluated dl_encoder_block under standard test conditions."
+    "Input: x = [[1.0, 2.0], [3.0, 4.0]], W_qkv = [[0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]], W_ffn1 = [[0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2]], W_ffn2 = [[0.1, 0.1], [0.1, 0.1], [0.1, 0.1], [0.1, 0.1]]\n\nOutput: [[-1.0, 1.0], [-1.0, 1.0]]",
+    "Input: x = [[2.0, 4.0], [6.0, 8.0]], W_qkv = [[0.2, 0.2, 0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2, 0.2, 0.2]], W_ffn1 = [[0.4, 0.4, 0.4, 0.4], [0.4, 0.4, 0.4, 0.4]], W_ffn2 = [[0.2, 0.2], [0.2, 0.2], [0.2, 0.2], [0.2, 0.2]]\n\nOutput: [[-1.0, 1.0], [-1.0, 1.0]]"
   ],
-  "requirements": "* Function must be named `dl_encoder_block`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_encoder_block` accepting `x`, `W_qkv`, `W_ffn1`, `W_ffn2`\n* Implement a NumPy Transformer encoder block with self-attention, residual connections, normalization, and feed-forward layers.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_encoder_block`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `W_qkv`, `W_ffn1`, `W_ffn2`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `dl_encoder_block` into clear stages: validate/reshape `x`, `W_qkv`, `W_ffn1`, `W_ffn2`, evaluate the Transformer Encoder Block equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef dl_encoder_block(x: list, W_qkv: list, W_ffn1: list, W_ffn2: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Transformer Encoder Block** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_encoder_block(x: list, W_qkv: list, W_ffn1: list, W_ffn2: list) -> list:\n    X, S, D = np.array(x, dtype=np.float64), len(x), len(x[0])\n    qkv = np.dot(X, np.array(W_qkv, dtype=np.float64))\n    Q, K, V = qkv[:, :D], qkv[:, D:2*D], qkv[:, 2*D:]\n    sc = np.dot(Q, K.T) / math.sqrt(D)\n    ex = np.exp(sc - np.max(sc, axis=-1, keepdims=True))\n    attn = np.dot(ex / np.sum(ex, axis=-1, keepdims=True), V)\n    x1 = X + attn; ln1 = (x1 - np.mean(x1, axis=-1, keepdims=True)) / (np.std(x1, axis=-1, keepdims=True) + 1e-6)\n    ffn = np.dot(np.maximum(0.0, np.dot(ln1, np.array(W_ffn1, dtype=np.float64))), np.array(W_ffn2, dtype=np.float64))\n    x2 = ln1 + ffn; ln2 = (x2 - np.mean(x2, axis=-1, keepdims=True)) / (np.std(x2, axis=-1, keepdims=True) + 1e-6)\n    return np.round(ln2, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef dl_encoder_block(x: list, W_qkv: list, W_ffn1: list, W_ffn2: list) -> list:\n    \"\"\"\n    Implement a NumPy Transformer encoder block with self-attention, residual connections, normalization, and feed-forward layers.\n\n    Args:\n        x (list): Input feature vector, array, or scalar evaluation point.\n        W_qkv (list): Weight matrix/vector for W qkv.\n        W_ffn1 (list): Weight matrix/vector for W ffn1.\n        W_ffn2 (list): Weight matrix/vector for W ffn2.\n\n    Returns:\n        list: Computed Transformer Encoder Block result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Transformer Encoder Block** (Neural Networks, Transformers): Implement a NumPy Transformer encoder block with self-attention, residual connections, normalization, and feed-forward layers.\n\nTo implement `dl_encoder_block` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `W_qkv`, `W_ffn1`, `W_ffn2`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_encoder_block(x: list, W_qkv: list, W_ffn1: list, W_ffn2: list) -> list:\n    X, S, D = np.array(x, dtype=np.float64), len(x), len(x[0])\n    qkv = np.dot(X, np.array(W_qkv, dtype=np.float64))\n    Q, K, V = qkv[:, :D], qkv[:, D:2*D], qkv[:, 2*D:]\n    sc = np.dot(Q, K.T) / math.sqrt(D)\n    ex = np.exp(sc - np.max(sc, axis=-1, keepdims=True))\n    attn = np.dot(ex / np.sum(ex, axis=-1, keepdims=True), V)\n    x1 = X + attn; ln1 = (x1 - np.mean(x1, axis=-1, keepdims=True)) / (np.std(x1, axis=-1, keepdims=True) + 1e-6)\n    ffn = np.dot(np.maximum(0.0, np.dot(ln1, np.array(W_ffn1, dtype=np.float64))), np.array(W_ffn2, dtype=np.float64))\n    x2 = ln1 + ffn; ln2 = (x2 - np.mean(x2, axis=-1, keepdims=True)) / (np.std(x2, axis=-1, keepdims=True) + 1e-6)\n    return np.round(ln2, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Transformer Encoder Block** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-encoder-block-tc-1",
@@ -112,7 +114,7 @@
     },
     {
       "id": "dl-encoder-block-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "x": [
           [
@@ -189,7 +191,7 @@
     },
     {
       "id": "dl-encoder-block-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "x": [
           [
@@ -262,11 +264,11 @@
           1.0
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "dl-encoder-block-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "x": [
           [
@@ -343,7 +345,7 @@
     },
     {
       "id": "dl-encoder-block-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "x": [
           [
@@ -420,7 +422,7 @@
     },
     {
       "id": "dl-encoder-block-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "x": [
           [
@@ -497,7 +499,7 @@
     },
     {
       "id": "dl-encoder-block-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "x": [
           [
@@ -575,7 +577,32 @@
   ],
   "functionMetadata": {
     "name": "dl_encoder_block",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[[1.0, 2.0], [3.0, 4.0]]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "W_qkv",
+        "type": "array",
+        "example": "[[0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]]",
+        "description": "Weight matrix/vector for W qkv"
+      },
+      {
+        "name": "W_ffn1",
+        "type": "array",
+        "example": "[[0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2]]",
+        "description": "Weight matrix/vector for W ffn1"
+      },
+      {
+        "name": "W_ffn2",
+        "type": "array",
+        "example": "[[0.1, 0.1], [0.1, 0.1], [0.1, 0.1], [0.1, 0.1]]",
+        "description": "Weight matrix/vector for W ffn2"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -584,11 +611,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Transformer Encoder Block",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-encoder-block",
+  "localUrl": "http://localhost:3000/problems/dl-encoder-block"
 }

@@ -20,19 +20,21 @@
   "seoDescription": "Compute the global gradient norm, rescale all gradients if the norm exceeds the threshold.",
   "solved": false,
   "isLocked": true,
-  "description": "Rescale parameter gradient tensors proportionally when global Euclidean norm exceeds specified threshold max_norm.\n\nGradient clipping enforces an upper bound on parameter step magnitudes in steep optimization landscapes without altering the descent direction vector.\n\n### Mathematical Formulation\n$$\n\\mathbf{g} \\leftarrow \\mathbf{g} \\cdot \\min\\left(1, \\frac{\\text{max\\_norm}}{\\|\\mathbf{g}\\|_2 + \\epsilon}\\right)\n$$\n\n### Step-by-Step Implementation\n1. Compute global L2 norm across all concatenated gradient tensors\n2. Determine scaling multiplier min(1.0, max_norm / total_norm)\n3. Scale every gradient tensor by multiplier preserving gradient direction and round to 4 decimal places\n\n### Returns\nDictionary with 'clipped_grads' and 'total_norm'.",
-  "theory": "# Understanding Gradient Clipping: Global Norm Rescaling\n\n## 1. What Is It?\n\nThe **Gradient Clipping: Global Norm Rescaling** is a fundamental computational technique in Numpy. In machine learning workflows, Rescale parameter gradient tensors proportionally when global Euclidean norm exceeds specified threshold max_norm.\n\n### Key Terminology\n- **Calculus**: Core domain concept contextualizing this task within Numpy workflows.\n- **Optimization**: Core domain concept contextualizing this task within Numpy workflows.\n- **Linear Algebra**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{g} \\leftarrow \\mathbf{g} \\cdot \\min\\left(1, \\frac{\\text{max\\_norm}}{\\|\\mathbf{g}\\|_2 + \\epsilon}\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `calculus_gradient_clipping` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ngrads = [[[3.0, 4.0]], [[0.0, 0.0]]], max_norm = 2.5\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated calculus_gradient_clipping under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"clipped_grads\": [[[1.5, 2.0]], [[0.0, 0.0]]], \"total_norm\": 5.0}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `calculus_gradient_clipping` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`clipped_grads`**: Represents `clipped_grads` (e.g. `[[[1.5, 2.0]], [[0.0, 0.0]]]`), reflecting the updated state or component.\n  - **`total_norm`**: Represents `total_norm` (e.g. `5.0`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `calculus_gradient_clipping`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `calculus_gradient_clipping`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `calculus_gradient_clipping`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Gradient Clipping: Global Norm Rescaling** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `calculus_gradient_clipping` accurately and efficiently performs the required transformation.\n",
+  "description": "Rescale parameter gradient tensors proportionally when global Euclidean norm exceeds specified threshold `max_norm`.\n\n$$\n\\mathbf{g} \\leftarrow \\mathbf{g} \\cdot \\min\\left(1, \\frac{\\text{max\\_norm}}{\\|\\mathbf{g}\\|_2 + \\epsilon}\\right)\n$$\n\nGiven input parameters `grads`, `max_norm`, return dictionary with 'clipped_grads' and 'total_norm'.",
+  "theory": "## What Is Gradient Clipping: Global Norm Rescaling?\n\nIn machine learning calculus, analytical derivatives and local linear approximations govern how small parameter changes affect model predictions and loss objectives.\n\n$$\n\\mathbf{g} \\leftarrow \\mathbf{g} \\cdot \\min\\left(1, \\frac{\\text{max\\_norm}}{\\|\\mathbf{g}\\|_2 + \\epsilon}\\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Continuity of Activation Functions**, **Derivatives of Common Activation Functions**, **Backpropagation Through a Computation Graph**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: grads = [[[3.0, 4.0]], [[0.0, 0.0]]], max_norm = 2.5\n\nOutput: {\"clipped_grads\": [[[1.5, 2.0]], [[0.0, 0.0]]], \"total_norm\": 5.0}\n\nExplanation: Evaluated calculus_gradient_clipping under standard test conditions."
+    "Input: grads = [[[3.0, 4.0]], [[0.0, 0.0]]], max_norm = 2.5\n\nOutput: {\"clipped_grads\": [[[1.5, 2.0]], [[0.0, 0.0]]], \"total_norm\": 5.0}",
+    "Input: grads = [[[6.0, 8.0]], [[0.0, 0.0]]], max_norm = 5.0\n\nOutput: {\"clipped_grads\": [[[3.0, 4.0]], [[0.0, 0.0]]], \"total_norm\": 10.0}"
   ],
-  "requirements": "* Function must be named `calculus_gradient_clipping`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `calculus_gradient_clipping` accepting `grads`, `max_norm`\n* Compute the global gradient norm, rescale all gradients if the norm exceeds the threshold.\n* Return a `dict` containing the exact keys `'clipped_grads'`, `'total_norm'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `calculus_gradient_clipping`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`grads`, `max_norm`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `calculus_gradient_clipping` into clear stages: validate/reshape `grads`, `max_norm`, evaluate the Gradient Clipping: Global Norm Rescaling equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('clipped_grads', 'total_norm') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef calculus_gradient_clipping(grads: list, max_norm: float) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Gradient Clipping: Global Norm Rescaling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_gradient_clipping(grads: list, max_norm: float) -> dict:\n    flat = np.concatenate([np.array(g, dtype=float).flatten() for g in grads])\n    tot = float(np.linalg.norm(flat, 2))\n    scale = min(1.0, max_norm / (tot + 1e-6)) if tot > max_norm else 1.0\n    return {'clipped_grads': [np.round(np.array(g, dtype=float) * scale, 4).tolist() for g in grads], 'total_norm': round(tot, 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef calculus_gradient_clipping(grads: list, max_norm: float) -> dict:\n    \"\"\"\n    Compute the global gradient norm, rescale all gradients if the norm exceeds the threshold.\n\n    Args:\n        grads (list): Gradient tensor/vector for grads.\n        max_norm (float): Input parameter `max_norm` (float) for Gradient Clipping: Global Norm Rescaling.\n\n    Returns:\n        dict: Computed Gradient Clipping: Global Norm Rescaling result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Gradient Clipping: Global Norm Rescaling** (Calculus, Optimization, Linear Algebra): Compute the global gradient norm, rescale all gradients if the norm exceeds the threshold.\n\nTo implement `calculus_gradient_clipping` cleanly and accurately:\n1. Parse and normalize the inputs (`grads`, `max_norm`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_gradient_clipping(grads: list, max_norm: float) -> dict:\n    flat = np.concatenate([np.array(g, dtype=float).flatten() for g in grads])\n    tot = float(np.linalg.norm(flat, 2))\n    scale = min(1.0, max_norm / (tot + 1e-6)) if tot > max_norm else 1.0\n    return {'clipped_grads': [np.round(np.array(g, dtype=float) * scale, 4).tolist() for g in grads], 'total_norm': round(tot, 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Gradient Clipping: Global Norm Rescaling** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "calculus-gradient-clipping-tc-1",
@@ -75,7 +77,7 @@
     },
     {
       "id": "calculus-gradient-clipping-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (max_norm=5.0)",
       "inputs": {
         "grads": [
           [
@@ -114,7 +116,7 @@
     },
     {
       "id": "calculus-gradient-clipping-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (max_norm=1.25)",
       "inputs": {
         "grads": [
           [
@@ -149,11 +151,11 @@
         ],
         "total_norm": 2.5
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "calculus-gradient-clipping-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (max_norm=-2.5)",
       "inputs": {
         "grads": [
           [
@@ -192,7 +194,7 @@
     },
     {
       "id": "calculus-gradient-clipping-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (max_norm=7.5)",
       "inputs": {
         "grads": [
           [
@@ -231,7 +233,7 @@
     },
     {
       "id": "calculus-gradient-clipping-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (max_norm=3.5)",
       "inputs": {
         "grads": [
           [
@@ -270,7 +272,7 @@
     },
     {
       "id": "calculus-gradient-clipping-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (max_norm=0.5)",
       "inputs": {
         "grads": [
           [
@@ -310,7 +312,20 @@
   ],
   "functionMetadata": {
     "name": "calculus_gradient_clipping",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "grads",
+        "type": "array",
+        "example": "[[[3.0, 4.0]], [[0.0, 0.0]]]",
+        "description": "Gradient tensor/vector for grads"
+      },
+      {
+        "name": "max_norm",
+        "type": "number",
+        "example": "2.5",
+        "description": "Input parameter `max_norm` (float) for Gradient Clipping: Global Norm Rescaling"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -319,11 +334,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Gradient Clipping: Global Norm Rescaling",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/calculus-gradient-clipping",
+  "localUrl": "http://localhost:3000/problems/calculus-gradient-clipping"
 }

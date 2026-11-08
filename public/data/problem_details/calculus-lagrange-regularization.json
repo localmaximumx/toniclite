@@ -19,19 +19,21 @@
   "seoDescription": "Show that L2 regularization and constrained optimization (bounding the weight norm) produce the same solution.",
   "solved": false,
   "isLocked": true,
-  "description": "Demonstrate equivalence between unconstrained penalized Ridge regression and budget-constrained weight norm optimization via Lagrange duality.\n\nEvery regularization penalty corresponds to a dual constrained optimization problem whose Lagrange multiplier equals lambda.\n\n### Mathematical Formulation\n$$\n\\min_{\\|w\\|_2^2 \\le R^2} \\frac{1}{2}\\|X w - y\\|^2 \\iff \\min_w \\frac{1}{2}\\|X w - y\\|^2 + \\frac{\\lambda}{2}\\|w\\|^2\n$$\n\n### Step-by-Step Implementation\n1. Solve analytical Ridge regression normal equations: w = (X^T X + lambda * I)^-1 X^T y\n2. Evaluate Euclidean norm of regularized weight vector ||w||_2\n3. Demonstrate duality correspondence with radius boundary constraint R\n\n### Returns\nDictionary with 'regularized_weights' and scalar 'weight_norm'.",
-  "theory": "# Understanding Lagrange Multipliers: Regularization as Constrained Optimization\n\n## 1. What Is It?\n\nThe **Lagrange Multipliers: Regularization as Constrained Optimization** is a fundamental computational technique in Numpy. In machine learning workflows, Demonstrate equivalence between unconstrained penalized Ridge regression and budget-constrained weight norm optimization via Lagrange duality.\n\n### Key Terminology\n- **`X`**: The input feature matrix containing samples as rows and features as columns.\n- **`y`**: The target labels or ground-truth values to predict.\n- **Calculus**: Core domain concept contextualizing this task within Numpy workflows.\n- **Optimization**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\min_{\\|w\\|_2^2 \\le R^2} \\frac{1}{2}\\|X w - y\\|^2 \\iff \\min_w \\frac{1}{2}\\|X w - y\\|^2 + \\frac{\\lambda}{2}\\|w\\|^2\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `calculus_lagrange_regularization` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nX = [[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]], y = [2.0, 3.0, 5.0], l2_lambda = 0.5\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated calculus_lagrange_regularization under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"regularized_weights\": [1.8095, 2.4762], \"weight_norm\": 3.0669}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `calculus_lagrange_regularization` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`regularized_weights`**: Represents `regularized_weights` (e.g. `[1.8095, 2.4762]`), reflecting the updated state or component.\n  - **`weight_norm`**: Represents `weight_norm` (e.g. `3.0669`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `calculus_lagrange_regularization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `calculus_lagrange_regularization`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `calculus_lagrange_regularization`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Lagrange Multipliers: Regularization as Constrained Optimization** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `calculus_lagrange_regularization` accurately and efficiently performs the required transformation.\n",
+  "description": "Demonstrate equivalence between unconstrained penalized Ridge regression and budget-constrained weight norm optimization via Lagrange duality.\n\n$$\n\\min_{\\|w\\|_2^2 \\le R^2} \\frac{1}{2}\\|X w - y\\|^2 \\iff \\min_w \\frac{1}{2}\\|X w - y\\|^2 + \\frac{\\lambda}{2}\\|w\\|^2\n$$\n\nGiven input parameters `X`, `y`, `l2_lambda`, return dictionary with 'regularized_weights' and scalar 'weight_norm'.",
+  "theory": "## What Is Lagrange Multipliers: Regularization as Constrained Optimization?\n\nIn machine learning calculus, analytical derivatives and local linear approximations govern how small parameter changes affect model predictions and loss objectives.\n\n$$\n\\min_{\\|w\\|_2^2 \\le R^2} \\frac{1}{2}\\|X w - y\\|^2 \\iff \\min_w \\frac{1}{2}\\|X w - y\\|^2 + \\frac{\\lambda}{2}\\|w\\|^2\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Continuity of Activation Functions**, **Derivatives of Common Activation Functions**, **Backpropagation Through a Computation Graph**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d^2 + d^3)$ where $N$ is the number of samples and $d$ is the matrix/feature dimension (dominated by matrix factorization or system solve).\n- **Space Complexity:** $\\mathcal{O}(d^2)$ to store the matrix factors and intermediate linear algebra arrays.",
   "examples": [
-    "Input: X = [[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]], y = [2.0, 3.0, 5.0], l2_lambda = 0.5\n\nOutput: {\"regularized_weights\": [1.8095, 2.4762], \"weight_norm\": 3.0669}\n\nExplanation: Evaluated calculus_lagrange_regularization under standard test conditions."
+    "Input: X = [[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]], y = [2.0, 3.0, 5.0], l2_lambda = 0.5\n\nOutput: {\"regularized_weights\": [1.8095, 2.4762], \"weight_norm\": 3.0669}",
+    "Input: X = [[2.0, 0.0], [0.0, 2.0], [2.0, 2.0]], y = [4.0, 6.0, 10.0], l2_lambda = 1.0\n\nOutput: {\"regularized_weights\": [1.9077, 2.7077], \"weight_norm\": 3.3122}"
   ],
-  "requirements": "* Function must be named `calculus_lagrange_regularization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `calculus_lagrange_regularization` accepting `X`, `y`, `l2_lambda`\n* Show that L2 regularization and constrained optimization (bounding the weight norm) produce the same solution.\n* Return a `dict` containing the exact keys `'regularized_weights'`, `'weight_norm'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `calculus_lagrange_regularization`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`X`, `y`, `l2_lambda`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `calculus_lagrange_regularization` into clear stages: validate/reshape `X`, `y`, `l2_lambda`, evaluate the Lagrange Multipliers: Regularization as Constrained Optimization equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('regularized_weights', 'weight_norm') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef calculus_lagrange_regularization(X: list, y: list, l2_lambda: float = 0.5) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Lagrange Multipliers: Regularization as Constrained Optimization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_lagrange_regularization(X: list, y: list, l2_lambda: float = 0.5) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    w = np.dot(np.linalg.inv(np.dot(Xa.T, Xa) + float(l2_lambda)*np.eye(Xa.shape[1])), np.dot(Xa.T, ya))\n    return {'regularized_weights': np.round(w, 4).tolist(), 'weight_norm': round(float(np.linalg.norm(w)), 4)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef calculus_lagrange_regularization(X: list, y: list, l2_lambda: float = 0.5) -> dict:\n    \"\"\"\n    Show that L2 regularization and constrained optimization (bounding the weight norm) produce the same solution.\n\n    Args:\n        X (list): 2D input design matrix of shape (N, D) where rows are samples.\n        y (list): Target values, secondary coordinate, or comparison vector.\n        l2_lambda (float): Input parameter `l2_lambda` (float) for Lagrange Multipliers: Regularization as Constrained Optimization.\n\n    Returns:\n        dict: Computed Lagrange Multipliers: Regularization as Constrained Optimization result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Lagrange Multipliers: Regularization as Constrained Optimization** (Calculus, Optimization): Show that L2 regularization and constrained optimization (bounding the weight norm) produce the same solution.\n\nTo implement `calculus_lagrange_regularization` cleanly and accurately:\n1. Parse and normalize the inputs (`X`, `y`, `l2_lambda`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_lagrange_regularization(X: list, y: list, l2_lambda: float = 0.5) -> dict:\n    Xa, ya = np.array(X, dtype=np.float64), np.array(y, dtype=np.float64)\n    w = np.dot(np.linalg.inv(np.dot(Xa.T, Xa) + float(l2_lambda)*np.eye(Xa.shape[1])), np.dot(Xa.T, ya))\n    return {'regularized_weights': np.round(w, 4).tolist(), 'weight_norm': round(float(np.linalg.norm(w)), 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Lagrange Multipliers: Regularization as Constrained Optimization** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "calculus-lagrange-regularization-tc-1",
@@ -69,7 +71,7 @@
     },
     {
       "id": "calculus-lagrange-regularization-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (y=[4.0, 6.0, 10.0])",
       "inputs": {
         "X": [
           [
@@ -103,7 +105,7 @@
     },
     {
       "id": "calculus-lagrange-regularization-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (y=[1.0, 1.5, 2.5])",
       "inputs": {
         "X": [
           [
@@ -133,11 +135,11 @@
         ],
         "weight_norm": 2.6751
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "calculus-lagrange-regularization-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (y=[-2.0, -3.0, -5.0])",
       "inputs": {
         "X": [
           [
@@ -171,7 +173,7 @@
     },
     {
       "id": "calculus-lagrange-regularization-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (y=[6.0, 9.0, 15.0])",
       "inputs": {
         "X": [
           [
@@ -205,7 +207,7 @@
     },
     {
       "id": "calculus-lagrange-regularization-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (y=[3.0, 4.0, 6.0])",
       "inputs": {
         "X": [
           [
@@ -239,7 +241,7 @@
     },
     {
       "id": "calculus-lagrange-regularization-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (y=[0.0, 1.0, 3.0])",
       "inputs": {
         "X": [
           [
@@ -274,7 +276,26 @@
   ],
   "functionMetadata": {
     "name": "calculus_lagrange_regularization",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "X",
+        "type": "array",
+        "example": "[[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]]",
+        "description": "2D input design matrix of shape (N, D) where rows are samples"
+      },
+      {
+        "name": "y",
+        "type": "array",
+        "example": "[2.0, 3.0, 5.0]",
+        "description": "Target values, secondary coordinate, or comparison vector"
+      },
+      {
+        "name": "l2_lambda",
+        "type": "number",
+        "example": "0.5",
+        "description": "Input parameter `l2_lambda` (float) for Lagrange Multipliers: Regularization as Constrained Optimization"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -283,11 +304,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Lagrange Multipliers: Regularization as Constrained Optimization",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/calculus-lagrange-regularization",
+  "localUrl": "http://localhost:3000/problems/calculus-lagrange-regularization"
 }

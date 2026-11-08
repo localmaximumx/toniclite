@@ -19,19 +19,21 @@
   "seoDescription": "Implement aligned ROI pooling with bilinear sampling over feature-map coordinates and fixed-size output bins.",
   "solved": false,
   "isLocked": true,
-  "description": "Implement continuous Region of Interest (RoI) Align using 4 bilinear sampling points per bin to avoid quantization artifacts.\n\nRoIAlign preserves exact spatial locations, crucial for pixel-accurate instance segmentation masks in Mask R-CNN.\n\n### Mathematical Formulation\n$$\n\\operatorname{RoIAlign}(x, y) = \\frac{1}{4}\\sum_{k=1}^4 \\operatorname{BilinearInterp}\\left(F, x_k, y_k\\right)\n$$\n\n### Step-by-Step Implementation\n1. Divide continuous bounding box into pooled_h x pooled_w regular bins\n2. Compute 4 sub-pixel sampling points within each bin\n3. Evaluate bilinear interpolation and average the sampled values\n\n### Returns\nNested list of shape (N_rois, C, pooled_h, pooled_w).",
-  "theory": "# Understanding ROI Align\n\n## 1. What Is It?\n\nThe **ROI Align** is a fundamental computational technique in Python. In machine learning workflows, it involves performing continuous Region of Interest (RoI) Align using 4 bilinear sampling points per bin to avoid quantization artifacts.\n\n### Key Terminology\n- **Object Detection**: Core domain concept contextualizing this task within Python workflows.\n- **Computer Vision**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\operatorname{RoIAlign}(x, y) = \\frac{1}{4}\\sum_{k=1}^4 \\operatorname{BilinearInterp}\\left(F, x_k, y_k\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_roi_align` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nfeature_map = [[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0], [9.0, 10.0, 11.0, 12.0], [13.0, 14.0, 15.0, 16.0]], rois = [[0.5, 0.5, 2.5, 2.5]], pooled_h = 2, pooled_w = 2\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_roi_align under standard test conditions.\n\n**Resulting Output:**\n```python\n[[[[6.0, 7.0], [10.0, 11.0]]]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_roi_align` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[[[6.0, 7.0], [10.0, 11.0]]]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_roi_align`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_roi_align`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**ROI Align** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_roi_align` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement continuous Region of Interest (RoI) Align using 4 bilinear sampling points per bin to avoid quantization artifacts.\n\n$$\n\\operatorname{RoIAlign}(x, y) = \\frac{1}{4}\\sum_{k=1}^4 \\operatorname{BilinearInterp}\\left(F, x_k, y_k\\right)\n$$\n\nGiven input parameters `feature_map`, `rois`, `pooled_h`, `pooled_w`, return nested list of shape (N_rois, C, pooled_h, pooled_w).",
+  "theory": "## What Is ROI Align?\n\nIn computer vision, spatial tensor operators and geometric bounding-box algorithms extract translation- and scale-aware structure from image grids.\n\n$$\n\\operatorname{RoIAlign}(x, y) = \\frac{1}{4}\\sum_{k=1}^4 \\operatorname{BilinearInterp}\\left(F, x_k, y_k\\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: feature_map = [[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0], [9.0, 10.0, 11.0, 12.0], [13.0, 14.0, 15.0, 16.0]], rois = [[0.5, 0.5, 2.5, 2.5]], pooled_h = 2, pooled_w = 2\n\nOutput: [[[[6.0, 7.0], [10.0, 11.0]]]]\n\nExplanation: Evaluated cv_roi_align under standard test conditions."
+    "Input: feature_map = [[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0], [9.0, 10.0, 11.0, 12.0], [13.0, 14.0, 15.0, 16.0]], rois = [[0.5, 0.5, 2.5, 2.5]], pooled_h = 2, pooled_w = 2\n\nOutput: [[[[6.0, 7.0], [10.0, 11.0]]]]",
+    "Input: feature_map = [[2.0, 4.0, 6.0, 8.0], [10.0, 12.0, 14.0, 16.0], [18.0, 20.0, 22.0, 24.0], [26.0, 28.0, 30.0, 32.0]], rois = [[1.0, 1.0, 5.0, 5.0]], pooled_h = 4, pooled_w = 4\n\nOutput: [[[[17.0, 19.0, 20.0, 20.0], [25.0, 27.0, 28.0, 28.0], [29.0, 31.0, 32.0, 32.0], [29.0, 31.0, 32.0, 32.0]]]]"
   ],
-  "requirements": "* Function must be named `cv_roi_align`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_roi_align` accepting `feature_map`, `rois`, `pooled_h`, `pooled_w`\n* Implement aligned ROI pooling with bilinear sampling over feature-map coordinates and fixed-size output bins.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_roi_align`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`feature_map`, `rois`, `pooled_h`, `pooled_w`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `cv_roi_align` into clear stages: validate/reshape `feature_map`, `rois`, `pooled_h`, `pooled_w`, evaluate the ROI Align equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef cv_roi_align(feature_map: list, rois: list, pooled_h: int = 2, pooled_w: int = 2) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **ROI Align** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_roi_align(feature_map: list, rois: list, pooled_h: int = 2, pooled_w: int = 2) -> list:\n    fm = np.array(feature_map, dtype=np.float64)\n    if fm.ndim == 2:\n        fm = fm[np.newaxis, :, :]\n    C, H, W = fm.shape\n    out = []\n    for x1, y1, x2, y2 in rois:\n        bh, bw = max(y2 - y1, 1.0) / pooled_h, max(x2 - x1, 1.0) / pooled_w\n        grid = np.zeros((C, pooled_h, pooled_w), dtype=np.float64)\n        for ph in range(pooled_h):\n            for pw in range(pooled_w):\n                s = np.zeros(C, dtype=np.float64)\n                for iy in [0.25, 0.75]:\n                    for ix in [0.25, 0.75]:\n                        sy, sx = np.clip(y1 + (ph + iy)*bh, 0, H-1), np.clip(x1 + (pw + ix)*bw, 0, W-1)\n                        yl, xl = int(np.floor(sy)), int(np.floor(sx))\n                        yh, xh = min(yl+1, H-1), min(xl+1, W-1)\n                        ly, lx = sy - yl, sx - xl\n                        val = (1-lx)*(1-ly)*fm[:, yl, xl] + lx*(1-ly)*fm[:, yl, xh] + (1-lx)*ly*fm[:, yh, xl] + lx*ly*fm[:, yh, xh]\n                        s += val\n                grid[:, ph, pw] = s / 4.0\n        out.append(np.round(grid, 6).tolist())\n    return out\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef cv_roi_align(feature_map: list, rois: list, pooled_h: int = 2, pooled_w: int = 2) -> list:\n    \"\"\"\n    Implement aligned ROI pooling with bilinear sampling over feature-map coordinates and fixed-size output bins.\n\n    Args:\n        feature_map (list): Input parameter `feature_map` (list) for ROI Align.\n        rois (list): Input parameter `rois` (list) for ROI Align.\n        pooled_h (int): Input parameter `pooled_h` (int) for ROI Align.\n        pooled_w (int): Input parameter `pooled_w` (int) for ROI Align.\n\n    Returns:\n        list: Computed ROI Align result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**ROI Align** (Object Detection, Computer Vision): Implement aligned ROI pooling with bilinear sampling over feature-map coordinates and fixed-size output bins.\n\nTo implement `cv_roi_align` cleanly and accurately:\n1. Parse and normalize the inputs (`feature_map`, `rois`, `pooled_h`, `pooled_w`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_roi_align(feature_map: list, rois: list, pooled_h: int = 2, pooled_w: int = 2) -> list:\n    fm = np.array(feature_map, dtype=np.float64)\n    if fm.ndim == 2:\n        fm = fm[np.newaxis, :, :]\n    C, H, W = fm.shape\n    out = []\n    for x1, y1, x2, y2 in rois:\n        bh, bw = max(y2 - y1, 1.0) / pooled_h, max(x2 - x1, 1.0) / pooled_w\n        grid = np.zeros((C, pooled_h, pooled_w), dtype=np.float64)\n        for ph in range(pooled_h):\n            for pw in range(pooled_w):\n                s = np.zeros(C, dtype=np.float64)\n                for iy in [0.25, 0.75]:\n                    for ix in [0.25, 0.75]:\n                        sy, sx = np.clip(y1 + (ph + iy)*bh, 0, H-1), np.clip(x1 + (pw + ix)*bw, 0, W-1)\n                        yl, xl = int(np.floor(sy)), int(np.floor(sx))\n                        yh, xh = min(yl+1, H-1), min(xl+1, W-1)\n                        ly, lx = sy - yl, sx - xl\n                        val = (1-lx)*(1-ly)*fm[:, yl, xl] + lx*(1-ly)*fm[:, yl, xh] + (1-lx)*ly*fm[:, yh, xl] + lx*ly*fm[:, yh, xh]\n                        s += val\n                grid[:, ph, pw] = s / 4.0\n        out.append(np.round(grid, 6).tolist())\n    return out\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **ROI Align** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-roi-align-tc-1",
@@ -92,7 +94,7 @@
     },
     {
       "id": "cv-roi-align-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (pooled_h=4)",
       "inputs": {
         "feature_map": [
           [
@@ -165,7 +167,7 @@
     },
     {
       "id": "cv-roi-align-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (pooled_h=1)",
       "inputs": {
         "feature_map": [
           [
@@ -213,11 +215,11 @@
           ]
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-roi-align-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (pooled_h=6)",
       "inputs": {
         "feature_map": [
           [
@@ -314,7 +316,7 @@
     },
     {
       "id": "cv-roi-align-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (pooled_h=2)",
       "inputs": {
         "feature_map": [
           [
@@ -371,7 +373,7 @@
     },
     {
       "id": "cv-roi-align-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (pooled_h=20)",
       "inputs": {
         "feature_map": [
           [
@@ -860,7 +862,7 @@
     },
     {
       "id": "cv-roi-align-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (pooled_h=3)",
       "inputs": {
         "feature_map": [
           [
@@ -925,7 +927,32 @@
   ],
   "functionMetadata": {
     "name": "cv_roi_align",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "feature_map",
+        "type": "array",
+        "example": "[[1.0, 2.0, 3.0, 4.0], [5.0, 6.0, 7.0, 8.0], [9.0, 10.0, 11.0, 12.0], [13.0, 14.0, 15.0, 16.0]]",
+        "description": "Input parameter `feature_map` (list) for ROI Align"
+      },
+      {
+        "name": "rois",
+        "type": "array",
+        "example": "[[0.5, 0.5, 2.5, 2.5]]",
+        "description": "Input parameter `rois` (list) for ROI Align"
+      },
+      {
+        "name": "pooled_h",
+        "type": "number",
+        "example": "2",
+        "description": "Input parameter `pooled_h` (int) for ROI Align"
+      },
+      {
+        "name": "pooled_w",
+        "type": "number",
+        "example": "2",
+        "description": "Input parameter `pooled_w` (int) for ROI Align"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -934,11 +961,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "ROI Align",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-roi-align",
+  "localUrl": "http://localhost:3000/problems/cv-roi-align"
 }

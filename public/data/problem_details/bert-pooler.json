@@ -4,7 +4,7 @@
   "description": "Implement BERT's pooler. Select the hidden state at sequence position zero, apply the supplied square projection, add its bias, and apply the hyperbolic tangent.\n\n$$\nH_{\\mathrm{pooled}} = \\tanh\\left(H_{:,0,:}W_{\\mathrm{pool}} + b_{\\mathrm{pool}}\\right)\n$$\n\nHere, $H \\in \\mathbb{R}^{B \\times S \\times D}$ contains encoder hidden states, position zero is the classification token, $W_{\\mathrm{pool}} \\in \\mathbb{R}^{D \\times D}$ is the supplied projection, and $b_{\\mathrm{pool}} \\in \\mathbb{R}^{D}$ is its bias. Return $H_{\\mathrm{pooled}}$ as a float64 NumPy array with shape $(B,D)$.",
   "seoDescription": "Implement the BERT pooler by projecting the first token's hidden state through a dense layer and tanh activation.",
   "examples": [
-    "Input: hidden_states = [[[0.5,-0.3],[0.1,0.2],[-0.4,0.6]]], W_pool = [[0.3,-0.1],[0.2,0.4]], b_pool = [0.1,-0.1]\n\nOutput: [[0.187746,-0.263625]]\n\nExplanation: The pooler transforms only the classification-token state at sequence position zero.",
+    "Input: hidden_states = [[[0.5,-0.3],[0.1,0.2],[-0.4,0.6]]], W_pool = [[0.3,-0.1],[0.2,0.4]], b_pool = [0.1,-0.1]\n\nOutput: [[0.187746,-0.263625]]",
     "Input: hidden_states = [[[1,0,-1],[0,0,0]],[[-0.5,0.5,0.25],[1,1,1]]], W_pool = [[0.2,-0.1,0.3],[0.4,0.2,-0.2],[-0.3,0.5,0.1]], b_pool = [0,0.1,-0.1]\n\nOutput: [[0.462117,-0.462117,0.099668],[0.024995,0.358357,-0.314021]]",
     "Input: hidden_states = [[[2,-1],[5,5]]], W_pool = [[0,0],[0,0]], b_pool = [0.2,-0.4]\n\nOutput: [[0.197375,-0.379949]]"
   ],
@@ -20,9 +20,9 @@
   "createdAt": "2026-01-03T18:27:22.722Z",
   "updatedAt": "2026-02-21T17:14:46.169Z",
   "topicId": "bert-pooler",
-  "paperSnippet": "\"The final hidden state corresponding to this token ([CLS]) is used as the aggregate sequence representation for classification tasks. We denote this vector as C â R^H.\"",
+  "paperSnippet": "\"The final hidden state corresponding to this token ([CLS]) is used as the aggregate sequence representation for classification tasks. We denote this vector as C \u00e2\u0088\u0088 R^H.\"",
   "visualizationComponent": "PoolerViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **BERT Pooler** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef bert_pooler(hidden_states: np.ndarray, W_pool: np.ndarray,\n                b_pool: np.ndarray) -> np.ndarray:\n    hs = np.asarray(hidden_states, dtype=float)\n    wp = np.asarray(W_pool, dtype=float)\n    bp = np.asarray(b_pool, dtype=float)\n    \n    cls_tok = hs[:, 0, :]\n    return np.round(np.tanh(cls_tok @ wp + bp), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **BERT Pooler** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef bert_pooler(hidden_states: np.ndarray, W_pool: np.ndarray,\n                b_pool: np.ndarray) -> np.ndarray:\n    hs = np.asarray(hidden_states, dtype=float)\n    wp = np.asarray(W_pool, dtype=float)\n    bp = np.asarray(b_pool, dtype=float)\n    \n    cls_tok = hs[:, 0, :]\n    return np.round(np.tanh(cls_tok @ wp + bp), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "bert-pooler-tc-1",

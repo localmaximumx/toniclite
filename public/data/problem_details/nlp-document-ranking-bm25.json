@@ -19,19 +19,21 @@
   "seoDescription": "Score each document by combining term frequency saturation, inverse document frequency, and document length normalization.",
   "solved": false,
   "isLocked": true,
-  "description": "Rank documents in a corpus against a search query using Okapi BM25 scoring with term frequency saturation and document length normalization.\n\nUnlike standard TF-IDF where term frequency scales linearly or logarithmically, BM25 bounds the maximum impact of repeating terms via hyperparameter k_1.\n\n### Mathematical Formulation\n$$\n\\text{Score}(D, Q) = \\sum_{q \\in Q} \\ln\\left(\\frac{N - n(q) + 0.5}{n(q) + 0.5} + 1\\right) \\cdot \\frac{f(q, D)(k_1 + 1)}{f(q, D) + k_1(1 - b + b \\frac{|D|}{\\text{avgdl}})}\n$$\n\n### Step-by-Step Implementation\n1. Tokenize query and corpus documents into lowercase alphanumeric terms\n2. Compute inverse document frequency (IDF) for query terms across corpus\n3. Calculate non-linear length-normalized term frequency score per document and sum across matching terms\n\n### Returns\nList of floats representing BM25 relevance scores per document rounded to 4 decimal places.",
-  "theory": "# Understanding Document Ranking\n\n## 1. What Is It?\n\nThe **Document Ranking** is a fundamental computational technique in Python. In machine learning workflows, Rank documents in a corpus against a search query using Okapi BM25 scoring with term frequency saturation and document length normalization.\n\n### Key Terminology\n- **`b`**: The bias vector or offset scalar in the affine transformation.\n- **NLP**: Core domain concept contextualizing this task within Python workflows.\n- **Feature Engineering**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{Score}(D, Q) = \\sum_{q \\in Q} \\ln\\left(\\frac{N - n(q) + 0.5}{n(q) + 0.5} + 1\\right) \\cdot \\frac{f(q, D)(k_1 + 1)}{f(q, D) + k_1(1 - b + b \\frac{|D|}{\\text{avgdl}})}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `nlp_document_ranking_bm25` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nquery = \"deep learning\", corpus = [\"deep learning systems\", \"machine learning concepts\", \"deep convolutional networks\"], k1 = 1.5, b = 0.75\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated nlp_document_ranking_bm25 under standard test conditions.\n\n**Resulting Output:**\n```python\n[0.94, 0.47, 0.47]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `nlp_document_ranking_bm25` must return:\n- **Primary Output:** `[0.94, 0.47, 0.47]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `nlp_document_ranking_bm25`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `nlp_document_ranking_bm25`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `nlp_document_ranking_bm25`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Document Ranking** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `nlp_document_ranking_bm25` accurately and efficiently performs the required transformation.\n",
+  "description": "Rank documents in a corpus against a search query using Okapi BM25 scoring with term frequency saturation and document length normalization.\n\n$$\n\\text{Score}(D, Q) = \\sum_{q \\in Q} \\ln\\left(\\frac{N - n(q) + 0.5}{n(q) + 0.5} + 1\\right) \\cdot \\frac{f(q, D)(k_1 + 1)}{f(q, D) + k_1(1 - b + b \\frac{|D|}{\\text{avgdl}})}\n$$\n\nGiven input parameters `query`, `corpus`, `k1`, `b`, return list of floats representing BM25 relevance scores per document rounded to 4 decimal places.",
+  "theory": "## What Is Document Ranking?\n\nIn natural language processing, tokenization, subword hashing, and distributional embeddings map discrete text symbols into continuous geometric spaces.\n\n$$\n\\text{Score}(D, Q) = \\sum_{q \\in Q} \\ln\\left(\\frac{N - n(q) + 0.5}{n(q) + 0.5} + 1\\right) \\cdot \\frac{f(q, D)(k_1 + 1)}{f(q, D) + k_1(1 - b + b \\frac{|D|}{\\text{avgdl}})}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\tilde{p} = \\max(p, \\varepsilon), \\qquad \\varepsilon = 10^{-12}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Bag of Words**, **Beam Search Decoding**, **Byte Pair Encoding**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: query = \"deep learning\", corpus = [\"deep learning systems\", \"machine learning concepts\", \"deep convolutional networks\"], k1 = 1.5, b = 0.75\n\nOutput: [0.94, 0.47, 0.47]\n\nExplanation: Evaluated nlp_document_ranking_bm25 under standard test conditions."
+    "Input: query = \"deep learning\", corpus = [\"deep learning systems\", \"machine learning concepts\", \"deep convolutional networks\"], k1 = 1.5, b = 0.75\n\nOutput: [0.94, 0.47, 0.47]",
+    "Input: query = \"deep learning\", corpus = [\"deep learning systems\", \"machine learning concepts\", \"deep convolutional networks\"], k1 = 2.25, b = 1.125\n\nOutput: [0.94, 0.47, 0.47]"
   ],
-  "requirements": "* Function must be named `nlp_document_ranking_bm25`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `nlp_document_ranking_bm25` accepting `query`, `corpus`, `k1`, `b`\n* Score each document by combining term frequency saturation, inverse document frequency, and document length normalization.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `nlp_document_ranking_bm25`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`query`, `corpus`, `k1`, `b`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `nlp_document_ranking_bm25` into clear stages: validate/reshape `query`, `corpus`, `k1`, `b`, evaluate the Document Ranking equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math, re\n\ndef nlp_document_ranking_bm25(query: str, corpus: list, k1: float = 1.5, b: float = 0.75) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Document Ranking** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math, re\n\ndef nlp_document_ranking_bm25(query: str, corpus: list, k1: float = 1.5, b: float = 0.75) -> list:\n    def tok(t): return re.findall(r'\\b[a-zA-Z0-9]+\\b', t.lower())\n    tds, qt = [tok(d) for d in corpus], tok(query)\n    N, avgdl = len(corpus), sum(len(d) for d in tds) / max(1, len(corpus))\n    df = {q: sum(1 for d in tds if q in d) for q in set(qt)}\n    scores = []\n    for d in tds:\n        sc, cnt = 0.0, {w: d.count(w) for w in set(d)}\n        for q in qt:\n            if q in cnt:\n                nq = df.get(q, 0)\n                idf = math.log(((N - nq + 0.5) / (nq + 0.5)) + 1.0)\n                denom = cnt[q] + k1 * (1.0 - b + b * (len(d) / avgdl))\n                sc += idf * (cnt[q] * (k1 + 1.0)) / max(1e-12, denom)\n        scores.append(round(sc, 4))\n    return scores\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import math, re\n\ndef nlp_document_ranking_bm25(query: str, corpus: list, k1: float = 1.5, b: float = 0.75) -> list:\n    \"\"\"\n    Score each document by combining term frequency saturation, inverse document frequency, and document length normalization.\n\n    Args:\n        query (str): Query representation tensor.\n        corpus (list): Input parameter `corpus` (list) for Document Ranking.\n        k1 (float): Input parameter `k1` (float) for Document Ranking.\n        b (float): Bias vector or linear system right-hand side vector.\n\n    Returns:\n        list: Computed Document Ranking result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Document Ranking** (NLP, Feature Engineering): Score each document by combining term frequency saturation, inverse document frequency, and document length normalization.\n\nTo implement `nlp_document_ranking_bm25` cleanly and accurately:\n1. Parse and normalize the inputs (`query`, `corpus`, `k1`, `b`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math, re\n\ndef nlp_document_ranking_bm25(query: str, corpus: list, k1: float = 1.5, b: float = 0.75) -> list:\n    def tok(t): return re.findall(r'\\b[a-zA-Z0-9]+\\b', t.lower())\n    tds, qt = [tok(d) for d in corpus], tok(query)\n    N, avgdl = len(corpus), sum(len(d) for d in tds) / max(1, len(corpus))\n    df = {q: sum(1 for d in tds if q in d) for q in set(qt)}\n    scores = []\n    for d in tds:\n        sc, cnt = 0.0, {w: d.count(w) for w in set(d)}\n        for q in qt:\n            if q in cnt:\n                nq = df.get(q, 0)\n                idf = math.log(((N - nq + 0.5) / (nq + 0.5)) + 1.0)\n                denom = cnt[q] + k1 * (1.0 - b + b * (len(d) / avgdl))\n                sc += idf * (cnt[q] * (k1 + 1.0)) / max(1e-12, denom)\n        scores.append(round(sc, 4))\n    return scores\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Document Ranking** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "nlp-document-ranking-bm25-tc-1",
@@ -55,7 +57,7 @@
     },
     {
       "id": "nlp-document-ranking-bm25-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (query=deep learning)",
       "inputs": {
         "query": "deep learning",
         "corpus": [
@@ -75,7 +77,7 @@
     },
     {
       "id": "nlp-document-ranking-bm25-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (query=deep learning)",
       "inputs": {
         "query": "deep learning",
         "corpus": [
@@ -91,11 +93,11 @@
         0.47,
         0.47
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "nlp-document-ranking-bm25-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (query=deep learning)",
       "inputs": {
         "query": "deep learning",
         "corpus": [
@@ -115,7 +117,7 @@
     },
     {
       "id": "nlp-document-ranking-bm25-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (query=deep learning)",
       "inputs": {
         "query": "deep learning",
         "corpus": [
@@ -135,7 +137,7 @@
     },
     {
       "id": "nlp-document-ranking-bm25-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (query=deep learning)",
       "inputs": {
         "query": "deep learning",
         "corpus": [
@@ -155,7 +157,7 @@
     },
     {
       "id": "nlp-document-ranking-bm25-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (query=deep learning)",
       "inputs": {
         "query": "deep learning",
         "corpus": [
@@ -176,7 +178,32 @@
   ],
   "functionMetadata": {
     "name": "nlp_document_ranking_bm25",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "query",
+        "type": "string",
+        "example": "\"deep learning\"",
+        "description": "Query representation tensor"
+      },
+      {
+        "name": "corpus",
+        "type": "array",
+        "example": "[\"deep learning systems\", \"machine learning concepts\", \"deep convolutional networks\"]",
+        "description": "Input parameter `corpus` (list) for Document Ranking"
+      },
+      {
+        "name": "k1",
+        "type": "number",
+        "example": "1.5",
+        "description": "Input parameter `k1` (float) for Document Ranking"
+      },
+      {
+        "name": "b",
+        "type": "number",
+        "example": "0.75",
+        "description": "Bias vector or linear system right-hand side vector"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -185,11 +212,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Document Ranking",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/nlp-document-ranking-bm25",
+  "localUrl": "http://localhost:3000/problems/nlp-document-ranking-bm25"
 }

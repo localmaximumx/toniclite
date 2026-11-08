@@ -4,7 +4,7 @@
   "description": "Implement the cross-correlation used by an AlexNet-style convolution layer for an NHWC image batch. For image $X$, kernel $K$, bias $b$, stride $s$, and zero-padding $p$, each output value is\n\n$$\nY_{n,i,j,o}=b_o+\\sum_{u=0}^{K_h-1}\\sum_{v=0}^{K_w-1}\\sum_{c=0}^{C-1}X^{(p)}_{n,is+u,js+v,c}K_{u,v,c,o}.\n$$\n\nHere, $n$ selects a batch item, $(i,j)$ selects an output location, $c$ is an input channel, $o$ is an output channel, and $X^{(p)}$ is the zero-padded image. Return the convolution result as a float64 NumPy array with shape $(B,H_{out},W_{out},C_{out})$.",
   "seoDescription": "Implement an AlexNet convolutional layer with learned filters, bias, stride, padding, and multi-channel outputs.",
   "examples": [
-    "Input: image = [[[[1],[2],[3]],[[4],[5],[6]],[[7],[8],[9]]]], kernel = [[[[1]],[[0]]],[[[0]],[[-1]]]], bias = [0], stride = 1, padding = 0\n\nOutput: [[[[-4],[-4]],[[-4],[-4]]]]\n\nExplanation: Each kernel window is multiplied elementwise with the image patch, summed, and shifted by the output-channel bias.",
+    "Input: image = [[[[1],[2],[3]],[[4],[5],[6]],[[7],[8],[9]]]], kernel = [[[[1]],[[0]]],[[[0]],[[-1]]]], bias = [0], stride = 1, padding = 0\n\nOutput: [[[[-4],[-4]],[[-4],[-4]]]]",
     "Input: image = [[[[1,2],[3,4]],[[5,6],[7,8]]]], kernel = [[[[2],[-1]]]], bias = [0.5], stride = 1, padding = 0\n\nOutput: [[[[0.5],[2.5]],[[4.5],[6.5]]]]",
     "Input: image = [[[[1],[2]],[[3],[4]]]], kernel = [[[[1]],[[1]]],[[[1]],[[1]]]], bias = [0], stride = 2, padding = 1\n\nOutput: [[[[1],[2]],[[3],[4]]]]"
   ],

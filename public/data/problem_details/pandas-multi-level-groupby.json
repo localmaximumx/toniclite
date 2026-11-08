@@ -18,19 +18,21 @@
   "seoDescription": "Create a DataFrame, group by all specified columns, apply the aggregation, and return the result as a flat table.",
   "solved": false,
   "isLocked": true,
-  "description": "Group records by multiple hierarchical keys and compute conditional mean and record counts.\n\nMulti-level grouping computes summary statistics across cross-tabulated hierarchical segments (e.g. region and product category).\n\n### Mathematical Formulation\n$$\n\\gamma_{\\text{group\\_cols}, \\text{mean}(\\text{agg\\_col}), \\text{count}(\\text{agg\\_col})}(\\text{Table})\n$$\n\n### Step-by-Step Implementation\n1. Partition data records by multiple grouping columns\n2. Compute mean and count across aggregation attribute\n3. Format aggregated results as list of dictionary records\n\n### Returns\nList of aggregated summary dictionaries.",
-  "theory": "# Understanding Multi-Level GroupBy\n\n## 1. What Is It?\n\nThe **Multi-Level GroupBy** is a fundamental computational technique in Pandas. In machine learning workflows, Group records by multiple hierarchical keys and compute conditional mean and record counts.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Pandas workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\gamma_{\\text{group\\_cols}, \\text{mean}(\\text{agg\\_col}), \\text{count}(\\text{agg\\_col})}(\\text{Table})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pandas_multi_level_groupby` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nrecords = [{\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 50000}, {\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 60000}, {\"region\": \"West\", \"dept\": \"Eng\", \"salary\": 100000}], group_cols = [\"region\", \"dept\"], agg_col = \"salary\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pandas_multi_level_groupby under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"region\": \"East\", \"dept\": \"Sales\", \"mean\": 55000.0, \"count\": 2}, {\"region\": \"West\", \"dept\": \"Eng\", \"mean\": 100000.0, \"count\": 1}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pandas_multi_level_groupby` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'region': 'East', 'dept': 'Sales', 'mean': 55000.0, 'count': 2}`.\n  - **Element 2**: Evaluated output component `{'region': 'West', 'dept': 'Eng', 'mean': 100000.0, 'count': 1}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pandas_multi_level_groupby`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pandas_multi_level_groupby`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Multi-Level GroupBy** provides an essential primitive within Pandas systems. By combining vectorized array computation with rigorous numerical safeguards, `pandas_multi_level_groupby` accurately and efficiently performs the required transformation.\n",
+  "description": "Group records by multiple hierarchical keys and compute conditional mean and record counts.\n\n$$\n\\gamma_{\\text{group\\_cols}, \\text{mean}(\\text{agg\\_col}), \\text{count}(\\text{agg\\_col})}(\\text{Table})\n$$\n\nGiven input parameters `records`, `group_cols`, `agg_col`, return list of aggregated summary dictionaries.",
+  "theory": "## What Is Multi-Level GroupBy?\n\nIn tabular data engineering with Pandas, vectorized filtering, grouping, joining, and windowing transform raw records into clean analytical features.\n\n$$\n\\gamma_{\\text{group\\_cols}, \\text{mean}(\\text{agg\\_col}), \\text{count}(\\text{agg\\_col})}(\\text{Table})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Aggregation Functions**, **Apply Custom Transforms**, **Boolean Indexing**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: records = [{\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 50000}, {\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 60000}, {\"region\": \"West\", \"dept\": \"Eng\", \"salary\": 100000}], group_cols = [\"region\", \"dept\"], agg_col = \"salary\"\n\nOutput: [{\"region\": \"East\", \"dept\": \"Sales\", \"mean\": 55000.0, \"count\": 2}, {\"region\": \"West\", \"dept\": \"Eng\", \"mean\": 100000.0, \"count\": 1}]\n\nExplanation: Evaluated pandas_multi_level_groupby under standard test conditions."
+    "Input: records = [{\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 50000}, {\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 60000}, {\"region\": \"West\", \"dept\": \"Eng\", \"salary\": 100000}], group_cols = [\"region\", \"dept\"], agg_col = \"salary\"\n\nOutput: [{\"region\": \"East\", \"dept\": \"Sales\", \"mean\": 55000.0, \"count\": 2}, {\"region\": \"West\", \"dept\": \"Eng\", \"mean\": 100000.0, \"count\": 1}]",
+    "Input: records = [{\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 75000}, {\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 90000}, {\"region\": \"West\", \"dept\": \"Eng\", \"salary\": 150000}], group_cols = [\"region\", \"dept\"], agg_col = \"salary\"\n\nOutput: [{\"region\": \"East\", \"dept\": \"Sales\", \"mean\": 82500.0, \"count\": 2}, {\"region\": \"West\", \"dept\": \"Eng\", \"mean\": 150000.0, \"count\": 1}]"
   ],
-  "requirements": "* Function must be named `pandas_multi_level_groupby`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pandas_multi_level_groupby` accepting `records`, `group_cols`, `agg_col`\n* Create a DataFrame, group by all specified columns, apply the aggregation, and return the result as a flat table.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pandas_multi_level_groupby`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`records`, `group_cols`, `agg_col`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `pandas_multi_level_groupby` into clear stages: validate/reshape `records`, `group_cols`, `agg_col`, evaluate the Multi-Level GroupBy equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import pandas as pd\n\ndef pandas_multi_level_groupby(records: list, group_cols: list, agg_col: str) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Multi-Level GroupBy** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport pandas as pd\n\ndef pandas_multi_level_groupby(records: list, group_cols: list, agg_col: str) -> list:\n    df = pd.DataFrame(records).groupby(group_cols)[agg_col].agg(['mean', 'count']).reset_index()\n    df['mean'] = df['mean'].round(2)\n    return df.to_dict(orient='records')\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: Pandas & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import pandas as pd\n\ndef pandas_multi_level_groupby(records: list, group_cols: list, agg_col: str) -> list:\n    \"\"\"\n    Create a DataFrame, group by all specified columns, apply the aggregation, and return the result as a flat table.\n\n    Args:\n        records (list): List of dictionaries representing tabular rows.\n        group_cols (list): List of column names defining multi-level hierarchy groups.\n        agg_col (str): Target numeric column name to aggregate.\n\n    Returns:\n        list: Computed Multi-Level GroupBy result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Multi-Level GroupBy** (Data Processing): Create a DataFrame, group by all specified columns, apply the aggregation, and return the result as a flat table.\n\nTo implement `pandas_multi_level_groupby` cleanly and accurately:\n1. Parse and normalize the inputs (`records`, `group_cols`, `agg_col`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport pandas as pd\n\ndef pandas_multi_level_groupby(records: list, group_cols: list, agg_col: str) -> list:\n    df = pd.DataFrame(records).groupby(group_cols)[agg_col].agg(['mean', 'count']).reset_index()\n    df['mean'] = df['mean'].round(2)\n    return df.to_dict(orient='records')\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Multi-Level GroupBy** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pandas-multi-level-groupby-tc-1",
@@ -77,7 +79,7 @@
     },
     {
       "id": "pandas-multi-level-groupby-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (agg_col=salary)",
       "inputs": {
         "records": [
           {
@@ -120,7 +122,7 @@
     },
     {
       "id": "pandas-multi-level-groupby-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (agg_col=salary)",
       "inputs": {
         "records": [
           {
@@ -159,11 +161,11 @@
           "count": 1
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pandas-multi-level-groupby-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (agg_col=salary)",
       "inputs": {
         "records": [
           {
@@ -206,7 +208,7 @@
     },
     {
       "id": "pandas-multi-level-groupby-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (agg_col=salary)",
       "inputs": {
         "records": [
           {
@@ -249,7 +251,7 @@
     },
     {
       "id": "pandas-multi-level-groupby-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (agg_col=salary)",
       "inputs": {
         "records": [
           {
@@ -292,7 +294,7 @@
     },
     {
       "id": "pandas-multi-level-groupby-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (agg_col=salary)",
       "inputs": {
         "records": [
           {
@@ -336,7 +338,26 @@
   ],
   "functionMetadata": {
     "name": "pandas_multi_level_groupby",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "records",
+        "type": "array",
+        "example": "[{\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 50000}, {\"region\": \"East\", \"dept\": \"Sales\", \"salary\": 60000}, {\"region\": \"West\", \"dept\": \"Eng\", \"salary\": 100000}]",
+        "description": "List of dictionaries representing tabular rows"
+      },
+      {
+        "name": "group_cols",
+        "type": "array",
+        "example": "[\"region\", \"dept\"]",
+        "description": "List of column names defining multi-level hierarchy groups"
+      },
+      {
+        "name": "agg_col",
+        "type": "string",
+        "example": "\"salary\"",
+        "description": "Target numeric column name to aggregate"
+      }
+    ]
   },
   "relatedProblems": [
     "pandas-drop-duplicates",
@@ -345,11 +366,7 @@
     "pandas-multi-column-selection",
     "pandas-inspect-shape"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pandas",
-    "placeholderType": "pandas_passthrough (return df)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Multi-Level GroupBy",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pandas-multi-level-groupby",
+  "localUrl": "http://localhost:3000/problems/pandas-multi-level-groupby"
 }

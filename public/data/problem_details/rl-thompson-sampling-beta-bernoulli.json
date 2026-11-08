@@ -19,19 +19,21 @@
   "seoDescription": "Thompson sampling for a Bernoulli multi-armed bandit keeps a Beta posterior over each arm's success probability.",
   "solved": false,
   "isLocked": true,
-  "description": "Select the optimal multi-armed bandit arm given Beta posterior parameters and uniform sampling draws.\n\nThompson Sampling achieves asymptotically optimal regret bounds by sampling actions according to their posterior probability of being optimal.\n\n### Mathematical Formulation\n$$\na^* = \\arg\\max_{k} \\theta_k, \\quad \\theta_k \\sim \\text{Beta}(\\alpha_k, \\beta_k)\n$$\n\n### Step-by-Step Implementation\n1. Compute posterior mean and variance for each bandit arm k under Beta(alpha_k, beta_k)\n2. Map uniform random draws into standard deviations around posterior mean\n3. Select arm with highest sampled surrogate value\n\n### Returns\nInteger index of the selected bandit arm.",
-  "theory": "# Understanding Thompson Sampling (Beta-Bernoulli)\n\n## 1. What Is It?\n\nThe **Thompson Sampling (Beta-Bernoulli)** is a fundamental computational technique in Python. In machine learning workflows, Select the optimal multi-armed bandit arm given Beta posterior parameters and uniform sampling draws.\n\n### Key Terminology\n- **Reinforcement Learning**: Core domain concept contextualizing this task within Python workflows.\n- **Probability and Statistics**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\na^* = \\arg\\max_{k} \\theta_k, \\quad \\theta_k \\sim \\text{Beta}(\\alpha_k, \\beta_k)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `rl_thompson_sampling_beta_bernoulli` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nalpha_list = [5, 10, 2], beta_list = [5, 2, 8], samples = [0.5, 0.6, 0.4]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated rl_thompson_sampling_beta_bernoulli under standard test conditions.\n\n**Resulting Output:**\n```python\n1\n```\n\n## 4. Understanding the Expected Output\n\nThe function `rl_thompson_sampling_beta_bernoulli` must return:\n- **Primary Output:** `1`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `rl_thompson_sampling_beta_bernoulli`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `rl_thompson_sampling_beta_bernoulli`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `rl_thompson_sampling_beta_bernoulli`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Thompson Sampling (Beta-Bernoulli)** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `rl_thompson_sampling_beta_bernoulli` accurately and efficiently performs the required transformation.\n",
+  "description": "Select the optimal multi-armed bandit arm given Beta posterior parameters and uniform sampling draws.\n\n$$\na^* = \\arg\\max_{k} \\theta_k, \\quad \\theta_k \\sim \\text{Beta}(\\alpha_k, \\beta_k)\n$$\n\nGiven input parameters `alpha_list`, `beta_list`, `samples`, return integer index of the selected bandit arm.",
+  "theory": "## What Is Thompson Sampling (Beta-Bernoulli)?\n\nIn reinforcement learning, value functions and policy gradients optimize sequential decision-making over long-horizon Markov Decision Processes (MDPs).\n\n$$\na^* = \\arg\\max_{k} \\theta_k, \\quad \\theta_k \\sim \\text{Beta}(\\alpha_k, \\beta_k)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\na^* = \\arg\\max_{k} \\theta_k\n$$\n\n$$\n\\theta_k \\sim \\text{Beta}(\\alpha_k, \\beta_k)\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Actor-Critic (A2C) Loss with Entropy**, **Bellman Expectation Equation**, **Bellman Optimality Equation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: alpha_list = [5, 10, 2], beta_list = [5, 2, 8], samples = [0.5, 0.6, 0.4]\n\nOutput: 1\n\nExplanation: Evaluated rl_thompson_sampling_beta_bernoulli under standard test conditions."
+    "Input: alpha_list = [5, 10, 2], beta_list = [5, 2, 8], samples = [0.5, 0.6, 0.4]\n\nOutput: 1",
+    "Input: alpha_list = [8, 15, 3], beta_list = [8, 3, 12], samples = [0.75, 0.9, 0.6]\n\nOutput: 1"
   ],
-  "requirements": "* Function must be named `rl_thompson_sampling_beta_bernoulli`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `rl_thompson_sampling_beta_bernoulli` accepting `alpha_list`, `beta_list`, `samples`\n* Thompson sampling for a Bernoulli multi-armed bandit keeps a Beta posterior over each arm's success probability.\n* Return a scalar `int` rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `rl_thompson_sampling_beta_bernoulli`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`alpha_list`, `beta_list`, `samples`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $a^* = \\arg\\max_{k} \\theta_k, \\quad \\theta_k \\sim \\text{Beta}(\\alpha_k, \\beta_k)$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import math, numpy as np\n\ndef rl_thompson_sampling_beta_bernoulli(alpha_list: list, beta_list: list, samples: list) -> int:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Thompson Sampling (Beta-Bernoulli)** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport math, numpy as np\n\ndef rl_thompson_sampling_beta_bernoulli(alpha_list: list, beta_list: list, samples: list) -> int:\n    scores = []\n    for a, b, s in zip(alpha_list, beta_list, samples):\n        m = a / (a + b)\n        sd = math.sqrt((a * b) / (((a + b)**2) * (a + b + 1)))\n        scores.append(m + (s - 0.5) * 2.0 * sd)\n    return int(np.argmax(scores))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import math, numpy as np\n\ndef rl_thompson_sampling_beta_bernoulli(alpha_list: list, beta_list: list, samples: list) -> int:\n    \"\"\"\n    Thompson sampling for a Bernoulli multi-armed bandit keeps a Beta posterior over each arm's success probability.\n\n    Args:\n        alpha_list (list): Input parameter `alpha_list` (list) for Thompson Sampling (Beta-Bernoulli).\n        beta_list (list): Input parameter `beta_list` (list) for Thompson Sampling (Beta-Bernoulli).\n        samples (list): Input parameter `samples` (list) for Thompson Sampling (Beta-Bernoulli).\n\n    Returns:\n        int: Computed Thompson Sampling (Beta-Bernoulli) result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Thompson Sampling (Beta-Bernoulli)** (Reinforcement Learning, Probability and Statistics): Thompson sampling for a Bernoulli multi-armed bandit keeps a Beta posterior over each arm's success probability.\n\nTo implement `rl_thompson_sampling_beta_bernoulli` cleanly and accurately:\n1. Parse and normalize the inputs (`alpha_list`, `beta_list`, `samples`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `int` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport math, numpy as np\n\ndef rl_thompson_sampling_beta_bernoulli(alpha_list: list, beta_list: list, samples: list) -> int:\n    scores = []\n    for a, b, s in zip(alpha_list, beta_list, samples):\n        m = a / (a + b)\n        sd = math.sqrt((a * b) / (((a + b)**2) * (a + b + 1)))\n        scores.append(m + (s - 0.5) * 2.0 * sd)\n    return int(np.argmax(scores))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Thompson Sampling (Beta-Bernoulli)** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "rl-thompson-sampling-beta-bernoulli-tc-1",
@@ -58,7 +60,7 @@
     },
     {
       "id": "rl-thompson-sampling-beta-bernoulli-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (alpha_list=[8, 15, 3])",
       "inputs": {
         "alpha_list": [
           8,
@@ -81,7 +83,7 @@
     },
     {
       "id": "rl-thompson-sampling-beta-bernoulli-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (alpha_list=[2, 5, 1])",
       "inputs": {
         "alpha_list": [
           2,
@@ -100,11 +102,11 @@
         ]
       },
       "expectedOutput": 1,
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "rl-thompson-sampling-beta-bernoulli-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (alpha_list=[10, 20, 4])",
       "inputs": {
         "alpha_list": [
           10,
@@ -127,7 +129,7 @@
     },
     {
       "id": "rl-thompson-sampling-beta-bernoulli-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (alpha_list=[4, 8, 2])",
       "inputs": {
         "alpha_list": [
           4,
@@ -150,7 +152,7 @@
     },
     {
       "id": "rl-thompson-sampling-beta-bernoulli-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (alpha_list=[15, 30, 6])",
       "inputs": {
         "alpha_list": [
           15,
@@ -173,7 +175,7 @@
     },
     {
       "id": "rl-thompson-sampling-beta-bernoulli-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (alpha_list=[1, 2, 0])",
       "inputs": {
         "alpha_list": [
           1,
@@ -197,7 +199,26 @@
   ],
   "functionMetadata": {
     "name": "rl_thompson_sampling_beta_bernoulli",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "alpha_list",
+        "type": "array",
+        "example": "[5, 10, 2]",
+        "description": "Input parameter `alpha_list` (list) for Thompson Sampling (Beta-Bernoulli)"
+      },
+      {
+        "name": "beta_list",
+        "type": "array",
+        "example": "[5, 2, 8]",
+        "description": "Input parameter `beta_list` (list) for Thompson Sampling (Beta-Bernoulli)"
+      },
+      {
+        "name": "samples",
+        "type": "array",
+        "example": "[0.5, 0.6, 0.4]",
+        "description": "Input parameter `samples` (list) for Thompson Sampling (Beta-Bernoulli)"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -206,11 +227,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Thompson Sampling (Beta-Bernoulli)",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/rl-thompson-sampling-beta-bernoulli",
+  "localUrl": "http://localhost:3000/problems/rl-thompson-sampling-beta-bernoulli"
 }

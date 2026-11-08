@@ -18,23 +18,25 @@
   "seoDescription": "The Bellman expectation equation is the cornerstone of policy evaluation in reinforcement learning.",
   "solved": false,
   "isLocked": true,
-  "description": "Evaluate the expected state value V^pi(s) under a stationary policy by compounding immediate reward with discounted future state expectations.\n\nThe Bellman expectation equation expresses recursive consistency between the value of a state and the values of its possible successors.\n\n### Mathematical Formulation\n$$\nV^\\pi(s) = \\sum_{a} \\pi(a|s) \\left[ R(s, a) + \\gamma \\sum_{s'} P(s' | s, a) V^\\pi(s') \\right]\n$$\n\n### Step-by-Step Implementation\n1. Compute expected action values Q(s, a) by combining immediate action reward with discounted next-state values\n2. Weight action values by policy distribution probabilities pi(a|s)\n3. Accumulate across all actions to evaluate expected state value\n\n### Returns\nScalar float representing V^pi(s).",
-  "theory": "# Understanding Bellman Expectation Equation\n\n## 1. What Is It?\n\nThe **Bellman Expectation Equation** is a fundamental computational technique in Python. In machine learning workflows, Evaluate the expected state value V^pi(s) under a stationary policy by compounding immediate reward with discounted future state expectations.\n\n### Key Terminology\n- **`gamma`**: The learned affine scale parameter or discount factor.\n- **Reinforcement Learning**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nV^\\pi(s) = \\sum_{a} \\pi(a|s) \\left[ R(s, a) + \\gamma \\sum_{s'} P(s' | s, a) V^\\pi(s') \\right]\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `rl_bellman_expectation_equation` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nstate = 0, policy_probs = [0.5, 0.5], transitions = [[0.8, 0.2], [0.1, 0.9]], rewards = [1.0, 2.0], v_values = [3.0, 5.0], gamma = 0.9\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated rl_bellman_expectation_equation under standard test conditions.\n\n**Resulting Output:**\n```python\n5.19\n```\n\n## 4. Understanding the Expected Output\n\nThe function `rl_bellman_expectation_equation` must return:\n- **Primary Output:** `5.19`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `rl_bellman_expectation_equation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `rl_bellman_expectation_equation`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `rl_bellman_expectation_equation`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Bellman Expectation Equation** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `rl_bellman_expectation_equation` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement the Bellman expectation backup to evaluate the state-value function $V^\\pi(s)$ at state index `state` under policy `policy_probs`, transition tensor `transitions`, reward tensor `rewards`, current value estimates `values`, and discount factor `gamma` ($\\gamma$):\n\n$$\nV^\\pi(s) = \\sum_{a \\in \\mathcal{A}} \\pi(a \\mid s) \\sum_{s' \\in \\mathcal{S}} P(s' \\mid s, a) \\Big[ R(s, a, s') + \\gamma V^\\pi(s') \\Big]\n$$\n\nSupport both full-MDP tensors (shapes `(S, A)` and `(S, A, S)`, indexed at `state`) and single-state slices (shapes `(A,)` and `(A, S)`). Return $V^\\pi(s)$ as a float rounded to 4 decimal places.",
+  "theory": "## What Is Bellman Expectation Equation?\n\nThe Bellman Equation decomposes the long-term value of a decision state recursively into the immediate expected reward plus the discounted value of successor states.\n\n$$\nV^\\pi(s) = \\sum_{a \\in \\mathcal{A}} \\pi(a \\mid s) \\sum_{s' \\in \\mathcal{S}} P(s' \\mid s, a) \\Big[ R(s, a, s') + \\gamma V^\\pi(s') \\Big]\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Actor-Critic (A2C) Loss with Entropy**, **Bellman Optimality Equation**, **Bradley-Terry Reward Model Loss**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: state = 0, policy_probs = [0.5, 0.5], transitions = [[0.8, 0.2], [0.1, 0.9]], rewards = [1.0, 2.0], v_values = [3.0, 5.0], gamma = 0.9\n\nOutput: 5.19\n\nExplanation: Evaluated rl_bellman_expectation_equation under standard test conditions."
+    "Input: state = 0, policy_probs = [0.5, 0.5], transitions = [[0.8, 0.2], [0.1, 0.9]], rewards = [[1.0, 0.0], [0.0, 2.0]], v_values = [5.0, 10.0], gamma = 0.9\n\nOutput: 8.275",
+    "Input: state = 1, policy_probs = [[0.5, 0.5], [0.2, 0.8]], transitions = [[[0.7, 0.3], [0.4, 0.6]], [[0.9, 0.1], [0.3, 0.7]]], rewards = [[[1.0, 2.0], [0.0, 3.0]], [[2.0, 1.0], [4.0, 5.0]]], v_values = [3.0, 6.0], gamma = 0.9\n\nOutput: 8.406"
   ],
-  "requirements": "* Function must be named `rl_bellman_expectation_equation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `rl_bellman_expectation_equation` accepting `state`, `policy_probs`, `transitions`, `rewards`, `v_values`, `gamma`\n* The Bellman expectation equation is the cornerstone of policy evaluation in reinforcement learning.\n* Return a scalar `float` rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `rl_bellman_expectation_equation`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`state`, `policy_probs`, `transitions`, `rewards`, `v_values`, `gamma`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `rl_bellman_expectation_equation` into clear stages: validate/reshape `state`, `policy_probs`, `transitions`, `rewards`, `v_values`, `gamma`, evaluate the Bellman Expectation Equation equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef rl_bellman_expectation_equation(state: int, policy_probs: list, transitions: list, rewards: list, v_values: list, gamma: float = 0.9) -> float:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Bellman Expectation Equation** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_bellman_expectation_equation(state: int, policy_probs: list, transitions: list, rewards: list, v_values: list, gamma: float = 0.9) -> float:\n    q = np.array(rewards, dtype=np.float64) + float(gamma) * np.sum(np.array(transitions, dtype=np.float64) * np.array(v_values, dtype=np.float64), axis=1)\n    return round(float(np.sum(np.array(policy_probs, dtype=np.float64) * q)), 4)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef rl_bellman_expectation_equation(state: int, policy_probs: list, transitions: list, rewards: list, v_values: list, gamma: float = 0.9) -> float:\n    \"\"\"\n    Evaluates the Bellman expectation backup V^pi(s) for the target state index `state`\n    given state-indexed or flat policy_probs, transitions, rewards, and v_values.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Bellman Expectation Equation** (Reinforcement Learning): The Bellman expectation equation is the cornerstone of policy evaluation in reinforcement learning.\n\nTo implement `rl_bellman_expectation_equation` cleanly and accurately:\n1. Parse and normalize the inputs (`state`, `policy_probs`, `transitions`, `rewards`, `v_values`, `gamma`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `float` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef rl_bellman_expectation_equation(state: int, policy_probs: list, transitions: list, rewards: list, v_values: list, gamma: float = 0.9) -> float:\n    s = int(state)\n    pi = np.asarray(policy_probs, dtype=float)\n    P = np.asarray(transitions, dtype=float)\n    R = np.asarray(rewards, dtype=float)\n    V = np.asarray(v_values, dtype=float)\n    # Support both state-indexed (S, A, ...) and single-state (A, S') inputs\n    pi_s = pi[s] if pi.ndim == 2 else pi\n    P_s = P[s] if P.ndim == 3 else P\n    R_s = R[s] if R.ndim == 3 else R\n    q_s = np.sum(P_s * (R_s + float(gamma) * V[None, :]), axis=1)\n    v_s = float(np.dot(pi_s, q_s))\n    return round(v_s, 4)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Bellman Expectation Equation** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "rl-bellman-expectation-equation-tc-1",
-      "name": "2 actions 2 states",
+      "name": "Single-state 2-action backup",
       "inputs": {
         "state": 0,
         "policy_probs": [
@@ -52,214 +54,420 @@
           ]
         ],
         "rewards": [
-          1.0,
-          2.0
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
         ],
         "v_values": [
-          3.0,
-          5.0
+          5.0,
+          10.0
         ],
         "gamma": 0.9
       },
-      "expectedOutput": 5.19,
+      "expectedOutput": 8.275,
       "isPublic": true
     },
     {
       "id": "rl-bellman-expectation-equation-tc-2",
-      "name": "Case 2",
+      "name": "Multi-state MDP backup at state=1",
       "inputs": {
-        "state": 0,
+        "state": 1,
         "policy_probs": [
-          0.75,
-          0.75
+          [
+            0.5,
+            0.5
+          ],
+          [
+            0.2,
+            0.8
+          ]
         ],
         "transitions": [
           [
-            1.2,
-            0.3
+            [
+              0.7,
+              0.3
+            ],
+            [
+              0.4,
+              0.6
+            ]
           ],
           [
-            0.15,
-            1.35
+            [
+              0.9,
+              0.1
+            ],
+            [
+              0.3,
+              0.7
+            ]
           ]
         ],
         "rewards": [
-          1.5,
-          3.0
+          [
+            [
+              1.0,
+              2.0
+            ],
+            [
+              0.0,
+              3.0
+            ]
+          ],
+          [
+            [
+              2.0,
+              1.0
+            ],
+            [
+              4.0,
+              5.0
+            ]
+          ]
         ],
         "v_values": [
-          4.5,
-          7.5
+          3.0,
+          6.0
         ],
-        "gamma": 1.35
+        "gamma": 0.9
       },
-      "expectedOutput": 22.0556,
+      "expectedOutput": 8.406,
       "isPublic": true
     },
     {
       "id": "rl-bellman-expectation-equation-tc-3",
-      "name": "Case 3",
+      "name": "Deterministic greedy policy on state=0",
       "inputs": {
         "state": 0,
         "policy_probs": [
-          0.25,
-          0.25
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
         ],
         "transitions": [
           [
-            0.4,
-            0.1
+            [
+              0.6,
+              0.4
+            ],
+            [
+              0.2,
+              0.8
+            ]
           ],
           [
-            0.05,
-            0.45
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.1,
+              0.9
+            ]
           ]
         ],
         "rewards": [
-          0.5,
-          1.0
+          [
+            [
+              2.0,
+              4.0
+            ],
+            [
+              1.0,
+              1.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              3.0,
+              3.0
+            ]
+          ]
         ],
         "v_values": [
-          1.5,
-          2.5
+          4.0,
+          8.0
         ],
-        "gamma": 0.45
+        "gamma": 0.95
       },
-      "expectedOutput": 0.6056,
-      "isPublic": false
+      "expectedOutput": 8.12,
+      "isPublic": true
     },
     {
       "id": "rl-bellman-expectation-equation-tc-4",
-      "name": "Case 4",
+      "name": "Myopic discount gamma=0.0",
       "inputs": {
         "state": 0,
         "policy_probs": [
-          1.0,
-          1.0
+          0.3,
+          0.7
         ],
         "transitions": [
           [
-            1.6,
-            0.4
+            0.5,
+            0.5
           ],
           [
             0.2,
-            1.8
+            0.8
           ]
         ],
         "rewards": [
-          2.0,
-          4.0
+          [
+            2.0,
+            4.0
+          ],
+          [
+            1.0,
+            5.0
+          ]
         ],
         "v_values": [
-          6.0,
-          10.0
+          100.0,
+          200.0
         ],
-        "gamma": 1.8
+        "gamma": 0.0
       },
-      "expectedOutput": 65.04,
+      "expectedOutput": 3.84,
       "isPublic": false
     },
     {
       "id": "rl-bellman-expectation-equation-tc-5",
-      "name": "Case 5",
+      "name": "3-state MDP evaluated at state=2",
       "inputs": {
-        "state": 0,
+        "state": 2,
         "policy_probs": [
-          -0.5,
-          -0.5
+          [
+            0.5,
+            0.5
+          ],
+          [
+            0.5,
+            0.5
+          ],
+          [
+            0.4,
+            0.6
+          ]
         ],
         "transitions": [
           [
-            -0.8,
-            -0.2
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ]
           ],
           [
-            -0.1,
-            -0.9
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          [
+            [
+              0.2,
+              0.3,
+              0.5
+            ],
+            [
+              0.1,
+              0.1,
+              0.8
+            ]
           ]
         ],
         "rewards": [
-          -1.0,
-          -2.0
+          [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          [
+            [
+              1.0,
+              2.0,
+              3.0
+            ],
+            [
+              2.0,
+              4.0,
+              6.0
+            ]
+          ]
         ],
         "v_values": [
-          -3.0,
-          -5.0
+          1.0,
+          2.0,
+          5.0
         ],
-        "gamma": 0.9
+        "gamma": 0.8
       },
-      "expectedOutput": -2.19,
+      "expectedOutput": 7.28,
       "isPublic": false
     },
     {
       "id": "rl-bellman-expectation-equation-tc-6",
-      "name": "Case 6",
+      "name": "Negative step penalties",
       "inputs": {
         "state": 0,
         "policy_probs": [
-          0.4,
+          0.6,
           0.4
         ],
         "transitions": [
           [
-            0.64,
-            0.16
+            0.9,
+            0.1
           ],
           [
-            0.08,
-            0.72
+            0.3,
+            0.7
           ]
         ],
         "rewards": [
-          0.8,
-          1.6
+          [
+            -1.0,
+            -2.0
+          ],
+          [
+            -0.5,
+            -3.0
+          ]
         ],
         "v_values": [
-          2.4,
-          4.0
+          -4.0,
+          -8.0
         ],
-        "gamma": 0.72
+        "gamma": 0.9
       },
-      "expectedOutput": 2.4714,
+      "expectedOutput": -6.384,
       "isPublic": false
     },
     {
       "id": "rl-bellman-expectation-equation-tc-7",
-      "name": "Case 7",
+      "name": "Undiscounted episodic backup (gamma=1.0)",
       "inputs": {
         "state": 0,
         "policy_probs": [
-          1.5,
-          1.5
+          0.25,
+          0.75
         ],
         "transitions": [
           [
-            2.4,
-            0.6
+            1.0,
+            0.0
           ],
           [
-            0.3,
-            2.7
+            0.0,
+            1.0
           ]
         ],
         "rewards": [
-          3.0,
-          6.0
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            3.0
+          ]
         ],
         "v_values": [
-          9.0,
-          15.0
+          2.0,
+          4.0
         ],
-        "gamma": 2.7
+        "gamma": 1.0
       },
-      "expectedOutput": 312.39,
+      "expectedOutput": 6.0,
       "isPublic": false
     }
   ],
   "functionMetadata": {
     "name": "rl_bellman_expectation_equation",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "state",
+        "type": "number",
+        "example": "0",
+        "description": "Input parameter `state` (int) for Bellman Expectation Equation"
+      },
+      {
+        "name": "policy_probs",
+        "type": "array",
+        "example": "[0.5, 0.5]",
+        "description": "Probability value(s) for policy probs"
+      },
+      {
+        "name": "transitions",
+        "type": "array",
+        "example": "[[0.8, 0.2], [0.1, 0.9]]",
+        "description": "MDP state-action-next_state transition probability tensor P(s' | s, a)"
+      },
+      {
+        "name": "rewards",
+        "type": "array",
+        "example": "[[1.0, 0.0], [0.0, 2.0]]",
+        "description": "Immediate rewards collected across steps or completions"
+      },
+      {
+        "name": "v_values",
+        "type": "array",
+        "example": "[5.0, 10.0]",
+        "description": "Current state-value estimates V(s) across all states"
+      },
+      {
+        "name": "gamma",
+        "type": "number",
+        "example": "0.9",
+        "description": "Discount factor in [0, 1] or scale parameter"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -268,11 +476,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Bellman Expectation Equation",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/rl-bellman-expectation-equation",
+  "localUrl": "http://localhost:3000/problems/rl-bellman-expectation-equation"
 }

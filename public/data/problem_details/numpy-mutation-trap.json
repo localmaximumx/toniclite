@@ -18,19 +18,21 @@
   "seoDescription": "Extract an independent NumPy row copy, mutate it safely, and verify that the original array remains unchanged.",
   "solved": false,
   "isLocked": true,
-  "description": "Demonstrate memory view side-effects versus deep array copying when mutating array elements.\n\nSlices and simple assignment in NumPy create memory views sharing underlying data pointers. Modifying views inadvertently corrupts source tensors unless .copy() is invoked.\n\n### Mathematical Formulation\n$$\n\\mathbf{B} = \\mathbf{A}.\\text{copy}(), \\quad B_i \\leftarrow v \\implies A_i \\ne B_i\n$$\n\n### Step-by-Step Implementation\n1. Instantiate NumPy array from input list\n2. Create explicit independent buffer replica via arr.copy()\n3. Mutate modified_copy at modify_index and verify original array remains unaltered\n\n### Returns\nDictionary with 'original', 'modified_copy', and boolean 'is_independent'.",
-  "theory": "# Understanding Mutation Trap\n\n## 1. What Is It?\n\nThe **Mutation Trap** is a fundamental computational technique in Numpy. In machine learning workflows, Demonstrate memory view side-effects versus deep array copying when mutating array elements.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{B} = \\mathbf{A}.\\text{copy}(), \\quad B_i \\leftarrow v \\implies A_i \\ne B_i\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `numpy_mutation_trap` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\narr = [1.0, 2.0, 3.0], modify_index = 1, new_val = 99.0\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated numpy_mutation_trap under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"original\": [1.0, 2.0, 3.0], \"modified_copy\": [1.0, 99.0, 3.0], \"is_independent\": 1}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `numpy_mutation_trap` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`original`**: Represents `original` (e.g. `[1.0, 2.0, 3.0]`), reflecting the updated state or component.\n  - **`modified_copy`**: Represents `modified_copy` (e.g. `[1.0, 99.0, 3.0]`), reflecting the updated state or component.\n  - **`is_independent`**: Represents `is_independent` (e.g. `1`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `numpy_mutation_trap`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `numpy_mutation_trap`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `numpy_mutation_trap`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Mutation Trap** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `numpy_mutation_trap` accurately and efficiently performs the required transformation.\n",
+  "description": "Demonstrate memory view side-effects versus deep array copying when mutating array elements.\n\n$$\n\\mathbf{B} = \\mathbf{A}.\\text{copy}(), \\quad B_i \\leftarrow v \\implies A_i \\ne B_i\n$$\n\nGiven input parameters `arr`, `modify_index`, `new_val`, return dictionary with 'original', 'modified_copy', and boolean 'is_independent'.",
+  "theory": "## What Is Mutation Trap?\n\nIn scientific array computing with NumPy, vectorized tensor operations apply mathematical transformations across entire arrays without Python loop overhead.\n\n$$\n\\mathbf{B} = \\mathbf{A}.\\text{copy}(), \\quad B_i \\leftarrow v \\implies A_i \\ne B_i\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\mathbf{B} = \\mathbf{A}.\\text{copy}()\n$$\n\n$$\nB_i \\leftarrow v \\implies A_i \\ne B_i\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Aggregation Functions**, **Angle Features**, **Arange and Linspace**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: arr = [1.0, 2.0, 3.0], modify_index = 1, new_val = 99.0\n\nOutput: {\"original\": [1.0, 2.0, 3.0], \"modified_copy\": [1.0, 99.0, 3.0], \"is_independent\": 1}\n\nExplanation: Evaluated numpy_mutation_trap under standard test conditions."
+    "Input: arr = [1.0, 2.0, 3.0], modify_index = 1, new_val = 99.0\n\nOutput: {\"original\": [1.0, 2.0, 3.0], \"modified_copy\": [1.0, 99.0, 3.0], \"is_independent\": 1}",
+    "Input: arr = [1.5, 3.0, 4.5], modify_index = 2, new_val = 148.5\n\nOutput: {\"original\": [1.5, 3.0, 4.5], \"modified_copy\": [1.5, 3.0, 148.5], \"is_independent\": true}"
   ],
-  "requirements": "* Function must be named `numpy_mutation_trap`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `numpy_mutation_trap` accepting `arr`, `modify_index`, `new_val`\n* Extract an independent NumPy row copy, mutate it safely, and verify that the original array remains unchanged.\n* Return a `dict` containing the exact keys `'original'`, `'modified_copy'`, `'is_independent'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `numpy_mutation_trap`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`arr`, `modify_index`, `new_val`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\mathbf{B} = \\mathbf{A}.\\text{copy}(), \\quad B_i \\leftarrow v \\implies A_i \\ne B_i$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('original', 'modified_copy', 'is_independent') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef numpy_mutation_trap(arr: list, modify_index: int, new_val: float) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Mutation Trap** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_mutation_trap(arr: list, modify_index: int, new_val: float) -> dict:\n    orig = np.array(arr, dtype=float)\n    cloned = orig.copy()\n    cloned[modify_index] = new_val\n    return {'original': orig.tolist(), 'modified_copy': cloned.tolist(), 'is_independent': bool(orig[modify_index] != cloned[modify_index])}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef numpy_mutation_trap(arr: list, modify_index: int, new_val: float) -> dict:\n    \"\"\"\n    Extract an independent NumPy row copy, mutate it safely, and verify that the original array remains unchanged.\n\n    Args:\n        arr (list): Input parameter `arr` (list) for Mutation Trap.\n        modify_index (int): Input parameter `modify_index` (int) for Mutation Trap.\n        new_val (float): Input parameter `new_val` (float) for Mutation Trap.\n\n    Returns:\n        dict: Computed Mutation Trap result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Mutation Trap** (Data Processing): Extract an independent NumPy row copy, mutate it safely, and verify that the original array remains unchanged.\n\nTo implement `numpy_mutation_trap` cleanly and accurately:\n1. Parse and normalize the inputs (`arr`, `modify_index`, `new_val`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_mutation_trap(arr: list, modify_index: int, new_val: float) -> dict:\n    orig = np.array(arr, dtype=float)\n    cloned = orig.copy()\n    cloned[modify_index] = new_val\n    return {'original': orig.tolist(), 'modified_copy': cloned.tolist(), 'is_independent': bool(orig[modify_index] != cloned[modify_index])}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Mutation Trap** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "numpy-mutation-trap-tc-1",
@@ -61,7 +63,7 @@
     },
     {
       "id": "numpy-mutation-trap-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (arr=[1.5, 3.0, 4.5])",
       "inputs": {
         "arr": [
           1.5,
@@ -88,7 +90,7 @@
     },
     {
       "id": "numpy-mutation-trap-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (arr=[0.5, 1.0, 1.5])",
       "inputs": {
         "arr": [
           0.5,
@@ -111,11 +113,11 @@
         ],
         "is_independent": true
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "numpy-mutation-trap-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (arr=[2.0, 4.0, 6.0])",
       "inputs": {
         "arr": [
           2.0,
@@ -142,7 +144,7 @@
     },
     {
       "id": "numpy-mutation-trap-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (arr=[-1.0, -2.0, -3.0])",
       "inputs": {
         "arr": [
           -1.0,
@@ -169,7 +171,7 @@
     },
     {
       "id": "numpy-mutation-trap-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (arr=[0.8, 1.6, 2.4])",
       "inputs": {
         "arr": [
           0.8,
@@ -196,7 +198,7 @@
     },
     {
       "id": "numpy-mutation-trap-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (arr=[0.25, 0.5, 0.75])",
       "inputs": {
         "arr": [
           0.25,
@@ -224,7 +226,26 @@
   ],
   "functionMetadata": {
     "name": "numpy_mutation_trap",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "arr",
+        "type": "array",
+        "example": "[1.0, 2.0, 3.0]",
+        "description": "Input parameter `arr` (list) for Mutation Trap"
+      },
+      {
+        "name": "modify_index",
+        "type": "number",
+        "example": "1",
+        "description": "Input parameter `modify_index` (int) for Mutation Trap"
+      },
+      {
+        "name": "new_val",
+        "type": "number",
+        "example": "99.0",
+        "description": "Input parameter `new_val` (float) for Mutation Trap"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -233,11 +254,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Mutation Trap",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/numpy-mutation-trap",
+  "localUrl": "http://localhost:3000/problems/numpy-mutation-trap"
 }

@@ -18,152 +18,263 @@
   "seoDescription": "Learn FastText-style word representations from tokenized documents and compose embeddings from character n-grams.",
   "solved": false,
   "isLocked": true,
-  "description": "Extract character n-grams bounded by boundary angle brackets for subword representation.\n\nBy representing each word as the sum of its character n-gram embeddings, FastText generates meaningful representations for rare or unseen inflected words.\n\n### Mathematical Formulation\n$$\n\\mathcal{G}_w = \\{ \\text{subword} \\in \\text{n-grams}(<w>, n \\in [n_{\\min}, n_{\\max}]) \\} \\cup \\{ <w> \\}\n$$\n\n### Step-by-Step Implementation\n1. Surround target word with start and end angle brackets '<' and '>'\n2. Extract all contiguous substrings of lengths ranging from min_n to max_n inclusive\n3. Include special whole-word token '<word>' and return sorted unique subwords\n\n### Returns\nList of unique character n-gram strings sorted lexicographically.",
-  "theory": "# Understanding FastText\n\n## 1. What Is It?\n\nThe **FastText** is a fundamental computational technique in Numpy. In machine learning workflows, Extract character n-grams bounded by boundary angle brackets for subword representation.\n\n### Key Terminology\n- **NLP**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathcal{G}_w = \\{ \\text{subword} \\in \\text{n-grams}(<w>, n \\in [n_{\\min}, n_{\\max}]) \\} \\cup \\{ <w> \\}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `nlp_fasttext` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nword = \"where\", min_n = 3, max_n = 4\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated nlp_fasttext under standard test conditions.\n\n**Resulting Output:**\n```python\n[\"<wh\", \"<whe\", \"<where>\", \"ere\", \"ere>\", \"her\", \"here\", \"re>\", \"whe\", \"wher\"]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `nlp_fasttext` must return:\n- **Primary Output:** `[\"<wh\", \"<whe\", \"<where>\", \"ere\", \"ere>\", \"her\", \"here\", \"re>\", \"whe\", \"wher\"]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `nlp_fasttext`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `nlp_fasttext`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `nlp_fasttext`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**FastText** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `nlp_fasttext` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement FastText subword character n-gram extraction and embedding composition for an input `word` with n-gram length bounds `min_n` and `max_n` and embedding dimension `dim`.\n\nWrap the input word with boundary markers `f\"<{word}>\"`, extract all contiguous character n-grams of length $n \\in [\\text{min\\_n}, \\text{max\\_n}]$ in order of increasing $n$ and left-to-right position, and map each n-gram $g$ to a deterministic sinusoidal subword vector via polynomial rolling hash:\n\n$$\nh(g) = \\left(\\sum_{i} \\operatorname{ord}(g_i) \\cdot 31^i\\right) \\bmod 10007, \\qquad v_k(g) = \\sin\\!\\big(h(g) \\cdot (k + 1)\\big)\n$$\n\nAverage the subword vectors across all extracted n-grams $G$ and $\\ell_2$-normalize the resulting representation:\n\n$$\n\\bar{\\mathbf{v}} = \\frac{1}{|G|} \\sum_{g \\in G} \\mathbf{v}(g), \\qquad \\hat{\\mathbf{v}} = \\frac{\\bar{\\mathbf{v}}}{\\|\\bar{\\mathbf{v}}\\|_2}\n$$\n\nReturn a dictionary with keys `'ngrams'`, `'num_ngrams'`, and `'embedding'` (rounded to 4 decimal places).",
+  "theory": "## What Is FastText?\n\nIn natural language processing, tokenization, subword hashing, and distributional embeddings map discrete text symbols into continuous geometric spaces.\n\n$$\nh(g) = \\left(\\sum_{i} \\operatorname{ord}(g_i) \\cdot 31^i\\right) \\bmod 10007, \\qquad v_k(g) = \\sin\\!\\big(h(g) \\cdot (k + 1)\\big)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nh(g) = \\left(\\sum_{i} \\operatorname{ord}(g_i) \\cdot 31^i\\right) \\bmod 10007\n$$\n\n$$\nv_k(g) = \\sin\\!\\big(h(g) \\cdot (k + 1)\\big)\n$$\n\n$$\n\\bar{\\mathbf{v}} = \\frac{1}{|G|} \\sum_{g \\in G} \\mathbf{v}(g)\n$$\n\n$$\n\\hat{\\mathbf{v}} = \\frac{\\bar{\\mathbf{v}}}{\\|\\bar{\\mathbf{v}}\\|_2}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Bag of Words**, **Beam Search Decoding**, **Byte Pair Encoding**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: word = \"where\", min_n = 3, max_n = 4\n\nOutput: [\"<wh\", \"<whe\", \"<where>\", \"ere\", \"ere>\", \"her\", \"here\", \"re>\", \"whe\", \"wher\"]\n\nExplanation: Evaluated nlp_fasttext under standard test conditions."
+    "Input: word = \"where\", min_n = 3, max_n = 4, dim = 4\n\nOutput: {\"ngrams\": [\"<wh\", \"whe\", \"her\", \"ere\", \"re>\", \"<whe\", \"wher\", \"here\", \"ere>\"], \"num_ngrams\": 9, \"embedding\": [-0.9082, 0.3657, -0.1682, -0.115]}",
+    "Input: word = \"ai\", min_n = 2, max_n = 3, dim = 4\n\nOutput: {\"ngrams\": [\"<a\", \"ai\", \"i>\", \"<ai\", \"ai>\"], \"num_ngrams\": 5, \"embedding\": [0.2485, -0.5139, -0.6002, -0.5603]}"
   ],
-  "requirements": "* Function must be named `nlp_fasttext`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `nlp_fasttext` accepting `word`, `min_n`, `max_n`, `dim`\n* Learn FastText-style word representations from tokenized documents and compose embeddings from character n-grams.\n* Return a `dict` containing the exact keys `'ngrams'`, `'num_ngrams'`, `'embedding'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `nlp_fasttext`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`word`, `min_n`, `max_n`, `dim`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `nlp_fasttext` into clear stages: validate/reshape `word`, `min_n`, `max_n`, `dim`, evaluate the FastText equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('ngrams', 'num_ngrams', 'embedding') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def nlp_fasttext(word: str, min_n: int = 3, max_n: int = 4) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **FastText** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_fasttext(word: str, min_n: int = 3, max_n: int = 4) -> list:\n    w = f'<{word}>'\n    res = {w}\n    for n in range(min_n, max_n + 1):\n        for i in range(len(w) - n + 1):\n            res.add(w[i:i+n])\n    return sorted(list(res))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef nlp_fasttext(word: str, min_n: int = 3, max_n: int = 4, dim: int = 4) -> dict:\n    \"\"\"\n    Extracts boundary-padded character n-grams (<word>) for n in [min_n, max_n] and computes\n    a deterministic normalized subword embedding vector of length dim.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**FastText** (NLP): Learn FastText-style word representations from tokenized documents and compose embeddings from character n-grams.\n\nTo implement `nlp_fasttext` cleanly and accurately:\n1. Parse and normalize the inputs (`word`, `min_n`, `max_n`, `dim`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef nlp_fasttext(word: str, min_n: int = 3, max_n: int = 4, dim: int = 4) -> dict:\n    padded = f\"<{word}>\"\n    ngrams = []\n    for n in range(int(min_n), int(max_n) + 1):\n        for i in range(max(0, len(padded) - n + 1)):\n            ngrams.append(padded[i : i + n])\n    d = int(dim)\n    vec = np.zeros(d, dtype=float)\n    for ng in ngrams:\n        # Deterministic polynomial rolling hash projection per n-gram\n        h = 0\n        for ch in ng:\n            h = (h * 31 + ord(ch)) % 10007\n        for k in range(d):\n            vec[k] += np.sin(float(h * (k + 1)))\n    if len(ngrams) > 0:\n        vec = vec / float(len(ngrams))\n    norm = float(np.linalg.norm(vec))\n    norm_vec = vec / norm if norm > 1e-12 else vec\n    return {\n        \"ngrams\": ngrams,\n        \"num_ngrams\": len(ngrams),\n        \"embedding\": np.round(norm_vec, 4).tolist()\n    }\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **FastText** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "nlp-fasttext-tc-1",
-      "name": "word 'where' 3-4 grams",
+      "name": "Word 'where' with 3-4 char n-grams",
       "inputs": {
         "word": "where",
         "min_n": 3,
-        "max_n": 4
+        "max_n": 4,
+        "dim": 4
       },
-      "expectedOutput": [
-        "<wh",
-        "<whe",
-        "<where>",
-        "ere",
-        "ere>",
-        "her",
-        "here",
-        "re>",
-        "whe",
-        "wher"
-      ],
+      "expectedOutput": {
+        "ngrams": [
+          "<wh",
+          "whe",
+          "her",
+          "ere",
+          "re>",
+          "<whe",
+          "wher",
+          "here",
+          "ere>"
+        ],
+        "num_ngrams": 9,
+        "embedding": [
+          -0.9082,
+          0.3657,
+          -0.1682,
+          -0.115
+        ]
+      },
       "isPublic": true
     },
     {
       "id": "nlp-fasttext-tc-2",
-      "name": "Case 2",
+      "name": "Short word 'ai' with 2-3 char n-grams",
       "inputs": {
-        "word": "where",
-        "min_n": 4,
-        "max_n": 6
+        "word": "ai",
+        "min_n": 2,
+        "max_n": 3,
+        "dim": 4
       },
-      "expectedOutput": [
-        "<whe",
-        "<wher",
-        "<where",
-        "<where>",
-        "ere>",
-        "here",
-        "here>",
-        "wher",
-        "where",
-        "where>"
-      ],
+      "expectedOutput": {
+        "ngrams": [
+          "<a",
+          "ai",
+          "i>",
+          "<ai",
+          "ai>"
+        ],
+        "num_ngrams": 5,
+        "embedding": [
+          0.2485,
+          -0.5139,
+          -0.6002,
+          -0.5603
+        ]
+      },
       "isPublic": true
     },
     {
       "id": "nlp-fasttext-tc-3",
-      "name": "Case 3",
+      "name": "Morphological stem 'playing' with n=3..5",
       "inputs": {
-        "word": "where",
-        "min_n": 2,
-        "max_n": 2
+        "word": "playing",
+        "min_n": 3,
+        "max_n": 5,
+        "dim": 3
       },
-      "expectedOutput": [
-        "<w",
-        "<where>",
-        "e>",
-        "er",
-        "he",
-        "re",
-        "wh"
-      ],
-      "isPublic": false
+      "expectedOutput": {
+        "ngrams": [
+          "<pl",
+          "pla",
+          "lay",
+          "ayi",
+          "yin",
+          "ing",
+          "ng>",
+          "<pla",
+          "play",
+          "layi",
+          "ayin",
+          "ying",
+          "ing>",
+          "<play",
+          "playi",
+          "layin",
+          "aying",
+          "ying>"
+        ],
+        "num_ngrams": 18,
+        "embedding": [
+          -0.4989,
+          0.8522,
+          0.1574
+        ]
+      },
+      "isPublic": true
     },
     {
       "id": "nlp-fasttext-tc-4",
-      "name": "Case 4",
+      "name": "Trigrams only (min_n=3, max_n=3)",
       "inputs": {
-        "word": "where",
-        "min_n": 6,
-        "max_n": 8
+        "word": "tensor",
+        "min_n": 3,
+        "max_n": 3,
+        "dim": 4
       },
-      "expectedOutput": [
-        "<where",
-        "<where>",
-        "where>"
-      ],
+      "expectedOutput": {
+        "ngrams": [
+          "<te",
+          "ten",
+          "ens",
+          "nso",
+          "sor",
+          "or>"
+        ],
+        "num_ngrams": 6,
+        "embedding": [
+          0.7855,
+          0.5036,
+          -0.146,
+          -0.3287
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "nlp-fasttext-tc-5",
-      "name": "Case 5",
+      "name": "Single character word 'a'",
       "inputs": {
-        "word": "where",
-        "min_n": -3,
-        "max_n": -4
+        "word": "a",
+        "min_n": 2,
+        "max_n": 3,
+        "dim": 2
       },
-      "expectedOutput": [
-        "<where>"
-      ],
+      "expectedOutput": {
+        "ngrams": [
+          "<a",
+          "a>",
+          "<a>"
+        ],
+        "num_ngrams": 3,
+        "embedding": [
+          0.5822,
+          -0.813
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "nlp-fasttext-tc-6",
-      "name": "Case 6",
+      "name": "Compound word 'neural'",
       "inputs": {
-        "word": "where",
-        "min_n": 2,
-        "max_n": 3
+        "word": "neural",
+        "min_n": 3,
+        "max_n": 4,
+        "dim": 6
       },
-      "expectedOutput": [
-        "<w",
-        "<wh",
-        "<where>",
-        "e>",
-        "er",
-        "ere",
-        "he",
-        "her",
-        "re",
-        "re>",
-        "wh",
-        "whe"
-      ],
+      "expectedOutput": {
+        "ngrams": [
+          "<ne",
+          "neu",
+          "eur",
+          "ura",
+          "ral",
+          "al>",
+          "<neu",
+          "neur",
+          "eura",
+          "ural",
+          "ral>"
+        ],
+        "num_ngrams": 11,
+        "embedding": [
+          -0.7012,
+          0.259,
+          -0.3702,
+          -0.3442,
+          0.1611,
+          0.3997
+        ]
+      },
       "isPublic": false
     },
     {
       "id": "nlp-fasttext-tc-7",
-      "name": "Case 7",
+      "name": "4-gram extraction on 'model'",
       "inputs": {
-        "word": "where",
-        "min_n": 9,
-        "max_n": 12
+        "word": "model",
+        "min_n": 4,
+        "max_n": 5,
+        "dim": 4
       },
-      "expectedOutput": [
-        "<where>"
-      ],
+      "expectedOutput": {
+        "ngrams": [
+          "<mod",
+          "mode",
+          "odel",
+          "del>",
+          "<mode",
+          "model",
+          "odel>"
+        ],
+        "num_ngrams": 7,
+        "embedding": [
+          0.2682,
+          -0.381,
+          0.5861,
+          -0.6629
+        ]
+      },
       "isPublic": false
     }
   ],
   "functionMetadata": {
     "name": "nlp_fasttext",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "word",
+        "type": "string",
+        "example": "\"where\"",
+        "description": "Input token or word string"
+      },
+      {
+        "name": "min_n",
+        "type": "number",
+        "example": "3",
+        "description": "Input parameter `min_n` (int) for FastText"
+      },
+      {
+        "name": "max_n",
+        "type": "number",
+        "example": "4",
+        "description": "Input parameter `max_n` (int) for FastText"
+      },
+      {
+        "name": "dim",
+        "type": "number",
+        "example": "4",
+        "description": "Input parameter `dim` (int) for FastText"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -172,11 +283,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "FastText",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/nlp-fasttext",
+  "localUrl": "http://localhost:3000/problems/nlp-fasttext"
 }

@@ -18,19 +18,21 @@
   "seoDescription": "Scale every row of a NumPy matrix by its aligned weight through broadcasting, without explicit Python loops.",
   "solved": false,
   "isLocked": true,
-  "description": "Scale each row vector of a 2D numerical matrix by its L1, L2, or Chebyshev maximum norm.\n\nRow scaling projects feature vectors onto the unit sphere or simplex, eliminating sensitivity to sample-specific amplitude scaling in cosine distance calculations.\n\n### Mathematical Formulation\n$$\n\\tilde{\\mathbf{A}}_{i, :} = \\frac{\\mathbf{A}_{i, :}}{\\|\\mathbf{A}_{i, :}\\|_p + \\epsilon}\n$$\n\n### Step-by-Step Implementation\n1. Compute row-wise norm vector according to specified metric ('l1', 'l2', or 'max')\n2. Safely guard against zero-norm division using numerical epsilon threshold\n3. Normalize each row vector by its computed norm and round to 4 decimal places\n\n### Returns\nNested 2D list representing row-normalized matrix.",
-  "theory": "# Understanding Row Scaling\n\n## 1. What Is It?\n\nThe **Row Scaling** is a fundamental computational technique in Numpy. In machine learning workflows, Scale each row vector of a 2D numerical matrix by its L1, L2, or Chebyshev maximum norm.\n\n### Key Terminology\n- **`eps`**: The smoothing term $\\varepsilon > 0$, added to denominators for numerical stability.\n- **Data Processing**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\tilde{\\mathbf{A}}_{i, :} = \\frac{\\mathbf{A}_{i, :}}{\\|\\mathbf{A}_{i, :}\\|_p + \\epsilon}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `numpy_row_scaling` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nA = [[3.0, 4.0], [1.0, 1.0]], norm_type = \"l2\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated numpy_row_scaling under standard test conditions.\n\n**Resulting Output:**\n```python\n[[0.6, 0.8], [0.7071, 0.7071]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `numpy_row_scaling` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[0.6, 0.8]`.\n  - **Element 2**: Evaluated output component `[0.7071, 0.7071]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `numpy_row_scaling`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `numpy_row_scaling`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Row Scaling** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `numpy_row_scaling` accurately and efficiently performs the required transformation.\n",
+  "description": "Scale each row vector of a 2D numerical matrix by its L1, L2, or Chebyshev maximum norm.\n\n$$\n\\tilde{\\mathbf{A}}_{i, :} = \\frac{\\mathbf{A}_{i, :}}{\\|\\mathbf{A}_{i, :}\\|_p + \\epsilon}\n$$\n\nGiven input parameters `A`, `norm_type`, `eps`, return nested 2D list representing row-normalized matrix.",
+  "theory": "## What Is Row Scaling?\n\nIn scientific array computing with NumPy, vectorized tensor operations apply mathematical transformations across entire arrays without Python loop overhead.\n\n$$\n\\tilde{\\mathbf{A}}_{i, :} = \\frac{\\mathbf{A}_{i, :}}{\\|\\mathbf{A}_{i, :}\\|_p + \\epsilon}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Aggregation Functions**, **Angle Features**, **Arange and Linspace**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: A = [[3.0, 4.0], [1.0, 1.0]], norm_type = \"l2\"\n\nOutput: [[0.6, 0.8], [0.7071, 0.7071]]\n\nExplanation: Evaluated numpy_row_scaling under standard test conditions."
+    "Input: A = [[3.0, 4.0], [1.0, 1.0]], norm_type = \"l2\"\n\nOutput: [[0.6, 0.8], [0.7071, 0.7071]]",
+    "Input: A = [[4.5, 6.0], [1.5, 1.5]], norm_type = \"l2\"\n\nOutput: [[0.6, 0.8], [0.7071, 0.7071]]"
   ],
-  "requirements": "* Function must be named `numpy_row_scaling`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `numpy_row_scaling` accepting `A`, `norm_type`, `eps`\n* Scale every row of a NumPy matrix by its aligned weight through broadcasting, without explicit Python loops.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `numpy_row_scaling`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`A`, `norm_type`, `eps`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\tilde{\\mathbf{A}}_{i, :} = \\frac{\\mathbf{A}_{i, :}}{\\|\\mathbf{A}_{i, :}\\|_p + \\epsilon}$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef numpy_row_scaling(A: list, norm_type: str = 'l2', eps: float = 1e-12) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Row Scaling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_row_scaling(A: list, norm_type: str = 'l2', eps: float = 1e-12) -> list:\n    arr = np.array(A, dtype=float)\n    if norm_type == 'l1': norms = np.sum(np.abs(arr), axis=1, keepdims=True)\n    elif norm_type == 'max': norms = np.max(np.abs(arr), axis=1, keepdims=True)\n    else: norms = np.linalg.norm(arr, ord=2, axis=1, keepdims=True)\n    return np.round(arr / np.where(norms > eps, norms, 1.0), 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef numpy_row_scaling(A: list, norm_type: str = 'l2', eps: float = 1e-12) -> list:\n    \"\"\"\n    Scale every row of a NumPy matrix by its aligned weight through broadcasting, without explicit Python loops.\n\n    Args:\n        A (list): Input matrix A of linear system or transformation.\n        norm_type (str): Input parameter `norm_type` (str) for Row Scaling.\n        eps (float): Small positive constant for numerical stability (preventing division by zero).\n\n    Returns:\n        list: Computed Row Scaling result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Row Scaling** (Data Processing): Scale every row of a NumPy matrix by its aligned weight through broadcasting, without explicit Python loops.\n\nTo implement `numpy_row_scaling` cleanly and accurately:\n1. Parse and normalize the inputs (`A`, `norm_type`, `eps`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_row_scaling(A: list, norm_type: str = 'l2', eps: float = 1e-12) -> list:\n    arr = np.array(A, dtype=float)\n    if norm_type == 'l1': norms = np.sum(np.abs(arr), axis=1, keepdims=True)\n    elif norm_type == 'max': norms = np.max(np.abs(arr), axis=1, keepdims=True)\n    else: norms = np.linalg.norm(arr, ord=2, axis=1, keepdims=True)\n    return np.round(arr / np.where(norms > eps, norms, 1.0), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Row Scaling** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "numpy-row-scaling-tc-1",
@@ -62,7 +64,7 @@
     },
     {
       "id": "numpy-row-scaling-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (norm_type=l2)",
       "inputs": {
         "A": [
           [
@@ -90,7 +92,7 @@
     },
     {
       "id": "numpy-row-scaling-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (norm_type=l2)",
       "inputs": {
         "A": [
           [
@@ -114,11 +116,11 @@
           0.7071
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "numpy-row-scaling-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (norm_type=l2)",
       "inputs": {
         "A": [
           [
@@ -146,7 +148,7 @@
     },
     {
       "id": "numpy-row-scaling-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (norm_type=l2)",
       "inputs": {
         "A": [
           [
@@ -174,7 +176,7 @@
     },
     {
       "id": "numpy-row-scaling-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (norm_type=l2)",
       "inputs": {
         "A": [
           [
@@ -202,7 +204,7 @@
     },
     {
       "id": "numpy-row-scaling-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (norm_type=l2)",
       "inputs": {
         "A": [
           [
@@ -231,7 +233,26 @@
   ],
   "functionMetadata": {
     "name": "numpy_row_scaling",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "A",
+        "type": "array",
+        "example": "[[3.0, 4.0], [1.0, 1.0]]",
+        "description": "Input matrix A of linear system or transformation"
+      },
+      {
+        "name": "norm_type",
+        "type": "string",
+        "example": "\"l2\"",
+        "description": "Input parameter `norm_type` (str) for Row Scaling"
+      },
+      {
+        "name": "eps",
+        "type": "number",
+        "example": "1e-12",
+        "description": "Small positive constant for numerical stability (preventing division by zero)"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -240,11 +261,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Row Scaling",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/numpy-row-scaling",
+  "localUrl": "http://localhost:3000/problems/numpy-row-scaling"
 }

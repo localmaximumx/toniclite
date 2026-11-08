@@ -18,19 +18,21 @@
   "seoDescription": "Set a named pandas DataFrame column as the index and report the resulting records and index metadata.",
   "solved": false,
   "isLocked": true,
-  "description": "Set an existing DataFrame column as the primary index and return index values and remaining column names.\n\nSetting meaningful indices provides fast hash-based record lookup and alignment across joins.\n\n### Mathematical Formulation\n$$\n\\text{df}_{\\text{idx}} = \\text{df}.\\operatorname{set\\_index}(\\text{index\\_col})\n$$\n\n### Step-by-Step Implementation\n1. Select target column as primary index identifier\n2. Transfer target column from data grid to DataFrame index structure\n3. Report index values and remaining feature columns\n\n### Returns\nDictionary with 'index_name', 'index_values', and 'remaining_columns'.",
-  "theory": "# Understanding Setting Index\n\n## 1. What Is It?\n\nThe **Setting Index** is a fundamental computational technique in Pandas. In machine learning workflows, Set an existing DataFrame column as the primary index and return index values and remaining column names.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Pandas workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{df}_{\\text{idx}} = \\text{df}.\\operatorname{set\\_index}(\\text{index\\_col})\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `pandas_setting_index` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nrecords = [{\"user_id\": 101, \"name\": \"Alice\", \"score\": 95}, {\"user_id\": 102, \"name\": \"Bob\", \"score\": 88}], index_col = \"user_id\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated pandas_setting_index under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"index_name\": \"user_id\", \"index_values\": [\"101\", \"102\"], \"remaining_columns\": [\"name\", \"score\"]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `pandas_setting_index` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`index_name`**: Represents `index_name` (e.g. `user_id`), reflecting the updated state or component.\n  - **`index_values`**: Represents `index_values` (e.g. `['101', '102']`), reflecting the updated state or component.\n  - **`remaining_columns`**: Represents `remaining_columns` (e.g. `['name', 'score']`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `pandas_setting_index`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `pandas_setting_index`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `pandas_setting_index`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Setting Index** provides an essential primitive within Pandas systems. By combining vectorized array computation with rigorous numerical safeguards, `pandas_setting_index` accurately and efficiently performs the required transformation.\n",
+  "description": "Set an existing DataFrame column as the primary index and return index values and remaining column names.\n\n$$\n\\text{df}_{\\text{idx}} = \\text{df}.\\operatorname{set\\_index}(\\text{index\\_col})\n$$\n\nGiven input parameters `records`, `index_col`, return dictionary with 'index_name', 'index_values', and 'remaining_columns'.",
+  "theory": "## What Is Setting Index?\n\nIn tabular data engineering with Pandas, vectorized filtering, grouping, joining, and windowing transform raw records into clean analytical features.\n\n$$\n\\text{df}_{\\text{idx}} = \\text{df}.\\operatorname{set\\_index}(\\text{index\\_col})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Aggregation Functions**, **Apply Custom Transforms**, **Boolean Indexing**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: records = [{\"user_id\": 101, \"name\": \"Alice\", \"score\": 95}, {\"user_id\": 102, \"name\": \"Bob\", \"score\": 88}], index_col = \"user_id\"\n\nOutput: {\"index_name\": \"user_id\", \"index_values\": [\"101\", \"102\"], \"remaining_columns\": [\"name\", \"score\"]}\n\nExplanation: Evaluated pandas_setting_index under standard test conditions."
+    "Input: records = [{\"user_id\": 101, \"name\": \"Alice\", \"score\": 95}, {\"user_id\": 102, \"name\": \"Bob\", \"score\": 88}], index_col = \"user_id\"\n\nOutput: {\"index_name\": \"user_id\", \"index_values\": [\"101\", \"102\"], \"remaining_columns\": [\"name\", \"score\"]}",
+    "Input: records = [{\"user_id\": 152, \"name\": \"Alice\", \"score\": 142}, {\"user_id\": 153, \"name\": \"Bob\", \"score\": 132}], index_col = \"user_id\"\n\nOutput: {\"index_name\": \"user_id\", \"index_values\": [\"152\", \"153\"], \"remaining_columns\": [\"name\", \"score\"]}"
   ],
-  "requirements": "* Function must be named `pandas_setting_index`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `pandas_setting_index` accepting `records`, `index_col`\n* Set a named pandas DataFrame column as the index and report the resulting records and index metadata.\n* Return a `dict` containing the exact keys `'index_name'`, `'index_values'`, `'remaining_columns'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `pandas_setting_index`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`records`, `index_col`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\text{df}_{\\text{idx}} = \\text{df}.\\operatorname{set\\_index}(\\text{index\\_col})$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('index_name', 'index_values', 'remaining_columns') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import pandas as pd\n\ndef pandas_setting_index(records: list, index_col: str) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Setting Index** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport pandas as pd\n\ndef pandas_setting_index(records: list, index_col: str) -> dict:\n    df = pd.DataFrame(records).set_index(index_col)\n    return {'index_name': str(df.index.name), 'index_values': [str(x) for x in df.index.tolist()], 'remaining_columns': list(df.columns)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: Pandas & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import pandas as pd\n\ndef pandas_setting_index(records: list, index_col: str) -> dict:\n    \"\"\"\n    Set a named pandas DataFrame column as the index and report the resulting records and index metadata.\n\n    Args:\n        records (list): List of dictionaries representing tabular rows.\n        index_col (str): Column name to set or use as table index.\n\n    Returns:\n        dict: Computed Setting Index result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Setting Index** (Data Processing): Set a named pandas DataFrame column as the index and report the resulting records and index metadata.\n\nTo implement `pandas_setting_index` cleanly and accurately:\n1. Parse and normalize the inputs (`records`, `index_col`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport pandas as pd\n\ndef pandas_setting_index(records: list, index_col: str) -> dict:\n    df = pd.DataFrame(records).set_index(index_col)\n    return {'index_name': str(df.index.name), 'index_values': [str(x) for x in df.index.tolist()], 'remaining_columns': list(df.columns)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Setting Index** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "pandas-setting-index-tc-1",
@@ -65,7 +67,7 @@
     },
     {
       "id": "pandas-setting-index-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (index_col=user_id)",
       "inputs": {
         "records": [
           {
@@ -96,7 +98,7 @@
     },
     {
       "id": "pandas-setting-index-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (index_col=user_id)",
       "inputs": {
         "records": [
           {
@@ -123,11 +125,11 @@
           "score"
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "pandas-setting-index-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (index_col=user_id)",
       "inputs": {
         "records": [
           {
@@ -158,7 +160,7 @@
     },
     {
       "id": "pandas-setting-index-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (index_col=user_id)",
       "inputs": {
         "records": [
           {
@@ -189,7 +191,7 @@
     },
     {
       "id": "pandas-setting-index-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (index_col=user_id)",
       "inputs": {
         "records": [
           {
@@ -220,7 +222,7 @@
     },
     {
       "id": "pandas-setting-index-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (index_col=user_id)",
       "inputs": {
         "records": [
           {
@@ -252,7 +254,20 @@
   ],
   "functionMetadata": {
     "name": "pandas_setting_index",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "records",
+        "type": "array",
+        "example": "[{\"user_id\": 101, \"name\": \"Alice\", \"score\": 95}, {\"user_id\": 102, \"name\": \"Bob\", \"score\": 88}]",
+        "description": "List of dictionaries representing tabular rows"
+      },
+      {
+        "name": "index_col",
+        "type": "string",
+        "example": "\"user_id\"",
+        "description": "Column name to set or use as table index"
+      }
+    ]
   },
   "relatedProblems": [
     "pandas-drop-duplicates",
@@ -261,11 +276,7 @@
     "pandas-multi-column-selection",
     "pandas-inspect-shape"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pandas",
-    "placeholderType": "pandas_passthrough (return df)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Setting Index",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/pandas-setting-index",
+  "localUrl": "http://localhost:3000/problems/pandas-setting-index"
 }

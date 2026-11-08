@@ -18,19 +18,21 @@
   "seoDescription": "Compute proportional allocation of a total sample and the resulting stratified estimator's mean and standard error.",
   "solved": false,
   "isLocked": true,
-  "description": "Compute proportional sample allocations across strata and calculate the stratified mean estimator and its standard error with finite population correction.\n\nStratification guarantees representation across subgroups, eliminating between-strata variance from the estimation error.\n\n### Mathematical Formulation\n$$\nn_h = n \\frac{N_h}{N}, \\quad \\bar{y}_{\\text{st}} = \\sum w_h \\bar{y}_h, \\quad \\operatorname{Var}(\\bar{y}_{\\text{st}}) = \\sum w_h^2 \\frac{s_h^2}{n_h}\\left(1 - \\frac{n_h}{N_h}\\right)\n$$\n\n### Step-by-Step Implementation\n1. Compute strata weights w_h from population counts\n2. Allocate sample size proportionally across strata\n3. Compute composite stratified mean and standard error with finite population correction\n\n### Returns\nDictionary with 'stratified_mean', 'standard_error', and 'allocations'.",
-  "theory": "# Understanding Stratified Sampling\n\n## 1. What Is It?\n\nThe **Stratified Sampling** is a fundamental computational technique in Python. In machine learning workflows, it involves performing proportional sample allocations across strata and calculate the stratified mean estimator and its standard error with finite population correction.\n\n### Key Terminology\n- **Probability and Statistics**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nn_h = n \\frac{N_h}{N}, \\quad \\bar{y}_{\\text{st}} = \\sum w_h \\bar{y}_h, \\quad \\operatorname{Var}(\\bar{y}_{\\text{st}}) = \\sum w_h^2 \\frac{s_h^2}{n_h}\\left(1 - \\frac{n_h}{N_h}\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `probstat_stratified_sampling` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nstrata_sizes = [1000, 2000, 3000], strata_means = [50.0, 65.0, 80.0], strata_vars = [100.0, 144.0, 81.0], total_sample_size = 300\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated probstat_stratified_sampling under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"stratified_mean\": 70.0, \"standard_error\": 0.577086, \"allocations\": [50, 100, 150]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `probstat_stratified_sampling` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`stratified_mean`**: Represents `stratified_mean` (e.g. `70.0`), reflecting the updated state or component.\n  - **`standard_error`**: Represents `standard_error` (e.g. `0.577086`), reflecting the updated state or component.\n  - **`allocations`**: Represents `allocations` (e.g. `[50, 100, 150]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `probstat_stratified_sampling`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `probstat_stratified_sampling`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `probstat_stratified_sampling`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Stratified Sampling** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `probstat_stratified_sampling` accurately and efficiently performs the required transformation.\n",
+  "description": "Compute proportional sample allocations across strata and calculate the stratified mean estimator and its standard error with finite population correction.\n\n$$\nn_h = n \\frac{N_h}{N}, \\quad \\bar{y}_{\\text{st}} = \\sum w_h \\bar{y}_h, \\quad \\operatorname{Var}(\\bar{y}_{\\text{st}}) = \\sum w_h^2 \\frac{s_h^2}{n_h}\\left(1 - \\frac{n_h}{N_h}\\right)\n$$\n\nGiven input parameters `strata_sizes`, `strata_means`, `strata_vars`, `total_sample_size`, return dictionary with 'stratified_mean', 'standard_error', and 'allocations'.",
+  "theory": "## What Is Stratified Sampling?\n\nIn probability and mathematical statistics, distributions and estimators quantify uncertainty and allow principled inference from finite empirical samples.\n\n$$\nn_h = n \\frac{N_h}{N}, \\quad \\bar{y}_{\\text{st}} = \\sum w_h \\bar{y}_h, \\quad \\operatorname{Var}(\\bar{y}_{\\text{st}}) = \\sum w_h^2 \\frac{s_h^2}{n_h}\\left(1 - \\frac{n_h}{N_h}\\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nn_h = n \\frac{N_h}{N}\n$$\n\n$$\n\\bar{y}_{\\text{st}} = \\sum w_h \\bar{y}_h\n$$\n\n$$\n\\operatorname{Var}(\\bar{y}_{\\text{st}}) = \\sum w_h^2 \\frac{s_h^2}{n_h}\\left(1 - \\frac{n_h}{N_h}\\right)\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **A/B Test Significance**, **ANOVA F-Statistic**, **Basic Probability Rules**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: strata_sizes = [1000, 2000, 3000], strata_means = [50.0, 65.0, 80.0], strata_vars = [100.0, 144.0, 81.0], total_sample_size = 300\n\nOutput: {\"stratified_mean\": 70.0, \"standard_error\": 0.577086, \"allocations\": [50, 100, 150]}\n\nExplanation: Evaluated probstat_stratified_sampling under standard test conditions."
+    "Input: strata_sizes = [1000, 2000, 3000], strata_means = [50.0, 65.0, 80.0], strata_vars = [100.0, 144.0, 81.0], total_sample_size = 300\n\nOutput: {\"stratified_mean\": 70.0, \"standard_error\": 0.577086, \"allocations\": [50, 100, 150]}",
+    "Input: strata_sizes = [1500, 3000, 4500], strata_means = [75.0, 97.5, 120.0], strata_vars = [150.0, 216.0, 121.5], total_sample_size = 450\n\nOutput: {\"stratified_mean\": 105.0, \"standard_error\": 0.577086, \"allocations\": [75, 150, 225]}"
   ],
-  "requirements": "* Function must be named `probstat_stratified_sampling`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `probstat_stratified_sampling` accepting `strata_sizes`, `strata_means`, `strata_vars`, `total_sample_size`\n* Compute proportional allocation of a total sample and the resulting stratified estimator's mean and standard error.\n* Return a `dict` containing the exact keys `'stratified_mean'`, `'standard_error'`, `'allocations'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `probstat_stratified_sampling`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`strata_sizes`, `strata_means`, `strata_vars`, `total_sample_size`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `probstat_stratified_sampling` into clear stages: validate/reshape `strata_sizes`, `strata_means`, `strata_vars`, `total_sample_size`, evaluate the Stratified Sampling equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('stratified_mean', 'standard_error', 'allocations') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef probstat_stratified_sampling(strata_sizes: list, strata_means: list, strata_vars: list, total_sample_size: int) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Stratified Sampling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef probstat_stratified_sampling(strata_sizes: list, strata_means: list, strata_vars: list, total_sample_size: int) -> dict:\n    Nh = np.array(strata_sizes, dtype=np.float64)\n    wh = Nh / np.sum(Nh)\n    nh = np.maximum(1.0, np.round(total_sample_size * wh))\n    st_mean = np.sum(wh * np.array(strata_means, dtype=np.float64))\n    v = np.sum((wh ** 2) * (np.array(strata_vars, dtype=np.float64) / nh) * (1.0 - nh / Nh))\n    return {'stratified_mean': round(float(st_mean), 6), 'standard_error': round(float(np.sqrt(max(0.0, v))), 6), 'allocations': [int(x) for x in nh]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef probstat_stratified_sampling(strata_sizes: list, strata_means: list, strata_vars: list, total_sample_size: int) -> dict:\n    \"\"\"\n    Compute proportional allocation of a total sample and the resulting stratified estimator's mean and standard error.\n\n    Args:\n        strata_sizes (list): Integer count or dimension size for strata sizes.\n        strata_means (list): Input parameter `strata_means` (list) for Stratified Sampling.\n        strata_vars (list): Input parameter `strata_vars` (list) for Stratified Sampling.\n        total_sample_size (int): Integer count or dimension size for total sample size.\n\n    Returns:\n        dict: Computed Stratified Sampling result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Stratified Sampling** (Probability and Statistics): Compute proportional allocation of a total sample and the resulting stratified estimator's mean and standard error.\n\nTo implement `probstat_stratified_sampling` cleanly and accurately:\n1. Parse and normalize the inputs (`strata_sizes`, `strata_means`, `strata_vars`, `total_sample_size`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef probstat_stratified_sampling(strata_sizes: list, strata_means: list, strata_vars: list, total_sample_size: int) -> dict:\n    Nh = np.array(strata_sizes, dtype=np.float64)\n    wh = Nh / np.sum(Nh)\n    nh = np.maximum(1.0, np.round(total_sample_size * wh))\n    st_mean = np.sum(wh * np.array(strata_means, dtype=np.float64))\n    v = np.sum((wh ** 2) * (np.array(strata_vars, dtype=np.float64) / nh) * (1.0 - nh / Nh))\n    return {'stratified_mean': round(float(st_mean), 6), 'standard_error': round(float(np.sqrt(max(0.0, v))), 6), 'allocations': [int(x) for x in nh]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Stratified Sampling** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "probstat-stratified-sampling-tc-1",
@@ -66,7 +68,7 @@
     },
     {
       "id": "probstat-stratified-sampling-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (strata_sizes=[1500, 3000, 4500])",
       "inputs": {
         "strata_sizes": [
           1500,
@@ -98,7 +100,7 @@
     },
     {
       "id": "probstat-stratified-sampling-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (strata_sizes=[500, 1000, 1500])",
       "inputs": {
         "strata_sizes": [
           500,
@@ -126,11 +128,11 @@
           75
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "probstat-stratified-sampling-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (strata_sizes=[2000, 4000, 6000])",
       "inputs": {
         "strata_sizes": [
           2000,
@@ -162,7 +164,7 @@
     },
     {
       "id": "probstat-stratified-sampling-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (strata_sizes=[-1000, -2000, -3000])",
       "inputs": {
         "strata_sizes": [
           -1000,
@@ -194,7 +196,7 @@
     },
     {
       "id": "probstat-stratified-sampling-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (strata_sizes=[800, 1600, 2400])",
       "inputs": {
         "strata_sizes": [
           800,
@@ -226,7 +228,7 @@
     },
     {
       "id": "probstat-stratified-sampling-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (strata_sizes=[3000, 6000, 9000])",
       "inputs": {
         "strata_sizes": [
           3000,
@@ -259,7 +261,32 @@
   ],
   "functionMetadata": {
     "name": "probstat_stratified_sampling",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "strata_sizes",
+        "type": "array",
+        "example": "[1000, 2000, 3000]",
+        "description": "Integer count or dimension size for strata sizes"
+      },
+      {
+        "name": "strata_means",
+        "type": "array",
+        "example": "[50.0, 65.0, 80.0]",
+        "description": "Input parameter `strata_means` (list) for Stratified Sampling"
+      },
+      {
+        "name": "strata_vars",
+        "type": "array",
+        "example": "[100.0, 144.0, 81.0]",
+        "description": "Input parameter `strata_vars` (list) for Stratified Sampling"
+      },
+      {
+        "name": "total_sample_size",
+        "type": "number",
+        "example": "300",
+        "description": "Integer count or dimension size for total sample size"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -268,11 +295,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Stratified Sampling",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/probstat-stratified-sampling",
+  "localUrl": "http://localhost:3000/problems/probstat-stratified-sampling"
 }

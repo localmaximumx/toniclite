@@ -18,19 +18,21 @@
   "seoDescription": "Use SQL subqueries to compare product prices with the overall average and include only products with recorded sales.",
   "solved": false,
   "isLocked": true,
-  "description": "Identify products whose unit price exceeds the catalog average and have recorded at least one sale.\n\nCorrelated and scalar subqueries allow dynamic filtering against aggregated database statistics.\n\n### Query Logic & Formulation\n$$\n\\text{price} > \\operatorname{AVG}(\\text{price}) \\quad \\land \\quad \\text{product\\_id} \\in \\text{Sales}\n$$\n\n### Relational Execution Steps\n1. Compute the overall catalog average product price\n2. Filter products with price strictly exceeding the average\n3. Filter for products existing in the sales table and sort by price descending\n\n### Expected Query Output\nList of records containing 'product_id', 'product_name', and 'price'.",
-  "theory": "# Understanding Subqueries\n\n## 1. What Is It?\n\nThe **Subqueries** is a fundamental computational technique in Sql. In machine learning workflows, Identify products whose unit price exceeds the catalog average and have recorded at least one sale.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Sql workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{price} > \\operatorname{AVG}(\\text{price}) \\quad \\land \\quad \\text{product\\_id} \\in \\text{Sales}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `solution` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nproducts = [{\"product_id\": 1, \"product_name\": \"Laptop\", \"price\": 1200.0}, {\"product_id\": 2, \"product_name\": \"Mouse\", \"price\": 25.0}, {\"product_id\": 3, \"product_name\": \"Monitor\", \"price\": 400.0}], sales = [{\"sale_id\": 101, \"product_id\": 1}, {\"sale_id\": 102, \"product_id\": 2}]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated sql_subqueries under standard test conditions.\n\n**Resulting Output:**\n```python\n[{\"product_id\": 1, \"product_name\": \"Laptop\", \"price\": 1200.0}]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `solution` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `{'product_id': 1, 'product_name': 'Laptop', 'price': 1200.0}`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `solution`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `solution`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Subqueries** provides an essential primitive within Sql systems. By combining vectorized array computation with rigorous numerical safeguards, `solution` accurately and efficiently performs the required transformation.\n",
+  "description": "Identify products whose unit price exceeds the catalog average and have recorded at least one sale.\n\n$$\n\\text{price} > \\operatorname{AVG}(\\text{price}) \\quad \\land \\quad \\text{product\\_id} \\in \\text{Sales}\n$$\n\nGiven input parameters `products`, `sales`, return list of records containing 'product_id', 'product_name', and 'price'.",
+  "theory": "## What Is Subqueries?\n\nIn relational database querying (SQL), declarative set operations\u2014selection ($\\sigma$), projection ($\\pi$), joins ($\\bowtie$), aggregation, and window functions\u2014transform structured tables.\n\n$$\n\\text{price} > \\operatorname{AVG}(\\text{price}) \\quad \\land \\quad \\text{product\\_id} \\in \\text{Sales}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{price} > \\operatorname{AVG}(\\text{price})\n$$\n\n$$\n\\land\n$$\n\n$$\n\\text{product\\_id} \\in \\text{Sales}\n$$\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Basic SELECT**, **CASE Statements**, **Conditional Aggregation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: products = [{\"product_id\": 1, \"product_name\": \"Laptop\", \"price\": 1200.0}, {\"product_id\": 2, \"product_name\": \"Mouse\", \"price\": 25.0}, {\"product_id\": 3, \"product_name\": \"Monitor\", \"price\": 400.0}], sales = [{\"sale_id\": 101, \"product_id\": 1}, {\"sale_id\": 102, \"product_id\": 2}]\n\nOutput: [{\"product_id\": 1, \"product_name\": \"Laptop\", \"price\": 1200.0}]\n\nExplanation: Evaluated sql_subqueries under standard test conditions."
+    "Input: products = [{\"product_id\": 1, \"product_name\": \"Laptop\", \"price\": 1200.0}, {\"product_id\": 2, \"product_name\": \"Mouse\", \"price\": 25.0}, {\"product_id\": 3, \"product_name\": \"Monitor\", \"price\": 400.0}], sales = [{\"sale_id\": 101, \"product_id\": 1}, {\"sale_id\": 102, \"product_id\": 2}]\n\nOutput: [{\"product_id\": 1, \"product_name\": \"Laptop\", \"price\": 1200.0}]",
+    "Input: products = [{\"product_id\": 2, \"product_name\": \"Laptop\", \"price\": 1800.0}, {\"product_id\": 3, \"product_name\": \"Mouse\", \"price\": 37.5}, {\"product_id\": 4, \"product_name\": \"Monitor\", \"price\": 600.0}], sales = [{\"sale_id\": 152, \"product_id\": 2}, {\"sale_id\": 153, \"product_id\": 3}]\n\nOutput: [{\"product_id\": 2, \"product_name\": \"Laptop\", \"price\": 1800.0}]"
   ],
-  "requirements": "* Function must be named `sql_subqueries`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `sql_subqueries` accepting `products`, `sales`\n* Use SQL subqueries to compare product prices with the overall average and include only products with recorded sales.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `sql_subqueries`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`products`, `sales`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `sql_subqueries` into clear stages: validate/reshape `products`, `sales`, evaluate the Subqueries equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def sql_subqueries(products: list, sales: list) -> list:\n    \"\"\"\n    Reference SQL:\n    -- SQL Subqueries\n    SELECT product_id, product_name, price\n    FROM products\n    WHERE price > (SELECT AVG(price) FROM products)\n      AND product_id IN (SELECT DISTINCT product_id FROM sales)\n    ORDER BY price DESC;\n    \"\"\"\n    pass\n",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Subqueries** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef sql_subqueries(products: list, sales: list) -> list:\n    if not products:\n        return []\n    avg_price = sum(p['price'] for p in products) / len(products)\n    sales_ids = {s['product_id'] for s in sales}\n    res = [p for p in products if p['price'] > avg_price and p['product_id'] in sales_ids]\n    res.sort(key=lambda x: -x['price'])\n    return [{'product_id': p['product_id'], 'product_name': p['product_name'], 'price': round(float(p['price']), 2)} for p in res]\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: SQLite3 / Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef sql_subqueries(products: list, sales: list) -> list:\n    \"\"\"\n    Use SQL subqueries to compare product prices with the overall average and include only products with recorded sales.\n\n    Args:\n        products (list): Input parameter `products` (list) for Subqueries.\n        sales (list): Input parameter `sales` (list) for Subqueries.\n\n    Returns:\n        list: Computed Subqueries result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Subqueries** (Data Processing): Use SQL subqueries to compare product prices with the overall average and include only products with recorded sales.\n\nTo implement `sql_subqueries` cleanly and accurately:\n1. Parse and normalize the inputs (`products`, `sales`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef sql_subqueries(products: list, sales: list) -> list:\n    if not products:\n        return []\n    avg_price = sum(p['price'] for p in products) / len(products)\n    sales_ids = {s['product_id'] for s in sales}\n    res = [p for p in products if p['price'] > avg_price and p['product_id'] in sales_ids]\n    res.sort(key=lambda x: -x['price'])\n    return [{'product_id': p['product_id'], 'product_name': p['product_name'], 'price': round(float(p['price']), 2)} for p in res]\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Subqueries** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "sql-subqueries-tc-1",
@@ -75,7 +77,7 @@
     },
     {
       "id": "sql-subqueries-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "products": [
           {
@@ -116,7 +118,7 @@
     },
     {
       "id": "sql-subqueries-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "products": [
           {
@@ -153,11 +155,11 @@
           "price": 600.0
         }
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "sql-subqueries-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "products": [
           {
@@ -198,7 +200,7 @@
     },
     {
       "id": "sql-subqueries-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "products": [
           {
@@ -239,7 +241,7 @@
     },
     {
       "id": "sql-subqueries-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "products": [
           {
@@ -280,7 +282,7 @@
     },
     {
       "id": "sql-subqueries-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "products": [
           {
@@ -322,7 +324,20 @@
   ],
   "functionMetadata": {
     "name": "sql_subqueries",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "products",
+        "type": "array",
+        "example": "[{\"product_id\": 1, \"product_name\": \"Laptop\", \"price\": 1200.0}, {\"product_id\": 2, \"product_name\": \"Mouse\", \"price\": 25.0}, {\"product_id\": 3, \"product_name\": \"Monitor\", \"price\": 400.0}]",
+        "description": "Input parameter `products` (list) for Subqueries"
+      },
+      {
+        "name": "sales",
+        "type": "array",
+        "example": "[{\"sale_id\": 101, \"product_id\": 1}, {\"sale_id\": 102, \"product_id\": 2}]",
+        "description": "Input parameter `sales` (list) for Subqueries"
+      }
+    ]
   },
   "relatedProblems": [
     "sql-multiple-joins",
@@ -331,11 +346,7 @@
     "sql-inner-join",
     "sql-conditional-aggregation"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "sql",
-    "placeholderType": "sql_dummy_select (SELECT * FROM main_table)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Subqueries",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/sql-subqueries",
+  "localUrl": "http://localhost:3000/problems/sql-subqueries"
 }

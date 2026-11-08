@@ -4,7 +4,7 @@
   "description": "Implement the generator forward pass for a linear GAN generator. Compute\n\n$$\nG(Z) = \\tanh(ZW + b)\n$$\n\nHere, $Z \\in \\mathbb{R}^{B \\times N}$ contains $B$ noise vectors of width $N$, $W \\in \\mathbb{R}^{N \\times D}$ contains the supplied generator weights, $b \\in \\mathbb{R}^{D}$ is the supplied bias, and $G(Z) \\in \\mathbb{R}^{B \\times D}$ contains generated samples. Return $G(Z)$ as a float64 NumPy array with shape $(B, D)$.",
   "seoDescription": "Implement a GAN generator that transforms latent noise through learned dense layers into generated samples.",
   "examples": [
-    "Input: z = [[1,0,-1],[0.5,0.5,0.5]], W = [[0.3,-0.1,0.2,0.5],[0.1,0.4,-0.3,0.2],[-0.2,0.1,0.6,-0.4]], b = [0.1,-0.1,0,0.2]\n\nOutput: [[0.53705,-0.291313,-0.379949,0.800499],[0.197375,0.099668,0.244919,0.336376]]\n\nExplanation: The affine projection maps each noise vector into data space, and tanh bounds every generated feature between minus one and one.",
+    "Input: z = [[1,0,-1],[0.5,0.5,0.5]], W = [[0.3,-0.1,0.2,0.5],[0.1,0.4,-0.3,0.2],[-0.2,0.1,0.6,-0.4]], b = [0.1,-0.1,0,0.2]\n\nOutput: [[0.53705,-0.291313,-0.379949,0.800499],[0.197375,0.099668,0.244919,0.336376]]",
     "Input: z = [[2,-1]], W = [[0.5,-0.2,0.3],[-0.1,0.4,0.6]], b = [0,0.1,-0.1]\n\nOutput: [[0.800499,-0.604368,-0.099668]]",
     "Input: z = [[0.5,-0.5],[1,1],[-1,0]], W = [[0.4,0.3],[-0.2,0.5]], b = [0.1,-0.1]\n\nOutput: [[0.379949,-0.197375],[0.291313,0.604368],[-0.291313,-0.379949]]"
   ],
@@ -22,7 +22,7 @@
   "topicId": "gan-generator",
   "paperSnippet": "\"The generative model G captures the data distribution. It takes as input a noise variable z and outputs a sample G(z) = x.\"",
   "visualizationComponent": "GANGeneratorViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **GAN Generator** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef generator(z: np.ndarray, W: np.ndarray, b: np.ndarray) -> np.ndarray:\n    z_arr = np.asarray(z, dtype=float)\n    w = np.asarray(W, dtype=float)\n    b_arr = np.asarray(b, dtype=float)\n    return np.round(np.tanh(z_arr @ w + b_arr), 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **GAN Generator** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef generator(z: np.ndarray, W: np.ndarray, b: np.ndarray) -> np.ndarray:\n    z_arr = np.asarray(z, dtype=float)\n    w = np.asarray(W, dtype=float)\n    b_arr = np.asarray(b, dtype=float)\n    return np.round(np.tanh(z_arr @ w + b_arr), 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gan-generator-tc-1",

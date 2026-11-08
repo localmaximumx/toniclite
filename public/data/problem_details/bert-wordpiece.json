@@ -4,7 +4,7 @@
   "description": "Implement BERT WordPiece tokenization with greedy longest-match-first segmentation. Lowercase the input and split it on whitespace. For each word, choose the longest vocabulary token beginning at the current character. A token after the first piece must use the continuation prefix ##. If a word cannot be fully segmented, or its length exceeds max_word_length, emit only unk_token for that word.\n\nFor example, when play and ##ing are in the vocabulary, playing becomes play followed by ##ing. Return all pieces from all words as a Python list of strings in their original word order.",
   "seoDescription": "Implement BERT WordPiece tokenization with greedy longest-match subwords, continuation prefixes, and unknown-token fallback.",
   "examples": [
-    "Input: text = \"Playing cats\", vocab = {\"play\":1,\"##ing\":2,\"cat\":3,\"##s\":4,\"[UNK]\":0}, unk_token = \"[UNK]\", max_word_length = 20\n\nOutput: [\"play\",\"##ing\",\"cat\",\"##s\"]\n\nExplanation: The tokenizer chooses play first, then matches the remaining characters with the continuation token ##ing.",
+    "Input: text = \"Playing cats\", vocab = {\"play\":1,\"##ing\":2,\"cat\":3,\"##s\":4,\"[UNK]\":0}, unk_token = \"[UNK]\", max_word_length = 20\n\nOutput: [\"play\",\"##ing\",\"cat\",\"##s\"]",
     "Input: text = \"unaffable\", vocab = {\"un\":1,\"##aff\":2,\"##able\":3,\"##a\":4,\"##ff\":5,\"[UNK]\":0}, unk_token = \"[UNK]\", max_word_length = 20\n\nOutput: [\"un\",\"##aff\",\"##able\"]",
     "Input: text = \"known mystery\", vocab = {\"known\":1,\"my\":2,\"[UNK]\":0}, unk_token = \"[UNK]\", max_word_length = 20\n\nOutput: [\"known\",\"[UNK]\"]"
   ],

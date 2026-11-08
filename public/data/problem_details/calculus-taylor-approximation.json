@@ -20,19 +20,21 @@
   "seoDescription": "Build first-order (linear) and second-order (quadratic) Taylor approximations of a loss function at a given point.",
   "solved": false,
   "isLocked": true,
-  "description": "Construct first-order linear and second-order quadratic Taylor approximations of local loss landscapes from gradient and Hessian evaluations.\n\nOptimization algorithms treat complex non-convex objective surfaces locally as second-order Taylor paraboloids.\n\n### Mathematical Formulation\n$$\nf(\\mathbf{x}_0 + \\Delta) \\approx f(\\mathbf{x}_0) + \\nabla f(\\mathbf{x}_0)^T \\Delta + \\frac{1}{2} \\Delta^T \\nabla^2 f(\\mathbf{x}_0) \\Delta\n$$\n\n### Step-by-Step Implementation\n1. Compute linear directional increment via inner product grad^T delta\n2. Compute second-order curvature correction using quadratic form delta^T H delta\n3. Return composite first- and second-order Taylor approximations\n\n### Returns\nDictionary with 'first_order', 'second_order', and 'quadratic_correction'.",
-  "theory": "# Understanding Taylor Approximation of a Loss Landscape\n\n## 1. What Is It?\n\nThe **Taylor Approximation of a Loss Landscape** is a fundamental computational technique in Numpy. In machine learning workflows, Construct first-order linear and second-order quadratic Taylor approximations of local loss landscapes from gradient and Hessian evaluations.\n\n### Key Terminology\n- **Calculus**: Core domain concept contextualizing this task within Numpy workflows.\n- **Loss Functions**: Core domain concept contextualizing this task within Numpy workflows.\n- **Optimization**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nf(\\mathbf{x}_0 + \\Delta) \\approx f(\\mathbf{x}_0) + \\nabla f(\\mathbf{x}_0)^T \\Delta + \\frac{1}{2} \\Delta^T \\nabla^2 f(\\mathbf{x}_0) \\Delta\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `calculus_taylor_approximation` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nf_x0 = 10.0, grad_x0 = [1.0, 2.0], hess_x0 = [[2.0, 0.0], [0.0, 4.0]], delta = [0.1, -0.1]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated calculus_taylor_approximation under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"first_order\": 9.9, \"second_order\": 9.93, \"quadratic_correction\": 0.03}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `calculus_taylor_approximation` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`first_order`**: Represents `first_order` (e.g. `9.9`), reflecting the updated state or component.\n  - **`second_order`**: Represents `second_order` (e.g. `9.93`), reflecting the updated state or component.\n  - **`quadratic_correction`**: Represents `quadratic_correction` (e.g. `0.03`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `calculus_taylor_approximation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `calculus_taylor_approximation`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `calculus_taylor_approximation`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Taylor Approximation of a Loss Landscape** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `calculus_taylor_approximation` accurately and efficiently performs the required transformation.\n",
+  "description": "Construct first-order linear and second-order quadratic Taylor approximations of local loss landscapes from gradient and Hessian evaluations.\n\n$$\nf(\\mathbf{x}_0 + \\Delta) \\approx f(\\mathbf{x}_0) + \\nabla f(\\mathbf{x}_0)^T \\Delta + \\frac{1}{2} \\Delta^T \\nabla^2 f(\\mathbf{x}_0) \\Delta\n$$\n\nGiven input parameters `f_x0`, `grad_x0`, `hess_x0`, `delta`, return dictionary with 'first_order', 'second_order', and 'quadratic_correction'.",
+  "theory": "## What Is Taylor Approximation of a Loss Landscape?\n\nIn machine learning calculus, analytical derivatives and local linear approximations govern how small parameter changes affect model predictions and loss objectives.\n\n$$\nf(\\mathbf{x}_0 + \\Delta) \\approx f(\\mathbf{x}_0) + \\nabla f(\\mathbf{x}_0)^T \\Delta + \\frac{1}{2} \\Delta^T \\nabla^2 f(\\mathbf{x}_0) \\Delta\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\text{scale} = \\frac{1}{\\sqrt{\\sigma^2 + \\varepsilon}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Continuity of Activation Functions**, **Derivatives of Common Activation Functions**, **Backpropagation Through a Computation Graph**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d)$ (or $\\mathcal{O}(N \\cdot M \\cdot d)$ for matrix-matrix products) to evaluate the linear projections and inner products.\n- **Space Complexity:** $\\mathcal{O}(N \\cdot d)$ to store the projected representations and output array.",
   "examples": [
-    "Input: f_x0 = 10.0, grad_x0 = [1.0, 2.0], hess_x0 = [[2.0, 0.0], [0.0, 4.0]], delta = [0.1, -0.1]\n\nOutput: {\"first_order\": 9.9, \"second_order\": 9.93, \"quadratic_correction\": 0.03}\n\nExplanation: Evaluated calculus_taylor_approximation under standard test conditions."
+    "Input: f_x0 = 10.0, grad_x0 = [1.0, 2.0], hess_x0 = [[2.0, 0.0], [0.0, 4.0]], delta = [0.1, -0.1]\n\nOutput: {\"first_order\": 9.9, \"second_order\": 9.93, \"quadratic_correction\": 0.03}",
+    "Input: f_x0 = 20.0, grad_x0 = [2.0, 4.0], hess_x0 = [[4.0, 0.0], [0.0, 8.0]], delta = [0.2, -0.2]\n\nOutput: {\"first_order\": 19.6, \"second_order\": 19.84, \"quadratic_correction\": 0.24}"
   ],
-  "requirements": "* Function must be named `calculus_taylor_approximation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `calculus_taylor_approximation` accepting `f_x0`, `grad_x0`, `hess_x0`, `delta`\n* Build first-order (linear) and second-order (quadratic) Taylor approximations of a loss function at a given point.\n* Return a `dict` containing the exact keys `'first_order'`, `'second_order'`, `'quadratic_correction'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `calculus_taylor_approximation`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`f_x0`, `grad_x0`, `hess_x0`, `delta`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `calculus_taylor_approximation` into clear stages: validate/reshape `f_x0`, `grad_x0`, `hess_x0`, `delta`, evaluate the Taylor Approximation of a Loss Landscape equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('first_order', 'second_order', 'quadratic_correction') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef calculus_taylor_approximation(f_x0: float, grad_x0: list, hess_x0: list, delta: list) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Taylor Approximation of a Loss Landscape** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_taylor_approximation(f_x0: float, grad_x0: list, hess_x0: list, delta: list) -> dict:\n    g, H, d = np.array(grad_x0, dtype=np.float64), np.array(hess_x0, dtype=np.float64), np.array(delta, dtype=np.float64)\n    f1 = float(f_x0) + float(np.dot(g, d))\n    qc = 0.5 * float(np.dot(d, np.dot(H, d)))\n    return {'first_order': round(f1, 6), 'second_order': round(f1 + qc, 6), 'quadratic_correction': round(qc, 6)}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef calculus_taylor_approximation(f_x0: float, grad_x0: list, hess_x0: list, delta: list) -> dict:\n    \"\"\"\n    Build first-order (linear) and second-order (quadratic) Taylor approximations of a loss function at a given point.\n\n    Args:\n        f_x0 (float): Input parameter `f_x0` (float) for Taylor Approximation of a Loss Landscape.\n        grad_x0 (list): Gradient tensor/vector for grad x0.\n        hess_x0 (list): Input parameter `hess_x0` (list) for Taylor Approximation of a Loss Landscape.\n        delta (list): Input parameter `delta` (list) for Taylor Approximation of a Loss Landscape.\n\n    Returns:\n        dict: Computed Taylor Approximation of a Loss Landscape result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Taylor Approximation of a Loss Landscape** (Calculus, Loss Functions, Optimization): Build first-order (linear) and second-order (quadratic) Taylor approximations of a loss function at a given point.\n\nTo implement `calculus_taylor_approximation` cleanly and accurately:\n1. Parse and normalize the inputs (`f_x0`, `grad_x0`, `hess_x0`, `delta`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef calculus_taylor_approximation(f_x0: float, grad_x0: list, hess_x0: list, delta: list) -> dict:\n    g, H, d = np.array(grad_x0, dtype=np.float64), np.array(hess_x0, dtype=np.float64), np.array(delta, dtype=np.float64)\n    f1 = float(f_x0) + float(np.dot(g, d))\n    qc = 0.5 * float(np.dot(d, np.dot(H, d)))\n    return {'first_order': round(f1, 6), 'second_order': round(f1 + qc, 6), 'quadratic_correction': round(qc, 6)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Taylor Approximation of a Loss Landscape** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "calculus-taylor-approximation-tc-1",
@@ -67,7 +69,7 @@
     },
     {
       "id": "calculus-taylor-approximation-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (f_x0=20.0)",
       "inputs": {
         "f_x0": 20.0,
         "grad_x0": [
@@ -98,7 +100,7 @@
     },
     {
       "id": "calculus-taylor-approximation-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (f_x0=5.0)",
       "inputs": {
         "f_x0": 5.0,
         "grad_x0": [
@@ -125,11 +127,11 @@
         "second_order": 4.97875,
         "quadratic_correction": 0.00375
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "calculus-taylor-approximation-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (f_x0=-10.0)",
       "inputs": {
         "f_x0": -10.0,
         "grad_x0": [
@@ -160,7 +162,7 @@
     },
     {
       "id": "calculus-taylor-approximation-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (f_x0=30.0)",
       "inputs": {
         "f_x0": 30.0,
         "grad_x0": [
@@ -191,7 +193,7 @@
     },
     {
       "id": "calculus-taylor-approximation-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (f_x0=11.0)",
       "inputs": {
         "f_x0": 11.0,
         "grad_x0": [
@@ -222,7 +224,7 @@
     },
     {
       "id": "calculus-taylor-approximation-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (f_x0=8.0)",
       "inputs": {
         "f_x0": 8.0,
         "grad_x0": [
@@ -254,7 +256,32 @@
   ],
   "functionMetadata": {
     "name": "calculus_taylor_approximation",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "f_x0",
+        "type": "number",
+        "example": "10.0",
+        "description": "Input parameter `f_x0` (float) for Taylor Approximation of a Loss Landscape"
+      },
+      {
+        "name": "grad_x0",
+        "type": "array",
+        "example": "[1.0, 2.0]",
+        "description": "Gradient tensor/vector for grad x0"
+      },
+      {
+        "name": "hess_x0",
+        "type": "array",
+        "example": "[[2.0, 0.0], [0.0, 4.0]]",
+        "description": "Input parameter `hess_x0` (list) for Taylor Approximation of a Loss Landscape"
+      },
+      {
+        "name": "delta",
+        "type": "array",
+        "example": "[0.1, -0.1]",
+        "description": "Input parameter `delta` (list) for Taylor Approximation of a Loss Landscape"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -263,11 +290,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Taylor Approximation of a Loss Landscape",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/calculus-taylor-approximation",
+  "localUrl": "http://localhost:3000/problems/calculus-taylor-approximation"
 }

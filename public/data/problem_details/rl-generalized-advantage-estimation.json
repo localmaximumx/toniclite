@@ -18,19 +18,21 @@
   "seoDescription": "Compute generalized advantage estimates by recursively combining rewards, value predictions, discounts, and GAE decay.",
   "solved": false,
   "isLocked": true,
-  "description": "Calculate exponentially weighted advantage estimates over a temporal trajectory given rewards and state value estimates.\n\nGAE interpolates between low-variance 1-step TD advantages (lambda = 0) and unbiased high-variance Monte Carlo advantages (lambda = 1).\n\n### Mathematical Formulation\n$$\n\\hat{A}_t^{\\text{GAE}} = \\sum_{l=0}^{\\infty} (\\gamma \\lambda)^l \\delta_{t+l}, \\quad \\delta_t = r_t + \\gamma V(s_{t+1}) - V(s_t)\n$$\n\n### Step-by-Step Implementation\n1. Compute 1-step temporal difference residual delta_t = r_t + gamma * V(s_{t+1}) - V(s_t)\n2. Accumulate advantages backwards from T-1 down to 0 using recurrence A_t = delta_t + gamma * lambda * A_{t+1}\n3. Format advantage trajectory rounded to 4 decimal places\n\n### Returns\nList of floats representing GAE advantage values at each trajectory timestep.",
-  "theory": "# Understanding Generalized Advantage Estimation (GAE)\n\n## 1. What Is It?\n\nThe **Generalized Advantage Estimation (GAE)** is a fundamental computational technique in Python. In machine learning workflows, it involves performing exponentially weighted advantage estimates over a temporal trajectory given rewards and state value estimates.\n\n### Key Terminology\n- **`gamma`**: The learned affine scale parameter or discount factor.\n- **Reinforcement Learning**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\hat{A}_t^{\\text{GAE}} = \\sum_{l=0}^{\\infty} (\\gamma \\lambda)^l \\delta_{t+l}, \\quad \\delta_t = r_t + \\gamma V(s_{t+1}) - V(s_t)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `rl_generalized_advantage_estimation` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nrewards = [1.0, 1.0, 1.0], values = [0.5, 0.8, 0.9], next_value = 0.0, gamma = 0.99, lam = 0.95\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated rl_generalized_advantage_estimation under standard test conditions.\n\n**Resulting Output:**\n```python\n[2.4065, 1.185, 0.1]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `rl_generalized_advantage_estimation` must return:\n- **Primary Output:** `[2.4065, 1.185, 0.1]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `rl_generalized_advantage_estimation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `rl_generalized_advantage_estimation`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `rl_generalized_advantage_estimation`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Generalized Advantage Estimation (GAE)** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `rl_generalized_advantage_estimation` accurately and efficiently performs the required transformation.\n",
+  "description": "Calculate exponentially weighted advantage estimates over a temporal trajectory given rewards and state value estimates.\n\n$$\n\\hat{A}_t^{\\text{GAE}} = \\sum_{l=0}^{\\infty} (\\gamma \\lambda)^l \\delta_{t+l}, \\quad \\delta_t = r_t + \\gamma V(s_{t+1}) - V(s_t)\n$$\n\nGiven input parameters `rewards`, `values`, `next_value`, `gamma`, `lam`, return list of floats representing GAE advantage values at each trajectory timestep.",
+  "theory": "## What Is Generalized Advantage Estimation (GAE)?\n\nIn reinforcement learning, value functions and policy gradients optimize sequential decision-making over long-horizon Markov Decision Processes (MDPs).\n\n$$\n\\hat{A}_t^{\\text{GAE}} = \\sum_{l=0}^{\\infty} (\\gamma \\lambda)^l \\delta_{t+l}, \\quad \\delta_t = r_t + \\gamma V(s_{t+1}) - V(s_t)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\hat{A}_t^{\\text{GAE}} = \\sum_{l=0}^{\\infty} (\\gamma \\lambda)^l \\delta_{t+l}\n$$\n\n$$\n\\delta_t = r_t + \\gamma V(s_{t+1}) - V(s_t)\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Actor-Critic (A2C) Loss with Entropy**, **Bellman Expectation Equation**, **Bellman Optimality Equation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: rewards = [1.0, 1.0, 1.0], values = [0.5, 0.8, 0.9], next_value = 0.0, gamma = 0.99, lam = 0.95\n\nOutput: [2.4065, 1.185, 0.1]\n\nExplanation: Evaluated rl_generalized_advantage_estimation under standard test conditions."
+    "Input: rewards = [1.0, 1.0, 1.0], values = [0.5, 0.8, 0.9], next_value = 0.0, gamma = 0.99, lam = 0.95\n\nOutput: [2.4065, 1.185, 0.1]",
+    "Input: rewards = [1.5, 1.5, 1.5], values = [0.75, 1.2, 1.35], next_value = 0.0, gamma = 1.485, lam = 1.425\n\nOutput: [8.0808, 2.6222, 0.15]"
   ],
-  "requirements": "* Function must be named `rl_generalized_advantage_estimation`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `rl_generalized_advantage_estimation` accepting `rewards`, `values`, `next_value`, `gamma`, `lam`\n* Compute generalized advantage estimates by recursively combining rewards, value predictions, discounts, and GAE decay.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `rl_generalized_advantage_estimation`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`rewards`, `values`, `next_value`, `gamma`, `lam`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `rl_generalized_advantage_estimation` into clear stages: validate/reshape `rewards`, `values`, `next_value`, `gamma`, `lam`, evaluate the Generalized Advantage Estimation (GAE) equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def rl_generalized_advantage_estimation(rewards: list, values: list, next_value: float, gamma: float = 0.99, lam: float = 0.95) -> list:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Generalized Advantage Estimation (GAE)** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\ndef rl_generalized_advantage_estimation(rewards: list, values: list, next_value: float, gamma: float = 0.99, lam: float = 0.95) -> list:\n    T = len(rewards)\n    advantages = [0.0] * T\n    v_next, gae = next_value, 0.0\n    for t in reversed(range(T)):\n        delta = rewards[t] + gamma * v_next - values[t]\n        gae = delta + gamma * lam * gae\n        advantages[t] = round(gae, 4)\n        v_next = values[t]\n    return advantages\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef rl_generalized_advantage_estimation(rewards: list, values: list, next_value: float, gamma: float = 0.99, lam: float = 0.95) -> list:\n    \"\"\"\n    Compute generalized advantage estimates by recursively combining rewards, value predictions, discounts, and GAE decay.\n\n    Args:\n        rewards (list): Immediate rewards collected across steps or completions.\n        values (list): Input parameter `values` (list) for Generalized Advantage Estimation (GAE).\n        next_value (float): Input parameter `next_value` (float) for Generalized Advantage Estimation (GAE).\n        gamma (float): Discount factor in [0, 1] or scale parameter.\n        lam (float): Input parameter `lam` (float) for Generalized Advantage Estimation (GAE).\n\n    Returns:\n        list: Computed Generalized Advantage Estimation (GAE) result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Generalized Advantage Estimation (GAE)** (Reinforcement Learning): Compute generalized advantage estimates by recursively combining rewards, value predictions, discounts, and GAE decay.\n\nTo implement `rl_generalized_advantage_estimation` cleanly and accurately:\n1. Parse and normalize the inputs (`rewards`, `values`, `next_value`, `gamma`, `lam`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef rl_generalized_advantage_estimation(rewards: list, values: list, next_value: float, gamma: float = 0.99, lam: float = 0.95) -> list:\n    T = len(rewards)\n    advantages = [0.0] * T\n    v_next, gae = next_value, 0.0\n    for t in reversed(range(T)):\n        delta = rewards[t] + gamma * v_next - values[t]\n        gae = delta + gamma * lam * gae\n        advantages[t] = round(gae, 4)\n        v_next = values[t]\n    return advantages\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Generalized Advantage Estimation (GAE)** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "rl-generalized-advantage-estimation-tc-1",
@@ -59,7 +61,7 @@
     },
     {
       "id": "rl-generalized-advantage-estimation-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (rewards=[1.5, 1.5, 1.5])",
       "inputs": {
         "rewards": [
           1.5,
@@ -84,7 +86,7 @@
     },
     {
       "id": "rl-generalized-advantage-estimation-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (rewards=[0.5, 0.5, 0.5])",
       "inputs": {
         "rewards": [
           0.5,
@@ -105,11 +107,11 @@
         0.3345,
         0.05
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "rl-generalized-advantage-estimation-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (rewards=[2.0, 2.0, 2.0])",
       "inputs": {
         "rewards": [
           2.0,
@@ -134,7 +136,7 @@
     },
     {
       "id": "rl-generalized-advantage-estimation-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (rewards=[-1.0, -1.0, -1.0])",
       "inputs": {
         "rewards": [
           -1.0,
@@ -159,7 +161,7 @@
     },
     {
       "id": "rl-generalized-advantage-estimation-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (rewards=[0.8, 0.8, 0.8])",
       "inputs": {
         "rewards": [
           0.8,
@@ -184,7 +186,7 @@
     },
     {
       "id": "rl-generalized-advantage-estimation-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (rewards=[3.0, 3.0, 3.0])",
       "inputs": {
         "rewards": [
           3.0,
@@ -210,7 +212,38 @@
   ],
   "functionMetadata": {
     "name": "rl_generalized_advantage_estimation",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "rewards",
+        "type": "array",
+        "example": "[1.0, 1.0, 1.0]",
+        "description": "Immediate rewards collected across steps or completions"
+      },
+      {
+        "name": "values",
+        "type": "array",
+        "example": "[0.5, 0.8, 0.9]",
+        "description": "Input parameter `values` (list) for Generalized Advantage Estimation (GAE)"
+      },
+      {
+        "name": "next_value",
+        "type": "number",
+        "example": "0.0",
+        "description": "Input parameter `next_value` (float) for Generalized Advantage Estimation (GAE)"
+      },
+      {
+        "name": "gamma",
+        "type": "number",
+        "example": "0.99",
+        "description": "Discount factor in [0, 1] or scale parameter"
+      },
+      {
+        "name": "lam",
+        "type": "number",
+        "example": "0.95",
+        "description": "Input parameter `lam` (float) for Generalized Advantage Estimation (GAE)"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -219,11 +252,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Generalized Advantage Estimation (GAE)",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/rl-generalized-advantage-estimation",
+  "localUrl": "http://localhost:3000/problems/rl-generalized-advantage-estimation"
 }

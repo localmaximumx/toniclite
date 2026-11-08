@@ -19,19 +19,21 @@
   "seoDescription": "Simulate continuous batching by admitting requests in arrival order and replacing completed sequences during decoding.",
   "solved": false,
   "isLocked": true,
-  "description": "Simulate continuous iteration-level request batching, admitting new requests dynamically as completed sequences exit.\n\nContinuous batching eliminates idle GPU bubble latency caused by varying sequence lengths in static batching.\n\n### Mathematical Formulation\n$$\n\\text{Batch}_{t+1} = (\\text{Batch}_t \\setminus \\text{Completed}_t) \\cup \\text{Admitted}_t\n$$\n\n### Step-by-Step Implementation\n1. Track per-iteration generation steps for all active batch slots\n2. Evict completed sequences immediately upon generation of EOS token\n3. Admit pending requests from arrival queue into newly vacated batch slots\n\n### Returns\nDictionary with 'completed_requests' timestamps and total iterations.",
-  "theory": "# Understanding Simulate Continuous Batching\n\n## 1. What Is It?\n\nThe **Simulate Continuous Batching** is a fundamental computational technique in Pytorch. In machine learning workflows, Simulate continuous iteration-level request batching, admitting new requests dynamically as completed sequences exit.\n\n### Key Terminology\n- **Inference**: Core domain concept contextualizing this task within Pytorch workflows.\n- **MLOps**: Core domain concept contextualizing this task within Pytorch workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\text{Batch}_{t+1} = (\\text{Batch}_t \\setminus \\text{Completed}_t) \\cup \\text{Admitted}_t\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `inference_continuous_batching` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nrequests = [{\"id\": 1, \"arrival_step\": 0, \"total_steps\": 2, \"steps_done\": 2}, {\"id\": 2, \"arrival_step\": 0, \"total_steps\": 4, \"steps_done\": 4}, {\"id\": 3, \"arrival_step\": 1, \"total_steps\": 2, \"steps_done\": 2}], max_batch_slots = 2\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated inference_continuous_batching under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"completed_requests\": [{\"id\": 1, \"finish_step\": 3}, {\"id\": 2, \"finish_step\": 5}, {\"id\": 3, \"finish_step\": 5}], \"total_steps_simulated\": 5}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `inference_continuous_batching` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`completed_requests`**: Represents `completed_requests` (e.g. `[{'id': 1, 'finish_step': 3}, {'id': 2, 'finish_step': 5}, {'id': 3, 'finish_step': 5}]`), reflecting the updated state or component.\n  - **`total_steps_simulated`**: Represents `total_steps_simulated` (e.g. `5`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `inference_continuous_batching`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `inference_continuous_batching`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `inference_continuous_batching`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Simulate Continuous Batching** provides an essential primitive within Pytorch systems. By combining vectorized array computation with rigorous numerical safeguards, `inference_continuous_batching` accurately and efficiently performs the required transformation.\n",
+  "description": "Simulate continuous iteration-level request batching, admitting new requests dynamically as completed sequences exit.\n\n$$\n\\text{Batch}_{t+1} = (\\text{Batch}_t \\setminus \\text{Completed}_t) \\cup \\text{Admitted}_t\n$$\n\nGiven input parameters `requests`, `max_batch_slots`, return dictionary with 'completed_requests' timestamps and total iterations.",
+  "theory": "## What Is Continuous Batching?\n\nIn LLM and deep learning inference systems, algorithmic optimizations reduce memory footprint, KV-cache bandwidth, and token generation latency.\n\n$$\n\\text{Batch}_{t+1} = (\\text{Batch}_t \\setminus \\text{Completed}_t) \\cup \\text{Admitted}_t\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Implement Autoregressive Decoding with a KV Cache**, **Implement Block-Wise FP8 Quantization**, **Simulate Chunked Prefill Scheduling**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ dominated by sorting the $N$ elements or records.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store the sorted indices and output container.",
   "examples": [
-    "Input: requests = [{\"id\": 1, \"arrival_step\": 0, \"total_steps\": 2, \"steps_done\": 2}, {\"id\": 2, \"arrival_step\": 0, \"total_steps\": 4, \"steps_done\": 4}, {\"id\": 3, \"arrival_step\": 1, \"total_steps\": 2, \"steps_done\": 2}], max_batch_slots = 2\n\nOutput: {\"completed_requests\": [{\"id\": 1, \"finish_step\": 3}, {\"id\": 2, \"finish_step\": 5}, {\"id\": 3, \"finish_step\": 5}], \"total_steps_simulated\": 5}\n\nExplanation: Evaluated inference_continuous_batching under standard test conditions."
+    "Input: requests = [{\"id\": 1, \"arrival_step\": 0, \"total_steps\": 2, \"steps_done\": 2}, {\"id\": 2, \"arrival_step\": 0, \"total_steps\": 4, \"steps_done\": 4}, {\"id\": 3, \"arrival_step\": 1, \"total_steps\": 2, \"steps_done\": 2}], max_batch_slots = 2\n\nOutput: {\"completed_requests\": [{\"id\": 1, \"finish_step\": 3}, {\"id\": 2, \"finish_step\": 5}, {\"id\": 3, \"finish_step\": 5}], \"total_steps_simulated\": 5}",
+    "Input: requests = [{\"id\": 2, \"arrival_step\": 0, \"total_steps\": 4, \"steps_done\": 4}, {\"id\": 4, \"arrival_step\": 0, \"total_steps\": 8, \"steps_done\": 8}, {\"id\": 6, \"arrival_step\": 2, \"total_steps\": 4, \"steps_done\": 4}], max_batch_slots = 4\n\nOutput: {\"completed_requests\": [{\"id\": 2, \"finish_step\": 5}, {\"id\": 4, \"finish_step\": 9}, {\"id\": 6, \"finish_step\": 7}], \"total_steps_simulated\": 9}"
   ],
-  "requirements": "* Function must be named `inference_continuous_batching`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `inference_continuous_batching` accepting `requests`, `max_batch_slots`\n* Simulate continuous batching by admitting requests in arrival order and replacing completed sequences during decoding.\n* Return a `dict` containing the exact keys `'completed_requests'`, `'total_steps_simulated'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `inference_continuous_batching`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`requests`, `max_batch_slots`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\text{Batch}_{t+1} = (\\text{Batch}_t \\setminus \\text{Completed}_t) \\cup \\text{Admitted}_t$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('completed_requests', 'total_steps_simulated') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def inference_continuous_batching(requests: list, max_batch_slots: int = 2) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Simulate Continuous Batching** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef inference_continuous_batching(requests: list, max_batch_slots: int = 2) -> dict:\n    slots, queue, comp, step = {}, sorted(requests, key=lambda r: r['arrival_step']), [], 0\n    max_s = max(r['arrival_step'] + r['total_steps'] for r in requests) + 2\n    while (queue or slots) and step < max_s:\n        rem = []\n        for s, req in slots.items():\n            req['steps_done'] += 1\n            if req['steps_done'] >= req['total_steps']:\n                comp.append({'id': req['id'], 'finish_step': step + 1}); rem.append(s)\n        for s in rem: del slots[s]\n        while queue and queue[0]['arrival_step'] <= step and len(slots) < max_batch_slots:\n            r = queue.pop(0); r['steps_done'] = 0\n            for s in range(max_batch_slots):\n                if s not in slots: slots[s] = r; break\n        step += 1\n    return {'completed_requests': sorted(comp, key=lambda x: x['id']), 'total_steps_simulated': step}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: PyTorch & NumPy\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef inference_continuous_batching(requests: list, max_batch_slots: int = 2) -> dict:\n    \"\"\"\n    Simulate continuous batching by admitting requests in arrival order and replacing completed sequences during decoding.\n\n    Args:\n        requests (list): Input parameter `requests` (list) for Simulate Continuous Batching.\n        max_batch_slots (int): Input parameter `max_batch_slots` (int) for Simulate Continuous Batching.\n\n    Returns:\n        dict: Computed Simulate Continuous Batching result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Simulate Continuous Batching** (Inference, MLOps): Simulate continuous batching by admitting requests in arrival order and replacing completed sequences during decoding.\n\nTo implement `inference_continuous_batching` cleanly and accurately:\n1. Parse and normalize the inputs (`requests`, `max_batch_slots`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef inference_continuous_batching(requests: list, max_batch_slots: int = 2) -> dict:\n    slots, queue, comp, step = {}, sorted(requests, key=lambda r: r['arrival_step']), [], 0\n    max_s = max(r['arrival_step'] + r['total_steps'] for r in requests) + 2\n    while (queue or slots) and step < max_s:\n        rem = []\n        for s, req in slots.items():\n            req['steps_done'] += 1\n            if req['steps_done'] >= req['total_steps']:\n                comp.append({'id': req['id'], 'finish_step': step + 1}); rem.append(s)\n        for s in rem: del slots[s]\n        while queue and queue[0]['arrival_step'] <= step and len(slots) < max_batch_slots:\n            r = queue.pop(0); r['steps_done'] = 0\n            for s in range(max_batch_slots):\n                if s not in slots: slots[s] = r; break\n        step += 1\n    return {'completed_requests': sorted(comp, key=lambda x: x['id']), 'total_steps_simulated': step}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Simulate Continuous Batching** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "inference-continuous-batching-tc-1",
@@ -80,7 +82,7 @@
     },
     {
       "id": "inference-continuous-batching-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (max_batch_slots=4)",
       "inputs": {
         "requests": [
           {
@@ -125,7 +127,7 @@
     },
     {
       "id": "inference-continuous-batching-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (max_batch_slots=1)",
       "inputs": {
         "requests": [
           {
@@ -162,11 +164,11 @@
         ],
         "total_steps_simulated": 4
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "inference-continuous-batching-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (max_batch_slots=2)",
       "inputs": {
         "requests": [
           {
@@ -211,7 +213,7 @@
     },
     {
       "id": "inference-continuous-batching-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (max_batch_slots=3)",
       "inputs": {
         "requests": [
           {
@@ -256,7 +258,7 @@
     },
     {
       "id": "inference-continuous-batching-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (max_batch_slots=6)",
       "inputs": {
         "requests": [
           {
@@ -301,7 +303,7 @@
     },
     {
       "id": "inference-continuous-batching-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (max_batch_slots=1)",
       "inputs": {
         "requests": [
           {
@@ -343,7 +345,20 @@
   ],
   "functionMetadata": {
     "name": "inference_continuous_batching",
-    "runtime": "pytorch"
+    "parameters": [
+      {
+        "name": "requests",
+        "type": "array",
+        "example": "[{\"id\": 1, \"arrival_step\": 0, \"total_steps\": 2, \"steps_done\": 2}, {\"id\": 2, \"arrival_step\": 0, \"total_steps\": 4, \"steps_done\": 4}, {\"id\": 3, \"arrival_step\": 1, \"total_steps\": 2, \"steps_done\": 2}]",
+        "description": "Input parameter `requests` (list) for Simulate Continuous Batching"
+      },
+      {
+        "name": "max_batch_slots",
+        "type": "number",
+        "example": "2",
+        "description": "Input parameter `max_batch_slots` (int) for Simulate Continuous Batching"
+      }
+    ]
   },
   "relatedProblems": [
     "autograd-l08-train-tiny-micrograd-mlp",
@@ -352,11 +367,7 @@
     "autograd-l07-dense-layer-forward",
     "inference-latency-percentiles"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "pytorch",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Simulate Continuous Batching",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/inference-continuous-batching",
+  "localUrl": "http://localhost:3000/problems/inference-continuous-batching"
 }

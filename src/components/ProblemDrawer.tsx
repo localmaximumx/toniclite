@@ -10,6 +10,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { ProblemSummary, Difficulty, ResearchPaper } from '../types';
+import { CrackedLockIcon } from './CrackedLockIcon';
 
 interface ProblemDrawerProps {
   isOpen: boolean;
@@ -452,6 +453,7 @@ export const ProblemDrawer: React.FC<ProblemDrawerProps> = ({
                         <span className={`text-xs truncate ${isCurrent ? 'text-white font-bold' : ''}`}>
                           {cleanTitle(p.title)}
                         </span>
+                        {p.isFree === false && <CrackedLockIcon variant="icon" />}
                       </div>
 
                       {/* Difficulty string */}

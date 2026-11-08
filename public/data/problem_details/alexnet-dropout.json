@@ -4,7 +4,7 @@
   "description": "Implement inverted dropout using a supplied binary mask. During training, retained values are divided by $1-p$ so their expected scale is unchanged:\n\n$$\ny=\\frac{x\\odot m}{1-p}.\n$$\n\nHere, $p$ is the drop probability and $m$ is the supplied mask. During evaluation, return x unchanged. Return a new float64 NumPy array.",
   "seoDescription": "Implement inverted dropout for AlexNet with seeded masks and training-versus-inference behavior.",
   "examples": [
-    "Input: x = [1,2,3,4], p = 0.5, training = true, mask = [0,1,1,0]\n\nOutput: [0,4,6,0]\n\nExplanation: The retained values are multiplied by two because 1 / (1 - 0.5) = 2.",
+    "Input: x = [1,2,3,4], p = 0.5, training = true, mask = [0,1,1,0]\n\nOutput: [0,4,6,0]",
     "Input: x = [1,-2,3], p = 0.5, training = false, mask = [0,0,0]\n\nOutput: [1,-2,3]",
     "Input: x = [[1,2],[3,4]], p = 0.25, training = true, mask = [[1,0],[1,1]]\n\nOutput: [[1.333333,0],[4,5.333333]]"
   ],

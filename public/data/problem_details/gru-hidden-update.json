@@ -4,7 +4,7 @@
   "description": "Combine the previous GRU hidden state and the candidate state with the update gate:\n\n$$\nh_t=z_t\\odot h_{t-1}+(1-z_t)\\odot\\widetilde{h}_t.\n$$\n\nHere, $z_t$ is the update gate, $h_{t-1}$ is the previous state, $\\widetilde{h}_t$ is the candidate state, and $\\odot$ means elementwise multiplication. Accept one sample or a batch and return the new state as a matching float64 NumPy array.",
   "seoDescription": "Implement the GRU hidden-state interpolation between the previous state and candidate using the update gate.",
   "examples": [
-    "Input: z_t = [0.5,0.5], h_prev = [1,-1], h_tilde = [0.2,0.4]\n\nOutput: [0.6,-0.3]\n\nExplanation: A gate value of 0.5 averages the corresponding old and candidate values.",
+    "Input: z_t = [0.5,0.5], h_prev = [1,-1], h_tilde = [0.2,0.4]\n\nOutput: [0.6,-0.3]",
     "Input: z_t = [1,1], h_prev = [2,-3], h_tilde = [8,9]\n\nOutput: [2,-3]",
     "Input: z_t = [[0,0.25],[0.75,1]], h_prev = [[1,2],[3,4]], h_tilde = [[5,6],[7,8]]\n\nOutput: [[5,5],[4,4]]"
   ],
@@ -21,7 +21,7 @@
   "topicId": "gru-hidden-update",
   "paperSnippet": "\"The hidden state h_j is a linear interpolation between the previous activation and the candidate activation. The update gate determines how much the unit updates its content.\"",
   "visualizationComponent": "GRUHiddenUpdateViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Hidden State Update** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef hidden_state_update(z_t: np.ndarray, h_prev: np.ndarray,\n                        h_tilde: np.ndarray) -> np.ndarray:\n    zt = np.asarray(z_t, dtype=float)\n    hp = np.asarray(h_prev, dtype=float)\n    ht = np.asarray(h_tilde, dtype=float)\n    return np.round(zt * hp + (1.0 - zt) * ht, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Hidden State Update** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef hidden_state_update(z_t: np.ndarray, h_prev: np.ndarray,\n                        h_tilde: np.ndarray) -> np.ndarray:\n    zt = np.asarray(z_t, dtype=float)\n    hp = np.asarray(h_prev, dtype=float)\n    ht = np.asarray(h_tilde, dtype=float)\n    return np.round(zt * hp + (1.0 - zt) * ht, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "gru-hidden-update-tc-1",

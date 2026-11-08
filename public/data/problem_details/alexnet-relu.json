@@ -4,7 +4,7 @@
   "description": "Implement the rectified linear unit used throughout AlexNet.\n\n$$\n\\operatorname{ReLU}(x)=\\max(0,x).\n$$\n\nApply the function elementwise and return a float64 NumPy array with the same shape as x.",
   "seoDescription": "Implement AlexNet's elementwise ReLU activation, preserving positive values while setting negative values to zero.",
   "examples": [
-    "Input: x = [-2,-0.5,0,3]\n\nOutput: [0,0,0,3]\n\nExplanation: Negative values become zero while nonnegative values are unchanged.",
+    "Input: x = [-2,-0.5,0,3]\n\nOutput: [0,0,0,3]",
     "Input: x = [[-1,2],[3,-4]]\n\nOutput: [[0,2],[3,0]]",
     "Input: x = [0,1,5]\n\nOutput: [0,1,5]"
   ],
@@ -21,7 +21,7 @@
   "topicId": "alexnet-relu",
   "paperSnippet": "\"Deep convolutional neural networks with ReLUs train several times faster than their equivalents with tanh units.\"",
   "visualizationComponent": "ReLUViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **ReLU Activation Function** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef relu(x: np.ndarray) -> np.ndarray:\n    return np.maximum(0.0, np.asarray(x, dtype=float))\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **ReLU Activation Function** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef relu(x: np.ndarray) -> np.ndarray:\n    return np.maximum(0.0, np.asarray(x, dtype=float))\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "alexnet-relu-tc-1",
@@ -201,7 +201,7 @@
   "topic": {
     "id": "alexnet-relu",
     "name": "ReLU Activation",
-    "description": "6Ã faster training than tanh",
+    "description": "6\u00c3\u0097 faster training than tanh",
     "color": "#10b981"
   },
   "paper": {

@@ -13,6 +13,7 @@ import { InterviewPage } from './pages/InterviewPage';
 import { MLDesignPage } from './pages/MLDesignPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { MLMathPage } from './pages/MLMathPage';
+import { getCurrentUser, syncUserSession, UserAccount } from './services/authService';
 
 const PULL_THRESHOLD = 68;
 
@@ -32,8 +33,17 @@ function isAtScrollTop(target: EventTarget | null): boolean {
 }
 
 const AppContent: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => getCurrentUser());
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useEffect(() => {
+    const syncAuth = () => setCurrentUser(getCurrentUser());
+    syncAuth();
+    syncUserSession().then(syncAuth);
+    window.addEventListener('tensortonic_auth_change', syncAuth);
+    return () => window.removeEventListener('tensortonic_auth_change', syncAuth);
+  }, []);
   const touchStateRef = useRef<{
     active: boolean;
     startY: number;
@@ -167,7 +177,7 @@ const AppContent: React.FC = () => {
       <Navbar />
       <main className="flex-1 min-h-0 overflow-hidden relative">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={currentUser ? <Navigate to="/problems" replace /> : <HomePage />} />
           <Route path="/problems" element={<ProblemsPage />} />
           <Route path="/problems/:slug" element={<ProblemSolverPage />} />
           <Route path="/profile" element={<ProfilePage />} />
@@ -189,7 +199,7 @@ const AppContent: React.FC = () => {
           <Route path="/ml-math/*" element={<MLMathPage />} />
           <Route path="/blitz" element={<Navigate to="/ml-math" replace />} />
           <Route path="/speedrun" element={<Navigate to="/ml-math" replace />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to={currentUser ? "/problems" : "/"} replace />} />
         </Routes>
       </main>
     </div>

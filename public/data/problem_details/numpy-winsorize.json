@@ -19,185 +19,445 @@
   "seoDescription": "Winsorization clips extreme values in each column to percentile-based bounds, a standard technique for suppressing outliers in ML preprocessing.",
   "solved": false,
   "isLocked": true,
-  "description": "Replace extreme numerical values below lower percentile p_low and above upper percentile p_high with boundary percentiles.\n\nWinsorizing limits the distorting influence of heavy-tailed outliers on sample variance and mean estimation without discarding sample count.\n\n### Mathematical Formulation\n$$\nx'_i = \\begin{cases} Q(p_{\\text{low}}) & x_i < Q(p_{\\text{low}}) \\\\ Q(p_{\\text{high}}) & x_i > Q(p_{\\text{high}}) \\\\ x_i & \\text{otherwise} \\end{cases}\n$$\n\n### Step-by-Step Implementation\n1. Calculate empirical lower percentile value Q(p_low)\n2. Calculate empirical upper percentile value Q(p_high)\n3. Clip array values into range [Q(p_low), Q(p_high)] and round to 4 decimal places\n\n### Returns\nList of floats representing Winsorized dataset.",
-  "theory": "# Understanding Winsorize\n\n## 1. What Is It?\n\nThe **Winsorize** is a fundamental computational technique in Numpy. In machine learning workflows, Replace extreme numerical values below lower percentile p_low and above upper percentile p_high with boundary percentiles.\n\n### Key Terminology\n- **Data Processing**: Core domain concept contextualizing this task within Numpy workflows.\n- **Probability and Statistics**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nx'_i = \\begin{cases} Q(p_{\\text{low}}) & x_i < Q(p_{\\text{low}}) \\\\ Q(p_{\\text{high}}) & x_i > Q(p_{\\text{high}}) \\\\ x_i & \\text{otherwise} \\end{cases}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `numpy_winsorize` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ndata = [1.0, 10.0, 11.0, 12.0, 100.0], p_low = 10.0, p_high = 90.0\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated numpy_winsorize under standard test conditions.\n\n**Resulting Output:**\n```python\n[4.6, 10.0, 11.0, 12.0, 64.8]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `numpy_winsorize` must return:\n- **Primary Output:** `[4.6, 10.0, 11.0, 12.0, 64.8]`\n- **Representation:** The evaluated numerical result, scalar, or tensor satisfying: `* Function must be named `numpy_winsorize`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `numpy_winsorize`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `numpy_winsorize`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Winsorize** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `numpy_winsorize` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement column-wise Winsorization to clip extreme values in a feature matrix `X` using lower and upper percentile thresholds `p_low` and `p_high`:\n\n$$\n\\ell_j = P_{p_{\\text{low}}}(\\mathbf{X}_{:, j}), \\qquad u_j = P_{p_{\\text{high}}}(\\mathbf{X}_{:, j})\n$$\n\n$$\n\\tilde{X}_{i, j} = \\min\\!\\big(u_j, \\, \\max(\\ell_j, X_{i, j})\\big)\n$$\n\nCompute the percentile bounds along `axis=0`, clip each column to $[\\ell_j, u_j]$, and count the total number of modified entries. Return a dictionary with keys `'winsorized'`, `'lower_bounds'`, `'upper_bounds'`, and `'num_clipped'`, with float values rounded to 4 decimal places.",
+  "theory": "## What Is Winsorize?\n\nIn scientific array computing with NumPy, vectorized tensor operations apply mathematical transformations across entire arrays without Python loop overhead.\n\n$$\n\\ell_j = P_{p_{\\text{low}}}(\\mathbf{X}_{:, j}), \\qquad u_j = P_{p_{\\text{high}}}(\\mathbf{X}_{:, j})\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\ell_j = P_{p_{\\text{low}}}(\\mathbf{X}_{:, j})\n$$\n\n$$\nu_j = P_{p_{\\text{high}}}(\\mathbf{X}_{:, j})\n$$\n\n$$\n\\tilde{X}_{i, j} = \\min\\!\\big(u_j, \\, \\max(\\ell_j, X_{i, j})\\big)\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Aggregation Functions**, **Angle Features**, **Arange and Linspace**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: data = [1.0, 10.0, 11.0, 12.0, 100.0], p_low = 10.0, p_high = 90.0\n\nOutput: [4.6, 10.0, 11.0, 12.0, 64.8]\n\nExplanation: Evaluated numpy_winsorize under standard test conditions."
+    "Input: data = [[-100.0, 1.0], [2.0, 2.0], [3.0, 3.0], [4.0, 4.0], [100.0, 50.0]], p_low = 20.0, p_high = 80.0\n\nOutput: {\"winsorized\": [[-18.4, 1.8], [2.0, 2.0], [3.0, 3.0], [4.0, 4.0], [23.2, 13.2]], \"lower_bounds\": [-18.4, 1.8], \"upper_bounds\": [23.2, 13.2], \"num_clipped\": 4}",
+    "Input: data = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 100.0], p_low = 10.0, p_high = 90.0\n\nOutput: {\"winsorized\": [1.9, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 18.1], \"lower_bounds\": 1.9, \"upper_bounds\": 18.1, \"num_clipped\": 2}"
   ],
-  "requirements": "* Function must be named `numpy_winsorize`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `numpy_winsorize` accepting `data`, `p_low`, `p_high`\n* Winsorization clips extreme values in each column to percentile-based bounds, a standard technique for suppressing outliers in ML preprocessing.\n* Return a `dict` containing the exact keys `'winsorized'`, `'lower_bounds'`, `'upper_bounds'`, `'num_clipped'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `numpy_winsorize`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`data`, `p_low`, `p_high`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `numpy_winsorize` into clear stages: validate/reshape `data`, `p_low`, `p_high`, evaluate the Winsorize equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('winsorized', 'lower_bounds', 'upper_bounds', 'num_clipped') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef numpy_winsorize(data: list, p_low: float = 5.0, p_high: float = 95.0) -> list:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Winsorize** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_winsorize(data: list, p_low: float = 5.0, p_high: float = 95.0) -> list:\n    arr = np.array(data, dtype=float)\n    return np.round(np.clip(arr, np.percentile(arr, p_low), np.percentile(arr, p_high)), 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef numpy_winsorize(data: list, p_low: float = 10.0, p_high: float = 90.0) -> dict:\n    \"\"\"\n    Clips extreme values in each column (axis=0) of a 2D array (or 1D array) to its\n    [p_low, p_high] percentiles and returns the winsorized data and per-column bounds.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Winsorize** (Data Processing, Probability and Statistics): Winsorization clips extreme values in each column to percentile-based bounds, a standard technique for suppressing outliers in ML preprocessing.\n\nTo implement `numpy_winsorize` cleanly and accurately:\n1. Parse and normalize the inputs (`data`, `p_low`, `p_high`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef numpy_winsorize(data: list, p_low: float = 10.0, p_high: float = 90.0) -> dict:\n    arr = np.asarray(data, dtype=float)\n    low = np.percentile(arr, float(p_low), axis=0)\n    high = np.percentile(arr, float(p_high), axis=0)\n    clipped = np.clip(arr, low, high)\n    num_clipped = int(np.sum(arr != clipped))\n    return {\n        \"winsorized\": np.round(clipped, 4).tolist(),\n        \"lower_bounds\": np.round(low, 4).tolist() if np.ndim(low) > 0 else round(float(low), 4),\n        \"upper_bounds\": np.round(high, 4).tolist() if np.ndim(high) > 0 else round(float(high), 4),\n        \"num_clipped\": num_clipped\n    }\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N \\log N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Winsorize** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "numpy-winsorize-tc-1",
-      "name": "Data with extreme outliers",
+      "name": "2D matrix with outliers in both columns",
       "inputs": {
         "data": [
-          1.0,
-          10.0,
-          11.0,
-          12.0,
-          100.0
+          [
+            -100.0,
+            1.0
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            100.0,
+            50.0
+          ]
         ],
-        "p_low": 10.0,
-        "p_high": 90.0
+        "p_low": 20.0,
+        "p_high": 80.0
       },
-      "expectedOutput": [
-        4.6,
-        10.0,
-        11.0,
-        12.0,
-        64.8
-      ],
+      "expectedOutput": {
+        "winsorized": [
+          [
+            -18.4,
+            1.8
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            23.2,
+            13.2
+          ]
+        ],
+        "lower_bounds": [
+          -18.4,
+          1.8
+        ],
+        "upper_bounds": [
+          23.2,
+          13.2
+        ],
+        "num_clipped": 4
+      },
       "isPublic": true
     },
     {
       "id": "numpy-winsorize-tc-2",
-      "name": "Case 2",
-      "inputs": {
-        "data": [
-          0.5,
-          5.0,
-          5.5,
-          6.0,
-          50.0
-        ],
-        "p_low": 5.0,
-        "p_high": 45.0
-      },
-      "expectedOutput": [
-        1.4,
-        5.0,
-        5.4,
-        5.4,
-        5.4
-      ],
-      "isPublic": true
-    },
-    {
-      "id": "numpy-winsorize-tc-3",
-      "name": "Case 3",
-      "inputs": {
-        "data": [
-          0.8,
-          8.0,
-          8.8,
-          9.6,
-          80.0
-        ],
-        "p_low": 8.0,
-        "p_high": 72.0
-      },
-      "expectedOutput": [
-        3.104,
-        8.0,
-        8.8,
-        9.504,
-        9.504
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "numpy-winsorize-tc-4",
-      "name": "Case 4",
-      "inputs": {
-        "data": [
-          0.25,
-          2.5,
-          2.75,
-          3.0,
-          25.0
-        ],
-        "p_low": 2.5,
-        "p_high": 22.5
-      },
-      "expectedOutput": [
-        0.475,
-        2.275,
-        2.275,
-        2.275,
-        2.275
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "numpy-winsorize-tc-5",
-      "name": "Case 5",
-      "inputs": {
-        "data": [
-          0.4,
-          4.0,
-          4.4,
-          4.8,
-          40.0
-        ],
-        "p_low": 4.0,
-        "p_high": 36.0
-      },
-      "expectedOutput": [
-        0.976,
-        4.0,
-        4.176,
-        4.176,
-        4.176
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "numpy-winsorize-tc-6",
-      "name": "Case 6",
-      "inputs": {
-        "data": [
-          0.3,
-          10.0,
-          3.3,
-          12.0,
-          30.0
-        ],
-        "p_low": 3.0,
-        "p_high": 27.0
-      },
-      "expectedOutput": [
-        0.66,
-        3.836,
-        3.3,
-        3.836,
-        3.836
-      ],
-      "isPublic": false
-    },
-    {
-      "id": "numpy-winsorize-tc-7",
-      "name": "Case 7",
+      "name": "1D array with 10th and 90th percentile clipping",
       "inputs": {
         "data": [
           1.0,
-          12.5,
-          11.0,
-          15.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
           100.0
         ],
         "p_low": 10.0,
         "p_high": 90.0
       },
-      "expectedOutput": [
-        5.0,
-        12.5,
-        11.0,
-        15.0,
-        66.0
-      ],
+      "expectedOutput": {
+        "winsorized": [
+          1.9,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          18.1
+        ],
+        "lower_bounds": 1.9,
+        "upper_bounds": 18.1,
+        "num_clipped": 2
+      },
+      "isPublic": true
+    },
+    {
+      "id": "numpy-winsorize-tc-3",
+      "name": "Interquartile winsorization (25th to 75th)",
+      "inputs": {
+        "data": [
+          [
+            10.0,
+            100.0
+          ],
+          [
+            20.0,
+            200.0
+          ],
+          [
+            30.0,
+            300.0
+          ],
+          [
+            40.0,
+            400.0
+          ],
+          [
+            50.0,
+            500.0
+          ]
+        ],
+        "p_low": 25.0,
+        "p_high": 75.0
+      },
+      "expectedOutput": {
+        "winsorized": [
+          [
+            20.0,
+            200.0
+          ],
+          [
+            20.0,
+            200.0
+          ],
+          [
+            30.0,
+            300.0
+          ],
+          [
+            40.0,
+            400.0
+          ],
+          [
+            40.0,
+            400.0
+          ]
+        ],
+        "lower_bounds": [
+          20.0,
+          200.0
+        ],
+        "upper_bounds": [
+          40.0,
+          400.0
+        ],
+        "num_clipped": 4
+      },
+      "isPublic": true
+    },
+    {
+      "id": "numpy-winsorize-tc-4",
+      "name": "Symmetric negative and positive spikes",
+      "inputs": {
+        "data": [
+          [
+            -50.0,
+            0.0
+          ],
+          [
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            50.0,
+            40.0
+          ]
+        ],
+        "p_low": 15.0,
+        "p_high": 85.0
+      },
+      "expectedOutput": {
+        "winsorized": [
+          [
+            -20.6,
+            0.6
+          ],
+          [
+            -1.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            20.6,
+            17.8
+          ]
+        ],
+        "lower_bounds": [
+          -20.6,
+          0.6
+        ],
+        "upper_bounds": [
+          20.6,
+          17.8
+        ],
+        "num_clipped": 4
+      },
+      "isPublic": false
+    },
+    {
+      "id": "numpy-winsorize-tc-5",
+      "name": "No clipping when bounds are 0 and 100",
+      "inputs": {
+        "data": [
+          [
+            1.0,
+            2.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            5.0,
+            6.0
+          ]
+        ],
+        "p_low": 0.0,
+        "p_high": 100.0
+      },
+      "expectedOutput": {
+        "winsorized": [
+          [
+            1.0,
+            2.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            5.0,
+            6.0
+          ]
+        ],
+        "lower_bounds": [
+          1.0,
+          2.0
+        ],
+        "upper_bounds": [
+          5.0,
+          6.0
+        ],
+        "num_clipped": 0
+      },
+      "isPublic": false
+    },
+    {
+      "id": "numpy-winsorize-tc-6",
+      "name": "3-column financial feature table",
+      "inputs": {
+        "data": [
+          [
+            1.0,
+            10.0,
+            100.0
+          ],
+          [
+            2.0,
+            20.0,
+            200.0
+          ],
+          [
+            3.0,
+            30.0,
+            300.0
+          ],
+          [
+            4.0,
+            40.0,
+            400.0
+          ]
+        ],
+        "p_low": 25.0,
+        "p_high": 75.0
+      },
+      "expectedOutput": {
+        "winsorized": [
+          [
+            1.75,
+            17.5,
+            175.0
+          ],
+          [
+            2.0,
+            20.0,
+            200.0
+          ],
+          [
+            3.0,
+            30.0,
+            300.0
+          ],
+          [
+            3.25,
+            32.5,
+            325.0
+          ]
+        ],
+        "lower_bounds": [
+          1.75,
+          17.5,
+          175.0
+        ],
+        "upper_bounds": [
+          3.25,
+          32.5,
+          325.0
+        ],
+        "num_clipped": 6
+      },
+      "isPublic": false
+    },
+    {
+      "id": "numpy-winsorize-tc-7",
+      "name": "Constant column edge case",
+      "inputs": {
+        "data": [
+          [
+            5.0,
+            1.0
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            5.0,
+            10.0
+          ]
+        ],
+        "p_low": 20.0,
+        "p_high": 80.0
+      },
+      "expectedOutput": {
+        "winsorized": [
+          [
+            5.0,
+            1.6
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            5.0,
+            5.8
+          ]
+        ],
+        "lower_bounds": [
+          5.0,
+          1.6
+        ],
+        "upper_bounds": [
+          5.0,
+          5.8
+        ],
+        "num_clipped": 2
+      },
       "isPublic": false
     }
   ],
   "functionMetadata": {
     "name": "numpy_winsorize",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "data",
+        "type": "array",
+        "example": "[[-100.0, 1.0], [2.0, 2.0], [3.0, 3.0], [4.0, 4.0], [100.0, 50.0]]",
+        "description": "Dictionary mapping column names to lists, or 2D numeric array"
+      },
+      {
+        "name": "p_low",
+        "type": "number",
+        "example": "20.0",
+        "description": "Input parameter `p_low` (float) for Winsorize"
+      },
+      {
+        "name": "p_high",
+        "type": "number",
+        "example": "80.0",
+        "description": "Input parameter `p_high` (float) for Winsorize"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -206,11 +466,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Winsorize",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/numpy-winsorize",
+  "localUrl": "http://localhost:3000/problems/numpy-winsorize"
 }

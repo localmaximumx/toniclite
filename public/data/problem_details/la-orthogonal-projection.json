@@ -18,19 +18,21 @@
   "seoDescription": "Construct the orthogonal projection matrix onto the column space of a full-column-rank matrix.",
   "solved": false,
   "isLocked": true,
-  "description": "Construct the orthogonal projection matrix onto the column space of a full-column-rank matrix.\n\nOrthogonal projectors satisfy idempotency P^2 = P and symmetry P^T = P.\n\n### Mathematical Formulation\n$$\nP = A(A^\\top A)^{-1} A^\\top\n$$\n\n### Step-by-Step Implementation\n1. Compute Gram matrix A^T A\n2. Invert Gram matrix and multiply P = A (A^T A)^(-1) A^T\n\n### Returns\n2D matrix P of shape (m, m).",
-  "theory": "# Understanding Orthogonal Projection Matrix\n\n## 1. What Is It?\n\nThe **Orthogonal Projection Matrix** is a fundamental computational technique in Numpy. In machine learning workflows, Construct the orthogonal projection matrix onto the column space of a full-column-rank matrix.\n\n### Key Terminology\n- **Linear Algebra**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nP = A(A^\\top A)^{-1} A^\\top\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `la_orthogonal_projection` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nA = [[1.0, 0.0], [1.0, 1.0], [0.0, 1.0]]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated la_orthogonal_projection under standard test conditions.\n\n**Resulting Output:**\n```python\n[[0.666667, 0.333333, -0.333333], [0.333333, 0.666667, 0.333333], [-0.333333, 0.333333, 0.666667]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `la_orthogonal_projection` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[0.666667, 0.333333, -0.333333]`.\n  - **Element 2**: Evaluated output component `[0.333333, 0.666667, 0.333333]`.\n  - **Element 3**: Evaluated output component `[-0.333333, 0.333333, 0.666667]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `la_orthogonal_projection`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `la_orthogonal_projection`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Orthogonal Projection Matrix** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `la_orthogonal_projection` accurately and efficiently performs the required transformation.\n",
+  "description": "Construct the orthogonal projection matrix onto the column space of a full-column-rank matrix.\n\n$$\nP = A(A^\\top A)^{-1} A^\\top\n$$\n\nGiven input parameters `A`, return 2D matrix P of shape (m, m).",
+  "theory": "## What Is Orthogonal Projection Matrix?\n\nIn numerical linear algebra, matrix decompositions, projections, and inner-product structures provide stable geometric representations of high-dimensional data.\n\n$$\nP = A(A^\\top A)^{-1} A^\\top\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Cholesky Decomposition**, **Implement Cosine Similarity**, **Implement Dot Product**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N \\cdot d^2 + d^3)$ where $N$ is the number of samples and $d$ is the matrix/feature dimension (dominated by matrix factorization or system solve).\n- **Space Complexity:** $\\mathcal{O}(d^2)$ to store the matrix factors and intermediate linear algebra arrays.",
   "examples": [
-    "Input: A = [[1.0, 0.0], [1.0, 1.0], [0.0, 1.0]]\n\nOutput: [[0.666667, 0.333333, -0.333333], [0.333333, 0.666667, 0.333333], [-0.333333, 0.333333, 0.666667]]\n\nExplanation: Evaluated la_orthogonal_projection under standard test conditions."
+    "Input: A = [[1.0, 0.0], [1.0, 1.0], [0.0, 1.0]]\n\nOutput: [[0.666667, 0.333333, -0.333333], [0.333333, 0.666667, 0.333333], [-0.333333, 0.333333, 0.666667]]",
+    "Input: A = [[2.0, 0.0], [2.0, 2.0], [0.0, 2.0]]\n\nOutput: [[0.666667, 0.333333, -0.333333], [0.333333, 0.666667, 0.333333], [-0.333333, 0.333333, 0.666667]]"
   ],
-  "requirements": "* Function must be named `la_orthogonal_projection`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `la_orthogonal_projection` accepting `A`\n* Construct the orthogonal projection matrix onto the column space of a full-column-rank matrix.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `la_orthogonal_projection`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`A`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $P = A(A^\\top A)^{-1} A^\\top$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef la_orthogonal_projection(A: list) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Orthogonal Projection Matrix** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef la_orthogonal_projection(A: list) -> list:\n    mat = np.array(A, dtype=np.float64)\n    P = mat @ np.linalg.inv(mat.T @ mat) @ mat.T\n    return np.round(P, 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef la_orthogonal_projection(A: list) -> list:\n    \"\"\"\n    Construct the orthogonal projection matrix onto the column space of a full-column-rank matrix.\n\n    Args:\n        A (list): Input matrix A of linear system or transformation.\n\n    Returns:\n        list: Computed Orthogonal Projection Matrix result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Orthogonal Projection Matrix** (Linear Algebra): Construct the orthogonal projection matrix onto the column space of a full-column-rank matrix.\n\nTo implement `la_orthogonal_projection` cleanly and accurately:\n1. Parse and normalize the inputs (`A`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef la_orthogonal_projection(A: list) -> list:\n    mat = np.array(A, dtype=np.float64)\n    P = mat @ np.linalg.inv(mat.T @ mat) @ mat.T\n    return np.round(P, 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N^3)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N^2)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Orthogonal Projection Matrix** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "la-orthogonal-projection-tc-1",
@@ -72,7 +74,7 @@
     },
     {
       "id": "la-orthogonal-projection-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs",
       "inputs": {
         "A": [
           [
@@ -110,7 +112,7 @@
     },
     {
       "id": "la-orthogonal-projection-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values",
       "inputs": {
         "A": [
           [
@@ -144,11 +146,11 @@
           0.666667
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "la-orthogonal-projection-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime",
       "inputs": {
         "A": [
           [
@@ -186,7 +188,7 @@
     },
     {
       "id": "la-orthogonal-projection-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values",
       "inputs": {
         "A": [
           [
@@ -224,7 +226,7 @@
     },
     {
       "id": "la-orthogonal-projection-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions",
       "inputs": {
         "A": [
           [
@@ -262,7 +264,7 @@
     },
     {
       "id": "la-orthogonal-projection-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability",
       "inputs": {
         "A": [
           [
@@ -301,7 +303,14 @@
   ],
   "functionMetadata": {
     "name": "la_orthogonal_projection",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "A",
+        "type": "array",
+        "example": "[[1.0, 0.0], [1.0, 1.0], [0.0, 1.0]]",
+        "description": "Input matrix A of linear system or transformation"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -310,11 +319,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Orthogonal Projection Matrix",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/la-orthogonal-projection",
+  "localUrl": "http://localhost:3000/problems/la-orthogonal-projection"
 }

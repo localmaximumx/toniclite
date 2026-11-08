@@ -20,19 +20,21 @@
   "seoDescription": "In masked language modeling, certain tokens in a sentence are replaced with a special [MASK] token.",
   "solved": false,
   "isLocked": true,
-  "description": "Select token positions for bidirectional cloze mask replacement and record ground truth targets.\n\nMasked Language Modeling forces transformers to learn deep bidirectional representations by reconstructing hidden tokens from surrounding context.\n\n### Mathematical Formulation\n$$\nx_i \\leftarrow \\operatorname{[MASK]} \\quad \\text{with probability } p_{\\text{mask}}\n$$\n\n### Step-by-Step Implementation\n1. Scan sequence tokens and determine masking candidates\n2. Replace designated tokens with mask_token_id\n3. Record original tokens at masked coordinates for cross-entropy supervision\n\n### Returns\nDictionary with 'masked_ids', 'masked_positions', and 'original_tokens'.",
-  "theory": "# Understanding Masked Language Modeling\n\n## 1. What Is It?\n\nThe **Masked Language Modeling** is a fundamental computational technique in Python. In machine learning workflows, Select token positions for bidirectional cloze mask replacement and record ground truth targets.\n\n### Key Terminology\n- **NLP**: Core domain concept contextualizing this task within Python workflows.\n- **Language Models**: Core domain concept contextualizing this task within Python workflows.\n- **Inference**: Core domain concept contextualizing this task within Python workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nx_i \\leftarrow \\operatorname{[MASK]} \\quad \\text{with probability } p_{\\text{mask}}\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `nlp_masked_language_modeling` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\ntoken_ids = [10, 20, 30, 40, 50, 60], mask_token_id = 999, mask_prob = 0.2\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated nlp_masked_language_modeling under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"masked_ids\": [10, 999, 30, 40, 999, 60], \"masked_positions\": [1, 4], \"original_tokens\": [20, 50]}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `nlp_masked_language_modeling` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`masked_ids`**: Represents `masked_ids` (e.g. `[10, 999, 30, 40, 999, 60]`), reflecting the updated state or component.\n  - **`masked_positions`**: Represents `masked_positions` (e.g. `[1, 4]`), reflecting the updated state or component.\n  - **`original_tokens`**: Represents `original_tokens` (e.g. `[20, 50]`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `nlp_masked_language_modeling`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `nlp_masked_language_modeling`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `nlp_masked_language_modeling`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Masked Language Modeling** provides an essential primitive within Python systems. By combining vectorized array computation with rigorous numerical safeguards, `nlp_masked_language_modeling` accurately and efficiently performs the required transformation.\n",
+  "description": "Select token positions for bidirectional cloze mask replacement and record ground truth targets.\n\n$$\nx_i \\leftarrow \\operatorname{[MASK]} \\quad \\text{with probability } p_{\\text{mask}}\n$$\n\nGiven input parameters `token_ids`, `mask_token_id`, `mask_prob`, return dictionary with 'masked_ids', 'masked_positions', and 'original_tokens'.",
+  "theory": "## What Is Masked Language Modeling?\n\nIn natural language processing, tokenization, subword hashing, and distributional embeddings map discrete text symbols into continuous geometric spaces.\n\n$$\nx_i \\leftarrow \\operatorname{[MASK]} \\quad \\text{with probability } p_{\\text{mask}}\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nx_i \\leftarrow \\operatorname{[MASK]}\n$$\n\n$$\n\\text{with probability } p_{\\text{mask}}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Bag of Words**, **Beam Search Decoding**, **Byte Pair Encoding**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: token_ids = [10, 20, 30, 40, 50, 60], mask_token_id = 999, mask_prob = 0.2\n\nOutput: {\"masked_ids\": [10, 999, 30, 40, 999, 60], \"masked_positions\": [1, 4], \"original_tokens\": [20, 50]}\n\nExplanation: Evaluated nlp_masked_language_modeling under standard test conditions."
+    "Input: token_ids = [10, 20, 30, 40, 50, 60], mask_token_id = 999, mask_prob = 0.2\n\nOutput: {\"masked_ids\": [10, 999, 30, 40, 999, 60], \"masked_positions\": [1, 4], \"original_tokens\": [20, 50]}",
+    "Input: token_ids = [15, 30, 45, 60, 75, 90], mask_token_id = 1498, mask_prob = 0.3\n\nOutput: {\"masked_ids\": [15, 1498, 45, 60, 1498, 90], \"masked_positions\": [1, 4], \"original_tokens\": [30, 75]}"
   ],
-  "requirements": "* Function must be named `nlp_masked_language_modeling`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `nlp_masked_language_modeling` accepting `token_ids`, `mask_token_id`, `mask_prob`\n* In masked language modeling, certain tokens in a sentence are replaced with a special [MASK] token.\n* Return a `dict` containing the exact keys `'masked_ids'`, `'masked_positions'`, `'original_tokens'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `nlp_masked_language_modeling`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`token_ids`, `mask_token_id`, `mask_prob`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $x_i \\leftarrow \\operatorname{[MASK]} \\quad \\text{with probability } p_{\\text{mask}}$ in double precision (`float64`) before rounding the final result.",
+    "Ensure the returned dictionary uses the exact key names ('masked_ids', 'masked_positions', 'original_tokens') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "def nlp_masked_language_modeling(token_ids: list, mask_token_id: int, mask_prob: float = 0.15) -> dict:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Masked Language Modeling** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\ndef nlp_masked_language_modeling(token_ids: list, mask_token_id: int, mask_prob: float = 0.15) -> dict:\n    m_ids, pos = list(token_ids), []\n    for i in range(len(token_ids)):\n        if i % 3 == 1 and len(pos) < int(len(token_ids)*float(mask_prob) + 1):\n            m_ids[i] = int(mask_token_id); pos.append(i)\n    return {'masked_ids': m_ids, 'masked_positions': pos, 'original_tokens': [token_ids[p] for p in pos]}\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 200 ms; Memory: 128 MB\n* Allowed library: NumPy & Python Standard Library\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef nlp_masked_language_modeling(token_ids: list, mask_token_id: int, mask_prob: float = 0.15) -> dict:\n    \"\"\"\n    In masked language modeling, certain tokens in a sentence are replaced with a special [MASK] token.\n\n    Args:\n        token_ids (list): Input parameter `token_ids` (list) for Masked Language Modeling.\n        mask_token_id (int): Input parameter `mask_token_id` (int) for Masked Language Modeling.\n        mask_prob (float): Probability value(s) for mask prob.\n\n    Returns:\n        dict: Computed Masked Language Modeling result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Masked Language Modeling** (NLP, Language Models, Inference): In masked language modeling, certain tokens in a sentence are replaced with a special [MASK] token.\n\nTo implement `nlp_masked_language_modeling` cleanly and accurately:\n1. Parse and normalize the inputs (`token_ids`, `mask_token_id`, `mask_prob`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\ndef nlp_masked_language_modeling(token_ids: list, mask_token_id: int, mask_prob: float = 0.15) -> dict:\n    m_ids, pos = list(token_ids), []\n    for i in range(len(token_ids)):\n        if i % 3 == 1 and len(pos) < int(len(token_ids)*float(mask_prob) + 1):\n            m_ids[i] = int(mask_token_id); pos.append(i)\n    return {'masked_ids': m_ids, 'masked_positions': pos, 'original_tokens': [token_ids[p] for p in pos]}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Masked Language Modeling** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "nlp-masked-language-modeling-tc-1",
@@ -71,7 +73,7 @@
     },
     {
       "id": "nlp-masked-language-modeling-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (mask_token_id=1498)",
       "inputs": {
         "token_ids": [
           15,
@@ -106,7 +108,7 @@
     },
     {
       "id": "nlp-masked-language-modeling-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (mask_token_id=500)",
       "inputs": {
         "token_ids": [
           5,
@@ -135,11 +137,11 @@
           10
         ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "nlp-masked-language-modeling-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (mask_token_id=1998)",
       "inputs": {
         "token_ids": [
           20,
@@ -174,7 +176,7 @@
     },
     {
       "id": "nlp-masked-language-modeling-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (mask_token_id=999)",
       "inputs": {
         "token_ids": [
           -10,
@@ -203,7 +205,7 @@
     },
     {
       "id": "nlp-masked-language-modeling-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (mask_token_id=799)",
       "inputs": {
         "token_ids": [
           8,
@@ -236,7 +238,7 @@
     },
     {
       "id": "nlp-masked-language-modeling-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (mask_token_id=2997)",
       "inputs": {
         "token_ids": [
           30,
@@ -272,7 +274,26 @@
   ],
   "functionMetadata": {
     "name": "nlp_masked_language_modeling",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "token_ids",
+        "type": "array",
+        "example": "[10, 20, 30, 40, 50, 60]",
+        "description": "Input parameter `token_ids` (list) for Masked Language Modeling"
+      },
+      {
+        "name": "mask_token_id",
+        "type": "number",
+        "example": "999",
+        "description": "Input parameter `mask_token_id` (int) for Masked Language Modeling"
+      },
+      {
+        "name": "mask_prob",
+        "type": "number",
+        "example": "0.2",
+        "description": "Probability value(s) for mask prob"
+      }
+    ]
   },
   "relatedProblems": [
     "gradient-descent-quadratic",
@@ -281,11 +302,7 @@
     "precision-recall-at-k",
     "cs336-l01-train-byte-pair-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "python",
-    "placeholderType": "torch_passthrough (return x)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Masked Language Modeling",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/nlp-masked-language-modeling",
+  "localUrl": "http://localhost:3000/problems/nlp-masked-language-modeling"
 }

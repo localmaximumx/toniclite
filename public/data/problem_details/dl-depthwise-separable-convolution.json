@@ -19,19 +19,21 @@
   "seoDescription": "Implement NumPy depthwise spatial convolution followed by pointwise channel mixing and optional bias.",
   "solved": false,
   "isLocked": true,
-  "description": "Factor 2D multi-channel convolution into per-channel depthwise filtering followed by 1x1 pointwise projection and channel bias addition.\n\nDepthwise separable convolutions drastically reduce FLOPs and parameter counts in MobileNet and Xception architectures.\n\n### Mathematical Formulation\n$$\n\\mathbf{Y}_{c} = \\sum_{k} W_{\\text{pw}, c, k} (X_k * W_{\\text{dw}, k}) + b_c\n$$\n\n### Step-by-Step Implementation\n1. Convolve each spatial channel independently with depthwise kernel\n2. Apply 1x1 pointwise channel mixing projection\n3. Add optional channel bias vector and return output feature maps\n\n### Returns\nNested list representing (C_out, H_out, W_out) volume.",
-  "theory": "# Understanding Depthwise Separable Convolution\n\n## 1. What Is It?\n\nThe **Depthwise Separable Convolution** is a fundamental computational technique in Numpy. In machine learning workflows, Factor 2D multi-channel convolution into per-channel depthwise filtering followed by 1x1 pointwise projection and channel bias addition.\n\n### Key Terminology\n- **`bias`**: The learned additive offset vector.\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n- **Computer Vision**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\mathbf{Y}_{c} = \\sum_{k} W_{\\text{pw}, c, k} (X_k * W_{\\text{dw}, k}) + b_c\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_depthwise_separable_convolution` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nimage = [[[1.0, 2.0], [3.0, 4.0]], [[2.0, 1.0], [4.0, 3.0]]], depthwise_w = [[[1.0, 0.0], [0.0, 1.0]], [[0.0, 1.0], [1.0, 0.0]]], pointwise_w = [[0.5, 0.5]], bias = [0.1]\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_depthwise_separable_convolution under standard test conditions.\n\n**Resulting Output:**\n```python\n[[[5.1]]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_depthwise_separable_convolution` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[[5.1]]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_depthwise_separable_convolution`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_depthwise_separable_convolution`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Depthwise Separable Convolution** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_depthwise_separable_convolution` accurately and efficiently performs the required transformation.\n",
+  "description": "Factor 2D multi-channel convolution into per-channel depthwise filtering followed by 1x1 pointwise projection and channel bias addition.\n\n$$\n\\mathbf{Y}_{c} = \\sum_{k} W_{\\text{pw}, c, k} (X_k * W_{\\text{dw}, k}) + b_c\n$$\n\nGiven input parameters `image`, `depthwise_w`, `pointwise_w`, `bias`, return nested list representing (C_out, H_out, W_out) volume.",
+  "theory": "## What Is Depthwise Separable Convolution?\n\nConvolutional layers apply shared local filters across spatial positions to extract translation-equivariant features.\n\n$$\n\\mathbf{Y}_{c} = \\sum_{k} W_{\\text{pw}, c, k} (X_k * W_{\\text{dw}, k}) + b_c\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: image = [[[1.0, 2.0], [3.0, 4.0]], [[2.0, 1.0], [4.0, 3.0]]], depthwise_w = [[[1.0, 0.0], [0.0, 1.0]], [[0.0, 1.0], [1.0, 0.0]]], pointwise_w = [[0.5, 0.5]], bias = [0.1]\n\nOutput: [[[5.1]]]\n\nExplanation: Evaluated dl_depthwise_separable_convolution under standard test conditions."
+    "Input: image = [[[1.0, 2.0], [3.0, 4.0]], [[2.0, 1.0], [4.0, 3.0]]], depthwise_w = [[[1.0, 0.0], [0.0, 1.0]], [[0.0, 1.0], [1.0, 0.0]]], pointwise_w = [[0.5, 0.5]], bias = [0.1]\n\nOutput: [[[5.1]]]",
+    "Input: image = [[[2.0, 4.0], [6.0, 8.0]], [[4.0, 2.0], [8.0, 6.0]]], depthwise_w = [[[2.0, 0.0], [0.0, 2.0]], [[0.0, 2.0], [2.0, 0.0]]], pointwise_w = [[1.0, 1.0]], bias = [0.2]\n\nOutput: [[[40.2]]]"
   ],
-  "requirements": "* Function must be named `dl_depthwise_separable_convolution`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_depthwise_separable_convolution` accepting `image`, `depthwise_w`, `pointwise_w`, `bias`\n* Implement NumPy depthwise spatial convolution followed by pointwise channel mixing and optional bias.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_depthwise_separable_convolution`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`image`, `depthwise_w`, `pointwise_w`, `bias`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Evaluate the core formulation $\\mathbf{Y}_{c} = \\sum_{k} W_{\\text{pw}, c, k} (X_k * W_{\\text{dw}, k}) + b_c$ in double precision (`float64`) before rounding the final result.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef dl_depthwise_separable_convolution(image: list, depthwise_w: list, pointwise_w: list, bias: list = None) -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Depthwise Separable Convolution** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_depthwise_separable_convolution(image: list, depthwise_w: list, pointwise_w: list, bias: list = None) -> list:\n    img, dw, pw = np.array(image, dtype=np.float64), np.array(depthwise_w, dtype=np.float64), np.array(pointwise_w, dtype=np.float64)\n    Cin, H, W = img.shape; K = dw.shape[1]; Cout = pw.shape[0]; oh, ow = H - K + 1, W - K + 1\n    dw_o = np.array([[[np.sum(img[c, i:i+K, j:j+K]*dw[c]) for j in range(ow)] for i in range(oh)] for c in range(Cin)])\n    pw_o = np.zeros((Cout, oh, ow))\n    for oc in range(Cout):\n        for ic in range(Cin): pw_o[oc] += pw[oc, ic] * dw_o[ic]\n        if bias: pw_o[oc] += float(bias[oc])\n    return np.round(pw_o, 4).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef dl_depthwise_separable_convolution(image: list, depthwise_w: list, pointwise_w: list, bias: list = None) -> list:\n    \"\"\"\n    Implement NumPy depthwise spatial convolution followed by pointwise channel mixing and optional bias.\n\n    Args:\n        image (list): 2D spatial image array of pixel intensities.\n        depthwise_w (list): Input parameter `depthwise_w` (list) for Depthwise Separable Convolution.\n        pointwise_w (list): Input parameter `pointwise_w` (list) for Depthwise Separable Convolution.\n        bias (list): Additive bias term or vector.\n\n    Returns:\n        list: Computed Depthwise Separable Convolution result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Depthwise Separable Convolution** (Neural Networks, Computer Vision): Implement NumPy depthwise spatial convolution followed by pointwise channel mixing and optional bias.\n\nTo implement `dl_depthwise_separable_convolution` cleanly and accurately:\n1. Parse and normalize the inputs (`image`, `depthwise_w`, `pointwise_w`, `bias`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_depthwise_separable_convolution(image: list, depthwise_w: list, pointwise_w: list, bias: list = None) -> list:\n    img, dw, pw = np.array(image, dtype=np.float64), np.array(depthwise_w, dtype=np.float64), np.array(pointwise_w, dtype=np.float64)\n    Cin, H, W = img.shape; K = dw.shape[1]; Cout = pw.shape[0]; oh, ow = H - K + 1, W - K + 1\n    dw_o = np.array([[[np.sum(img[c, i:i+K, j:j+K]*dw[c]) for j in range(ow)] for i in range(oh)] for c in range(Cin)])\n    pw_o = np.zeros((Cout, oh, ow))\n    for oc in range(Cout):\n        for ic in range(Cin): pw_o[oc] += pw[oc, ic] * dw_o[ic]\n        if bias: pw_o[oc] += float(bias[oc])\n    return np.round(pw_o, 4).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Depthwise Separable Convolution** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-depthwise-separable-convolution-tc-1",
@@ -102,7 +104,7 @@
     },
     {
       "id": "dl-depthwise-separable-convolution-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (bias=[0.2])",
       "inputs": {
         "image": [
           [
@@ -169,7 +171,7 @@
     },
     {
       "id": "dl-depthwise-separable-convolution-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (bias=[0.05])",
       "inputs": {
         "image": [
           [
@@ -232,11 +234,11 @@
           ]
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "dl-depthwise-separable-convolution-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (bias=[-0.1])",
       "inputs": {
         "image": [
           [
@@ -303,7 +305,7 @@
     },
     {
       "id": "dl-depthwise-separable-convolution-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (bias=[0.3])",
       "inputs": {
         "image": [
           [
@@ -370,7 +372,7 @@
     },
     {
       "id": "dl-depthwise-separable-convolution-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (bias=[1.1])",
       "inputs": {
         "image": [
           [
@@ -437,7 +439,7 @@
     },
     {
       "id": "dl-depthwise-separable-convolution-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (bias=[-1.9])",
       "inputs": {
         "image": [
           [
@@ -505,7 +507,32 @@
   ],
   "functionMetadata": {
     "name": "dl_depthwise_separable_convolution",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "image",
+        "type": "array",
+        "example": "[[[1.0, 2.0], [3.0, 4.0]], [[2.0, 1.0], [4.0, 3.0]]]",
+        "description": "2D spatial image array of pixel intensities"
+      },
+      {
+        "name": "depthwise_w",
+        "type": "array",
+        "example": "[[[1.0, 0.0], [0.0, 1.0]], [[0.0, 1.0], [1.0, 0.0]]]",
+        "description": "Input parameter `depthwise_w` (list) for Depthwise Separable Convolution"
+      },
+      {
+        "name": "pointwise_w",
+        "type": "array",
+        "example": "[[0.5, 0.5]]",
+        "description": "Input parameter `pointwise_w` (list) for Depthwise Separable Convolution"
+      },
+      {
+        "name": "bias",
+        "type": "array",
+        "example": "[0.1]",
+        "description": "Additive bias term or vector"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -514,11 +541,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Depthwise Separable Convolution",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-depthwise-separable-convolution",
+  "localUrl": "http://localhost:3000/problems/dl-depthwise-separable-convolution"
 }

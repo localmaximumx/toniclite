@@ -20,19 +20,21 @@
   "seoDescription": "Implement Faster-RCNN style box regression target encoding and decoding, using two arrays of axis-aligned boxes in xyxy format.",
   "solved": false,
   "isLocked": true,
-  "description": "Implement Faster R-CNN style bounding box regression target encoding and decoding.\n\nPredicting log-space scale factors and normalized center displacements ensures scale invariance in object detection.\n\n### Mathematical Formulation\n$$\nt_x = \\frac{x - x_a}{w_a}, \\quad t_y = \\frac{y - y_a}{h_a}, \\quad t_w = \\log\\left(\\frac{w}{w_a}\\right), \\quad t_h = \\log\\left(\\frac{h}{h_a}\\right)\n$$\n\n### Step-by-Step Implementation\n1. Compute center coordinates and dimensions of anchor boxes and target boxes\n2. If mode is 'encode', compute relative offsets (dx, dy, dw, dh)\n3. If mode is 'decode', invert offsets back to [x1, y1, x2, y2] bounding boxes\n\n### Returns\nList of 4-element box coordinates or deltas.",
-  "theory": "# Understanding Box Encode and Decode\n\n## 1. What Is It?\n\nThe **Box Encode and Decode** is a fundamental computational technique in Numpy. In machine learning workflows, it involves performing Faster R-CNN style bounding box regression target encoding and decoding.\n\n### Key Terminology\n- **Object Detection**: Core domain concept contextualizing this task within Numpy workflows.\n- **Computer Vision**: Core domain concept contextualizing this task within Numpy workflows.\n- **Data Processing**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\nt_x = \\frac{x - x_a}{w_a}, \\quad t_y = \\frac{y - y_a}{h_a}, \\quad t_w = \\log\\left(\\frac{w}{w_a}\\right), \\quad t_h = \\log\\left(\\frac{h}{h_a}\\right)\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `cv_box_encode_decode` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nboxes = [[10.0, 10.0, 30.0, 30.0]], anchors = [[12.0, 12.0, 28.0, 28.0]], mode = \"encode\"\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated cv_box_encode_decode under standard test conditions.\n\n**Resulting Output:**\n```python\n[[0.0, 0.0, 0.223144, 0.223144]]\n```\n\n## 4. Understanding the Expected Output\n\nThe function `cv_box_encode_decode` must return:\n- **Multiple Outputs:**\n  - **Element 1**: Evaluated output component `[0.0, 0.0, 0.223144, 0.223144]`.\n- **Structure:** Must match the expected return type and ordering.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `cv_box_encode_decode`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `cv_box_encode_decode`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Box Encode and Decode** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `cv_box_encode_decode` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement Faster R-CNN style bounding box regression target encoding and decoding.\n\n$$\nt_x = \\frac{x - x_a}{w_a}, \\quad t_y = \\frac{y - y_a}{h_a}, \\quad t_w = \\log\\left(\\frac{w}{w_a}\\right), \\quad t_h = \\log\\left(\\frac{h}{h_a}\\right)\n$$\n\nGiven input parameters `boxes`, `anchors`, `mode`, return list of 4-element box coordinates or deltas.",
+  "theory": "## What Is Box Encode and Decode?\n\nIn computer vision, spatial tensor operators and geometric bounding-box algorithms extract translation- and scale-aware structure from image grids.\n\n$$\nt_x = \\frac{x - x_a}{w_a}, \\quad t_y = \\frac{y - y_a}{h_a}, \\quad t_w = \\log\\left(\\frac{w}{w_a}\\right), \\quad t_h = \\log\\left(\\frac{h}{h_a}\\right)\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\nt_x = \\frac{x - x_a}{w_a}\n$$\n\n$$\nt_y = \\frac{y - y_a}{h_a}\n$$\n\n$$\nt_w = \\log\\left(\\frac{w}{w_a}\\right)\n$$\n\n$$\nt_h = \\log\\left(\\frac{h}{h_a}\\right)\n$$\n\n$$\n\\operatorname{softmax}(z_i) = \\frac{\\exp(z_i - \\max_k z_k)}{\\sum_{j} \\exp(z_j - \\max_k z_k)}\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **2D Sinusoidal Positional Embedding**, **Adaptive Average Pool 2D**, **Anchor Box Generation**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: boxes = [[10.0, 10.0, 30.0, 30.0]], anchors = [[12.0, 12.0, 28.0, 28.0]], mode = \"encode\"\n\nOutput: [[0.0, 0.0, 0.223144, 0.223144]]\n\nExplanation: Evaluated cv_box_encode_decode under standard test conditions."
+    "Input: boxes = [[10.0, 10.0, 30.0, 30.0]], anchors = [[12.0, 12.0, 28.0, 28.0]], mode = \"encode\"\n\nOutput: [[0.0, 0.0, 0.223144, 0.223144]]",
+    "Input: boxes = [[20.0, 20.0, 60.0, 60.0]], anchors = [[24.0, 24.0, 56.0, 56.0]], mode = \"encode\"\n\nOutput: [[0.0, 0.0, 0.223144, 0.223144]]"
   ],
-  "requirements": "* Function must be named `cv_box_encode_decode`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `cv_box_encode_decode` accepting `boxes`, `anchors`, `mode`\n* Implement Faster-RCNN style box regression target encoding and decoding, using two arrays of axis-aligned boxes in xyxy format.\n* Return the result as a native Python `list` (`list`) matching the expected shape and rounded to the specified precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `cv_box_encode_decode`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`boxes`, `anchors`, `mode`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `cv_box_encode_decode` into clear stages: validate/reshape `boxes`, `anchors`, `mode`, evaluate the Box Encode and Decode equations in `float64`, and round at the very end.",
+    "Convert any NumPy/PyTorch array back to a Python list (`.tolist()`) or scalar (`float(...)` / `int(...)`) after rounding."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef cv_box_encode_decode(boxes: list, anchors: list, mode: str = 'encode') -> list:\n    pass",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **Box Encode and Decode** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_box_encode_decode(boxes: list, anchors: list, mode: str = 'encode') -> list:\n    b = np.array(boxes, dtype=np.float64)\n    a = np.array(anchors, dtype=np.float64)\n    w_a = a[:, 2] - a[:, 0]\n    h_a = a[:, 3] - a[:, 1]\n    ctr_xa = a[:, 0] + 0.5 * w_a\n    ctr_ya = a[:, 1] + 0.5 * h_a\n    if mode == 'encode':\n        w_b = b[:, 2] - b[:, 0]\n        h_b = b[:, 3] - b[:, 1]\n        dx = (b[:, 0] + 0.5 * w_b - ctr_xa) / w_a\n        dy = (b[:, 1] + 0.5 * h_b - ctr_ya) / h_a\n        dw = np.log(w_b / w_a)\n        dh = np.log(h_b / h_a)\n        return np.round(np.stack([dx, dy, dw, dh], axis=1), 6).tolist()\n    else:\n        pred_w = w_a * np.exp(b[:, 2])\n        pred_h = h_a * np.exp(b[:, 3])\n        pred_x = b[:, 0] * w_a + ctr_xa\n        pred_y = b[:, 1] * h_a + ctr_ya\n        return np.round(np.stack([pred_x - 0.5*pred_w, pred_y - 0.5*pred_h, pred_x + 0.5*pred_w, pred_y + 0.5*pred_h], axis=1), 6).tolist()\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef cv_box_encode_decode(boxes: list, anchors: list, mode: str = 'encode') -> list:\n    \"\"\"\n    Implement Faster-RCNN style box regression target encoding and decoding, using two arrays of axis-aligned boxes in xyxy format.\n\n    Args:\n        boxes (list): Input parameter `boxes` (list) for Box Encode and Decode.\n        anchors (list): Input parameter `anchors` (list) for Box Encode and Decode.\n        mode (str): Input parameter `mode` (str) for Box Encode and Decode.\n\n    Returns:\n        list: Computed Box Encode and Decode result matching the problem specification.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Box Encode and Decode** (Object Detection, Computer Vision, Data Processing): Implement Faster-RCNN style box regression target encoding and decoding, using two arrays of axis-aligned boxes in xyxy format.\n\nTo implement `cv_box_encode_decode` cleanly and accurately:\n1. Parse and normalize the inputs (`boxes`, `anchors`, `mode`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `list` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef cv_box_encode_decode(boxes: list, anchors: list, mode: str = 'encode') -> list:\n    b = np.array(boxes, dtype=np.float64)\n    a = np.array(anchors, dtype=np.float64)\n    w_a = a[:, 2] - a[:, 0]\n    h_a = a[:, 3] - a[:, 1]\n    ctr_xa = a[:, 0] + 0.5 * w_a\n    ctr_ya = a[:, 1] + 0.5 * h_a\n    if mode == 'encode':\n        w_b = b[:, 2] - b[:, 0]\n        h_b = b[:, 3] - b[:, 1]\n        dx = (b[:, 0] + 0.5 * w_b - ctr_xa) / w_a\n        dy = (b[:, 1] + 0.5 * h_b - ctr_ya) / h_a\n        dw = np.log(w_b / w_a)\n        dh = np.log(h_b / h_a)\n        return np.round(np.stack([dx, dy, dw, dh], axis=1), 6).tolist()\n    else:\n        pred_w = w_a * np.exp(b[:, 2])\n        pred_h = h_a * np.exp(b[:, 3])\n        pred_x = b[:, 0] * w_a + ctr_xa\n        pred_y = b[:, 1] * h_a + ctr_ya\n        return np.round(np.stack([pred_x - 0.5*pred_w, pred_y - 0.5*pred_h, pred_x + 0.5*pred_w, pred_y + 0.5*pred_h], axis=1), 6).tolist()\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Box Encode and Decode** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "cv-box-encode-decode-tc-1",
@@ -68,7 +70,7 @@
     },
     {
       "id": "cv-box-encode-decode-tc-2",
-      "name": "Case 2",
+      "name": "Scaled magnitude inputs (mode=encode)",
       "inputs": {
         "boxes": [
           [
@@ -100,7 +102,7 @@
     },
     {
       "id": "cv-box-encode-decode-tc-3",
-      "name": "Case 3",
+      "name": "Fractional and small values (mode=encode)",
       "inputs": {
         "boxes": [
           [
@@ -128,11 +130,11 @@
           0.223144
         ]
       ],
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "cv-box-encode-decode-tc-4",
-      "name": "Case 4",
+      "name": "Negative and mixed-sign regime (mode=encode)",
       "inputs": {
         "boxes": [
           [
@@ -164,7 +166,7 @@
     },
     {
       "id": "cv-box-encode-decode-tc-5",
-      "name": "Case 5",
+      "name": "High-contrast parameter values (mode=encode)",
       "inputs": {
         "boxes": [
           [
@@ -196,7 +198,7 @@
     },
     {
       "id": "cv-box-encode-decode-tc-6",
-      "name": "Case 6",
+      "name": "Alternative structural dimensions (mode=encode)",
       "inputs": {
         "boxes": [
           [
@@ -228,7 +230,7 @@
     },
     {
       "id": "cv-box-encode-decode-tc-7",
-      "name": "Case 7",
+      "name": "Boundary and edge-case stability (mode=encode)",
       "inputs": {
         "boxes": [
           [
@@ -261,7 +263,26 @@
   ],
   "functionMetadata": {
     "name": "cv_box_encode_decode",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "boxes",
+        "type": "array",
+        "example": "[[10.0, 10.0, 30.0, 30.0]]",
+        "description": "Input parameter `boxes` (list) for Box Encode and Decode"
+      },
+      {
+        "name": "anchors",
+        "type": "array",
+        "example": "[[12.0, 12.0, 28.0, 28.0]]",
+        "description": "Input parameter `anchors` (list) for Box Encode and Decode"
+      },
+      {
+        "name": "mode",
+        "type": "string",
+        "example": "\"encode\"",
+        "description": "Input parameter `mode` (str) for Box Encode and Decode"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -270,11 +291,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Box Encode and Decode",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/cv-box-encode-decode",
+  "localUrl": "http://localhost:3000/problems/cv-box-encode-decode"
 }

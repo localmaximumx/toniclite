@@ -4,7 +4,7 @@
   "description": "Implement U-Net's final 1 by 1 convolution as a per-pixel linear projection.\n\n$$\nY_{b,h,w,:} = X_{b,h,w,:}W_{\\mathrm{out}} + b_{\\mathrm{out}}\n$$\n\nHere, $X$ has $C$ feature channels, $W_{\\mathrm{out}}$ has shape $(C,K)$, and $K$ is the number of segmentation classes. Do not apply an activation. Return raw logits as a float64 NumPy array with shape $(B,H,W,K)$.",
   "seoDescription": "Implement the U-Net output layer as a 1x1 channel projection that maps decoder features to per-pixel class logits.",
   "examples": [
-    "Input: features = [[[[1,-1],[0.5,2]]]], W_out = [[0.3,-0.2],[0.5,0.1]], b_out = [0.1,-0.1]\n\nOutput: [[[[-0.1,-0.4],[1.25,0]]]]\n\nExplanation: The same channel-to-class projection is applied independently at each pixel.",
+    "Input: features = [[[[1,-1],[0.5,2]]]], W_out = [[0.3,-0.2],[0.5,0.1]], b_out = [0.1,-0.1]\n\nOutput: [[[[-0.1,-0.4],[1.25,0]]]]",
     "Input: features = [[[[1],[2]],[[3],[4]]]], W_out = [[0.25]], b_out = [-0.5]\n\nOutput: [[[[-0.25],[0]],[[0.25],[0.5]]]]",
     "Input: features = [[[[0,1,-1]]],[[[2,-0.5,1]]]], W_out = [[1,0],[0,1],[0.5,-0.5]], b_out = [0.2,0.3]\n\nOutput: [[[[-0.3,1.8]]],[[[2.7,-0.7]]]]"
   ],
@@ -20,9 +20,9 @@
   "createdAt": "2026-01-03T21:31:42.520Z",
   "updatedAt": "2026-02-21T17:14:53.259Z",
   "topicId": "unet-output-layer",
-  "paperSnippet": "\"At the final layer a 1Ã1 convolution is used to map each 64-component feature vector to the desired number of classes. In total the network has 23 convolutional layers.\"",
+  "paperSnippet": "\"At the final layer a 1\u00c3\u00971 convolution is used to map each 64-component feature vector to the desired number of classes. In total the network has 23 convolutional layers.\"",
   "visualizationComponent": "UNetOutputLayerViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **U-Net Output Layer** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef unet_output(features: np.ndarray, W_out: np.ndarray, b_out: np.ndarray) -> np.ndarray:\n    feat = np.asarray(features, dtype=float)\n    w_out = np.asarray(W_out, dtype=float)\n    b_out_arr = np.asarray(b_out, dtype=float)\n    return np.round(feat @ w_out + b_out_arr, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **U-Net Output Layer** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef unet_output(features: np.ndarray, W_out: np.ndarray, b_out: np.ndarray) -> np.ndarray:\n    feat = np.asarray(features, dtype=float)\n    w_out = np.asarray(W_out, dtype=float)\n    b_out_arr = np.asarray(b_out, dtype=float)\n    return np.round(feat @ w_out + b_out_arr, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "unet-output-layer-tc-1",
@@ -442,7 +442,7 @@
   "topic": {
     "id": "unet-output-layer",
     "name": "U-Net Output Layer",
-    "description": "1Ã1 conv for pixel-wise classification",
+    "description": "1\u00c3\u00971 conv for pixel-wise classification",
     "color": "#f59e0b"
   },
   "paper": {

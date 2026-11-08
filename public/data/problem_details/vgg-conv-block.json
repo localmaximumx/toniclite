@@ -4,7 +4,7 @@
   "description": "Implement a VGG convolution block in NHWC layout. Apply every supplied same-padded convolution kernel and bias in order, followed by ReLU after each layer. All kernels use the same positive odd spatial size. Return the final activations as a float64 NumPy array.",
   "seoDescription": "Implement a VGG convolutional block as sequential channel projections with ReLU activation at every spatial position.",
   "examples": [
-    "Input: x = [[[[1],[-1]],[[2],[0.5]]]], kernels = [[[[[2,-1]]]]], biases = [[0,0.5]]\n\nOutput: [[[[2,0],[0,1.5]],[[4,0],[1,0]]]]\n\nExplanation: The supplied kernel mixes input channels at every spatial position before ReLU.",
+    "Input: x = [[[[1],[-1]],[[2],[0.5]]]], kernels = [[[[[2,-1]]]]], biases = [[0,0.5]]\n\nOutput: [[[[2,0],[0,1.5]],[[4,0],[1,0]]]]",
     "Input: x = [[[[1,-1]]]], kernels = [[[[[1,0],[0.5,1]]]],[[[[0.5],[2]]]]], biases = [[0,0.1],[-0.2]]\n\nOutput: [[[[0.05]]]]",
     "Input: x = [[[[1],[2],[3]],[[4],[5],[6]],[[7],[8],[9]]]], kernels = [[[[[0]],[[0]],[[0]]],[[[0]],[[1]],[[0]]],[[[0]],[[0]],[[0]]]]], biases = [[-5]]\n\nOutput: [[[[0],[0],[0]],[[0],[0],[1]],[[2],[3],[4]]]]"
   ],
@@ -21,9 +21,9 @@
   "createdAt": "2026-01-03T21:31:07.614Z",
   "updatedAt": "2026-02-21T17:14:54.639Z",
   "topicId": "vgg-conv-block",
-  "paperSnippet": "\"We use very small (3Ã3) convolution filters, which is the smallest size to capture the notion of left/right, up/down, center. The use of three 3Ã3 conv. layers instead of a single 7Ã7 layer leads to more non-linearities and fewer parameters.\"",
+  "paperSnippet": "\"We use very small (3\u00c3\u00973) convolution filters, which is the smallest size to capture the notion of left/right, up/down, center. The use of three 3\u00c3\u00973 conv. layers instead of a single 7\u00c3\u00977 layer leads to more non-linearities and fewer parameters.\"",
   "visualizationComponent": "VGGBlockViz",
-  "solution": "### 💡 Intuition & Approach\nThe implementation computes **VGG Conv Block** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### ⚡ Python Reference Implementation\n```python\nimport numpy as np\n\ndef vgg_conv_block(x: np.ndarray, kernels: list, biases: list) -> np.ndarray:\n    cur = np.asarray(x, dtype=float)\n    for k_arr, b_arr in zip(kernels, biases):\n        k = np.asarray(k_arr, dtype=float)\n        b = np.asarray(b_arr, dtype=float)\n        Kh, Kw, Cin, Cout = k.shape\n        pad_h = (Kh - 1) // 2\n        pad_w = (Kw - 1) // 2\n        padded = np.pad(cur, ((0, 0), (pad_h, pad_h), (pad_w, pad_w), (0, 0)), mode='constant')\n        N, H, W, _ = cur.shape\n        conv = np.zeros((N, H, W, Cout), dtype=float)\n        for n in range(N):\n            for h in range(H):\n                for w in range(W):\n                    patch = padded[n, h:h+Kh, w:w+Kw, :]\n                    for c in range(Cout):\n                        conv[n, h, w, c] = np.sum(patch * k[:, :, :, c]) + b[c]\n        cur = np.maximum(0.0, conv)\n    return np.round(cur, 6)\n```\n\n### ⏱️ Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **VGG Conv Block** by following direct architectural principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef vgg_conv_block(x: np.ndarray, kernels: list, biases: list) -> np.ndarray:\n    cur = np.asarray(x, dtype=float)\n    for k_arr, b_arr in zip(kernels, biases):\n        k = np.asarray(k_arr, dtype=float)\n        b = np.asarray(b_arr, dtype=float)\n        Kh, Kw, Cin, Cout = k.shape\n        pad_h = (Kh - 1) // 2\n        pad_w = (Kw - 1) // 2\n        padded = np.pad(cur, ((0, 0), (pad_h, pad_h), (pad_w, pad_w), (0, 0)), mode='constant')\n        N, H, W, _ = cur.shape\n        conv = np.zeros((N, H, W, Cout), dtype=float)\n        for n in range(N):\n            for h in range(H):\n                for w in range(W):\n                    patch = padded[n, h:h+Kh, w:w+Kw, :]\n                    for c in range(Cout):\n                        conv[n, h, w, c] = np.sum(patch * k[:, :, :, c]) + b[c]\n        cur = np.maximum(0.0, conv)\n    return np.round(cur, 6)\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the primary sequence length or dimension.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
   "testCases": [
     {
       "id": "vgg-conv-block-tc-1",
@@ -639,7 +639,7 @@
   "topic": {
     "id": "vgg-conv-block",
     "name": "VGG Conv Block",
-    "description": "Stacked 3Ã3 convolutions with ReLU",
+    "description": "Stacked 3\u00c3\u00973 convolutions with ReLU",
     "color": "#3b82f6"
   },
   "paper": {

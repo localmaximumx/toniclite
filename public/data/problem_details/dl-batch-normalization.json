@@ -18,23 +18,25 @@
   "seoDescription": "Implement batch normalization for training and inference, including batch statistics and running-statistic updates.",
   "solved": false,
   "isLocked": true,
-  "description": "Normalize batch activations to zero mean and unit variance and scale with affine parameters gamma and beta.\n\nBatch normalization reduces internal covariate shift by stabilizing the distribution of layer inputs during training.\n\n### Mathematical Formulation\n$$\n\\hat{x}_i = \\frac{x_i - \\mu_B}{\\sqrt{\\sigma_B^2 + \\varepsilon}}, \\quad y_i = \\gamma \\hat{x}_i + \\beta\n$$\n\n### Step-by-Step Implementation\n1. Compute sample batch mean and variance\n2. Standardize coordinates by subtracting mean and dividing by root variance plus epsilon\n3. Scale by affine parameter gamma and translate by beta\n\n### Returns\nDictionary with 'normalized' values, 'mean', and 'variance'.",
-  "theory": "# Understanding Batch Normalization\n\n## 1. What Is It?\n\nThe **Batch Normalization** is a fundamental computational technique in Numpy. In machine learning workflows, Normalize batch activations to zero mean and unit variance and scale with affine parameters gamma and beta.\n\n### Key Terminology\n- **`x`**: The input feature vector or design matrix representing observations.\n- **`gamma`**: The learned affine scale parameter or discount factor.\n- **`beta`**: The moving average decay coefficient governing history retention.\n- **`eps`**: The smoothing term $\\varepsilon > 0$, added to denominators for numerical stability.\n- **Neural Networks**: Core domain concept contextualizing this task within Numpy workflows.\n\n## 2. How Does It Work?\n\n### Operation 1: Mathematical Evaluation\n$$\n\\hat{x}_i = \\frac{x_i - \\mu_B}{\\sqrt{\\sigma_B^2 + \\varepsilon}}, \\quad y_i = \\gamma \\hat{x}_i + \\beta\n$$\n- **What happens:** Evaluates the mathematical expression elementwise or across designated reduction axes.\n- **Why it happens:** Advances the algorithmic state or calculates the target objective function value.\n- **How it works:** Maps input operands into the target space, broadcasting dimensions and preserving shape contracts.\n\n## 3. Walk Through an Example\n\nTo trace how `dl_batch_normalization` operates in practice, consider a concrete small input:\n\n**Initial Input:**\n```python\nx = [1.0, 2.0, 3.0, 4.0, 5.0], gamma = 1.0, beta = 0.0\n```\n\n**Step-by-Step Transformation:**\n1. **Receive and Validate:** Parse input values and ensure array dimensions align with the specification.\n2. **Execute Formulation:** Compute the intermediate transformations elementwise.\n3. **Format Result:** Construct and verify the expected return data structure.\n\n**Explanation:** Evaluated dl_batch_normalization under standard test conditions.\n\n**Resulting Output:**\n```python\n{\"normalized\": [-1.4142, -0.7071, 0.0, 0.7071, 1.4142], \"mean\": 3.0, \"variance\": 2.0}\n```\n\n## 4. Understanding the Expected Output\n\nThe function `dl_batch_normalization` must return:\n- **Multiple Outputs Returned in a Dictionary:**\n  - **`normalized`**: Represents `normalized` (e.g. `[-1.4142, -0.7071, 0.0, 0.7071, 1.4142]`), reflecting the updated state or component.\n  - **`mean`**: Represents `mean` (e.g. `3.0`), reflecting the updated state or component.\n  - **`variance`**: Represents `variance` (e.g. `2.0`), reflecting the updated state or component.\n- **Return Format:** Python `dict` containing exactly these keys, matching: `* Function must be named `dl_batch_normalization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations`.\n\n- **Interpretation:** The output conveys the updated parameters, computed loss, or transformed representations resulting directly from the provided input configuration.\n\n## 5. Important Edge Cases\n\nWhen implementing `dl_batch_normalization`, consider the following special cases:\n- **Zero Values & Inactive Gradients:** If inputs or gradients equal zero ($g = 0$), the implementation must handle them smoothly without causing parameter corruption or `NaN` values.\n- **Numerical Stability Constants:** Where division or logarithms take place, ensure small positive values (such as $\\varepsilon > 0$) protect against division-by-zero or $\\log(0)$.\n- **Dimensional Flexibility:** Inputs may arrive as 1D flat arrays, single-element vectors `(1,)`, or multi-dimensional tensors. The code must broadcast properly without hardcoding dimensions.\n- **Extreme Magnitudes:** Very large positive or negative floats should not trigger unexpected floating-point overflow (`inf`) or underflow.\n\n## 6. Implementation Considerations\n\nTo write an optimal and accurate implementation of `dl_batch_normalization`:\n- **Vectorization Over Loops:** Utilize NumPy vectorized operations (`np.sum`, `np.dot`, `np.maximum`, etc.) instead of manual iteration to ensure high throughput.\n- **Preserve Caller Inputs:** Do not mutate input arrays in place unless specified. Work with newly allocated arrays or explicit copies.\n- **Precision Integrity:** Use double precision (`float64`) for intermediate calculations to prevent rounding drift during validation.\n- **Return Contract Compliance:** Strictly adhere to the requested output format (exact dictionary keys, tuples, or array dtypes) required by the test harness.\n\n## 7. Key Takeaway\n\n**Batch Normalization** provides an essential primitive within Numpy systems. By combining vectorized array computation with rigorous numerical safeguards, `dl_batch_normalization` accurately and efficiently performs the required transformation.\n",
+  "description": "Implement Batch Normalization supporting both training and inference modes along with exponential moving-average updates for running statistics.\n\nDuring training (`training=True`), compute the per-feature batch mean and biased variance across the batch dimension, normalize the activations, and apply learnable scale `gamma` ($\\gamma$) and shift `beta` ($\\beta$):\n\n$$\n\\mu_B = \\frac{1}{m}\\sum_{i=1}^m x_i, \\qquad \\sigma_B^2 = \\frac{1}{m}\\sum_{i=1}^m (x_i - \\mu_B)^2\n$$\n\n$$\n\\hat{x}_i = \\frac{x_i - \\mu_B}{\\sqrt{\\sigma_B^2 + \\epsilon}}, \\qquad y_i = \\gamma \\hat{x}_i + \\beta\n$$\n\nUpdate the running statistics using `momentum` ($\\alpha$):\n\n$$\n\\mu_{\\text{run}} \\leftarrow (1 - \\alpha) \\mu_{\\text{run}} + \\alpha \\mu_B, \\qquad \\sigma^2_{\\text{run}} \\leftarrow (1 - \\alpha) \\sigma^2_{\\text{run}} + \\alpha \\sigma_B^2\n$$\n\nDuring inference (`training=False`), normalize using `running_mean` and `running_var` directly without modifying them. Return a dictionary with `'output'`, `'batch_mean'`, `'running_mean'`, and `'running_var'` rounded to 4 decimal places.",
+  "theory": "## What Is Batch Normalization?\n\nBatch Normalization (Ioffe & Szegedy, 2015) standardizes intermediate layer activations across each mini-batch to zero mean and unit variance, followed by a learnable affine transformation ($\\gamma, \\beta$).\n\n$$\n\\mu_B = \\frac{1}{m}\\sum_{i=1}^m x_i, \\qquad \\sigma_B^2 = \\frac{1}{m}\\sum_{i=1}^m (x_i - \\mu_B)^2\n$$\n\n---\n\n## Mathematical Formulation & Theoretical Mechanics\n\nSupervised and unsupervised learning algorithms minimize empirical risk over a hypothesis space $\\mathcal{H}$ while regularizing model capacity to balance bias and variance on unseen test distributions.\n\nThe full mathematical structure is governed by the coupled relations:\n\n$$\n\\mu_B = \\frac{1}{m}\\sum_{i=1}^m x_i\n$$\n\n$$\n\\sigma_B^2 = \\frac{1}{m}\\sum_{i=1}^m (x_i - \\mu_B)^2\n$$\n\n$$\n\\hat{x}_i = \\frac{x_i - \\mu_B}{\\sqrt{\\sigma_B^2 + \\epsilon}}\n$$\n\n$$\ny_i = \\gamma \\hat{x}_i + \\beta\n$$\n\n$$\n\\mu_{\\text{run}} \\leftarrow (1 - \\alpha) \\mu_{\\text{run}} + \\alpha \\mu_B\n$$\n\n---\n\n## Key Properties & Conceptual Intuition\n\n- **Inductive Bias & Capacity Control:** Regularization penalties ($L_1$, $L_2$, pruning, or ensemble averaging) constrain effective hypothesis complexity and prevent overfitting to training noise.\n- **Decision Boundary Geometry:** Linear models partition feature space with hyperplanes, distance-based methods induce Voronoi tessellations, and tree ensembles form axis-aligned orthotopes.\n- **Related Topics in This Track:** **Activation Functions**, **Autoencoder Forward Pass**, **Computational Graph & Autograd**.\n\n---\n\n## Numerical Stability & Boundary Behavior\n\n- **Conditioning & Degenerate Regimes:** When denominators, norms, or variances approach zero on constant or collinear inputs, additive regularization ($\\varepsilon > 0$) or limiting analytical values prevent division-by-zero instabilities.\n- **Scale & Precision Invariance:** Formulating updates via centered shifts (such as log-sum-exp shifting for exponentials or Welford-style centering for moments) avoids catastrophic cancellation and floating-point overflow.\n\n---\n\n## Computational Complexity\n\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ is the total number of input elements, executing in a single vectorized pass.\n- **Space Complexity:** $\\mathcal{O}(N)$ to hold the output array (or $\\mathcal{O}(1)$ auxiliary working memory beyond the result).",
   "examples": [
-    "Input: x = [1.0, 2.0, 3.0, 4.0, 5.0], gamma = 1.0, beta = 0.0\n\nOutput: {\"normalized\": [-1.4142, -0.7071, 0.0, 0.7071, 1.4142], \"mean\": 3.0, \"variance\": 2.0}\n\nExplanation: Evaluated dl_batch_normalization under standard test conditions."
+    "Input: x = [1.0, 2.0, 3.0, 4.0, 5.0], gamma = 1.0, beta = 0.0, eps = 1e-05, running_mean = 0.0, running_var = 1.0, momentum = 0.1, training = true\n\nOutput: {\"output\": [-1.4142, -0.7071, 0.0, 0.7071, 1.4142], \"batch_mean\": 3.0, \"running_mean\": 0.3, \"running_var\": 1.1}",
+    "Input: x = [[1.0, 10.0], [3.0, 20.0], [5.0, 30.0]], gamma = 2.0, beta = 0.5, eps = 1e-05, running_mean = [0.0, 0.0], running_var = [1.0, 1.0], momentum = 0.2, training = true\n\nOutput: {\"output\": [[-1.9495, -1.9495], [0.5, 0.5], [2.9495, 2.9495]], \"batch_mean\": [3.0, 20.0], \"running_mean\": [0.6, 4.0], \"running_var\": [1.3333, 14.1333]}"
   ],
-  "requirements": "* Function must be named `dl_batch_normalization`\n* Return value must match the exact expected structure and types\n* Handle edge cases cleanly and maintain numerical stability\n* Must run efficiently without redundant memory allocations",
+  "requirements": "* Implement `dl_batch_normalization` accepting `x`, `gamma`, `beta`, `eps`, `running_mean`, `running_var`, `momentum`, `training`\n* Implement batch normalization for training and inference, including batch statistics and running-statistic updates.\n* Return a `dict` containing the exact keys `'output'`, `'batch_mean'`, `'running_mean'`, `'running_var'` with numeric values rounded to the specified decimal precision\n* Do not mutate the caller's input lists or dictionaries in place\n* Handle boundary inputs (such as zeros, negative values, or single-element inputs) without raising runtime exceptions or producing `NaN`",
   "hints": [
-    "Verify the dimensions of inputs before computing transformations in `dl_batch_normalization`.",
-    "Utilize vectorized operations rather than manual loops for optimal performance."
+    "Convert numeric list inputs (`x`, `gamma`, `beta`, `eps`, `running_mean`, `running_var`, `momentum`, `training`) into floating-point arrays (`np.asarray(..., dtype=float)`) before applying elementwise or matrix operations.",
+    "Break `dl_batch_normalization` into clear stages: validate/reshape `x`, `gamma`, `beta`, `eps`, `running_mean`, `running_var`, `momentum`, `training`, evaluate the Batch Normalization equations in `float64`, and round at the very end.",
+    "Ensure the returned dictionary uses the exact key names ('output', 'batch_mean', 'running_mean', 'running_var') and native Python scalars/lists."
   ],
-  "constraints": "* Input arrays/tensors are non-empty and well-formed\n* Floating point values are finite real numbers\n* Numerical operations must adhere to standard precision tolerances",
-  "starterCode": "import numpy as np\n\ndef dl_batch_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> dict:\n    pass",
-  "solution": "### \ud83d\udca1 Intuition & Approach\nThe implementation computes **Batch Normalization** by following direct mathematical principles, leveraging vectorized operations to ensure both correctness and optimal runtime efficiency.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np, math\n\ndef dl_batch_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5) -> dict:\n    arr = np.array(x, dtype=np.float64); m, v = float(np.mean(arr)), float(np.var(arr))\n    return {'normalized': np.round(float(gamma) * ((arr - m) / math.sqrt(v + float(eps))) + float(beta), 4).tolist(), 'mean': round(m, 4), 'variance': round(v, 4)}\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity**: $\\mathcal{O}(N)$ where $N$ represents the size of the primary input.\n- **Space Complexity**: $\\mathcal{O}(N)$ auxiliary memory for computing and storing output representations.",
+  "constraints": "* Time limit: 500 ms; Memory: 128 MB\n* Allowed library: NumPy only\n* All numeric inputs are finite real numbers; output tolerance is $10^{-3}$",
+  "starterCode": "import numpy as np\n\ndef dl_batch_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5, running_mean: list = None, running_var: list = None, momentum: float = 0.1, training: bool = True) -> dict:\n    \"\"\"\n    Computes Batch Normalization across batch dimension (axis=0) for training or inference,\n    updating running_mean and running_var with momentum during training.\n    \"\"\"\n    # Write code here\n    pass",
+  "solution": "### \ud83d\udca1 Intuition & Approach\n**Batch Normalization** (Neural Networks): Implement batch normalization for training and inference, including batch statistics and running-statistic updates.\n\nTo implement `dl_batch_normalization` cleanly and accurately:\n1. Parse and normalize the inputs (`x`, `gamma`, `beta`, `eps`, `running_mean`, `running_var`, `momentum`, `training`) into floating-point arrays or structured containers.\n2. Execute the mathematical transformation defined in the problem specification while guarding denominators and boundary conditions.\n3. Round floating-point outputs to the target precision and return the expected `dict` structure.\n\n### \u26a1 Python Reference Implementation\n```python\nimport numpy as np\n\ndef dl_batch_normalization(x: list, gamma: float = 1.0, beta: float = 0.0, eps: float = 1e-5, running_mean: list = None, running_var: list = None, momentum: float = 0.1, training: bool = True) -> dict:\n    arr = np.asarray(x, dtype=float)\n    g = np.asarray(gamma, dtype=float)\n    b = np.asarray(beta, dtype=float)\n    mom = float(momentum)\n    b_mean = np.mean(arr, axis=0)\n    b_var = np.var(arr, axis=0)\n    r_mean = np.zeros_like(b_mean) if running_mean is None else np.asarray(running_mean, dtype=float)\n    r_var = np.ones_like(b_var) if running_var is None else np.asarray(running_var, dtype=float)\n    if training:\n        norm = (arr - b_mean) / np.sqrt(b_var + float(eps))\n        new_rm = (1.0 - mom) * r_mean + mom * b_mean\n        new_rv = (1.0 - mom) * r_var + mom * b_var\n    else:\n        norm = (arr - r_mean) / np.sqrt(r_var + float(eps))\n        new_rm = r_mean\n        new_rv = r_var\n    out = g * norm + b\n    return {\n        \"output\": np.round(out, 4).tolist(),\n        \"batch_mean\": np.round(b_mean, 4).tolist() if np.ndim(b_mean) > 0 else round(float(b_mean), 4),\n        \"running_mean\": np.round(new_rm, 4).tolist() if np.ndim(new_rm) > 0 else round(float(new_rm), 4),\n        \"running_var\": np.round(new_rv, 4).tolist() if np.ndim(new_rv) > 0 else round(float(new_rv), 4)\n    }\n```\n\n### \u23f1\ufe0f Complexity Analysis\n- **Time Complexity:** $\\mathcal{O}(N)$ where $N$ represents the primary input dimension.\n- **Space Complexity:** $\\mathcal{O}(N)$ to store intermediate arrays and the output structure.\n\n### \ud83d\udd0d How It Works\n1. **Input Normalization:** Converts inputs into consistent numeric representations so broadcasting and reductions behave predictably.\n2. **Core Mathematical Kernel:** Evaluates the exact formula for **Batch Normalization** without redundant passes.\n3. **Output Serialization:** Formats the computed quantities into native Python types matching the test suite contract.",
   "testCases": [
     {
       "id": "dl-batch-normalization-tc-1",
-      "name": "Basic 1D batch",
+      "name": "1D batch in training mode",
       "inputs": {
         "x": [
           1.0,
@@ -44,187 +46,341 @@
           5.0
         ],
         "gamma": 1.0,
-        "beta": 0.0
+        "beta": 0.0,
+        "eps": 1e-05,
+        "running_mean": 0.0,
+        "running_var": 1.0,
+        "momentum": 0.1,
+        "training": true
       },
       "expectedOutput": {
-        "normalized": [
+        "output": [
           -1.4142,
           -0.7071,
           0.0,
           0.7071,
           1.4142
         ],
-        "mean": 3.0,
-        "variance": 2.0
+        "batch_mean": 3.0,
+        "running_mean": 0.3,
+        "running_var": 1.1
       },
       "isPublic": true
     },
     {
       "id": "dl-batch-normalization-tc-2",
-      "name": "Case 2",
+      "name": "2D batch with affine scale and shift",
       "inputs": {
         "x": [
-          2.0,
-          4.0,
-          6.0,
-          8.0,
-          10.0
+          [
+            1.0,
+            10.0
+          ],
+          [
+            3.0,
+            20.0
+          ],
+          [
+            5.0,
+            30.0
+          ]
         ],
         "gamma": 2.0,
-        "beta": 0.0
+        "beta": 0.5,
+        "eps": 1e-05,
+        "running_mean": [
+          0.0,
+          0.0
+        ],
+        "running_var": [
+          1.0,
+          1.0
+        ],
+        "momentum": 0.2,
+        "training": true
       },
       "expectedOutput": {
-        "normalized": [
-          -2.8284,
-          -1.4142,
-          0.0,
-          1.4142,
-          2.8284
+        "output": [
+          [
+            -1.9495,
+            -1.9495
+          ],
+          [
+            0.5,
+            0.5
+          ],
+          [
+            2.9495,
+            2.9495
+          ]
         ],
-        "mean": 6.0,
-        "variance": 8.0
+        "batch_mean": [
+          3.0,
+          20.0
+        ],
+        "running_mean": [
+          0.6,
+          4.0
+        ],
+        "running_var": [
+          1.3333,
+          14.1333
+        ]
       },
       "isPublic": true
     },
     {
       "id": "dl-batch-normalization-tc-3",
-      "name": "Case 3",
+      "name": "Inference mode uses running statistics",
       "inputs": {
         "x": [
-          0.5,
-          1.0,
-          1.5,
-          2.0,
-          2.5
+          [
+            2.0,
+            15.0
+          ],
+          [
+            4.0,
+            25.0
+          ]
         ],
-        "gamma": 0.5,
-        "beta": 0.0
+        "gamma": 1.0,
+        "beta": 0.0,
+        "eps": 1e-05,
+        "running_mean": [
+          3.0,
+          20.0
+        ],
+        "running_var": [
+          4.0,
+          25.0
+        ],
+        "momentum": 0.1,
+        "training": false
       },
       "expectedOutput": {
-        "normalized": [
-          -0.7071,
-          -0.3535,
-          0.0,
-          0.3535,
-          0.7071
+        "output": [
+          [
+            -0.5,
+            -1.0
+          ],
+          [
+            0.5,
+            1.0
+          ]
         ],
-        "mean": 1.5,
-        "variance": 0.5
+        "batch_mean": [
+          3.0,
+          20.0
+        ],
+        "running_mean": [
+          3.0,
+          20.0
+        ],
+        "running_var": [
+          4.0,
+          25.0
+        ]
       },
-      "isPublic": false
+      "isPublic": true
     },
     {
       "id": "dl-batch-normalization-tc-4",
-      "name": "Case 4",
+      "name": "Negative activations in training mode",
       "inputs": {
         "x": [
-          -1.0,
-          -2.0,
-          -3.0,
           -4.0,
-          -5.0
+          -2.0,
+          0.0,
+          2.0,
+          4.0
         ],
-        "gamma": 1.0,
-        "beta": -0.0
+        "gamma": 1.5,
+        "beta": -0.5,
+        "eps": 1e-05,
+        "running_mean": 0.0,
+        "running_var": 1.0,
+        "momentum": 0.1,
+        "training": true
       },
       "expectedOutput": {
-        "normalized": [
-          1.4142,
-          0.7071,
-          0.0,
-          -0.7071,
-          -1.4142
+        "output": [
+          -2.6213,
+          -1.5607,
+          -0.5,
+          0.5607,
+          1.6213
         ],
-        "mean": -3.0,
-        "variance": 2.0
+        "batch_mean": 0.0,
+        "running_mean": 0.0,
+        "running_var": 1.7
       },
       "isPublic": false
     },
     {
       "id": "dl-batch-normalization-tc-5",
-      "name": "Case 5",
+      "name": "High momentum running stat update",
       "inputs": {
         "x": [
-          3.0,
-          6.0,
-          9.0,
-          12.0,
-          15.0
+          [
+            2.0,
+            4.0
+          ],
+          [
+            6.0,
+            8.0
+          ]
         ],
-        "gamma": 3.0,
-        "beta": 0.0
+        "gamma": 1.0,
+        "beta": 0.0,
+        "eps": 1e-05,
+        "running_mean": [
+          1.0,
+          2.0
+        ],
+        "running_var": [
+          2.0,
+          2.0
+        ],
+        "momentum": 0.5,
+        "training": true
       },
       "expectedOutput": {
-        "normalized": [
-          -4.2426,
-          -2.1213,
-          0.0,
-          2.1213,
-          4.2426
+        "output": [
+          [
+            -1.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0
+          ]
         ],
-        "mean": 9.0,
-        "variance": 18.0
+        "batch_mean": [
+          4.0,
+          6.0
+        ],
+        "running_mean": [
+          2.5,
+          4.0
+        ],
+        "running_var": [
+          3.0,
+          3.0
+        ]
       },
       "isPublic": false
     },
     {
       "id": "dl-batch-normalization-tc-6",
-      "name": "Case 6",
+      "name": "Inference with custom gamma and beta",
       "inputs": {
         "x": [
-          2.0,
-          3.0,
-          4.0,
-          5.0,
-          6.0
+          10.0,
+          20.0,
+          30.0
         ],
-        "gamma": 2.0,
-        "beta": 1.0
+        "gamma": 0.5,
+        "beta": 1.0,
+        "eps": 1e-05,
+        "running_mean": 20.0,
+        "running_var": 100.0,
+        "momentum": 0.1,
+        "training": false
       },
       "expectedOutput": {
-        "normalized": [
-          -1.8284,
-          -0.4142,
+        "output": [
+          0.5,
           1.0,
-          2.4142,
-          3.8284
+          1.5
         ],
-        "mean": 4.0,
-        "variance": 2.0
+        "batch_mean": 20.0,
+        "running_mean": 20.0,
+        "running_var": 100.0
       },
       "isPublic": false
     },
     {
       "id": "dl-batch-normalization-tc-7",
-      "name": "Case 7",
+      "name": "Small variance numerical stability",
       "inputs": {
         "x": [
-          -1.0,
-          0.0,
-          1.0,
-          2.0,
-          3.0
+          1.001,
+          1.002,
+          1.003
         ],
         "gamma": 1.0,
-        "beta": -2.0
+        "beta": 0.0,
+        "eps": 0.001,
+        "running_mean": 1.0,
+        "running_var": 1.0,
+        "momentum": 0.1,
+        "training": true
       },
       "expectedOutput": {
-        "normalized": [
-          -3.4142,
-          -2.7071,
-          -2.0,
-          -1.2929,
-          -0.5858
+        "output": [
+          -0.0316,
+          0.0,
+          0.0316
         ],
-        "mean": 1.0,
-        "variance": 2.0
+        "batch_mean": 1.002,
+        "running_mean": 1.0002,
+        "running_var": 0.9
       },
       "isPublic": false
     }
   ],
   "functionMetadata": {
     "name": "dl_batch_normalization",
-    "runtime": "python"
+    "parameters": [
+      {
+        "name": "x",
+        "type": "array",
+        "example": "[1.0, 2.0, 3.0, 4.0, 5.0]",
+        "description": "Input feature vector, array, or scalar evaluation point"
+      },
+      {
+        "name": "gamma",
+        "type": "number",
+        "example": "1.0",
+        "description": "Discount factor in [0, 1] or scale parameter"
+      },
+      {
+        "name": "beta",
+        "type": "number",
+        "example": "0.0",
+        "description": "Shift parameter, inverse temperature, or regularization coefficient"
+      },
+      {
+        "name": "eps",
+        "type": "number",
+        "example": "1e-05",
+        "description": "Small positive constant for numerical stability (preventing division by zero)"
+      },
+      {
+        "name": "running_mean",
+        "type": "array",
+        "example": "0.0",
+        "description": "Input parameter `running_mean` (list) for Batch Normalization"
+      },
+      {
+        "name": "running_var",
+        "type": "array",
+        "example": "1.0",
+        "description": "Input parameter `running_var` (list) for Batch Normalization"
+      },
+      {
+        "name": "momentum",
+        "type": "number",
+        "example": "0.1",
+        "description": "Input parameter `momentum` (float) for Batch Normalization"
+      },
+      {
+        "name": "training",
+        "type": "boolean",
+        "example": "true",
+        "description": "Boolean flag indicating training mode (True) vs evaluation mode (False)"
+      }
+    ]
   },
   "relatedProblems": [
     "sigmoid-numpy",
@@ -233,11 +389,7 @@
     "matrix-transpose",
     "positional-encoding"
   ],
-  "placeholderAnalysis": {
-    "isPlaceholder": true,
-    "category": "numpy",
-    "placeholderType": "numpy_passthrough (return arr)",
-    "reason": "Server paywalled solution, starter code, and test cases; contains synthetic identity passthrough."
-  },
-  "cleanTitle": ""
+  "cleanTitle": "Batch Normalization",
+  "tensortonicUrl": "https://www.tensortonic.com/problems/dl-batch-normalization",
+  "localUrl": "http://localhost:3000/problems/dl-batch-normalization"
 }

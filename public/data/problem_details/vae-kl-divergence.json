@@ -4,7 +4,7 @@
   "description": "Compute the Kullback-Leibler divergence between a diagonal Gaussian posterior and the standard-normal prior used by a variational autoencoder.\n\n$$\nD_{\\mathrm{KL}}\\bigl(q(z\\mid x)\\,\\|\\,\\mathcal{N}(0,I)\\bigr)\n= -\\frac{1}{2B}\\sum_{i=1}^{B}\\sum_{j=1}^{L}\n\\left(1 + \\log \\sigma_{ij}^2 - \\mu_{ij}^2 - \\exp(\\log \\sigma_{ij}^2)\\right)\n$$\n\nHere, $B$ is batch size, $L$ is latent width, $\\mu_{ij}$ is a posterior mean, and $\\log \\sigma_{ij}^2$ is its log-variance. Sum over latent coordinates, then average over the batch. Return the divergence as a Python float.",
   "seoDescription": "Compute the VAE KL-divergence term between a diagonal Gaussian posterior and the standard normal prior.",
   "examples": [
-    "Input: mu = [[0,0]], log_var = [[0,0]]\n\nOutput: 0\n\nExplanation: A zero mean and zero log-variance describe the standard normal, so the divergence is zero.",
+    "Input: mu = [[0,0]], log_var = [[0,0]]\n\nOutput: 0",
     "Input: mu = [[1,2]], log_var = [[0,0]]\n\nOutput: 2.5",
     "Input: mu = [[0.5,-0.25],[1,0]], log_var = [[-1,0.5],[0.2,-0.4]]\n\nOutput: 0.480206"
   ],
