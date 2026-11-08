@@ -1063,26 +1063,28 @@ export const ProblemSolverPage: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 pr-1.5">
-            <button
-              onClick={handleRun}
-              disabled={isRunning}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-secondary hover:bg-accent border border-border text-foreground text-xs font-medium disabled:opacity-50"
-              title="Run code (Ctrl + Enter)"
-            >
-              <Play className="w-3 h-3 fill-current text-[#93C572]" />
-              <span>Run</span>
-            </button>
-            <button
-              onClick={handleSubmit}
-              disabled={isRunning}
-              className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-md bg-[#93C572] hover:bg-[#85b964] text-black text-xs font-bold disabled:opacity-50 shadow-xs mr-1"
-              title="Submit code (Ctrl + Alt + Enter)"
-            >
-              <Send className="w-3 h-3" />
-              <span>Submit</span>
-            </button>
-          </div>
+          {mobileActivePanel === 'code' && (
+            <div className="flex items-center gap-2 pr-1.5">
+              <button
+                onClick={handleRun}
+                disabled={isRunning}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-secondary hover:bg-accent border border-border text-foreground text-xs font-medium disabled:opacity-50"
+                title="Run code (Ctrl + Enter)"
+              >
+                <Play className="w-3 h-3 fill-current text-[#93C572]" />
+                <span>Run</span>
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={isRunning}
+                className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-md bg-[#93C572] hover:bg-[#85b964] text-black text-xs font-bold disabled:opacity-50 shadow-xs mr-1"
+                title="Submit code (Ctrl + Alt + Enter)"
+              >
+                <Send className="w-3 h-3" />
+                <span>Submit</span>
+              </button>
+            </div>
+          )}
         </div>
         
         {/* LEFT PANEL: Problem Info, Theory, Solution */}
@@ -1160,7 +1162,7 @@ export const ProblemSolverPage: React.FC = () => {
               </button>
               <button
                 onClick={() => setActiveTab('notes')}
-                className={`h-full border-b-2 font-medium transition-colors flex items-center gap-1 sm:gap-1.5 px-2 sm:px-1 relative ${
+                className={`hidden md:flex h-full border-b-2 font-medium transition-colors items-center gap-1 sm:gap-1.5 px-2 sm:px-1 relative ${
                   activeTab === 'notes'
                     ? 'border-[#93C572] text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
